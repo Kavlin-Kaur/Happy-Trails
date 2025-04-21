@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+
+{% block title %}Bus Results - Happy Trails{% endblock %}
+
+{% block extra_css %}
+<style>
+    .bus-details {
+        display: none;
+    }
+    
+    tbody tr:not(.bus-details-row) {
+        cursor: pointer;
+    }
+    
+    tbody tr:not(.bus-details-row):hover {
+        background-color: #fff9e6;
+    }
+    
+    .bus-type-badge {
+        font-size: 0.8rem;
+        padding: 5px 10px;
+    }
+    
+    .bus-amenities {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+    }
+    
+    .amenity-badge {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 20px;
+        padding: 5px 10px;
+        font-size: 0.8rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">Available Buses</h2>
+            <div class="alert alert-info">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-info-circle me-3 fs-4"></i>
+                    <div>
+                        <strong>Search Results:</strong> {{ from_location }} to {{ to_location }} on {{ travel_date }}
+                    </div>
+                </div>
+            </div>
+            
+            {% if buses %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Bus No.</th>
+                                <th>Type</th>
+                                <th>Departure</th>
+                                <th>Arrival</th>
+                                <th>Duration</th>
+                                <th>Status</th>
+                                <th>Available Seats</th>
+                                <th>Price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for bus in buses %}
+                            <tr class="bus-row" data-bus-id="{{ loop.index }}">
+                                <td>{{ bus.bus_number }}</td>
+                                <td>
+                                    <span class="badge {% if bus.bus_type == 'Premium' %}bg-danger{% elif bus.bus_type == 'Deluxe' %}bg-primary{% else %}bg-success{% endif %} bus-type-badge">
+                                        {{ bus.bus_type }}
+                                    </span>
+                                </td>
+                                <td>{{ bus.departure_time }}</td>
+                                <td>{{ bus.arrival_time }}</td>
+                                <td>
+                                    {% set departure = bus.departure_time.split(':')[0]|int %}
+                                    {% set arrival = bus.arrival_time.split(':')[0]|int %}
+                                    {% if 'PM' in bus.departure_time and 'AM' not in bus.departure_time %}
+                                        {% set departure = departure + 12 if departure < 12 else departure %}
+                                    {% endif %}
+                                    {% if 'PM' in bus.arrival_time and 'AM' not in bus.arrival_time %}
+                                        {% set arrival = arrival + 12 if arrival < 12 else arrival %}
+                                    {% endif %}
+                                    {% set duration = arrival - departure %}
+                                    {% if duration < 0 %}
+                                        {% set duration = duration + 24 %}
+                                    {% endif %}
+                                    {{ duration }} hr
+                                </td>
+                                <td>
+                                    {% if bus.status == 'On Time' %}
+                                        <span class="badge bg-success">On Time</span>
+                                    {% elif bus.status == 'Delayed' %}
+                                        <span class="badge bg-warning text-dark">Delayed</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ bus.status }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ bus.available_seats() }}</td>
+                                <td>₹{{ bus.price }}</td>
+                                <td>
+                                    {% if bus.available_seats() > 0 %}
+                                        <a href="{{ url_for('select_bus', bus_id=bus.id) }}" class="btn btn-warning btn-sm">Select Bus</a>
+                                    {% else %}
+                                        <button class="btn btn-secondary btn-sm" disabled>Sold Out</button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr class="bus-details-row" id="bus-details-{{ loop.index }}">
+                                <td colspan="9" class="p-0">
+                                    <div class="bus-details p-3 bg-light">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h5>Bus Details</h5>
+                                                <p><strong>Route:</strong> {{ bus.from_location }} to {{ bus.to_location }}</p>
+                                                <div class="bus-amenities">
+                                                    {% for amenity in bus.amenities.split(',') %}
+                                                        <span class="amenity-badge">
+                                                            <i class="fas fa-check-circle text-success me-1"></i> {{ amenity.strip() }}
+                                                        </span>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 text-md-end">
+                                                <a href="{{ url_for('track_bus', bus_id=bus.id) }}" class="btn btn-outline-primary btn-sm me-2">
+                                                    <i class="fas fa-map-marker-alt me-1"></i> Track Bus
+                                                </a>
+                                                {% if bus.available_seats() > 0 %}
+                                                    <a href="{{ url_for('select_bus', bus_id=bus.id) }}" class="btn btn-warning btn-sm">
+                                                        <i class="fas fa-ticket-alt me-1"></i> Book Now
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-4">
+                    <a href="{{ url_for('index') }}#booking" class="btn btn-outline-dark">
+                        <i class="fas fa-arrow-left me-2"></i> Modify Search
+                    </a>
+                </div>
+            {% else %}
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    No buses found for this route on the selected date. Please try a different route or date.
+                </div>
+                
+                <div class="mt-4">
+                    <a href="{{ url_for('index') }}#booking" class="btn btn-warning">
+                        <i class="fas fa-search me-2"></i> Search Again
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hide all bus details rows initially
+        const detailsRows = document.querySelectorAll('.bus-details-row');
+        detailsRows.forEach(row => {
+            row.style.display = 'none';
+        });
+        
+        // Add click event to each bus row
+        const busRows = document.querySelectorAll('.bus-row');
+        busRows.forEach(row => {
+            row.addEventListener('click', function() {
+                const busId = this.getAttribute('data-bus-id');
+                const detailsRow = document.getElementById('bus-details-' + busId);
+                
+                if (detailsRow.style.display === 'none' || !detailsRow.style.display) {
+                    // Hide all other details rows
+                    detailsRows.forEach(r => {
+                        r.style.display = 'none';
+                    });
+                    
+                    // Show this details row
+                    detailsRow.style.display = 'table-row';
+                } else {
+                    detailsRow.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

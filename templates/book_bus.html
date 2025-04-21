@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Book Bus - Happy Trails{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white">
+                    <h3 class="mb-0">Book Your Ticket</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Bus Details</h5>
+                            <p><strong>Bus Number:</strong> {{ bus.bus_number }}</p>
+                            <p><strong>Route:</strong> {{ bus.from_location }} to {{ bus.to_location }}</p>
+                            <p><strong>Departure:</strong> {{ bus.departure_time }}</p>
+                            <p><strong>Arrival:</strong> {{ bus.arrival_time }}</p>
+                            <p><strong>Status:</strong> 
+                                {% if bus.status == 'On Time' %}
+                                    <span class="badge bg-success">On Time</span>
+                                {% elif bus.status == 'Delayed' %}
+                                    <span class="badge bg-warning text-dark">Delayed</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">{{ bus.status }}</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Booking Information</h5>
+                            <p><strong>Travel Date:</strong> {{ travel_date }}</p>
+                            <p><strong>Available Seats:</strong> {{ bus.available_seats() }}</p>
+                            <p><strong>Price per Seat:</strong> ₹{{ bus.price }}</p>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <form method="post" action="{{ url_for('book_bus', bus_id=bus.id) }}">
+                        <div class="mb-3">
+                            <label for="seats" class="form-label">Number of Seats</label>
+                            <input type="number" class="form-control" id="seats" name="seats" min="1" max="{{ bus.available_seats() }}" value="1" required>
+                            <div class="form-text">Maximum {{ bus.available_seats() }} seats available</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="totalPrice" class="form-label">Total Price</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="text" class="form-control" id="totalPrice" value="{{ bus.price }}" readonly>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="paymentMethod" class="form-label">Payment Method</label>
+                            <select class="form-select" id="paymentMethod" name="paymentMethod" required>
+                                <option value="" selected disabled>Select payment method</option>
+                                <option value="creditCard">Credit Card</option>
+                                <option value="debitCard">Debit Card</option>
+                                <option value="upi">UPI</option>
+                                <option value="netBanking">Net Banking</option>
+                            </select>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-warning btn-lg">Confirm Booking</button>
+                            <a href="{{ url_for('bus_results') }}" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const seatsInput = document.getElementById('seats');
+        const totalPriceInput = document.getElementById('totalPrice');
+        const pricePerSeat = {{ bus.price }};
+        
+        seatsInput.addEventListener('input', function() {
+            const seats = parseInt(this.value) || 0;
+            const totalPrice = seats * pricePerSeat;
+            totalPriceInput.value = totalPrice.toFixed(2);
+        });
+    });
+</script>
+{% endblock %}

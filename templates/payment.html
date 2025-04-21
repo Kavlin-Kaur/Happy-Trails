@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment - Happy Trails{% endblock %}
+
+{% block extra_css %}
+<style>
+    .payment-option {
+        padding: 15px;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .payment-option:hover {
+        border-color: var(--primary-color);
+        background-color: #fff9e6;
+    }
+    
+    .payment-option.selected {
+        border-color: var(--primary-color);
+        background-color: #fff9e6;
+    }
+    
+    .form-check-input:checked ~ .form-check-label {
+        font-weight: bold;
+    }
+    
+    .payment-icon {
+        font-size: 1.5rem;
+        margin-right: 10px;
+        color: var(--primary-color);
+    }
+    
+    .payment-details {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white">
+                    <h3 class="mb-0">Payment</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-info-circle me-3 fs-4"></i>
+                            <div>
+                                <p class="mb-0">Bus: {{ bus.bus_number }} ({{ bus.bus_type }})</p>
+                                <p class="mb-0">Route: {{ bus.from_location }} to {{ bus.to_location }}</p>
+                                <p class="mb-0">Date: {{ booking_details.travel_date }}</p>
+                                <p class="mb-0">Seats: {{ selected_seats|join(', ') }}</p>
+                                <p class="mb-0">Total Amount: ₹{{ total_price }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <form action="{{ url_for('confirm_booking') }}" method="post">
+                        <div class="mb-4">
+                            <h5>Select Payment Method</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check payment-option">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="creditCard" value="creditCard" checked>
+                                        <label class="form-check-label" for="creditCard">
+                                            <i class="far fa-credit-card payment-icon"></i> Credit Card
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check payment-option">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="debitCard" value="debitCard">
+                                        <label class="form-check-label" for="debitCard">
+                                            <i class="fas fa-credit-card payment-icon"></i> Debit Card
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check payment-option">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="upi" value="upi">
+                                        <label class="form-check-label" for="upi">
+                                            <i class="fas fa-mobile-alt payment-icon"></i> UPI
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check payment-option">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="netBanking" value="netBanking">
+                                        <label class="form-check-label" for="netBanking">
+                                            <i class="fas fa-university payment-icon"></i> Net Banking
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="paymentDetails" class="payment-details">
+                            <!-- Credit Card Form (default) -->
+                            <div id="creditCardForm">
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <label for="cardNumber" class="form-label">Card Number</label>
+                                        <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="expiryDate" class="form-label">Expiry Date</label>
+                                        <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="cvv" class="form-label">CVV</label>
+                                        <input type="text" class="form-control" id="cvv" placeholder="123">
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <label for="cardName" class="form-label">Name on Card</label>
+                                        <input type="text" class="form-control" id="cardName" placeholder="John Doe">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- UPI Form (hidden by default) -->
+                            <div id="upiForm" style="display: none;">
+                                <div class="mb-3">
+                                    <label for="upiId" class="form-label">UPI ID</label>
+                                    <input type="text" class="form-control" id="upiId" placeholder="yourname@upi">
+                                </div>
+                            </div>
+                            
+                            <!-- Net Banking Form (hidden by default) -->
+                            <div id="netBankingForm" style="display: none;">
+                                <div class="mb-3">
+                                    <label for="bankSelect" class="form-label">Select Bank</label>
+                                    <select class="form-select" id="bankSelect">
+                                        <option value="" selected disabled>Choose your bank</option>
+                                        <option value="sbi">State Bank of India</option>
+                                        <option value="hdfc">HDFC Bank</option>
+                                        <option value="icici">ICICI Bank</option>
+                                        <option value="axis">Axis Bank</option>
+                                        <option value="pnb">Punjab National Bank</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-check mb-4 mt-4">
+                            <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                            <label class="form-check-label" for="termsCheck">
+                                I agree to the <a href="#" class="text-warning">Terms of Service</a> and <a href="#" class="text-warning">Cancellation Policy</a>
+                            </label>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-warning btn-lg">Pay ₹{{ total_price }} and Confirm Booking</button>
+                            <a href="{{ url_for('select_seats', bus_id=bus.id) }}" class="btn btn-outline-secondary">Back to Seat Selection</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const paymentMethods = document.querySelectorAll('input[name="payment_method"]');
+        const paymentOptions = document.querySelectorAll('.payment-option');
+        const creditCardForm = document.getElementById('creditCardForm');
+        const upiForm = document.getElementById('upiForm');
+        const netBankingForm = document.getElementById('netBankingForm');
+        
+        // Payment method change event
+        paymentMethods.forEach(method => {
+            method.addEventListener('change', function() {
+                // Update selected class
+                paymentOptions.forEach(option => {
+                    option.classList.remove('selected');
+                });
+                this.closest('.payment-option').classList.add('selected');
+                
+                // Hide all forms
+                creditCardForm.style.display = 'none';
+                upiForm.style.display = 'none';
+                netBankingForm.style.display = 'none';
+                
+                // Show selected form
+                if (this.value === 'creditCard' || this.value === 'debitCard') {
+                    creditCardForm.style.display = 'block';
+                } else if (this.value === 'upi') {
+                    upiForm.style.display = 'block';
+                } else if (this.value === 'netBanking') {
+                    netBankingForm.style.display = 'block';
+                }
+            });
+        });
+        
+        // Add selected class to default payment method
+        document.querySelector('input[name="payment_method"]:checked').closest('.payment-option').classList.add('selected');
+        
+        // For demo purposes, we'll skip actual validation
+        // In a real application, you would validate all fields
+    });
+</script>
+{% endblock %}

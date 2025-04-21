@@ -1,0 +1,457 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+    #map-home {
+        height: 300px;
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+    }
+    .weather-widget {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+    }
+    .weather-icon {
+        font-size: 2.5rem;
+        margin-right: 15px;
+    }
+    .hero-image img {
+        max-width: 100%;
+        height: auto;
+        animation: float 3s ease-in-out infinite;
+    }
+    .feature-image {
+        width: 100%;
+        max-width: 150px;
+        margin-bottom: 15px;
+    }
+    .bus-stop-image {
+        max-width: 100%;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    .custom-popup .leaflet-popup-content-wrapper {
+        background: #2c3e50;
+        color: #fff;
+        border-radius: 10px;
+    }
+    .custom-popup .leaflet-popup-content {
+        margin: 12px;
+    }
+    .custom-popup .leaflet-popup-tip {
+        background: #2c3e50;
+    }
+    .custom-popup a.btn-warning {
+        color: #000;
+        background-color: #ffc107;
+        border-color: #ffc107;
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        border-radius: 0.25rem;
+        text-decoration: none;
+        margin-top: 8px;
+    }
+    .custom-popup a.btn-warning:hover {
+        background-color: #e0a800;
+        border-color: #d39e00;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-text">
+                        <h1>Welcome to <span class="text-warning">Happy Trails</span></h1>
+                        <p class="lead">Your reliable partner for bus tracking, scheduling, and booking services.</p>
+                        <div class="d-flex gap-3 mt-4">
+                            {% if current_user.is_authenticated %}
+                                <a href="#booking" class="btn btn-warning btn-lg">Book Now</a>
+                            {% else %}
+                                <a href="{{ url_for('signup') }}" class="btn btn-warning btn-lg">Get Started</a>
+                            {% endif %}
+                            <a href="#features" class="btn btn-outline-light btn-lg">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <div class="hero-image text-center">
+                        <img src="{{ url_for('static', filename='images/bus-marker.png') }}" alt="Happy Trails" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Quick Search Section -->
+    <section class="quick-search-section py-5">
+        <div class="container">
+            <div class="quick-search-card">
+                <h3 class="text-center mb-4">Book <span class="text-warning">Happy Trails</span> Bus Tickets</h3>
+                <form action="{{ url_for('search_buses') }}" method="post">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-text bg-warning"><i class="fas fa-map-marker-alt"></i></span>
+                                <select class="form-select" id="quickFrom" name="from" required>
+                                    <option value="" selected disabled>FROM</option>
+                                    <option value="Dharampur">Dharampur</option>
+                                    <option value="Solan">Solan</option>
+                                    <option value="Barog">Barog</option>
+                                    <option value="Dagshai">Dagshai</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-text bg-warning"><i class="fas fa-map-marker-alt"></i></span>
+                                <select class="form-select" id="quickTo" name="to" required>
+                                    <option value="" selected disabled>TO</option>
+                                    <option value="Dharampur">Dharampur</option>
+                                    <option value="Solan">Solan</option>
+                                    <option value="Barog">Barog</option>
+                                    <option value="Dagshai">Dagshai</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-text bg-warning"><i class="fas fa-calendar-alt"></i></span>
+                                <input type="date" class="form-control" id="quickDate" name="date" min="{{ now_date }}" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-warning w-100 fw-bold">SEARCH BUSES</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container">
+            <div class="section-title text-center mb-5">
+                <h2>Our <span class="text-warning">Features</span></h2>
+                <p class="lead">Everything you need for a smooth journey</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card">
+                        <div class="icon-box">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3>Bus Schedules</h3>
+                        <p>Access real-time bus schedules and plan your journey accordingly.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card">
+                        <div class="icon-box">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>Live Tracking</h3>
+                        <p>Track your bus in real-time and know exactly when it will arrive.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card">
+                        <div class="icon-box">
+                            <i class="fas fa-ticket-alt"></i>
+                        </div>
+                        <h3>Online Booking</h3>
+                        <p>Book your tickets online and avoid standing in long queues.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card">
+                        <div class="icon-box">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <h3>Notifications</h3>
+                        <p>Get timely notifications about your bus status and bookings.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bus Tracking Section -->
+    <section id="tracking" class="py-5 bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <div class="section-title mb-4">
+                        <h2>Real-Time <span class="text-warning">Bus Tracking</span></h2>
+                        <p class="lead">Know exactly where your bus is and when it will arrive</p>
+                    </div>
+                    <p>Our advanced tracking system allows you to:</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle text-warning"></i> Track your bus in real-time on the map</li>
+                        <li><i class="fas fa-check-circle text-warning"></i> Get accurate arrival time predictions</li>
+                        <li><i class="fas fa-check-circle text-warning"></i> Receive notifications about delays</li>
+                        <li><i class="fas fa-check-circle text-warning"></i> View alternative routes if available</li>
+                    </ul>
+                    <a href="{{ url_for('track_bus', bus_id=1) }}" class="btn btn-warning mt-3">Track Your Bus</a>
+                </div>
+                <div class="col-lg-6">
+                    <div class="tracking-map-container">
+                        <div id="map-home"></div>
+                    </div>
+                    
+                    <!-- Weather Widget -->
+                    {% if weather %}
+                    <div class="weather-widget mt-3">
+                        <div class="d-flex align-items-center">
+                            <div class="weather-icon">
+                                <img src="https://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="Weather icon">
+                            </div>
+                            <div>
+                                <h5>Weather in Solan</h5>
+                                <h3>{{ weather.temperature }}°C</h3>
+                                <p>{{ weather.description|title }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedules Section -->
+    <section id="schedules" class="py-5">
+        <div class="container">
+            <div class="section-title text-center mb-5">
+                <h2>Bus <span class="text-warning">Schedules</span></h2>
+                <p class="lead">Plan your journey with our comprehensive bus schedules</p>
+            </div>
+            <div class="row mb-4">
+                <div class="col-lg-4 mb-4">
+                    <img src="{{ url_for('static', filename='images/bus-stop.png') }}" alt="Bus Stop" class="bus-stop-image">
+                </div>
+                <div class="col-lg-8">
+                    <div class="schedule-search mb-4">
+                        <form action="{{ url_for('search_buses') }}" method="post">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <select class="form-select" id="fromLocation" name="from" required>
+                                        <option value="" selected disabled>From</option>
+                                        <option value="Dharampur">Dharampur</option>
+                                        <option value="Solan">Solan</option>
+                                        <option value="Barog">Barog</option>
+                                        <option value="Dagshai">Dagshai</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-select" id="toLocation" name="to" required>
+                                        <option value="" selected disabled>To</option>
+                                        <option value="Dharampur">Dharampur</option>
+                                        <option value="Solan">Solan</option>
+                                        <option value="Barog">Barog</option>
+                                        <option value="Dagshai">Dagshai</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-warning w-100">Search</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="schedule-table">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Bus No.</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Departure</th>
+                                <th>Arrival</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for bus in buses %}
+                            <tr>
+                                <td>{{ bus.bus_number }}</td>
+                                <td>{{ bus.from_location }}</td>
+                                <td>{{ bus.to_location }}</td>
+                                <td>{{ bus.departure_time }}</td>
+                                <td>{{ bus.arrival_time }}</td>
+                                <td>
+                                    {% if bus.status == 'On Time' %}
+                                        <span class="badge bg-success">On Time</span>
+                                    {% elif bus.status == 'Delayed' %}
+                                        <span class="badge bg-warning text-dark">Delayed</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ bus.status }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <form action="{{ url_for('search_buses') }}" method="post">
+                                        <input type="hidden" name="from" value="{{ bus.from_location }}">
+                                        <input type="hidden" name="to" value="{{ bus.to_location }}">
+                                        <input type="hidden" name="date" value="{{ now_date }}">
+                                        <button type="submit" class="btn btn-sm btn-warning">Book</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="booking" class="py-5 bg-light">
+        <div class="container">
+            <div class="section-title text-center mb-5">
+                <h2>Quick <span class="text-warning">Booking</span></h2>
+                <p class="lead">Book your tickets in just a few clicks</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="booking-form">
+                        <form action="{{ url_for('search_buses') }}" method="post">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="fromCity" class="form-label">From</label>
+                                    <select class="form-select" id="fromCity" name="from" required>
+                                        <option value="" selected disabled>Select departure city</option>
+                                        <option value="Dharampur">Dharampur</option>
+                                        <option value="Solan">Solan</option>
+                                        <option value="Barog">Barog</option>
+                                        <option value="Dagshai">Dagshai</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="toCity" class="form-label">To</label>
+                                    <select class="form-select" id="toCity" name="to" required>
+                                        <option value="" selected disabled>Select destination city</option>
+                                        <option value="Dharampur">Dharampur</option>
+                                        <option value="Solan">Solan</option>
+                                        <option value="Barog">Barog</option>
+                                        <option value="Dagshai">Dagshai</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="travelDate" class="form-label">Date of Journey</label>
+                                    <input type="date" class="form-control" id="travelDate" name="date" min="{{ now_date }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="passengers" class="form-label">Passengers</label>
+                                    <input type="number" class="form-control" id="passengers" name="passengers" min="1" max="10" value="1" required>
+                                </div>
+                                <div class="col-12 mt-4">
+                                    <button type="submit" class="btn btn-warning btn-lg w-100">Search Buses</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set minimum date for date inputs to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('quickDate').min = today;
+        const travelDateInput = document.getElementById('travelDate');
+        if (travelDateInput) {
+            travelDateInput.min = today;
+        }
+        
+        // Initialize map
+        initHomeMap();
+    });
+    
+    let homeMap;
+    let busMarkers = [];
+    
+    function initHomeMap() {
+        // Center map on Solan
+        const solanLocation = [30.9045, 77.0967]; // [lat, lng] for Leaflet
+        
+        // Initialize the map
+        homeMap = L.map('map-home').setView(solanLocation, 10);
+        
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19
+        }).addTo(homeMap);
+        
+        // Add markers for bus locations
+        addBusMarkers();
+        
+        // Update bus locations periodically
+        setInterval(addBusMarkers, 30000); // Update every 30 seconds
+    }
+    
+    function addBusMarkers() {
+        // Clear existing markers
+        busMarkers.forEach(marker => marker.remove());
+        busMarkers = [];
+        
+        // Create custom bus icon
+        const busIcon = L.icon({
+            iconUrl: "{{ url_for('static', filename='images/bus-marker.png') }}",
+            iconSize: [40, 40],
+            iconAnchor: [20, 20],
+            popupAnchor: [0, -20]
+        });
+        
+        // Add markers for sample buses
+        const busLocations = [
+            { id: 1, lat: 30.7333, lng: 76.7794, number: "HT-101", from: "Dharampur", to: "Solan" },
+            { id: 2, lat: 31.1048, lng: 77.1734, number: "HT-102", from: "Solan", to: "Barog" },
+            { id: 3, lat: 32.2396, lng: 77.1887, number: "HT-103", from: "Barog", to: "Dagshai" },
+            { id: 4, lat: 30.3398, lng: 77.9601, number: "HT-104", from: "Dagshai", to: "Dharampur" }
+        ];
+        
+        busLocations.forEach(bus => {
+            // Add small random variation to simulate movement
+            const lat = bus.lat + (Math.random() - 0.5) * 0.02;
+            const lng = bus.lng + (Math.random() - 0.5) * 0.02;
+            
+            const marker = L.marker([lat, lng], {
+                icon: busIcon,
+                title: `Bus ${bus.number}`
+            }).addTo(homeMap);
+            
+            marker.bindPopup(`
+                <div>
+                    <h5>Bus ${bus.number}</h5>
+                    <p>Route: ${bus.from} to ${bus.to}</p>
+                    <p><a href="/track_bus/${bus.id}" class="btn btn-warning">Track Bus</a></p>
+                </div>
+            `, { className: 'custom-popup' });
+            
+            busMarkers.push(marker);
+        });
+    }
+</script>
+{% endblock %}

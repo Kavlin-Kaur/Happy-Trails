@@ -1,0 +1,311 @@
+{% extends 'base.html' %}
+
+{% block title %}Select Seats - Happy Trails{% endblock %}
+
+{% block extra_css %}
+<style>
+    .bus-layout {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .seat {
+        width: 40px;
+        height: 40px;
+        margin: 5px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.2s;
+    }
+    
+    .seat-available {
+        background-color: #ffffff;
+        border: 2px solid #28a745;
+        color: #28a745;
+    }
+    
+    .seat-available:hover {
+        background-color: #f0f9f2;
+        transform: scale(1.05);
+    }
+    
+    .seat-booked {
+        background-color: #dc3545;
+        border: 2px solid #dc3545;
+        color: white;
+        cursor: not-allowed;
+    }
+    
+    .seat-selected {
+        background-color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+        color: #212529;
+    }
+    
+    .bus-front {
+        background-color: #343a40;
+        color: white;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    .seat-info {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    
+    .seat-info-item {
+        display: flex;
+        align-items: center;
+        margin: 0 10px;
+    }
+    
+    .seat-info-box {
+        width: 20px;
+        height: 20px;
+        border-radius: 3px;
+        margin-right: 5px;
+    }
+    
+    .booking-summary-card {
+        position: sticky;
+        top: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white">
+                    <h3 class="mb-0">Select Your Seats</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-info-circle me-3 fs-4"></i>
+                            <div>
+                                <p class="mb-0">Bus: {{ bus.bus_number }} ({{ bus.bus_type }})</p>
+                                <p class="mb-0">Route: {{ bus.from_location }} to {{ bus.to_location }}</p>
+                                <p class="mb-0">Date: {{ travel_date }}</p>
+                                <p class="mb-0">Pickup: {{ pickup_point }}</p>
+                                <p class="mb-0">Drop-off: {{ dropoff_point }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="seat-info">
+                        <div class="seat-info-item">
+                            <div class="seat-info-box seat-available"></div>
+                            <span>Available</span>
+                        </div>
+                        <div class="seat-info-item">
+                            <div class="seat-info-box seat-booked"></div>
+                            <span>Booked</span>
+                        </div>
+                        <div class="seat-info-item">
+                            <div class="seat-info-box seat-selected"></div>
+                            <span>Selected</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bus-layout">
+                        <div class="bus-front">
+                            <i class="fas fa-bus me-2"></i> FRONT
+                        </div>
+                        
+                        <form id="seatSelectionForm" action="{{ url_for('payment', bus_id=bus.id) }}" method="post">
+                            <div class="text-center">
+                                {% for row in range(1, 11) %}
+                                    <div class="mb-2">
+                                        {% for col in ['A', 'B', '', 'C', 'D'] %}
+                                            {% if col == '' %}
+                                                <span style="display: inline-block; width: 40px;"></span>
+                                            {% else %}
+                                                {% set seat_number = row|string + col %}
+                                                {% if seat_number in booked_seats %}
+                                                    <div class="seat seat-booked" title="Seat {{ seat_number }} - Already booked">{{ seat_number }}</div>
+                                                {% else %}
+                                                    <div class="seat seat-available" data-seat="{{ seat_number }}" title="Seat {{ seat_number }}">{{ seat_number }}</div>
+                                                    <input type="checkbox" name="selected_seats" value="{{ seat_number }}" style="display: none;">
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            
+                            <div class="mt-4">
+                                <div class="alert alert-warning" id="seatAlert" style="display: none;">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    Please select at least one seat to continue.
+                                </div>
+                                
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <p class="mb-0">Selected Seats: <span id="selectedSeatsText">None</span></p>
+                                        <p class="mb-0">Total Price: ₹<span id="totalPrice">0</span></p>
+                                    </div>
+                                    <div>
+                                        <button type="button" id="continueBtn" class="btn btn-warning">Continue to Payment</button>
+                                        <a href="{{ url_for('select_bus', bus_id=bus.id) }}" class="btn btn-outline-secondary ms-2">Back</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card shadow booking-summary-card">
+                <div class="card-header bg-dark text-white">
+                    <h3 class="mb-0">Booking Summary</h3>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h5>{{ bus.bus_number }} - {{ bus.bus_type }}</h5>
+                        <p class="mb-1"><strong>From:</strong> {{ bus.from_location }}</p>
+                        <p class="mb-1"><strong>To:</strong> {{ bus.to_location }}</p>
+                        <p class="mb-1"><strong>Date:</strong> {{ travel_date }}</p>
+                        <p class="mb-1"><strong>Departure:</strong> {{ bus.departure_time }}</p>
+                        <p class="mb-1"><strong>Arrival:</strong> {{ bus.arrival_time }}</p>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="mb-3">
+                        <h5>Pickup & Drop-off</h5>
+                        <p class="mb-1"><strong>Pickup:</strong> {{ pickup_point }}</p>
+                        <p class="mb-1"><strong>Drop-off:</strong> {{ dropoff_point }}</p>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div>
+                        <h5>Price Details</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Base Fare:</span>
+                            <span>₹{{ bus.price }} per seat</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Selected Seats:</span>
+                            <span id="summarySelectedSeats">0</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal:</span>
+                            <span id="summarySubtotal">₹0</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Tax (5%):</span>
+                            <span id="summaryTax">₹0</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between fw-bold">
+                            <span>Total:</span>
+                            <span id="summaryTotal">₹0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const availableSeats = document.querySelectorAll('.seat-available');
+        const checkboxes = document.querySelectorAll('input[name="selected_seats"]');
+        const selectedSeatsText = document.getElementById('selectedSeatsText');
+        const totalPriceElement = document.getElementById('totalPrice');
+        const continueBtn = document.getElementById('continueBtn');
+        const seatAlert = document.getElementById('seatAlert');
+        const seatSelectionForm = document.getElementById('seatSelectionForm');
+        
+        // Summary elements
+        const summarySelectedSeats = document.getElementById('summarySelectedSeats');
+        const summarySubtotal = document.getElementById('summarySubtotal');
+        const summaryTax = document.getElementById('summaryTax');
+        const summaryTotal = document.getElementById('summaryTotal');
+        
+        const pricePerSeat = {{ bus.price }};
+        const taxRate = 0.05; // 5% tax
+        
+        let selectedSeats = [];
+        
+        // Add click event to each available seat
+        availableSeats.forEach((seat, index) => {
+            seat.addEventListener('click', function() {
+                const seatNumber = this.dataset.seat;
+                
+                if (this.classList.contains('seat-selected')) {
+                    // Deselect seat
+                    this.classList.remove('seat-selected');
+                    this.classList.add('seat-available');
+                    checkboxes[index].checked = false;
+                    
+                    // Remove from selected seats array
+                    const seatIndex = selectedSeats.indexOf(seatNumber);
+                    if (seatIndex > -1) {
+                        selectedSeats.splice(seatIndex, 1);
+                    }
+                } else {
+                    // Select seat
+                    this.classList.remove('seat-available');
+                    this.classList.add('seat-selected');
+                    checkboxes[index].checked = true;
+                    
+                    // Add to selected seats array
+                    selectedSeats.push(seatNumber);
+                }
+                
+                // Update selected seats text
+                if (selectedSeats.length > 0) {
+                    selectedSeatsText.textContent = selectedSeats.join(', ');
+                } else {
+                    selectedSeatsText.textContent = 'None';
+                }
+                
+                // Update price
+                const subtotal = selectedSeats.length * pricePerSeat;
+                const tax = subtotal * taxRate;
+                const total = subtotal + tax;
+                
+                totalPriceElement.textContent = total.toFixed(2);
+                
+                // Update summary
+                summarySelectedSeats.textContent = selectedSeats.length;
+                summarySubtotal.textContent = '₹' + subtotal.toFixed(2);
+                summaryTax.textContent = '₹' + tax.toFixed(2);
+                summaryTotal.textContent = '₹' + total.toFixed(2);
+            });
+        });
+        
+        // Continue button click event
+        continueBtn.addEventListener('click', function() {
+            if (selectedSeats.length === 0) {
+                seatAlert.style.display = 'block';
+                return;
+            }
+            
+            seatAlert.style.display = 'none';
+            seatSelectionForm.submit();
+        });
+    });
+</script>
+{% endblock %}

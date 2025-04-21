@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}Booking Confirmation - Happy Trails{% endblock %}
+
+{% block extra_css %}
+<style>
+    .confirmation-icon {
+        font-size: 5rem;
+        color: #28a745;
+        margin-bottom: 1rem;
+    }
+    
+    .booking-id {
+        background-color: #fff9e6;
+        border: 2px dashed var(--primary-color);
+        padding: 10px;
+        border-radius: 5px;
+        font-weight: bold;
+        display: inline-block;
+    }
+    
+    .booking-details {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+    }
+    
+    .important-info {
+        background-color: #e9f5ff;
+        border-left: 4px solid #0d6efd;
+        padding: 15px;
+        border-radius: 5px;
+    }
+    
+    .important-info h5 {
+        color: #0d6efd;
+    }
+    
+    .important-info ul {
+        margin-bottom: 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0"><i class="fas fa-check-circle me-2"></i> Booking Confirmed!</h3>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="confirmation-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h4>Thank you for booking with Happy Trails!</h4>
+                        <p class="text-muted">Your booking has been confirmed and your tickets are ready.</p>
+                        <div class="booking-id">
+                            <strong>Booking ID:</strong> #{{ booking.id }}
+                        </div>
+                    </div>
+                    
+                    <div class="booking-details">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h5>Bus Details</h5>
+                                <p class="mb-1"><strong>Bus Number:</strong> {{ booking.bus.bus_number }}</p>
+                                <p class="mb-1"><strong>Bus Type:</strong> {{ booking.bus.bus_type }}</p>
+                                <p class="mb-1"><strong>From:</strong> {{ booking.bus.from_location }}</p>
+                                <p class="mb-1"><strong>To:</strong> {{ booking.bus.to_location }}</p>
+                                <p class="mb-1"><strong>Departure:</strong> {{ booking.bus.departure_time }}</p>
+                                <p class="mb-1"><strong>Arrival:</strong> {{ booking.bus.arrival_time }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Booking Information</h5>
+                                <p class="mb-1"><strong>Travel Date:</strong> {{ booking.travel_date.strftime('%d %b, %Y') }}</p>
+                                <p class="mb-1"><strong>Pickup Point:</strong> {{ booking.pickup_point }}</p>
+                                <p class="mb-1"><strong>Drop-off Point:</strong> {{ booking.dropoff_point }}</p>
+                                <p class="mb-1"><strong>Seats:</strong> {{ booking.seats }}</p>
+                                <p class="mb-1"><strong>Seat Numbers:</strong> {{ booking.seat_numbers }}</p>
+                                <p class="mb-1"><strong>Total Amount:</strong> ₹{{ booking.total_price }}</p>
+                                <p class="mb-1"><strong>Payment Method:</strong> {{ booking.payment_method }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="important-info">
+                        <h5><i class="fas fa-info-circle me-2"></i> Important Information</h5>
+                        <ul class="mb-0">
+                            <li>Please arrive at the pickup point at least 15 minutes before departure.</li>
+                            <li>Carry a valid ID proof for verification.</li>
+                            <li>Cancellation is allowed up to 24 hours before departure with a 10% fee.</li>
+                            <li>For any assistance, contact our helpline at +91 98765 43210.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{{ url_for('track_bus', bus_id=booking.bus.id) }}" class="btn btn-outline-primary">
+                            <i class="fas fa-map-marker-alt me-2"></i> Track Bus
+                        </a>
+                        <a href="{{ url_for('my_bookings') }}" class="btn btn-warning">
+                            <i class="fas fa-ticket-alt me-2"></i> View All Bookings
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
