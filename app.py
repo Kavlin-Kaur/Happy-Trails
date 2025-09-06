@@ -503,8 +503,9 @@ def traffic_update(bus_id):
 
 # Run the application
 if __name__ == '__main__':
+    # Use SQLite for local development
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///happytrails.db'
     app.run(debug=True)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///happytrails.db'
 
 # Make sure it points to the correct location
 # If you want the database in a specific folder, use absolute paths:
