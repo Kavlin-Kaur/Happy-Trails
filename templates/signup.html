@@ -1,164 +1,457 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
+{% extends 'base.html' %}
 
-        .signup-container {
-            max-width: 500px;
-            margin: auto;
-            margin-top: 50px;
-            padding: 30px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-        }
+{% block title %}Join Happy Trails - Start Your Journey{% endblock %}
 
-        .form-label {
-            font-weight: 500;
-        }
+{% block extra_css %}
+<style>
+    .auth-section {
+        min-height: 100vh;
+        background: var(--gradient-soft);
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        padding: 120px 0 60px;
+    }
+    
+    .auth-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+            radial-gradient(circle at 30% 70%, rgba(255, 215, 0, 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 70% 30%, rgba(255, 182, 193, 0.08) 0%, transparent 50%);
+        animation: sparkle 6s ease-in-out infinite;
+    }
+    
+    .signup-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 30px;
+        padding: 40px;
+        box-shadow: var(--shadow-strong);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 215, 0, 0.2);
+        position: relative;
+        z-index: 2;
+        max-width: 600px;
+        margin: 0 auto;
+        animation: slideInFromTop 0.8s ease-out;
+    }
+    
+    @keyframes slideInFromTop {
+        0% { opacity: 0; transform: translateY(-50px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    
+    .password-strength {
+        margin-top: 0.5rem;
+    }
+    
+    .strength-indicator {
+        height: 4px;
+        border-radius: 2px;
+        background: #e9ecef;
+        overflow: hidden;
+        margin-top: 0.5rem;
+    }
+    
+    .strength-bar {
+        height: 100%;
+        transition: var(--transition-smooth);
+        border-radius: 2px;
+    }
+    
+    .strength-text {
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+    
+    .form-floating {
+        position: relative;
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-floating > .form-control {
+        border: 2px solid var(--secondary-yellow);
+        border-radius: 15px;
+        padding: 20px 15px 10px;
+        height: auto;
+        background: rgba(255, 255, 255, 0.9);
+        transition: var(--transition-smooth);
+    }
+    
+    .form-floating > .form-control:focus {
+        border-color: var(--primary-yellow);
+        box-shadow: var(--glow-yellow);
+        outline: none;
+        background: white;
+    }
+    
+    .form-floating > label {
+        padding: 15px;
+        color: var(--medium-gray);
+        font-weight: 500;
+    }
+    
+    .terms-section {
+        background: rgba(255, 215, 0, 0.1);
+        border-radius: 15px;
+        padding: 20px;
+        margin: 1.5rem 0;
+        border-left: 4px solid var(--primary-yellow);
+    }
+    
+    .progress-step {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+    
+    .step {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--light-gray);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 10px;
+        font-weight: bold;
+        transition: var(--transition-smooth);
+        position: relative;
+    }
+    
+    .step.active {
+        background: var(--gradient-sunrise);
+        color: white;
+        transform: scale(1.2);
+    }
+    
+    .step.completed {
+        background: #28a745;
+        color: white;
+    }
+    
+    .step::after {
+        content: '';
+        position: absolute;
+        right: -25px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 2px;
+        background: var(--light-gray);
+        transition: var(--transition-smooth);
+    }
+    
+    .step.completed::after {
+        background: #28a745;
+    }
+    
+    .step:last-child::after {
+        display: none;
+    }
+</style>
+{% endblock %}
 
-        .btn-warning {
-            background-color: #ffc107;
-            border-color: #ffc107;
-            color: #212529;
-        }
-
-        .btn-warning:hover {
-            background-color: #e0a800;
-            border-color: #d39e00;
-            color: #212529;
-        }
-    </style>
-</head>
-<body>
-    <div class="signup-container">
-        <h2 class="text-center mb-4">Create an Account</h2>
-        <form id="signupForm" method="post" action="{{ url_for('signup') }}">
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="firstName" class="form-label">First Name</label>
-                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter first name" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="lastName" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter last name" required>
-                </div>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-warning"><i class="fas fa-envelope"></i></span>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
-                </div>
-            </div>
-            <div class="mb-3">
-                <label for="phone" class="form-label">Phone Number</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-warning"><i class="fas fa-phone"></i></span>
-                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required>
-                </div>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-warning"><i class="fas fa-lock"></i></span>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Create a password" required>
-                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                </div>
-                <div class="password-strength mt-2">
-                    <div class="progress" style="height: 5px;">
-                        <div class="progress-bar bg-danger" role="progressbar" style="width: 0%"></div>
+{% block content %}
+<section class="auth-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="signup-card">
+                    <div class="text-center mb-4">
+                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Happy Trails Logo" class="auth-logo mb-3">
+                        <h2 class="script-font text-warning display-5">Join Our Family</h2>
+                        <p class="text-muted lead">Start your beautiful journey with Happy Trails</p>
+                        <div class="mb-3">
+                            <small class="script-font text-warning">
+                                "Every journey begins with a single step" - Kavlin ✨
+                            </small>
+                        </div>
                     </div>
+                    
+                    <!-- Progress Steps -->
+                    <div class="progress-step">
+                        <div class="step active" id="step1">1</div>
+                        <div class="step" id="step2">2</div>
+                        <div class="step" id="step3">3</div>
+                    </div>
+                    
+                    <form id="signupForm" method="post" action="{{ url_for('signup') }}">
+                        <!-- Step 1: Basic Information -->
+                        <div class="signup-step" id="signupStep1">
+                            <h4 class="script-font text-center mb-4">Personal Information</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="firstName" name="firstName" 
+                                               placeholder="First Name" required>
+                                        <label for="firstName">
+                                            <i class="fas fa-user text-warning me-2"></i>First Name
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="lastName" name="lastName" 
+                                               placeholder="Last Name" required>
+                                        <label for="lastName">
+                                            <i class="fas fa-user text-warning me-2"></i>Last Name
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-floating">
+                                <input type="email" class="form-control" id="email" name="email" 
+                                       placeholder="Email" required>
+                                <label for="email">
+                                    <i class="fas fa-envelope text-warning me-2"></i>Email Address
+                                </label>
+                            </div>
+                            
+                            <div class="form-floating">
+                                <input type="tel" class="form-control" id="phone" name="phone" 
+                                       placeholder="Phone" required>
+                                <label for="phone">
+                                    <i class="fas fa-phone text-warning me-2"></i>Phone Number
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2: Security -->
+                        <div class="signup-step" id="signupStep2" style="display: none;">
+                            <h4 class="script-font text-center mb-4">Security Setup</h4>
+                            
+                            <div class="form-floating">
+                                <input type="password" class="form-control" id="password" name="password" 
+                                       placeholder="Password" required>
+                                <label for="password">
+                                    <i class="fas fa-lock text-warning me-2"></i>Create Password
+                                </label>
+                                <div class="password-strength">
+                                    <div class="strength-indicator">
+                                        <div class="strength-bar" id="strengthBar"></div>
+                                    </div>
+                                    <div class="strength-text" id="strengthText"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-floating">
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" 
+                                       placeholder="Confirm Password" required>
+                                <label for="confirmPassword">
+                                    <i class="fas fa-lock text-warning me-2"></i>Confirm Password
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3: Terms & Completion -->
+                        <div class="signup-step" id="signupStep3" style="display: none;">
+                            <h4 class="script-font text-center mb-4">Almost There!</h4>
+                            
+                            <div class="terms-section">
+                                <h5 class="text-warning mb-3">
+                                    <i class="fas fa-heart me-2"></i>Welcome to the Happy Trails Family!
+                                </h5>
+                                <p class="mb-3">By joining us, you're becoming part of a community that values:</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>Beautiful, safe journeys</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Exceptional customer service</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Technology meets poetry</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Kavlin's artistic vision</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                                <label class="form-check-label" for="termsCheck">
+                                    I agree to the 
+                                    <a href="#" class="text-warning">Terms of Service</a> and 
+                                    <a href="#" class="text-warning">Privacy Policy</a>
+                                </label>
+                            </div>
+                            
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="newsletterCheck">
+                                <label class="form-check-label" for="newsletterCheck">
+                                    Subscribe to receive Kavlin's poetry and travel inspiration
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Navigation Buttons -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-outline-secondary" id="prevBtn" style="display: none;">
+                                <i class="fas fa-arrow-left me-2"></i>Previous
+                            </button>
+                            <div class="ms-auto">
+                                <button type="button" class="btn btn-primary" id="nextBtn">
+                                    Next<i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                                <button type="submit" class="btn btn-auth" id="submitBtn" style="display: none;">
+                                    <i class="fas fa-heart me-2"></i>Join Happy Trails
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <p class="mb-0">Already have an account? 
+                                <a href="{{ url_for('login') }}" class="text-warning fw-semibold text-decoration-none">
+                                    Welcome back!
+                                </a>
+                            </p>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="mb-3">
-                <label for="confirmPassword" class="form-label">Confirm Password</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-warning"><i class="fas fa-lock"></i></span>
-                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
-                </div>
-            </div>
-            <div class="mb-4 form-check">
-                <input class="form-check-input" type="checkbox" id="termsCheck" required>
-                <label class="form-check-label" for="termsCheck">
-                    I agree to the <a href="#" class="text-warning">Terms of Service</a> and <a href="#" class="text-warning">Privacy Policy</a>
-                </label>
-            </div>
-            <button type="submit" class="btn btn-warning w-100 mb-3">Create Account</button>
-            <div class="text-center">
-                <p>Already have an account? <a href="{{ url_for('login') }}" class="text-warning">Login</a></p>
-            </div>
-        </form>
+        </div>
     </div>
+</section>
+{% endblock %}
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        const passwordInput = document.getElementById('password');
-        const togglePasswordButton = document.getElementById('togglePassword');
-        const passwordStrengthBar = document.querySelector('.progress-bar');
-
-        togglePasswordButton.addEventListener('click', function (e) {
-            // toggle the type attribute
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            // toggle the eye icon
-            this.querySelector('i').classList.toggle('fa-eye');
-            this.querySelector('i').classList.toggle('fa-eye-slash');
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let currentStep = 1;
+    const totalSteps = 3;
+    
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    // Multi-step form navigation
+    function showStep(step) {
+        // Hide all steps
+        for (let i = 1; i <= totalSteps; i++) {
+            document.getElementById(`signupStep${i}`).style.display = 'none';
+            document.getElementById(`step${i}`).classList.remove('active', 'completed');
+        }
+        
+        // Show current step
+        document.getElementById(`signupStep${step}`).style.display = 'block';
+        document.getElementById(`step${step}`).classList.add('active');
+        
+        // Mark completed steps
+        for (let i = 1; i < step; i++) {
+            document.getElementById(`step${i}`).classList.add('completed');
+        }
+        
+        // Update navigation buttons
+        prevBtn.style.display = step > 1 ? 'block' : 'none';
+        nextBtn.style.display = step < totalSteps ? 'block' : 'none';
+        submitBtn.style.display = step === totalSteps ? 'block' : 'none';
+    }
+    
+    nextBtn.addEventListener('click', function() {
+        if (validateCurrentStep()) {
+            currentStep++;
+            showStep(currentStep);
+        }
+    });
+    
+    prevBtn.addEventListener('click', function() {
+        currentStep--;
+        showStep(currentStep);
+    });
+    
+    function validateCurrentStep() {
+        const currentStepElement = document.getElementById(`signupStep${currentStep}`);
+        const inputs = currentStepElement.querySelectorAll('input[required]');
+        let isValid = true;
+        
+        inputs.forEach(input => {
+            if (!input.value.trim()) {
+                input.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                input.classList.remove('is-invalid');
+                input.classList.add('is-valid');
+            }
         });
-
-        passwordInput.addEventListener('input', function() {
-            const password = passwordInput.value;
-            let strength = 0;
-
-            if (password.length >= 8) {
-                strength += 1;
+        
+        // Additional validation for step 2 (passwords)
+        if (currentStep === 2) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPassword').classList.add('is-invalid');
+                isValid = false;
             }
-            if (password.match(/[a-z]+/)) {
-                strength += 1;
-            }
-            if (password.match(/[A-Z]+/)) {
-                strength += 1;
-            }
-            if (password.match(/[0-9]+/)) {
-                strength += 1;
-            }
-            if (password.match(/[^a-zA-Z0-9]+/)) {
-                strength += 1;
-            }
-
-            let width = 0;
-            let color = 'red';
-
-            if (strength === 1) {
-                width = 20;
-                color = 'red';
-            } else if (strength === 2) {
-                width = 40;
-                color = 'orange';
-            } else if (strength === 3) {
-                width = 60;
-                color = 'yellow';
-            } else if (strength === 4) {
-                width = 80;
-                color = 'green';
-            } else if (strength === 5) {
-                width = 100;
-                color = 'green';
-            }
-
-            passwordStrengthBar.style.width = width + '%';
-            passwordStrengthBar.style.backgroundColor = color;
-        });
-    </script>
-</body>
-</html>
+        }
+        
+        return isValid;
+    }
+    
+    // Password strength indicator
+    const passwordInput = document.getElementById('password');
+    const strengthBar = document.getElementById('strengthBar');
+    const strengthText = document.getElementById('strengthText');
+    
+    passwordInput.addEventListener('input', function() {
+        const password = this.value;
+        const strength = calculatePasswordStrength(password);
+        
+        strengthBar.style.width = strength.percentage + '%';
+        strengthBar.className = `strength-bar ${strength.colorClass}`;
+        strengthText.textContent = strength.text;
+        strengthText.className = `strength-text ${strength.textClass}`;
+    });
+    
+    function calculatePasswordStrength(password) {
+        let score = 0;
+        let feedback = [];
+        
+        if (password.length >= 8) score += 20;
+        else feedback.push('8+ characters');
+        
+        if (/[a-z]/.test(password)) score += 20;
+        else feedback.push('lowercase');
+        
+        if (/[A-Z]/.test(password)) score += 20;
+        else feedback.push('uppercase');
+        
+        if (/[0-9]/.test(password)) score += 20;
+        else feedback.push('numbers');
+        
+        if (/[^a-zA-Z0-9]/.test(password)) score += 20;
+        else feedback.push('symbols');
+        
+        if (score < 40) {
+            return {
+                percentage: score,
+                colorClass: 'bg-danger',
+                textClass: 'text-danger',
+                text: '😟 Weak - Add ' + feedback.slice(0, 2).join(', ')
+            };
+        } else if (score < 60) {
+            return {
+                percentage: score,
+                colorClass: 'bg-warning',
+                textClass: 'text-warning',
+                text: '😐 Fair - Add ' + feedback.slice(0, 1).join(', ')
+            };
+        } else if (score < 80) {
+            return {
+                percentage: score,
+                colorClass: 'bg-info',
+                textClass: 'text-info',
+                text: '😊 Good - Almost there!'
+            };
+        } else {
+            return {
+                percentage: score,
+                colorClass: 'bg-success',
+                textClass: 'text-success',
+                text: '🎉 Excellent - Your password is strong!'
+            };
+        }
+    }
+});
+</script>
+{% endblock %}
