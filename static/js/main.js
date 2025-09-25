@@ -274,23 +274,7 @@ function removeFieldError(field) {
 }
 
 function showFormError(message) {
-    // Create a beautiful toast notification
-    const toast = document.createElement('div');
-    toast.className = 'toast-notification error';
-    toast.innerHTML = `
-        <i class="fas fa-exclamation-triangle me-2"></i>
-        ${message}
-        <button type="button" class="btn-close ms-auto" onclick="this.parentElement.remove()"></button>
-    `;
-    
-    document.body.appendChild(toast);
-    
-    // Auto remove after 5 seconds
-    setTimeout(() => {
-        if (toast.parentNode) {
-            toast.remove();
-        }
-    }, 5000);
+    showToast(message, 'error', 5000);
 }
 
 // ========================================
@@ -529,7 +513,6 @@ function initializeBusResults() {
 // ========================================
 // 🍞 Toast Notifications
 // ========================================
-
 function showToast(message, type = 'info', duration = 5000) {
     const toast = document.createElement('div');
     toast.className = `toast-notification ${type}`;
@@ -543,37 +526,40 @@ function showToast(message, type = 'info', duration = 5000) {
     };
     
     toast.innerHTML = `
-        <i class="fas ${icons[type] || icons.info} me-2"></i>
-        ${message}
-        <button type="button" class="btn-close ms-auto" onclick="this.parentElement.remove()">
-            <i class="fas fa-times"></i>
-        </button>
+    <i class="fas ${icons[type] || icons.info} me-2"></i>
+    <span class="toast-message flex-grow-1">${message}</span>
+    <button type="button" class="toast-close-btn ms-auto">
+        <i class="fas fa-times"></i>
+    </button>
     `;
-    
-    // Add to container or create one
+
     let toastContainer = document.querySelector('.toast-container');
     if (!toastContainer) {
         toastContainer = document.createElement('div');
         toastContainer.className = 'toast-container';
         document.body.appendChild(toastContainer);
     }
-    
+
     toastContainer.appendChild(toast);
-    
+
     // Animate in
-    setTimeout(() => {
-        toast.classList.add('show');
-    }, 100);
-    
-    // Auto remove
-    setTimeout(() => {
+    setTimeout(() => toast.classList.add('show'), 100);
+
+    const closeToast = () => {
+        console.log("❌ Close button clicked"); // Debug
         toast.classList.remove('show');
         setTimeout(() => {
-            if (toast.parentNode) {
-                toast.remove();
-            }
+            if (toast.parentNode) toast.remove();
         }, 300);
-    }, duration);
+    };
+
+    // Attach listener directly
+    const closeBtn = toast.querySelector('.toast-close-btn');
+    closeBtn.style.pointerEvents = 'auto'; // ensure clickable
+    closeBtn.addEventListener('click', closeToast);
+
+    // Auto close
+    setTimeout(closeToast, duration);
 }
 
 // ========================================
@@ -646,6 +632,18 @@ style.textContent = `
         opacity: 0;
         transform: translateX(100%);
         transition: all 0.3s ease-out;
+        justify-content: space-between;
+        gap: 0.5rem;
+        position: relative;
+        padding-right: 3.2rem;
+    }
+
+    .toast-message {
+        flex-grow: 1; 
+        display: inline-block;
+        max-width: calc(100% - 3.5rem);
+        overflow-wrap: anywhere;
+        pointer-events: auto; 
     }
     
     .toast-notification.show {
@@ -661,15 +659,23 @@ style.textContent = `
         background: linear-gradient(135deg, #fff, #fce4ec);
     }
     
-    .btn-close {
+    .toast-close-btn {
         background: none;
         border: none;
-        font-size: 0.8rem;
-        opacity: 0.7;
+        font-size: 0.9rem;
         cursor: pointer;
+        color: inherit;
+        margin-left: auto;
+        flex-shrink: 0;
+        pointer-events: auto;
+        z-index: 9999; 
     }
     
-    .btn-close:hover { opacity: 1; }
+    .toast-close-btn:hover { opacity: 1; }
+
+    .toast-close-btn i {
+        pointer-events: none;
+    }
     
     .bus-row.selected {
         background-color: #fff9e6 !important;
