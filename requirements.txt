@@ -4,7 +4,4 @@ Flask-Login
 requests
 Werkzeug
 python-dotenv
-# DB drivers (uncomment if needed)
-psycopg2-binary  # PostgreSQL
-PyMySQL         # MySQL (pure Python)
-mysqlclient      # MySQL (native)
+psycopg2-binary
