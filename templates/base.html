@@ -3,65 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Happy Trails - Bus Management System{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>{% block title %}Happy Trails - Crafted with Love by Kavlin{% endblock %}</title>
+    
+    <!-- Enhanced Meta Tags -->
+    <meta name="description" content="Happy Trails - Beautiful bus booking system designed with love by Kavlin">
+    <meta name="keywords" content="bus booking, travel, Kavlin, poetry, beautiful design">
+    <meta name="author" content="Kavlin - Developer & Poet">
+    
+    <!-- Preload Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+    
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <!-- Beautiful Navigation -->
+    <nav class="navbar navbar-expand-lg pb-40">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
                 <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Happy Trails Logo" class="logo me-2">
-                <span>Happy Trails</span>
+                <span class="script-font">Happy Trails</span>
             </a>
+            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == url_for('index') %}active{% endif %}" href="{{ url_for('index') }}">Home</a>
+                        <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}">
+                            <i class="fas fa-home me-1"></i> Home
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('index') }}#schedules">Schedules</a>
+                        <a class="nav-link" href="{{ url_for('index') }}#features">
+                            <i class="fas fa-star me-1"></i> Features
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('index') }}#tracking">Tracking</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('index') }}#booking">Booking</a>
+                        <a class="nav-link" href="{{ url_for('index') }}#kavlin-tribute">
+                            <i class="fas fa-heart me-1"></i> About Kavlin
+                        </a>
                     </li>
                     {% if current_user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == url_for('my_bookings') %}active{% endif %}" href="{{ url_for('my_bookings') }}">My Bookings</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('my_bookings') }}">
+                                <i class="fas fa-ticket-alt me-1"></i> My Bookings
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('logout') }}">
+                                <i class="fas fa-sign-out-alt me-1"></i> Logout
+                            </a>
+                        </li>
                     {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == url_for('login') %}active{% endif %}" href="{{ url_for('login') }}">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-warning text-dark px-3 ms-lg-2 {% if request.path == url_for('signup') %}active{% endif %}" href="{{ url_for('signup') }}">Sign Up</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('login') }}">
+                                <i class="fas fa-sign-in-alt me-1"></i> Login
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-primary ms-2" href="{{ url_for('signup') }}">
+                                <i class="fas fa-user-plus me-1"></i> Sign Up
+                            </a>
+                        </li>
                     {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Flash Messages -->
+    <!-- Flash Messages with Beautiful Styling -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            <div class="container mt-3">
+            <div class="container mt-3" style="padding-top: 80px;">
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    <div class="alert alert-{{ 'success' if category == 'success' else 'error' }} alert-dismissible fade show" role="alert">
+                        <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-triangle' }} me-2"></i>
                         {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 {% endfor %}
             </div>
@@ -69,69 +100,87 @@
     {% endwith %}
 
     <!-- Main Content -->
-    {% block content %}{% endblock %}
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 
-    <!-- Footer -->
-    <footer class="footer bg-dark text-white py-5">
+    <!-- Beautiful Footer with Kavlin Tribute -->
+    <footer class="footer">
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4">
                     <div class="footer-about">
-                        <a href="{{ url_for('index') }}" class="footer-logo d-flex align-items-center mb-3">
-                            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Happy Trails Logo" class="logo me-2">
-                            <span class="text-warning fs-4">Happy Trails</span>
-                        </a>
-                        <p>Your reliable partner for bus tracking, scheduling, and booking services. We make your journey comfortable and hassle-free.</p>
+                        <h5 class="footer-logo script-font">Happy Trails</h5>
+                        <p class="mb-3">A beautiful travel companion crafted with love, poetry, and code.</p>
+                        <div class="kavlin-credit">
+                            <p class="script-font" style="color: var(--primary-yellow); font-size: 1.1rem;">
+                                "Where code meets poetry, beauty is born" 
+                                <br>
+                                <small>- Designed with 💖 by Kavlin</small>
+                            </p>
+                        </div>
                     </div>
                 </div>
+                
                 <div class="col-lg-2 col-md-4">
-                    <h5 class="text-warning">Quick Links</h5>
+                    <h6 class="text-warning mb-3">Quick Links</h6>
                     <ul class="list-unstyled footer-links">
                         <li><a href="{{ url_for('index') }}">Home</a></li>
-                        <li><a href="{{ url_for('index') }}#schedules">Schedules</a></li>
-                        <li><a href="{{ url_for('index') }}#tracking">Tracking</a></li>
-                        <li><a href="{{ url_for('index') }}#booking">Booking</a></li>
+                        <li><a href="{{ url_for('index') }}#features">Features</a></li>
+                        <li><a href="{{ url_for('index') }}#kavlin-tribute">About Kavlin</a></li>
                     </ul>
                 </div>
+                
                 <div class="col-lg-2 col-md-4">
-                    <h5 class="text-warning">Services</h5>
+                    <h6 class="text-warning mb-3">Services</h6>
                     <ul class="list-unstyled footer-links">
-                        <li><a href="#">Bus Rental</a></li>
-                        <li><a href="#">Tour Packages</a></li>
-                        <li><a href="#">School Bus</a></li>
-                        <li><a href="#">Corporate Travel</a></li>
+                        <li><a href="#">Bus Booking</a></li>
+                        <li><a href="#">Live Tracking</a></li>
+                        <li><a href="#">Travel Planning</a></li>
+                        <li><a href="#">Poetry Corner</a></li>
                     </ul>
                 </div>
+                
                 <div class="col-lg-4 col-md-4">
-                    <h5 class="text-warning">Contact Us</h5>
-                    <ul class="list-unstyled footer-contact">
-                        <li><i class="fas fa-map-marker-alt me-2"></i> 123 Bus Terminal, Solan, HP</li>
-                        <li><i class="fas fa-phone me-2"></i> +91 98765 43210</li>
-                        <li><i class="fas fa-envelope me-2"></i> info@happytrails.com</li>
-                    </ul>
-                    <div class="social-links mt-3">
-                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <h6 class="text-warning mb-3">Connect With Us</h6>
+                    <p class="mb-3">
+                        <i class="fas fa-envelope me-2"></i> hello@happytrails.com<br>
+                        <i class="fas fa-phone me-2"></i> +91 98765 43210<br>
+                        <i class="fas fa-map-marker-alt me-2"></i> Solan, Himachal Pradesh
+                    </p>
+                    
+                    <div class="social-links">
+                        <a href="https://linkedin.com/in/kavlin-kaur" class="social-link" title="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://github.com/Kavlin-Kaur" class="social-link" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://kavlin-kaur.github.io/conveys/" class="social-link" title="Poetry Blog">
+                            <i class="fas fa-feather-alt"></i>
+                        </a>
                     </div>
                 </div>
             </div>
-            <hr class="mt-4 mb-3">
-            <div class="row">
+            
+            <hr class="my-4" style="border-color: var(--primary-yellow);">
+            
+            <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="mb-md-0">© 2025 Happy Trails. All Rights Reserved.</p>
+                    <p class="mb-0">&copy; 2025 Happy Trails. Crafted with love by Kavlin 💖</p>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <a href="#" class="text-white me-3">Privacy Policy</a>
-                    <a href="#" class="text-white">Terms of Service</a>
+                    <small class="script-font text-warning">
+                        "Code is poetry, and poetry is life" ✨
+                    </small>
                 </div>
             </div>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>
