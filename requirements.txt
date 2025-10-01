@@ -1,0 +1,10 @@
+Flask
+Flask-SQLAlchemy
+Flask-Login
+requests
+Werkzeug
+python-dotenv
+# DB drivers (uncomment if needed)
+psycopg2-binary  # PostgreSQL
+PyMySQL         # MySQL (pure Python)
+mysqlclient      # MySQL (native)
