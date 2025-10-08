@@ -34,7 +34,7 @@ Travel isn’t just about getting from one point to another—it's about the ant
 ## 🚀 Live Demo
 
 Experience Happy-Trails live here: 
-👉 [![**Happy-Trails**](https://img.shields.io/badge/View-Live%20Demo-magenta?style=for-the-badge)](https://Happy-Trails.vercel.app/)
+👉 [![**Happy-Trails**](https://img.shields.io/badge/View-Live%20Demo-magenta?style=for-the-badge)](https://HappyTrails.vercel.app/)
 
  <div align="center">
  <p>
