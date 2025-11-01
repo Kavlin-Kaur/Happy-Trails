@@ -1030,4 +1030,183 @@ styleSheet.textContent = `
 `;
 document.head.appendChild(styleSheet);
 
+// ============================================
+// 📝 PHASE 5: POETRY BLOG FUNCTIONS
+// ============================================
+
+function initializePhase5() {
+    setupBlogCategoryFilters();
+    setupBlogSearch();
+    console.log('📝 Phase 5: Poetry Blog initialized');
+}
+
+function setupBlogCategoryFilters() {
+    const categoryButtons = document.querySelectorAll('.blog-category-btn');
+    const blogCards = document.querySelectorAll('.blog-post-card');
+
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const category = this.getAttribute('data-category');
+            
+            categoryButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+
+            blogCards.forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
+                
+                if (category === 'all' || cardCategory === category) {
+                    card.style.display = 'block';
+                    card.style.animation = 'tabFadeIn 0.6s ease-out';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            showPoetryToast(`Filtering: ${this.textContent.trim()} ✨`);
+        });
+    });
+}
+
+function setupBlogSearch() {
+    const searchForm = document.getElementById('blogSearchForm');
+    if (!searchForm) return;
+    
+    searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const searchTerm = this.querySelector('.blog-search-input').value.trim();
+        
+        if (searchTerm) {
+            searchBlogPosts(searchTerm);
+        } else {
+            showPoetryToast('Please enter a search term 🔍', 3000);
+        }
+    });
+}
+
+function searchBlogPosts(searchTerm) {
+    showPoetryToast(`Searching for: "${searchTerm}"... 🔍`);
+    
+    const blogCards = document.querySelectorAll('.blog-post-card');
+    let foundCount = 0;
+    
+    blogCards.forEach(card => {
+        const title = card.querySelector('.blog-post-title').textContent.toLowerCase();
+        const excerpt = card.querySelector('.blog-post-excerpt').textContent.toLowerCase();
+        const search = searchTerm.toLowerCase();
+        
+        if (title.includes(search) || excerpt.includes(search)) {
+            card.style.display = 'block';
+            card.style.animation = 'tabFadeIn 0.6s ease-out';
+            foundCount++;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    
+    setTimeout(() => {
+        if (foundCount > 0) {
+            showPoetryToast(`Found ${foundCount} post${foundCount !== 1 ? 's' : ''} 📖`, 3000);
+        } else {
+            showPoetryToast('No posts found. Try a different search term 🤔', 3000);
+        }
+    }, 500);
+}
+
+function readBlogPost(postId) {
+    showPoetryToast('Loading full blog post... 📖');
+    
+    setTimeout(() => {
+        // In production, navigate to full blog post page
+        showPoetryToast('Full blog post feature coming soon! 🎉', 3000);
+    }, 1000);
+}
+
+function subscribeToBlog(event) {
+    event.preventDefault();
+    
+    const emailInput = event.target.querySelector('.blog-newsletter-input');
+    const email = emailInput.value.trim();
+    
+    if (!email) {
+        showPoetryToast('Please enter your email address 📧', 3000);
+        return;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        showPoetryToast('Please enter a valid email address ✉️', 3000);
+        return;
+    }
+    
+    const submitBtn = event.target.querySelector('.blog-newsletter-btn');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Subscribing...';
+    submitBtn.disabled = true;
+    
+    setTimeout(() => {
+        showPoetryToast('🎉 Subscribed to Kavlin\'s Blog! Welcome to the family 💌', 5000);
+        emailInput.value = '';
+        submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Subscribed!';
+        submitBtn.style.background = '#28a745';
+        
+        setTimeout(() => {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            submitBtn.style.background = '';
+        }, 3000);
+    }, 2000);
+}
+
+function shareBlogPost(title, excerpt) {
+    const text = `${title}\n\n${excerpt}\n\nFrom Kavlin's Poetry Blog at Happy Trails 💖`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: text,
+            url: window.location.href
+        }).then(() => {
+            showPoetryToast('Blog post shared! 🎉');
+        }).catch(() => {
+            navigator.clipboard.writeText(text + '\n' + window.location.href).then(() => {
+                showPoetryToast('Blog link copied! 📋');
+            });
+        });
+    } else {
+        navigator.clipboard.writeText(text + '\n' + window.location.href).then(() => {
+            showPoetryToast('Blog link copied! 📋');
+        });
+    }
+}
+
+function viewArchiveMonth(month, year) {
+    showPoetryToast(`Loading posts from ${month} ${year}... 📅`);
+    
+    setTimeout(() => {
+        showPoetryToast('Archive feature coming soon! 🗂️', 3000);
+    }, 1000);
+}
+
+function loadMoreBlogPosts() {
+    showPoetryToast('Loading more blog posts... ✨');
+    
+    setTimeout(() => {
+        showPoetryToast('More blog posts coming soon! Stay tuned 📝', 3000);
+    }, 1500);
+}
+
+// Update the main initialization to include Phase 5
+function initializeAllPhases() {
+    initializeTabs();
+    initializePhase1();
+    initializePhase2();
+    initializePhase3();
+    initializePhase4();
+    initializePhase5(); // Added Phase 5
+    initializeBackToTop();
+    console.log('💖 All Poetry Corner phases initialized successfully!');
+}
+
+console.log('📝 Phase 5: Poetry Blog loaded successfully!');
+
 console.log('💖 Poetry Corner by Kavlin - All phases loaded successfully!');

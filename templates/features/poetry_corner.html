@@ -56,6 +56,10 @@
                         <i class="fas fa-route"></i>
                         <span class="tab-btn-label">Verses Along the Way</span>
                     </button>
+                    <button class="tab-btn" data-tab="tab-blog">
+                        <i class="fas fa-blog"></i>
+                        <span class="tab-btn-label">Kavlin's Blog</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -773,6 +777,219 @@
                     <button class="load-more-btn" onclick="loadMoreRoutePoems()">
                         <i class="fas fa-plus-circle me-2"></i>
                         Discover More Route Poetry
+                    </button>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         📝 TAB 5: KAVLIN'S POETRY BLOG (Phase 5)
+         ============================================ -->
+    <div id="tab-blog" class="tab-content">
+        <section class="poetry-blog-section">
+            <div class="container">
+                
+                <!-- Section Header -->
+                <div class="section-header">
+                    <h2 class="section-title">Kavlin's Poetry Blog</h2>
+                    <p class="section-description">
+                        Journey through my thoughts, stories, and inspirations. From travel tales to writing process,
+                        explore the heart behind Happy Trails' poetry.
+                    </p>
+                </div>
+
+                <!-- Blog Search -->
+                <div class="blog-search-bar">
+                    <form class="blog-search-form" id="blogSearchForm">
+                        <input type="text" 
+                               class="blog-search-input" 
+                               placeholder="Search blog posts..."
+                               name="search">
+                        <button type="submit" class="blog-search-btn">
+                            <i class="fas fa-search me-2"></i>Search
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Blog Categories -->
+                <div class="blog-categories">
+                    <button class="blog-category-btn active" data-category="all">
+                        <i class="fas fa-th-large"></i>All Posts
+                    </button>
+                    <button class="blog-category-btn" data-category="travel-tales">
+                        <i class="fas fa-mountain"></i>Travel Tales
+                    </button>
+                    <button class="blog-category-btn" data-category="poetry-process">
+                        <i class="fas fa-pen-nib"></i>Poetry Process
+                    </button>
+                    <button class="blog-category-btn" data-category="route-inspiration">
+                        <i class="fas fa-lightbulb"></i>Route Inspirations
+                    </button>
+                    <button class="blog-category-btn" data-category="guest-posts">
+                        <i class="fas fa-users"></i>Guest Posts
+                    </button>
+                </div>
+
+                <!-- Featured Post -->
+                <div class="featured-post-section">
+                    <div class="featured-post-card">
+                        <img src="{{ blog_posts[0].image }}" alt="{{ blog_posts[0].title }}" class="featured-post-image">
+                        <div class="featured-post-content">
+                            <span class="featured-badge">
+                                <i class="fas fa-star me-2"></i>Featured Post
+                            </span>
+                            <h3 class="featured-post-title">{{ blog_posts[0].title }}</h3>
+                            <div class="featured-post-meta">
+                                <div class="meta-item">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span>{{ blog_posts[0].author }}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>{{ blog_posts[0].date }}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>{{ blog_posts[0].read_time }} min read</span>
+                                </div>
+                            </div>
+                            <p class="featured-post-excerpt">{{ blog_posts[0].excerpt }}</p>
+                            <div class="featured-post-tags">
+                                {% for tag in blog_posts[0].tags %}
+                                <span class="tag-badge">{{ tag }}</span>
+                                {% endfor %}
+                            </div>
+                            <button class="featured-post-btn" onclick="readBlogPost('{{ blog_posts[0].id }}')">
+                                Read Full Post
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog Posts Grid -->
+                <div class="blog-posts-grid">
+                    {% for post in blog_posts[1:] %}
+                    <div class="blog-post-card" data-category="{{ post.category }}">
+                        <div class="blog-post-image-wrapper">
+                            <img src="{{ post.image }}" alt="{{ post.title }}" class="blog-post-image">
+                            <span class="blog-post-category">{{ post.category_label }}</span>
+                        </div>
+                        <div class="blog-post-content">
+                            <h4 class="blog-post-title">{{ post.title }}</h4>
+                            <div class="blog-post-meta">
+                                <div class="blog-post-author">
+                                    <img src="{{ post.author_avatar }}" alt="{{ post.author }}" class="author-avatar-small">
+                                    <span>{{ post.author }}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>{{ post.read_time }} min</span>
+                                </div>
+                            </div>
+                            <p class="blog-post-excerpt">{{ post.excerpt }}</p>
+                            <div class="blog-post-footer">
+                                <div class="blog-post-stats">
+                                    <span class="stat">
+                                        <i class="fas fa-heart"></i> {{ post.likes }}
+                                    </span>
+                                    <span class="stat">
+                                        <i class="fas fa-comment"></i> {{ post.comments }}
+                                    </span>
+                                </div>
+                                <button class="read-more-btn" onclick="readBlogPost('{{ post.id }}')">
+                                    Read More <i class="fas fa-arrow-right ms-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Author Spotlight -->
+                <div class="author-spotlight-section">
+                    <div class="author-spotlight-content">
+                        <img src="../../static/images/Kavlin Bitmoji.png" alt="Kavlin" class="author-avatar-large">
+                        <div class="author-bio">
+                            <h3>About Kavlin</h3>
+                            <p class="author-title">Founder, Poet & Chief Dreamer at Happy Trails</p>
+                            <p class="author-description">
+                                I believe every journey deserves a verse, every mile holds a story. Through Happy Trails,
+                                I've combined my love for travel and poetry to create experiences that touch the soul.
+                                Join me as I share the stories behind the routes, the inspiration behind the verses,
+                                and the magic that happens when we slow down to appreciate the journey.
+                            </p>
+                            <div class="author-stats">
+                                <div class="author-stat-item">
+                                    <span class="author-stat-number">{{ blog_posts|length }}+</span>
+                                    <span class="author-stat-label">Blog Posts</span>
+                                </div>
+                                <div class="author-stat-item">
+                                    <span class="author-stat-number">50+</span>
+                                    <span class="author-stat-label">Poems Written</span>
+                                </div>
+                                <div class="author-stat-item">
+                                    <span class="author-stat-number">10K+</span>
+                                    <span class="author-stat-label">Readers</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog Newsletter -->
+                <div class="blog-newsletter-section">
+                    <h4 class="blog-newsletter-title">
+                        <i class="fas fa-envelope-open-text me-2"></i>
+                        Never Miss a Post
+                    </h4>
+                    <p class="blog-newsletter-description">
+                        Get Kavlin's latest blog posts, poetry, and travel stories delivered to your inbox every week.
+                    </p>
+                    <form class="blog-newsletter-form" onsubmit="subscribeToBlog(event)">
+                        <input type="email" 
+                               class="blog-newsletter-input" 
+                               placeholder="your@email.com" 
+                               required>
+                        <button type="submit" class="blog-newsletter-btn">
+                            <i class="fas fa-paper-plane me-2"></i>Subscribe
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Blog Archive -->
+                <div class="blog-archive-section">
+                    <div class="section-header">
+                        <h3 class="section-title">Blog Archive</h3>
+                        <p class="section-description">Explore posts by month</p>
+                    </div>
+                    <div class="archive-grid">
+                        <div class="archive-month-card" onclick="viewArchiveMonth('October', 2025)">
+                            <div class="archive-month">October 2025</div>
+                            <div class="archive-count">5 posts</div>
+                        </div>
+                        <div class="archive-month-card" onclick="viewArchiveMonth('September', 2025)">
+                            <div class="archive-month">September 2025</div>
+                            <div class="archive-count">8 posts</div>
+                        </div>
+                        <div class="archive-month-card" onclick="viewArchiveMonth('August', 2025)">
+                            <div class="archive-month">August 2025</div>
+                            <div class="archive-count">6 posts</div>
+                        </div>
+                        <div class="archive-month-card" onclick="viewArchiveMonth('July', 2025)">
+                            <div class="archive-month">July 2025</div>
+                            <div class="archive-count">7 posts</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Load More -->
+                <div class="load-more-wrapper">
+                    <button class="load-more-btn" onclick="loadMoreBlogPosts()">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        Load More Blog Posts
                     </button>
                 </div>
 
