@@ -1054,7 +1054,704 @@
 }
 
 /* ============================================
-   🎨 END OF PHASE 2 STYLES
+   ✍️ PHASE 3: USER-SUBMITTED POEMS STYLES
+   Independent from Phases 1 & 2
+   ============================================ */
+
+.user-poems-section {
+    padding: 80px 0;
+    position: relative;
+    z-index: 2;
+}
+
+/* === GUEST CTA === */
+.guest-submission-cta {
+    background: linear-gradient(135deg, #FFFFFF, #FFF9E6);
+    border-radius: 30px;
+    padding: 60px 40px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    margin: 40px 0;
+}
+
+.guest-icon {
+    font-size: 4rem;
+    color: #FFD700;
+    margin-bottom: 25px;
+    animation: float 3s ease-in-out infinite;
+}
+
+.guest-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: #F57F17;
+    margin-bottom: 15px;
+}
+
+.guest-message {
+    font-size: 1.2rem;
+    color: #6C757D;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    line-height: 1.7;
+}
+
+.guest-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.btn-guest-action {
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn-guest-action.primary {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+}
+
+.btn-guest-action.secondary {
+    background: white;
+    color: #F57F17;
+    border: 2px solid #FFD700;
+}
+
+.btn-guest-action:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(255, 215, 0, 0.3);
+}
+
+/* === SUBMISSION FORM === */
+.poem-submission-wrapper {
+    margin: 40px 0 60px;
+}
+
+.submission-card {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 30px;
+    padding: 40px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(255, 215, 0, 0.2);
+}
+
+.submission-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.submission-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: #F57F17;
+    margin-bottom: 10px;
+}
+
+.submission-subtitle {
+    font-size: 1.1rem;
+    color: #6C757D;
+    font-style: italic;
+}
+
+/* Form Steps */
+.form-steps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+    padding: 30px 0;
+    position: relative;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    z-index: 2;
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #E9ECEF;
+    color: #6C757D;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.step.active .step-number {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+}
+
+.step-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #6C757D;
+    transition: color 0.3s ease;
+}
+
+.step.active .step-label {
+    color: #F57F17;
+}
+
+.step-connector {
+    width: 100px;
+    height: 2px;
+    background: #E9ECEF;
+    margin: 0 20px;
+    position: relative;
+    top: -25px;
+}
+
+/* Form Steps Content */
+.form-step {
+    display: none;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.form-step.active {
+    display: block;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: #2C3E50;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.required {
+    color: #FF6347;
+}
+
+.form-control-custom {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid #E9ECEF;
+    border-radius: 15px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.form-control-custom:focus {
+    border-color: #FFD700;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.1);
+}
+
+.poem-textarea {
+    font-family: 'Georgia', serif;
+    line-height: 1.8;
+    resize: vertical;
+    min-height: 200px;
+}
+
+.form-hint {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: #6C757D;
+    font-style: italic;
+}
+
+.char-counter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #6C757D;
+}
+
+.char-status {
+    font-weight: 600;
+}
+
+.char-status.valid {
+    color: #28a745;
+}
+
+.char-status.invalid {
+    color: #dc3545;
+}
+
+/* Poetry Tips */
+.poetry-tips {
+    background: rgba(255, 249, 230, 0.7);
+    border-left: 4px solid #FFD700;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 25px 0;
+}
+
+.tips-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.5rem;
+    color: #F57F17;
+    margin-bottom: 15px;
+}
+
+.tips-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tips-list li {
+    padding: 8px 0;
+    font-size: 0.95rem;
+    color: #2C3E50;
+    line-height: 1.6;
+}
+
+/* Preview Card */
+.preview-card {
+    background: linear-gradient(135deg, #FFFFFF, #FFF9E6);
+    border-radius: 20px;
+    padding: 30px;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    margin-bottom: 25px;
+}
+
+.preview-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.8rem;
+    color: #F57F17;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.preview-content {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.preview-poem-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2C3E50;
+    margin-bottom: 8px;
+}
+
+.preview-poem-author {
+    color: #F57F17;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.preview-poem-meta {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.preview-theme,
+.preview-location {
+    display: inline-block;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.preview-theme {
+    background: rgba(255, 215, 0, 0.2);
+    color: #F57F17;
+}
+
+.preview-location {
+    background: rgba(52, 152, 219, 0.1);
+    color: #3498db;
+}
+
+.preview-poem-text {
+    font-family: 'Georgia', serif;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #2C3E50;
+    font-style: italic;
+    white-space: pre-line;
+    padding: 20px;
+    background: rgba(255, 249, 230, 0.3);
+    border-radius: 10px;
+    border-left: 3px solid #FFD700;
+}
+
+/* Submission Agreement */
+.submission-agreement {
+    margin: 25px 0;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    margin-top: 4px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.checkbox-text {
+    font-size: 0.95rem;
+    color: #6C757D;
+    line-height: 1.6;
+}
+
+/* Form Navigation */
+.form-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-form-nav,
+.btn-form-submit {
+    padding: 15px 35px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+}
+
+.btn-form-nav.prev {
+    background: white;
+    color: #6C757D;
+    border: 2px solid #E9ECEF;
+}
+
+.btn-form-nav.prev:hover {
+    border-color: #FFD700;
+    color: #F57F17;
+}
+
+.btn-form-nav.next {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.btn-form-nav.next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+}
+
+.btn-form-submit {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+    flex: 2;
+}
+
+.btn-form-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+}
+
+/* === COMMUNITY GALLERY === */
+.community-gallery-section {
+    margin-top: 80px;
+}
+
+.gallery-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3rem;
+    color: #F57F17;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.gallery-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #6C757D;
+    margin-bottom: 50px;
+}
+
+/* Featured Poems Banner */
+.featured-poems-banner {
+    background: linear-gradient(135deg, #FFF9E6, #FFE4B5);
+    border-radius: 25px;
+    padding: 40px;
+    margin-bottom: 50px;
+    border: 3px solid #FFD700;
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+}
+
+.featured-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: #F57F17;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.featured-poems-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+/* Community Poems Grid */
+.community-poems-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+/* Community Poem Card */
+.community-poem-card {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+}
+
+.community-poem-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+    border-color: rgba(255, 215, 0, 0.5);
+}
+
+.community-poem-card.featured {
+    border-color: #FFD700;
+    background: linear-gradient(135deg, #FFFFFF, #FFFEF7);
+}
+
+.featured-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+    animation: heartbeat 2s ease-in-out infinite;
+}
+
+/* Poem Card Header */
+.poem-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.author-info {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.author-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 3px solid #FFD700;
+    object-fit: cover;
+}
+
+.author-details {
+    flex: 1;
+}
+
+.author-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #2C3E50;
+    margin: 0 0 5px 0;
+}
+
+.poem-meta {
+    font-size: 0.85rem;
+    color: #6C757D;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.meta-dot {
+    color: #E9ECEF;
+}
+
+/* Poem Card Body */
+.poem-card-body {
+    margin-bottom: 20px;
+}
+
+.community-poem-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2C3E50;
+    margin-bottom: 12px;
+}
+
+.theme-badge {
+    display: inline-block;
+    background: rgba(255, 215, 0, 0.15);
+    color: #F57F17;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.community-poem-text {
+    font-family: 'Georgia', serif;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #2C3E50;
+    font-style: italic;
+    white-space: pre-line;
+    padding: 15px;
+    background: rgba(255, 249, 230, 0.3);
+    border-radius: 10px;
+    border-left: 3px solid #FFD700;
+    margin: 0;
+}
+
+/* Poem Card Footer */
+.poem-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.poem-action-btn {
+    background: transparent;
+    border: 2px solid #FFD700;
+    color: #F57F17;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.poem-action-btn:hover {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.poem-action-btn.liked {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+}
+
+.poem-action-btn.liked i {
+    animation: heartbeat 0.6s ease-in-out;
+}
+
+.like-count {
+    font-weight: 700;
+}
+
+.poem-views {
+    color: #6C757D;
+    font-size: 0.9rem;
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+    .submission-card {
+        padding: 25px;
+    }
+    
+    .submission-title {
+        font-size: 2rem;
+    }
+    
+    .form-steps {
+        flex-wrap: wrap;
+    }
+    
+    .step-connector {
+        display: none;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-navigation {
+        flex-direction: column;
+    }
+    
+    .featured-poems-grid,
+    .community-poems-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .guest-actions {
+        flex-direction: column;
+    }
+    
+    .btn-guest-action {
+        width: 100%;
+    }
+}
+
+/* ============================================
+   🎨 END OF PHASE 3 STYLES
    ============================================ */
 
 </style>
@@ -1346,7 +2043,325 @@
 
         </div>
     </section>
-    <!-- PLACEHOLDER for User-Submitted Poems (Phase 3) -->
+
+    <!-- Section Divider -->
+    <hr class="section-divider">
+
+    <!-- ============================================
+         ✍️ PHASE 3: USER-SUBMITTED POEMS SECTION
+         Modular Block - Independent from Phases 1 & 2
+         ============================================ -->
+    <section class="user-poems-section" id="user-poems">
+        <div class="container">
+            
+            <!-- Section Header -->
+            <div class="section-header">
+                <h2 class="section-title">Share Your Journey in Verse</h2>
+                <p class="section-description">
+                    Every traveler has a poet's heart. Share your short travel poems with the Happy Trails community
+                    and let your words inspire fellow wanderers.
+                </p>
+            </div>
+
+            <!-- Guest/Login CTA (show if not logged in) -->
+            {% if not user_is_logged_in %}
+            <div class="guest-submission-cta">
+                <div class="guest-cta-content">
+                    <div class="guest-icon">
+                        <i class="fas fa-pen-fancy"></i>
+                    </div>
+                    <h3 class="guest-title">Join Us to Share Your Poetry!</h3>
+                    <p class="guest-message">
+                        Login or create an account to submit your travel poems and become part of our creative community.
+                    </p>
+                    <div class="guest-actions">
+                        <a href="{{ url_for('login') }}?next={{ url_for('poetry_corner') }}" class="btn-guest-action primary">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </a>
+                        <a href="{{ url_for('signup') }}?next={{ url_for('poetry_corner') }}" class="btn-guest-action secondary">
+                            <i class="fas fa-user-plus me-2"></i>Sign Up
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Submission Form (show if logged in) -->
+            {% if user_is_logged_in %}
+            <div class="poem-submission-wrapper">
+                <div class="submission-card">
+                    <div class="submission-header">
+                        <h3 class="submission-title">
+                            <i class="fas fa-feather-alt me-2"></i>
+                            Submit Your Travel Poem
+                        </h3>
+                        <p class="submission-subtitle">
+                            Let your words carry the essence of your journey
+                        </p>
+                    </div>
+
+                    <form id="poemSubmissionForm" class="submission-form">
+                        <!-- Step Indicator -->
+                        <div class="form-steps">
+                            <div class="step active" data-step="1">
+                                <span class="step-number">1</span>
+                                <span class="step-label">Details</span>
+                            </div>
+                            <div class="step-connector"></div>
+                            <div class="step" data-step="2">
+                                <span class="step-number">2</span>
+                                <span class="step-label">Poem</span>
+                            </div>
+                            <div class="step-connector"></div>
+                            <div class="step" data-step="3">
+                                <span class="step-number">3</span>
+                                <span class="step-label">Review</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 1: Details -->
+                        <div class="form-step active" data-step="1">
+                            <div class="form-group">
+                                <label for="poemTitle" class="form-label">
+                                    <i class="fas fa-heading text-warning me-2"></i>
+                                    Poem Title <span class="required">*</span>
+                                </label>
+                                <input type="text" 
+                                       id="poemTitle" 
+                                       name="title"
+                                       class="form-control-custom" 
+                                       placeholder="e.g., Mountain Whispers"
+                                       maxlength="100"
+                                       required>
+                                <small class="form-hint">Give your poem a beautiful title</small>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="poemTheme" class="form-label">
+                                        <i class="fas fa-tag text-warning me-2"></i>
+                                        Theme <span class="required">*</span>
+                                    </label>
+                                    <select id="poemTheme" name="theme" class="form-control-custom" required>
+                                        <option value="" disabled selected>Choose a theme</option>
+                                        {% for theme in submission_themes %}
+                                        <option value="{{ theme }}">{{ theme }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="poemLocation" class="form-label">
+                                        <i class="fas fa-map-marker-alt text-warning me-2"></i>
+                                        Location
+                                    </label>
+                                    <input type="text" 
+                                           id="poemLocation" 
+                                           name="location"
+                                           class="form-control-custom" 
+                                           placeholder="e.g., Himachal Pradesh"
+                                           maxlength="100">
+                                </div>
+                            </div>
+
+                            <div class="form-navigation">
+                                <button type="button" class="btn-form-nav next" onclick="nextFormStep()">
+                                    Next <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Poem Content -->
+                        <div class="form-step" data-step="2">
+                            <div class="form-group">
+                                <label for="poemText" class="form-label">
+                                    <i class="fas fa-pen-nib text-warning me-2"></i>
+                                    Your Poem <span class="required">*</span>
+                                </label>
+                                <textarea id="poemText" 
+                                          name="poem_text"
+                                          class="form-control-custom poem-textarea" 
+                                          placeholder="Write your travel poem here...&#10;Keep it short and sweet (50-500 characters)&#10;&#10;Let your heart speak through words,&#10;Let memories dance on the page,&#10;Every line a step on your journey..."
+                                          rows="8"
+                                          maxlength="500"
+                                          required></textarea>
+                                <div class="char-counter">
+                                    <span id="charCount">0</span> / 500 characters
+                                    <span class="char-status" id="charStatus">Minimum 50 characters</span>
+                                </div>
+                            </div>
+
+                            <div class="poetry-tips">
+                                <h4 class="tips-title">
+                                    <i class="fas fa-lightbulb me-2"></i>
+                                    Kavlin's Poetry Tips
+                                </h4>
+                                <ul class="tips-list">
+                                    <li>🌟 Write from your heart - authenticity shines brightest</li>
+                                    <li>🎨 Paint pictures with words - engage the senses</li>
+                                    <li>🚌 Capture a moment, feeling, or revelation from your journey</li>
+                                    <li>💫 Don't worry about perfection - raw emotion is beautiful</li>
+                                </ul>
+                            </div>
+
+                            <div class="form-navigation">
+                                <button type="button" class="btn-form-nav prev" onclick="prevFormStep()">
+                                    <i class="fas fa-arrow-left me-2"></i> Back
+                                </button>
+                                <button type="button" class="btn-form-nav next" onclick="nextFormStep()">
+                                    Next <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Review & Submit -->
+                        <div class="form-step" data-step="3">
+                            <div class="preview-card">
+                                <h4 class="preview-title">Preview Your Poem</h4>
+                                <div class="preview-content" id="poemPreview">
+                                    <h5 class="preview-poem-title" id="previewTitle">Your Title</h5>
+                                    <p class="preview-poem-author">by {{ current_user.first_name }} {{ current_user.last_name }}</p>
+                                    <div class="preview-poem-meta">
+                                        <span class="preview-theme" id="previewTheme">Theme</span>
+                                        <span class="preview-location" id="previewLocation">Location</span>
+                                    </div>
+                                    <div class="preview-poem-text" id="previewText">
+                                        Your poem will appear here...
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="submission-agreement">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="agreeTerms" required>
+                                    <span class="checkbox-text">
+                                        I confirm this is my original work and I agree to share it with the Happy Trails community.
+                                        My submission may be featured and shared with attribution.
+                                    </span>
+                                </label>
+                            </div>
+
+                            <div class="form-navigation">
+                                <button type="button" class="btn-form-nav prev" onclick="prevFormStep()">
+                                    <i class="fas fa-arrow-left me-2"></i> Back
+                                </button>
+                                <button type="submit" class="btn-form-submit">
+                                    <i class="fas fa-paper-plane me-2"></i>
+                                    Submit Poem
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Community Poems Gallery -->
+            <div class="community-gallery-section">
+                <h3 class="gallery-title">
+                    <i class="fas fa-users me-2"></i>
+                    Community Poems
+                </h3>
+                <p class="gallery-subtitle">
+                    Beautiful verses from fellow travelers on the Happy Trails journey
+                </p>
+
+                <!-- Featured Poems -->
+                {% set featured_poems = community_poems | selectattr('is_featured', 'defined') | selectattr('is_featured') | list %}
+                {% if featured_poems %}
+                <div class="featured-poems-banner">
+                    <h4 class="featured-title">
+                        <i class="fas fa-star me-2"></i>
+                        Featured by Kavlin
+                    </h4>
+                    <div class="featured-poems-grid">
+                        {% for poem in featured_poems %}
+                        <div class="community-poem-card featured">
+                            <div class="poem-card-header">
+                                <div class="author-info">
+                                    <img src="{{ poem.author_avatar }}" alt="{{ poem.author }}" class="author-avatar">
+                                    <div class="author-details">
+                                        <h5 class="author-name">{{ poem.author }}</h5>
+                                        <p class="poem-meta">
+                                            <i class="fas fa-map-marker-alt me-1"></i>{{ poem.location }}
+                                            <span class="meta-dot">•</span>
+                                            <i class="fas fa-calendar me-1"></i>{{ poem.submitted_date }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="featured-badge">
+                                    <i class="fas fa-award"></i>
+                                </div>
+                            </div>
+                            <div class="poem-card-body">
+                                <h4 class="community-poem-title">{{ poem.title }}</h4>
+                                <span class="theme-badge">{{ poem.theme }}</span>
+                                <p class="community-poem-text">{{ poem.poem_text }}</p>
+                            </div>
+                            <div class="poem-card-footer">
+                                <button class="poem-action-btn like-btn" data-poem-id="{{ poem.id }}" onclick="likePoem(this)">
+                                    <i class="far fa-heart"></i>
+                                    <span class="like-count">{{ poem.likes }}</span>
+                                </button>
+                                <span class="poem-views">
+                                    <i class="fas fa-eye me-1"></i>{{ poem.views }} views
+                                </span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- All Community Poems -->
+                <div class="community-poems-grid">
+                    {% for poem in community_poems %}
+                    {% if not poem.is_featured %}
+                    <div class="community-poem-card">
+                        <div class="poem-card-header">
+                            <div class="author-info">
+                                <img src="{{ poem.author_avatar }}" alt="{{ poem.author }}" class="author-avatar">
+                                <div class="author-details">
+                                    <h5 class="author-name">{{ poem.author }}</h5>
+                                    <p class="poem-meta">
+                                        <i class="fas fa-map-marker-alt me-1"></i>{{ poem.location }}
+                                        <span class="meta-dot">•</span>
+                                        <i class="fas fa-calendar me-1"></i>{{ poem.submitted_date }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="poem-card-body">
+                            <h4 class="community-poem-title">{{ poem.title }}</h4>
+                            <span class="theme-badge">{{ poem.theme }}</span>
+                            <p class="community-poem-text">{{ poem.poem_text }}</p>
+                        </div>
+                        <div class="poem-card-footer">
+                            <button class="poem-action-btn like-btn" data-poem-id="{{ poem.id }}" onclick="likePoem(this)">
+                                <i class="far fa-heart"></i>
+                                <span class="like-count">{{ poem.likes }}</span>
+                            </button>
+                            <span class="poem-views">
+                                <i class="fas fa-eye me-1"></i>{{ poem.views }} views
+                            </span>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+
+                <!-- Load More -->
+                <div class="load-more-wrapper">
+                    <button class="load-more-btn" onclick="loadMoreCommunityPoems()">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        Load More Community Poems
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
     <!-- PLACEHOLDER for Verses Along the Way (Phase 4) -->
     <!-- PLACEHOLDER for Poetry Blog Integration (Phase 5) -->
 
@@ -1852,13 +2867,439 @@ flashStyle.textContent = `
 `;
 document.head.appendChild(flashStyle);
 
-// ============================================
-// 🎯 PHASE 3+ JAVASCRIPT WILL BE ADDED BELOW
-// ============================================
-
 console.log('💬 Phase 2: Quote of the Day loaded successfully!');
 
-// PLACEHOLDER for User Submission functions (Phase 3)
+// ============================================
+// ✍️ POETRY CORNER - PHASE 3 JAVASCRIPT
+// User-Submitted Poems Functions
+// ============================================
+
+function initializePhase3() {
+    setupFormSteps();
+    setupCharacterCounter();
+    setupFormPreview();
+    setupPoemSubmission();
+    console.log('✍️ Phase 3: User-Submitted Poems initialized successfully!');
+}
+
+// Initialize Phase 3 on load
+document.addEventListener('DOMContentLoaded', function() {
+    initializePhase3();
+});
+
+let currentStep = 1;
+const totalSteps = 3;
+
+// === FORM STEP NAVIGATION ===
+function setupFormSteps() {
+    // Initialize first step
+    showFormStep(1);
+}
+
+function showFormStep(stepNumber) {
+    // Hide all steps
+    document.querySelectorAll('.form-step').forEach(step => {
+        step.classList.remove('active');
+    });
+    
+    document.querySelectorAll('.step').forEach(step => {
+        step.classList.remove('active');
+    });
+    
+    // Show current step
+    const currentStepElement = document.querySelector(`.form-step[data-step="${stepNumber}"]`);
+    const currentStepIndicator = document.querySelector(`.step[data-step="${stepNumber}"]`);
+    
+    if (currentStepElement) currentStepElement.classList.add('active');
+    if (currentStepIndicator) currentStepIndicator.classList.add('active');
+    
+    currentStep = stepNumber;
+}
+
+function nextFormStep() {
+    if (validateCurrentStep()) {
+        if (currentStep < totalSteps) {
+            showFormStep(currentStep + 1);
+            
+            // If moving to step 3, update preview
+            if (currentStep === 3) {
+                updatePreview();
+            }
+        }
+    }
+}
+
+function prevFormStep() {
+    if (currentStep > 1) {
+        showFormStep(currentStep - 1);
+    }
+}
+
+function validateCurrentStep() {
+    const currentStepElement = document.querySelector(`.form-step[data-step="${currentStep}"]`);
+    const requiredInputs = currentStepElement.querySelectorAll('[required]');
+    let isValid = true;
+    
+    requiredInputs.forEach(input => {
+        if (input.type === 'checkbox') {
+            if (!input.checked) {
+                isValid = false;
+                showPoetryToast('Please check the required checkbox ✓', 3000);
+            }
+        } else if (!input.value.trim()) {
+            isValid = false;
+            input.classList.add('is-invalid');
+            showPoetryToast('Please fill in all required fields 📝', 3000);
+        } else {
+            input.classList.remove('is-invalid');
+        }
+    });
+    
+    // Special validation for poem text length
+    if (currentStep === 2) {
+        const poemText = document.getElementById('poemText').value.trim();
+        if (poemText.length < 50) {
+            isValid = false;
+            showPoetryToast('Your poem must be at least 50 characters ✍️', 3000);
+        }
+    }
+    
+    return isValid;
+}
+
+// === CHARACTER COUNTER ===
+function setupCharacterCounter() {
+    const textarea = document.getElementById('poemText');
+    const charCount = document.getElementById('charCount');
+    const charStatus = document.getElementById('charStatus');
+    
+    if (!textarea) return;
+    
+    textarea.addEventListener('input', function() {
+        const length = this.value.length;
+        charCount.textContent = length;
+        
+        if (length < 50) {
+            charStatus.textContent = `${50 - length} more characters needed`;
+            charStatus.classList.remove('valid');
+            charStatus.classList.add('invalid');
+        } else {
+            charStatus.textContent = 'Perfect length! ✨';
+            charStatus.classList.remove('invalid');
+            charStatus.classList.add('valid');
+        }
+    });
+}
+
+// === FORM PREVIEW ===
+function setupFormPreview() {
+    // Listen to all form inputs for live preview
+    const titleInput = document.getElementById('poemTitle');
+    const themeInput = document.getElementById('poemTheme');
+    const locationInput = document.getElementById('poemLocation');
+    const poemTextInput = document.getElementById('poemText');
+    
+    if (titleInput) titleInput.addEventListener('input', updatePreview);
+    if (themeInput) themeInput.addEventListener('change', updatePreview);
+    if (locationInput) locationInput.addEventListener('input', updatePreview);
+    if (poemTextInput) poemTextInput.addEventListener('input', updatePreview);
+}
+
+function updatePreview() {
+    const title = document.getElementById('poemTitle')?.value || 'Your Title';
+    const theme = document.getElementById('poemTheme')?.value || 'Theme';
+    const location = document.getElementById('poemLocation')?.value || 'Location';
+    const poemText = document.getElementById('poemText')?.value || 'Your poem will appear here...';
+    
+    document.getElementById('previewTitle').textContent = title;
+    document.getElementById('previewTheme').textContent = theme;
+    document.getElementById('previewLocation').textContent = location;
+    document.getElementById('previewText').textContent = poemText;
+}
+
+// === POEM SUBMISSION ===
+function setupPoemSubmission() {
+    const form = document.getElementById('poemSubmissionForm');
+    
+    if (!form) return;
+    
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        if (!validateCurrentStep()) {
+            return;
+        }
+        
+        const submitBtn = form.querySelector('.btn-form-submit');
+        const originalText = submitBtn.innerHTML;
+        
+        // Show loading
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+        submitBtn.disabled = true;
+        
+        // Collect form data
+        const formData = new FormData(form);
+        
+        try {
+            const response = await fetch('/poetry-corner/submit', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                // Show success modal/message
+                showSubmissionSuccess();
+                
+                // Reset form after 3 seconds
+                setTimeout(() => {
+                    form.reset();
+                    showFormStep(1);
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }, 3000);
+            } else {
+                showPoetryToast(result.message || 'Submission failed. Please try again.', 4000);
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        } catch (error) {
+            console.error('Submission error:', error);
+            showPoetryToast('An error occurred. Please try again later. 😔', 4000);
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+}
+
+function showSubmissionSuccess() {
+    // Create success modal
+    const modal = document.createElement('div');
+    modal.className = 'submission-success-modal';
+    modal.innerHTML = `
+        <div class="success-modal-content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 class="success-title">Poem Submitted! 🎉</h3>
+            <p class="success-message">
+                Thank you for sharing your beautiful verse with the Happy Trails community!
+                Your poem will be reviewed and published soon.
+            </p>
+            <p class="success-quote script-font">
+                "Every poem is a gift to the world" - Kavlin 💖
+            </p>
+            <button class="success-btn" onclick="this.parentElement.parentElement.remove()">
+                <i class="fas fa-heart me-2"></i>Continue Exploring
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Animate in
+    setTimeout(() => modal.classList.add('show'), 100);
+    
+    // Auto remove after 8 seconds
+    setTimeout(() => {
+        modal.classList.remove('show');
+        setTimeout(() => modal.remove(), 300);
+    }, 8000);
+    
+    // Confetti effect
+    createConfetti();
+}
+
+function createConfetti() {
+    const colors = ['#FFD700', '#FF8C00', '#FF6347', '#FFE4B5', '#FFC0CB'];
+    const confettiCount = 50;
+    
+    for (let i = 0; i < confettiCount; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            confetti.style.animationDelay = (Math.random() * 0.5) + 's';
+            
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => confetti.remove(), 5000);
+        }, i * 30);
+    }
+}
+
+// === LIKE POEM ===
+function likePoem(button) {
+    const poemId = button.dataset.poemId;
+    const icon = button.querySelector('i');
+    const likeCount = button.querySelector('.like-count');
+    
+    if (icon.classList.contains('far')) {
+        // Like
+        icon.classList.remove('far');
+        icon.classList.add('fas');
+        button.classList.add('liked');
+        
+        const currentCount = parseInt(likeCount.textContent);
+        likeCount.textContent = currentCount + 1;
+        
+        // Animate
+        button.style.animation = 'heartbeat 0.6s ease-in-out';
+        setTimeout(() => button.style.animation = '', 600);
+        
+        showPoetryToast('Poem liked! 💖', 2000);
+        
+        // In production, send to backend
+        // fetch(`/poetry-corner/like/${poemId}`, { method: 'POST' })
+    } else {
+        // Unlike
+        icon.classList.remove('fas');
+        icon.classList.add('far');
+        button.classList.remove('liked');
+        
+        const currentCount = parseInt(likeCount.textContent);
+        likeCount.textContent = currentCount - 1;
+        
+        showPoetryToast('Like removed', 2000);
+        
+        // In production, send to backend
+        // fetch(`/poetry-corner/unlike/${poemId}`, { method: 'POST' })
+    }
+}
+
+// === LOAD MORE COMMUNITY POEMS ===
+function loadMoreCommunityPoems() {
+    showPoetryToast('Loading more beautiful poems... ✨');
+    
+    // Simulate loading (in real app, this would fetch from backend)
+    setTimeout(() => {
+        showPoetryToast('More community poems coming soon! Stay tuned 📖', 3000);
+    }, 1500);
+}
+
+// Add success modal and confetti styles
+const phase3Styles = document.createElement('style');
+phase3Styles.textContent = `
+    /* Success Modal */
+    .submission-success-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .submission-success-modal.show {
+        opacity: 1;
+    }
+    
+    .success-modal-content {
+        background: white;
+        border-radius: 30px;
+        padding: 50px 40px;
+        text-align: center;
+        max-width: 500px;
+        margin: 20px;
+        box-shadow: 0 20px 60px rgba(255, 215, 0, 0.4);
+        border: 3px solid #FFD700;
+        animation: bounceIn 0.6s ease-out;
+    }
+    
+    @keyframes bounceIn {
+        0% { opacity: 0; transform: scale(0.3); }
+        50% { transform: scale(1.05); }
+        70% { transform: scale(0.9); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+    
+    .success-icon {
+        font-size: 5rem;
+        color: #28a745;
+        margin-bottom: 20px;
+        animation: heartbeat 1s ease-in-out infinite;
+    }
+    
+    .success-title {
+        font-family: 'Dancing Script', cursive;
+        font-size: 2.5rem;
+        color: #F57F17;
+        margin-bottom: 20px;
+    }
+    
+    .success-message {
+        font-size: 1.1rem;
+        color: #6C757D;
+        line-height: 1.7;
+        margin-bottom: 25px;
+    }
+    
+    .success-quote {
+        font-size: 1.2rem;
+        color: #FFD700;
+        margin-bottom: 30px;
+        font-weight: 600;
+    }
+    
+    .success-btn {
+        background: linear-gradient(135deg, #FFD700, #FF8C00);
+        border: none;
+        color: white;
+        padding: 15px 40px;
+        border-radius: 30px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+    }
+    
+    .success-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+    }
+    
+    /* Confetti Animation */
+    .confetti {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        top: -10px;
+        z-index: 9999;
+        animation: confetti-fall linear forwards;
+    }
+    
+    @keyframes confetti-fall {
+        to {
+            transform: translateY(100vh) rotate(360deg);
+        }
+    }
+    
+    /* Form validation */
+    .form-control-custom.is-invalid {
+        border-color: #dc3545;
+        animation: shake 0.5s;
+    }
+    
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-10px); }
+        75% { transform: translateX(10px); }
+    }
+`;
+document.head.appendChild(phase3Styles);
+
+console.log('✍️ Phase 3: User-Submitted Poems loaded successfully!');
+
 // PLACEHOLDER for Verses Along the Way functions (Phase 4)
 // PLACEHOLDER for Blog Integration functions (Phase 5)
 
