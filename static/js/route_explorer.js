@@ -1877,3 +1877,825 @@ window.addEventListener('beforeunload', () => {
 });
 
 console.log('🌤️ Phase 3: Weather Integration loaded successfully! 💖');
+
+/* ============================================
+   🏔️ PHASE 4: SCENIC HIGHLIGHTS & POI
+   Points of Interest System
+   ============================================ */
+
+// Global POI variables
+let allPOIs = [];
+let filteredPOIs = [];
+let favoritePOIs = [];
+let poiMap = null;
+let poiMarkers = [];
+
+// POI Data
+const POI_DATA = [
+    {
+        id: 1,
+        name: 'Dharampur Valley Viewpoint',
+        category: 'viewpoints',
+        location: 'Dharampur',
+        coordinates: [30.8800, 77.0600],
+        route: 'HT-101',
+        distance: '2.5 km from route',
+        rating: 4.8,
+        reviews: 234,
+        description: 'Breathtaking panoramic views of the entire valley with snow-capped peaks in the distance. Best visited during sunrise for golden hour photography.',
+        image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+        bestTime: 'Spring & Autumn',
+        duration: '30-45 minutes',
+        accessibility: 'Wheelchair accessible parking available',
+        tips: [
+            { title: 'Photography', text: 'Bring a wide-angle lens for panoramic shots' },
+            { title: 'Timing', text: 'Visit between 6-8 AM for best light' },
+            { title: 'Weather', text: 'Check weather forecast - clear days offer 50km visibility' }
+        ],
+        gallery: [
+            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
+            'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400',
+            'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400'
+        ],
+        featured: true
+    },
+    {
+        id: 2,
+        name: 'Barog Heritage Tunnel',
+        category: 'heritage',
+        location: 'Barog',
+        coordinates: [30.9600, 77.0700],
+        route: 'HT-102',
+        distance: '0.5 km from route',
+        rating: 4.6,
+        reviews: 189,
+        description: 'Historic railway tunnel built in 1903 during British era. Engineering marvel with fascinating colonial history. The tunnel is still operational for trains.',
+        image: 'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=800',
+        bestTime: 'All Year',
+        duration: '1-2 hours',
+        accessibility: 'Steep pathways - not wheelchair accessible',
+        tips: [
+            { title: 'Safety', text: 'Watch for train schedules before entering tunnel area' },
+            { title: 'History', text: 'Hire a local guide to learn fascinating stories' },
+            { title: 'Photography', text: 'Afternoon light creates beautiful shadows inside' }
+        ],
+        gallery: [
+            'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=400',
+            'https://images.unsplash.com/photo-1527838832700-5059252407fa?w=400',
+            'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=400'
+        ],
+        featured: true
+    },
+    {
+        id: 3,
+        name: 'Solan Temple Complex',
+        category: 'religious',
+        location: 'Solan',
+        coordinates: [30.9150, 77.1700],
+        route: 'HT-101',
+        distance: '1 km from route',
+        rating: 4.7,
+        reviews: 312,
+        description: 'Ancient hilltop temple offering spiritual serenity and panoramic city views. Beautiful architecture with intricate carvings dating back centuries.',
+        image: 'https://images.unsplash.com/photo-1696239108459-5f1356d00e5e?w=800',
+        bestTime: 'Early Morning',
+        duration: '1 hour',
+        accessibility: 'Steps to temple - wheelchair accessible viewing area',
+        tips: [
+            { title: 'Dress Code', text: 'Modest clothing required - cover shoulders and knees' },
+            { title: 'Timing', text: 'Visit during morning aarti (prayer) for authentic experience' },
+            { title: 'Offerings', text: 'Flowers and prasad available at temple entrance' }
+        ],
+        gallery: [
+            'https://images.unsplash.com/photo-1582632979892-6fda46d8d2ea?w=400',
+            'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=400',
+            'https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=400'
+        ],
+        featured: false
+    },
+    {
+        id: 4,
+        name: 'Dagshai Cantonment Heritage Walk',
+        category: 'heritage',
+        location: 'Dagshai',
+        coordinates: [30.9900, 76.9800],
+        route: 'HT-103',
+        distance: '0.3 km from route',
+        rating: 4.5,
+        reviews: 156,
+        description: 'Walk through colonial-era military cantonment with preserved British architecture, old jail, and stunning valley views. Rich in history and stories.',
+        image: 'https://images.unsplash.com/photo-1656253814254-7e697b0e5d50?w=800',
+        bestTime: 'Winter',
+        duration: '2-3 hours',
+        accessibility: 'Mixed terrain - partially accessible',
+        tips: [
+            { title: 'Guide', text: 'Local guides available at cantonment entrance' },
+            { title: 'Photography', text: 'Colonial buildings offer great photo opportunities' },
+            { title: 'Walking', text: 'Wear comfortable shoes for 3km heritage trail' }
+        ],
+        gallery: [
+            'https://images.unsplash.com/photo-1555881424-9c0c2b2a7f10?w=400',
+            'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=400',
+            'https://images.unsplash.com/photo-1565098772267-60af42b81ef2?w=400'
+        ],
+        featured: true
+    },
+    {
+        id: 5,
+        name: 'Mountain Dhaba - Authentic Himachali',
+        category: 'food',
+        location: 'Solan',
+        coordinates: [30.9120, 77.1650],
+        route: 'HT-101',
+        distance: '0.2 km from route',
+        rating: 4.9,
+        reviews: 445,
+        description: 'Family-run roadside dhaba serving authentic Himachali cuisine. Famous for madra, siddu, and traditional thali. Warm hospitality and local flavors.',
+        image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800',
+        bestTime: 'Lunch Hours',
+        duration: '45 minutes',
+        accessibility: 'Ground level seating available',
+        tips: [
+            { title: 'Must Try', text: 'Order the Himachali thali for complete experience' },
+            { title: 'Timing', text: 'Busy during lunch (12-2 PM) - arrive early' },
+            { title: 'Payment', text: 'Cash only - no cards accepted' }
+        ],
+        gallery: [
+            'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400',
+            'https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=400',
+            'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400'
+        ],
+        featured: false
+    },
+    {
+        id: 6,
+        name: 'Pine Forest Nature Trail',
+        category: 'nature',
+        location: 'Dharampur',
+        coordinates: [30.9000, 77.1500],
+        route: 'HT-101',
+        distance: '1.5 km from route',
+        rating: 4.6,
+        reviews: 198,
+        description: 'Peaceful 2km walking trail through dense pine forest. Perfect for nature lovers, birdwatching, and meditation. Fresh mountain air and serene atmosphere.',
+        image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800',
+        bestTime: 'Spring & Monsoon',
+        duration: '1-1.5 hours',
+        accessibility: 'Natural trail - not wheelchair accessible',
+        tips: [
+            { title: 'Wildlife', text: 'Keep eyes open for Himalayan birds and small mammals' },
+            { title: 'Safety', text: 'Stay on marked trails and inform someone of your route' },
+            { title: 'Essentials', text: 'Carry water, wear sturdy shoes, bring insect repellent' }
+        ],
+        gallery: [
+            'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400',
+            'https://images.unsplash.com/photo-1511497584788-876760111969?w=400',
+            'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?w=400'
+        ],
+        featured: false
+    },
+    {
+        id: 7,
+        name: 'Adventure Sports Center',
+        category: 'adventure',
+        location: 'Barog',
+        coordinates: [30.9550, 77.0750],
+        route: 'HT-102',
+        distance: '3 km from route',
+        rating: 4.7,
+        reviews: 267,
+        description: 'Thrilling adventure activities including paragliding, zip-lining, and rock climbing. Professional instructors and safety equipment provided.',
+        image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+        bestTime: 'Summer & Autumn',
+        duration: '2-4 hours',
+        accessibility: 'Adventure activities - fitness required',
+        tips: [
+            { title: 'Booking', text: 'Book paragliding sessions in advance during peak season' },
+            { title: 'Weather', text: 'Activities cancelled in rain - check forecast' },
+            { title: 'Age Limit', text: 'Minimum age 12 for most activities' }
+        ],
+        gallery: [
+            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
+            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
+            'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400'
+        ],
+        featured: false
+    },
+    {
+        id: 8,
+        name: 'Sunset Point Photography Paradise',
+        category: 'photography',
+        location: 'Dharampur',
+        coordinates: [30.8900, 77.0800],
+        route: 'HT-101',
+        distance: '2 km from route',
+        rating: 4.9,
+        reviews: 389,
+        description: 'Instagram-worthy sunset views with valley backdrop. Popular spot for photographers and couples. Unobstructed 180° views of the mountains.',
+        image: 'https://images.unsplash.com/photo-1495954484750-af469f2f9be5?w=800',
+        bestTime: 'Evening (5-7 PM)',
+        duration: '1 hour',
+        accessibility: 'Easy access - wheelchair friendly',
+        tips: [
+            { title: 'Photography', text: 'Arrive 30 minutes before sunset for best shots' },
+            { title: 'Crowds', text: 'Popular spot - arrive early on weekends' },
+            { title: 'Equipment', text: 'Tripod recommended for long exposure shots' }
+        ],
+        gallery: [
+            'https://images.unsplash.com/photo-1495954484750-af469f2f9be5?w=400',
+            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
+            'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400'
+        ],
+        featured: true
+    }
+];
+
+// ============================================
+// POI TAB INITIALIZATION
+// ============================================
+
+function initializePOI() {
+    const poiTab = document.querySelector('[data-tab="scenic-highlights"]');
+    if (poiTab) {
+        poiTab.addEventListener('click', loadPOITab);
+    }
+    
+    console.log('🏔️ POI system initialized');
+}
+
+function loadPOITab() {
+    // Initialize POI data
+    allPOIs = POI_DATA;
+    filteredPOIs = [...allPOIs];
+    
+    // Load favorites from localStorage
+    loadFavoritePOIs();
+    
+    // Setup event listeners
+    setupPOIEventListeners();
+    
+    // Populate route filter
+    populatePOIRouteFilter();
+    
+    // Render POIs
+    renderPOICards();
+    
+    // Render featured highlights
+    renderFeaturedHighlights();
+    
+    // Initialize POI map
+    initializePOIMap();
+    
+    // Update statistics
+    updatePOIStats();
+}
+
+function setupPOIEventListeners() {
+    // Category filter pills
+    document.querySelectorAll('.poi-category-pill').forEach(pill => {
+        pill.addEventListener('click', function() {
+            document.querySelectorAll('.poi-category-pill').forEach(p => p.classList.remove('active'));
+            this.classList.add('active');
+            filterPOIsByCategory(this.getAttribute('data-category'));
+        });
+    });
+    
+    // Route filter
+    const routeFilter = document.getElementById('poiRouteFilter');
+    if (routeFilter) {
+        routeFilter.addEventListener('change', function() {
+            filterPOIsByRoute(this.value);
+        });
+    }
+}
+
+function populatePOIRouteFilter() {
+    const select = document.getElementById('poiRouteFilter');
+    if (!select) return;
+    
+    const routes = [...new Set(POI_DATA.map(poi => poi.route))];
+    
+    select.innerHTML = '<option value="all">All Routes</option>' + 
+        routes.map(route => {
+            const routeData = allRoutes.find(r => r.busNumber === route);
+            const routeName = routeData ? routeData.name : route;
+            return `<option value="${route}">${routeName}</option>`;
+        }).join('');
+}
+
+// ============================================
+// POI FILTERING
+// ============================================
+
+function filterPOIsByCategory(category) {
+    if (category === 'all') {
+        filteredPOIs = [...allPOIs];
+    } else {
+        filteredPOIs = allPOIs.filter(poi => poi.category === category);
+    }
+    
+    renderPOICards();
+    updatePOIMarkers();
+    updatePOIStats();
+    
+    showToast(`Showing ${filteredPOIs.length} ${category === 'all' ? 'attractions' : category} 🏔️`, 2000);
+}
+
+function filterPOIsByRoute(routeId) {
+    if (routeId === 'all') {
+        filteredPOIs = [...allPOIs];
+    } else {
+        filteredPOIs = allPOIs.filter(poi => poi.route === routeId);
+    }
+    
+    renderPOICards();
+    updatePOIMarkers();
+    updatePOIStats();
+}
+
+// ============================================
+// POI RENDERING
+// ============================================
+
+function renderPOICards() {
+    const container = document.getElementById('poiCardsGrid');
+    if (!container) return;
+    
+    if (filteredPOIs.length === 0) {
+        container.innerHTML = `
+            <div class="poi-empty-state">
+                <div class="poi-empty-icon">🏔️</div>
+                <div class="poi-empty-title">No attractions found</div>
+                <div class="poi-empty-text">Try adjusting your filters to discover amazing places</div>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = filteredPOIs.map(poi => {
+        const isFavorite = favoritePOIs.includes(poi.id);
+        const categoryIcons = {
+            viewpoints: '🏔️',
+            heritage: '🏛️',
+            food: '🍽️',
+            adventure: '🎿',
+            nature: '🌲',
+            photography: '📸',
+            religious: '🕉️'
+        };
+        
+        return `
+            <div class="poi-card" onclick="showPOIDetails(${poi.id})">
+                <div style="position: relative;">
+                    <img src="${poi.image}" alt="${poi.name}" class="poi-card-image">
+                    <div class="poi-category-badge">
+                        ${categoryIcons[poi.category] || '📍'} ${poi.category}
+                    </div>
+                    <button class="poi-favorite-btn ${isFavorite ? 'favorited' : ''}" 
+                            onclick="event.stopPropagation(); toggleFavoritePOI(${poi.id})">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+                <div class="poi-card-body">
+                    <div class="poi-card-header">
+                        <div class="poi-name">${poi.name}</div>
+                        <div class="poi-rating">
+                            <i class="fas fa-star"></i>
+                            ${poi.rating}
+                        </div>
+                    </div>
+                    <div class="poi-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        ${poi.location}
+                    </div>
+                    <div class="poi-description">
+                        ${poi.description}
+                    </div>
+                    <div class="poi-meta">
+                        <div class="poi-distance">
+                            <i class="fas fa-route"></i>
+                            ${poi.distance}
+                        </div>
+                        <div class="poi-actions">
+                            <button class="poi-action-btn" title="View on Map" 
+                                    onclick="event.stopPropagation(); showPOIOnMap(${poi.id})">
+                                <i class="fas fa-map"></i>
+                            </button>
+                            <button class="poi-action-btn" title="Share" 
+                                    onclick="event.stopPropagation(); sharePOI(${poi.id})">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function renderFeaturedHighlights() {
+    const container = document.getElementById('featuredGrid');
+    if (!container) return;
+    
+    const featured = allPOIs.filter(poi => poi.featured);
+    
+    container.innerHTML = featured.map(poi => `
+        <div class="featured-card" onclick="showPOIDetails(${poi.id})">
+            <img src="${poi.image}" alt="${poi.name}" style="width: 100%; height: 200px; object-fit: cover;">
+            <div style="padding: 20px;">
+                <h4 style="font-size: 1.2rem; color: #2C3E50; margin-bottom: 10px;">${poi.name}</h4>
+                <p style="color: #6C757D; font-size: 0.9rem; line-height: 1.6;">
+                    ${poi.description.substring(0, 100)}...
+                </p>
+                <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="color: #FFD700; font-weight: 600;">
+                        <i class="fas fa-star"></i> ${poi.rating}
+                    </div>
+                    <div style="color: #F57F17; font-size: 0.85rem;">
+                        ${poi.reviews} reviews
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ============================================
+// POI DETAILS MODAL
+// ============================================
+
+function showPOIDetails(poiId) {
+    const poi = allPOIs.find(p => p.id === poiId);
+    if (!poi) return;
+    
+    const modal = document.getElementById('poiModal');
+    const modalBody = document.getElementById('poiModalBody');
+    
+    if (!modal || !modalBody) return;
+    
+    const isFavorite = favoritePOIs.includes(poi.id);
+    
+    modalBody.innerHTML = `
+        <div class="poi-modal-hero">
+            <img src="${poi.image}" alt="${poi.name}">
+        </div>
+        
+        <div style="padding: 40px;">
+            <h2 class="poi-modal-title">${poi.name}</h2>
+            
+            <div class="poi-modal-meta">
+                <div class="poi-modal-meta-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>${poi.location}</span>
+                </div>
+                <div class="poi-modal-meta-item">
+                    <i class="fas fa-star"></i>
+                    <span>${poi.rating} (${poi.reviews} reviews)</span>
+                </div>
+                <div class="poi-modal-meta-item">
+                    <i class="fas fa-route"></i>
+                    <span>${poi.distance}</span>
+                </div>
+                <div class="poi-modal-meta-item">
+                    <i class="fas fa-clock"></i>
+                    <span>${poi.duration}</span>
+                </div>
+                <div class="poi-modal-meta-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Best: ${poi.bestTime}</span>
+                </div>
+            </div>
+            
+            <div class="poi-modal-section">
+                <h3 class="poi-modal-section-title">
+                    <i class="fas fa-info-circle"></i>
+                    About
+                </h3>
+                <p class="poi-modal-description">${poi.description}</p>
+            </div>
+            
+            <div class="poi-modal-section">
+                <h3 class="poi-modal-section-title">
+                    <i class="fas fa-wheelchair"></i>
+                    Accessibility
+                </h3>
+                <p class="poi-modal-description">${poi.accessibility}</p>
+            </div>
+            
+            <div class="poi-modal-section">
+                <h3 class="poi-modal-section-title">
+                    <i class="fas fa-lightbulb"></i>
+                    Local Tips
+                </h3>
+                <div class="poi-tips-list">
+                    ${poi.tips.map(tip => `
+                        <div class="poi-tip-item">
+                            <strong>${tip.title}</strong>
+                            ${tip.text}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            
+            <div class="poi-modal-section">
+                <h3 class="poi-modal-section-title">
+                    <i class="fas fa-images"></i>
+                    Photo Gallery
+                </h3>
+                <div class="poi-photo-gallery">
+                    ${poi.gallery.map(img => `
+                        <img src="${img}" alt="${poi.name}" class="poi-gallery-image">
+                    `).join('')}
+                </div>
+            </div>
+            
+            <div class="poi-modal-actions">
+                <button class="poi-modal-btn poi-modal-btn-primary" onclick="planDetour(${poi.id})">
+                    <i class="fas fa-route"></i>
+                    Plan Detour
+                </button>
+                <button class="poi-modal-btn poi-modal-btn-secondary" onclick="toggleFavoritePOI(${poi.id})">
+                    <i class="fas fa-heart ${isFavorite ? '' : '-o'}"></i>
+                    ${isFavorite ? 'Saved' : 'Save to Favorites'}
+                </button>
+                <button class="poi-modal-btn poi-modal-btn-secondary" onclick="sharePOI(${poi.id})">
+                    <i class="fas fa-share-alt"></i>
+                    Share
+                </button>
+            </div>
+        </div>
+    `;
+    
+    modal.style.display = 'flex';
+}
+
+function closePOIModal() {
+    const modal = document.getElementById('poiModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// ============================================
+// POI MAP
+// ============================================
+
+function initializePOIMap() {
+    const mapElement = document.getElementById('poiMap');
+    if (!mapElement || poiMap) return; // Already initialized
+    
+    poiMap = L.map('poiMap', {
+        center: MAP_CENTER,
+        zoom: 11,
+        zoomControl: true,
+        scrollWheelZoom: true
+    });
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 18
+    }).addTo(poiMap);
+    
+    // Add route lines (lighter)
+    allRoutes.forEach(route => {
+        L.polyline(route.coordinates, {
+            color: route.color,
+            weight: 3,
+            opacity: 0.3,
+            smoothFactor: 1
+        }).addTo(poiMap);
+    });
+    
+    // Add POI markers
+    updatePOIMarkers();
+}
+
+function updatePOIMarkers() {
+    if (!poiMap) return;
+    
+    // Clear existing markers
+    poiMarkers.forEach(marker => poiMap.removeLayer(marker));
+    poiMarkers = [];
+    
+    // Add markers for filtered POIs
+    filteredPOIs.forEach(poi => {
+        const categoryIcons = {
+            viewpoints: '🏔️',
+            heritage: '🏛️',
+            food: '🍽️',
+            adventure: '🎿',
+            nature: '🌲',
+            photography: '📸',
+            religious: '🕉️'
+        };
+        
+        const icon = categoryIcons[poi.category] || '📍';
+        
+        const marker = L.marker(poi.coordinates, {
+            icon: L.divIcon({
+                html: `<div style="font-size: 2rem;">${icon}</div>`,
+                className: 'poi-marker',
+                iconSize: [40, 40],
+                iconAnchor: [20, 40]
+            })
+        }).addTo(poiMap);
+        
+        marker.bindPopup(`
+            <div class="marker-popup" style="min-width: 200px;">
+                <div class="marker-popup-title">${poi.name}</div>
+                <div class="marker-popup-details">
+                    <strong>${poi.location}</strong><br>
+                    ⭐ ${poi.rating} (${poi.reviews} reviews)<br>
+                    ${poi.distance}
+                </div>
+                <button onclick="showPOIDetails(${poi.id})" 
+                        style="margin-top: 10px; padding: 8px 16px; background: linear-gradient(135deg, #FFD700, #FF8C00); 
+                               border: none; color: white; border-radius: 15px; cursor: pointer; font-weight: 600;">
+                    View Details
+                </button>
+            </div>
+        `);
+        
+        marker.on('click', function() {
+            poiMap.setView(poi.coordinates, 14);
+        });
+        
+        poiMarkers.push(marker);
+    });
+    
+    // Fit bounds to show all POIs
+    if (poiMarkers.length > 0) {
+        const group = L.featureGroup(poiMarkers);
+        poiMap.fitBounds(group.getBounds().pad(0.1));
+    }
+}
+
+function showPOIOnMap(poiId) {
+    const poi = allPOIs.find(p => p.id === poiId);
+    if (!poi || !poiMap) return;
+    
+    // Switch to map view
+    const mapSection = document.querySelector('.poi-map-section');
+    if (mapSection) {
+        mapSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    
+    // Center map on POI
+    poiMap.setView(poi.coordinates, 15);
+    
+    // Open popup
+    const marker = poiMarkers.find(m => 
+        m.getLatLng().lat === poi.coordinates[0] && 
+        m.getLatLng().lng === poi.coordinates[1]
+    );
+    
+    if (marker) {
+        marker.openPopup();
+    }
+    
+    showToast(`Showing ${poi.name} on map 🗺️`, 2000);
+}
+
+// ============================================
+// POI FAVORITES
+// ============================================
+
+function loadFavoritePOIs() {
+    const stored = localStorage.getItem('happytrails_favorite_pois');
+    if (stored) {
+        try {
+            favoritePOIs = JSON.parse(stored);
+        } catch (e) {
+            favoritePOIs = [];
+        }
+    }
+}
+
+function saveFavoritePOIs() {
+    localStorage.setItem('happytrails_favorite_pois', JSON.stringify(favoritePOIs));
+}
+
+function toggleFavoritePOI(poiId) {
+    const index = favoritePOIs.indexOf(poiId);
+    
+    if (index > -1) {
+        favoritePOIs.splice(index, 1);
+        showToast('Removed from favorites 💔', 2000);
+    } else {
+        favoritePOIs.push(poiId);
+        showToast('Added to favorites! ❤️', 2000);
+    }
+    
+    saveFavoritePOIs();
+    
+    // Re-render if modal is open
+    const modal = document.getElementById('poiModal');
+    if (modal && modal.style.display === 'flex') {
+        showPOIDetails(poiId);
+    }
+    
+    // Re-render cards
+    renderPOICards();
+}
+
+// ============================================
+// POI ACTIONS
+// ============================================
+
+function planDetour(poiId) {
+    const poi = allPOIs.find(p => p.id === poiId);
+    if (!poi) return;
+    
+    showToast(`Planning detour to ${poi.name}... 🗺️`, 2000);
+    
+    setTimeout(() => {
+        const detourInfo = `
+            <div style="background: rgba(255, 249, 230, 0.95); padding: 20px; border-radius: 15px; 
+                        border: 2px solid #FFD700; margin: 20px; box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);">
+                <h3 style="color: #F57F17; margin-bottom: 15px;">
+                    <i class="fas fa-route"></i> Detour Plan
+                </h3>
+                <p style="color: #2C3E50; line-height: 1.7;">
+                    <strong>Attraction:</strong> ${poi.name}<br>
+                    <strong>Distance from route:</strong> ${poi.distance}<br>
+                    <strong>Estimated detour time:</strong> ${poi.duration}<br>
+                    <strong>Best route:</strong> Take ${poi.route}, ask driver for stop<br>
+                    <br>
+                    <em>Tip: Inform the driver in advance for a smooth detour!</em>
+                </p>
+            </div>
+        `;
+        
+        // You could show this in a modal or notification
+        console.log('Detour planned:', detourInfo);
+        showToast('Detour calculated! Check details. ✅', 3000);
+    }, 1000);
+}
+
+function sharePOI(poiId) {
+    const poi = allPOIs.find(p => p.id === poiId);
+    if (!poi) return;
+    
+    const shareText = `Check out ${poi.name} in ${poi.location}! ⭐ ${poi.rating} rating. ${poi.description.substring(0, 100)}...`;
+    const shareUrl = window.location.origin + '/route-explorer?poi=' + poi.id;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: poi.name,
+            text: shareText,
+            url: shareUrl
+        }).catch(() => {
+            copyToClipboard(shareUrl);
+        });
+    } else {
+        copyToClipboard(shareUrl);
+    }
+    
+    showToast('Share link copied! 📋', 2000);
+}
+
+function copyToClipboard(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+}
+
+// ============================================
+// POI STATISTICS
+// ============================================
+
+function updatePOIStats() {
+    const totalEl = document.getElementById('totalPOIsCount');
+    const photoEl = document.getElementById('photoSpotsCount');
+    const heritageEl = document.getElementById('heritageCount');
+    const foodEl = document.getElementById('foodSpotsCount');
+    
+    if (totalEl) totalEl.textContent = filteredPOIs.length;
+    if (photoEl) photoEl.textContent = allPOIs.filter(p => p.category === 'photography').length;
+    if (heritageEl) heritageEl.textContent = allPOIs.filter(p => p.category === 'heritage').length;
+    if (foodEl) foodEl.textContent = allPOIs.filter(p => p.category === 'food').length;
+}
+
+// ============================================
+// UPDATE INITIALIZATION
+// ============================================
+
+// Update the main initialization
+const originalInitRouteExplorer3 = initializeRouteExplorer;
+initializeRouteExplorer = function() {
+    originalInitRouteExplorer3();
+    initializePOI();
+};
+
+// Make functions globally accessible
+window.showPOIDetails = showPOIDetails;
+window.closePOIModal = closePOIModal;
+window.toggleFavoritePOI = toggleFavoritePOI;
+window.showPOIOnMap = showPOIOnMap;
+window.sharePOI = sharePOI;
+window.planDetour = planDetour;
+
+console.log('🏔️ Phase 4: Scenic Highlights & POI loaded successfully! 💖');

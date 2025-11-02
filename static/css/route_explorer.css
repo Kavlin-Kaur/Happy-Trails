@@ -1829,3 +1829,754 @@
     0%, 90%, 100% { opacity: 1; }
     95% { opacity: 0.5; }
 }
+
+/* ============================================
+   🏔️ PHASE 4: SCENIC HIGHLIGHTS & POI
+   Points of Interest Styling
+   ============================================ */
+
+/* === HIGHLIGHTS SECTION === */
+.highlights-section {
+    padding: 50px 0;
+}
+
+.highlights-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.highlights-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3rem;
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 15px;
+}
+
+.highlights-subtitle {
+    font-size: 1.2rem;
+    color: #6C757D;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* POI Statistics */
+.poi-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 25px;
+    margin-bottom: 50px;
+}
+
+.poi-stat-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.poi-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
+}
+
+.poi-stat-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.poi-stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.poi-stat-label {
+    font-size: 0.9rem;
+    color: #6C757D;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Category Filter */
+.poi-filter-section {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.poi-filter-title {
+    font-family: 'Caveat', cursive;
+    font-size: 1.8rem;
+    color: #F57F17;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.poi-category-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.poi-category-pill {
+    background: rgba(255, 249, 230, 0.5);
+    border: 2px solid #E9ECEF;
+    color: #2C3E50;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.poi-category-pill:hover,
+.poi-category-pill.active {
+    border-color: #FFD700;
+    background: rgba(255, 215, 0, 0.2);
+    color: #F57F17;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+/* Route Filter */
+.poi-route-filter {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+}
+
+.poi-route-filter-label {
+    display: block;
+    font-weight: 600;
+    color: #2C3E50;
+    margin-bottom: 12px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.poi-route-select {
+    width: 100%;
+    padding: 12px 20px;
+    border: 2px solid #E9ECEF;
+    border-radius: 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.poi-route-select:focus {
+    border-color: #FFD700;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.1);
+}
+
+/* POI Cards Grid */
+.poi-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.poi-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    animation: poiCardFadeIn 0.6s ease-out;
+}
+
+@keyframes poiCardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.poi-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(255, 215, 0, 0.3);
+}
+
+.poi-card-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    position: relative;
+}
+
+.poi-category-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.poi-favorite-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.poi-favorite-btn:hover {
+    transform: scale(1.1);
+}
+
+.poi-favorite-btn.favorited {
+    background: linear-gradient(135deg, #FF6347, #DC143C);
+    color: white;
+}
+
+.poi-card-body {
+    padding: 25px;
+}
+
+.poi-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.poi-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2C3E50;
+    line-height: 1.3;
+}
+
+.poi-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+    color: #FFD700;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.poi-location {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #6C757D;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+
+.poi-description {
+    color: #6C757D;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.poi-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 2px solid rgba(255, 215, 0, 0.2);
+}
+
+.poi-distance {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #F57F17;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.poi-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.poi-action-btn {
+    background: rgba(255, 215, 0, 0.2);
+    border: 2px solid #FFD700;
+    color: #F57F17;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.poi-action-btn:hover {
+    background: #FFD700;
+    color: white;
+    transform: scale(1.1);
+}
+
+/* POI Interactive Map */
+.poi-map-section {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 50px;
+}
+
+.poi-map-title {
+    font-family: 'Caveat', cursive;
+    font-size: 2rem;
+    color: #F57F17;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.poi-map-container {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.poi-map {
+    width: 100%;
+    height: 600px;
+    border-radius: 15px;
+}
+
+.poi-map-legend {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.poi-map-legend h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #2C3E50;
+    margin-bottom: 15px;
+}
+
+.poi-legend-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.poi-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #6C757D;
+}
+
+.poi-legend-icon {
+    font-size: 1.5rem;
+}
+
+/* Featured Highlights */
+.featured-highlights {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 140, 0, 0.1));
+    border-radius: 20px;
+    padding: 40px;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.featured-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: #F57F17;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.featured-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.featured-card::before {
+    content: '⭐';
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 2rem;
+    z-index: 10;
+    animation: starTwinkle 2s ease-in-out infinite;
+}
+
+@keyframes starTwinkle {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+.featured-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+}
+
+/* POI Detail Modal */
+.poi-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.poi-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+.poi-modal-content {
+    position: relative;
+    background: white;
+    border-radius: 25px;
+    max-width: 900px;
+    max-height: 90vh;
+    width: 90%;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.4s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.poi-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.poi-modal-close:hover {
+    background: #FF6347;
+    color: white;
+    transform: rotate(90deg);
+}
+
+.poi-modal-hero {
+    position: relative;
+    height: 350px;
+    overflow: hidden;
+}
+
+.poi-modal-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.poi-modal-body {
+    padding: 40px;
+}
+
+.poi-modal-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: #2C3E50;
+    margin-bottom: 20px;
+}
+
+.poi-modal-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px dashed rgba(255, 215, 0, 0.3);
+}
+
+.poi-modal-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #6C757D;
+    font-size: 0.95rem;
+}
+
+.poi-modal-meta-item i {
+    color: #FFD700;
+    font-size: 1.1rem;
+}
+
+.poi-modal-section {
+    margin-bottom: 30px;
+}
+
+.poi-modal-section-title {
+    font-family: 'Caveat', cursive;
+    font-size: 1.8rem;
+    color: #F57F17;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.poi-modal-description {
+    color: #2C3E50;
+    line-height: 1.8;
+    font-size: 1.05rem;
+}
+
+.poi-photo-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.poi-gallery-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.poi-gallery-image:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.poi-tips-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.poi-tip-item {
+    background: rgba(255, 249, 230, 0.5);
+    border-left: 4px solid #FFD700;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.poi-tip-item strong {
+    color: #F57F17;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.poi-modal-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.poi-modal-btn {
+    flex: 1;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.poi-modal-btn-primary {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+}
+
+.poi-modal-btn-secondary {
+    background: rgba(255, 215, 0, 0.2);
+    border: 2px solid #FFD700;
+    color: #F57F17;
+}
+
+.poi-modal-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 992px) {
+    .poi-cards-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+    
+    .poi-map {
+        height: 450px;
+    }
+}
+
+@media (max-width: 768px) {
+    .highlights-title {
+        font-size: 2.5rem;
+    }
+    
+    .poi-category-pills {
+        gap: 8px;
+    }
+    
+    .poi-category-pill {
+        padding: 10px 18px;
+        font-size: 0.85rem;
+    }
+    
+    .poi-cards-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .poi-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .poi-modal-content {
+        width: 95%;
+        max-height: 95vh;
+    }
+    
+    .poi-modal-body {
+        padding: 25px;
+    }
+    
+    .poi-modal-actions {
+        flex-direction: column;
+    }
+    
+    .poi-photo-gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Empty State */
+.poi-empty-state {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.poi-empty-icon {
+    font-size: 5rem;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.poi-empty-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2C3E50;
+    margin-bottom: 10px;
+}
+
+.poi-empty-text {
+    color: #6C757D;
+    line-height: 1.7;
+}
