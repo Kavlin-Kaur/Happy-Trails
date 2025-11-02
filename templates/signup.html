@@ -11,9 +11,14 @@
         align-items: center;
         position: relative;
         overflow: hidden;
-        padding: 120px 0 60px;
+        padding: 30px 0;
     }
-    
+
+    .auth-logo {
+        max-width: 100px;
+        height: auto;
+    }
+
     .auth-section::before {
         content: '';
         position: absolute;
@@ -21,12 +26,12 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-image: 
+        background-image:
             radial-gradient(circle at 30% 70%, rgba(255, 215, 0, 0.08) 0%, transparent 50%),
             radial-gradient(circle at 70% 30%, rgba(255, 182, 193, 0.08) 0%, transparent 50%);
         animation: sparkle 6s ease-in-out infinite;
     }
-    
+
     .signup-card {
         background: rgba(255, 255, 255, 0.95);
         border-radius: 30px;
@@ -40,16 +45,23 @@
         margin: 0 auto;
         animation: slideInFromTop 0.8s ease-out;
     }
-    
+
     @keyframes slideInFromTop {
-        0% { opacity: 0; transform: translateY(-50px); }
-        100% { opacity: 1; transform: translateY(0); }
+        0% {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
-    
+
     .password-strength {
         margin-top: 0.5rem;
     }
-    
+
     .strength-indicator {
         height: 4px;
         border-radius: 2px;
@@ -57,24 +69,24 @@
         overflow: hidden;
         margin-top: 0.5rem;
     }
-    
+
     .strength-bar {
         height: 100%;
         transition: var(--transition-smooth);
         border-radius: 2px;
     }
-    
+
     .strength-text {
         font-size: 0.875rem;
         margin-top: 0.25rem;
     }
-    
+
     .form-floating {
         position: relative;
         margin-bottom: 1.5rem;
     }
-    
-    .form-floating > .form-control {
+
+    .form-floating>.form-control {
         border: 2px solid var(--secondary-yellow);
         border-radius: 15px;
         padding: 20px 15px 10px;
@@ -82,20 +94,20 @@
         background: rgba(255, 255, 255, 0.9);
         transition: var(--transition-smooth);
     }
-    
-    .form-floating > .form-control:focus {
+
+    .form-floating>.form-control:focus {
         border-color: var(--primary-yellow);
         box-shadow: var(--glow-yellow);
         outline: none;
         background: white;
     }
-    
-    .form-floating > label {
+
+    .form-floating>label {
         padding: 15px;
         color: var(--medium-gray);
         font-weight: 500;
     }
-    
+
     .terms-section {
         background: rgba(255, 215, 0, 0.1);
         border-radius: 15px;
@@ -103,13 +115,13 @@
         margin: 1.5rem 0;
         border-left: 4px solid var(--primary-yellow);
     }
-    
+
     .progress-step {
         display: flex;
         justify-content: center;
         margin-bottom: 2rem;
     }
-    
+
     .step {
         width: 40px;
         height: 40px;
@@ -123,18 +135,18 @@
         transition: var(--transition-smooth);
         position: relative;
     }
-    
+
     .step.active {
         background: var(--gradient-sunrise);
         color: white;
         transform: scale(1.2);
     }
-    
+
     .step.completed {
         background: #28a745;
         color: white;
     }
-    
+
     .step::after {
         content: '';
         position: absolute;
@@ -146,11 +158,11 @@
         background: var(--light-gray);
         transition: var(--transition-smooth);
     }
-    
+
     .step.completed::after {
         background: #28a745;
     }
-    
+
     .step:last-child::after {
         display: none;
     }
@@ -164,7 +176,8 @@
             <div class="col-lg-8">
                 <div class="signup-card">
                     <div class="text-center mb-4">
-                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Happy Trails Logo" class="auth-logo mb-3">
+                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Happy Trails Logo"
+                            class="auth-logo mb-3">
                         <h2 class="script-font text-warning display-5">Join Our Family</h2>
                         <p class="text-muted lead">Start your beautiful journey with Happy Trails</p>
                         <div class="mb-3">
@@ -173,14 +186,14 @@
                             </small>
                         </div>
                     </div>
-                    
+
                     <!-- Progress Steps -->
                     <div class="progress-step">
                         <div class="step active" id="step1">1</div>
                         <div class="step" id="step2">2</div>
                         <div class="step" id="step3">3</div>
                     </div>
-                    
+
                     <form id="signupForm" method="post" action="{{ url_for('signup') }}">
                         <!-- Step 1: Basic Information -->
                         <div class="signup-step" id="signupStep1">
@@ -188,8 +201,8 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="firstName" name="firstName" 
-                                               placeholder="First Name" required>
+                                        <input type="text" class="form-control" id="firstName" name="firstName"
+                                            placeholder="First Name" required>
                                         <label for="firstName">
                                             <i class="fas fa-user text-warning me-2"></i>First Name
                                         </label>
@@ -197,39 +210,39 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="lastName" name="lastName" 
-                                               placeholder="Last Name" required>
+                                        <input type="text" class="form-control" id="lastName" name="lastName"
+                                            placeholder="Last Name" required>
                                         <label for="lastName">
                                             <i class="fas fa-user text-warning me-2"></i>Last Name
                                         </label>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="form-floating">
-                                <input type="email" class="form-control" id="email" name="email" 
-                                       placeholder="Email" required>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                                    required>
                                 <label for="email">
                                     <i class="fas fa-envelope text-warning me-2"></i>Email Address
                                 </label>
                             </div>
-                            
+
                             <div class="form-floating">
-                                <input type="tel" class="form-control" id="phone" name="phone" 
-                                       placeholder="Phone" required>
+                                <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone"
+                                    required>
                                 <label for="phone">
                                     <i class="fas fa-phone text-warning me-2"></i>Phone Number
                                 </label>
                             </div>
                         </div>
-                        
+
                         <!-- Step 2: Security -->
                         <div class="signup-step" id="signupStep2" style="display: none;">
                             <h4 class="script-font text-center mb-4">Security Setup</h4>
-                            
+
                             <div class="form-floating">
-                                <input type="password" class="form-control" id="password" name="password" 
-                                       placeholder="Password" required>
+                                <input type="password" class="form-control" id="password" name="password"
+                                    placeholder="Password" required>
                                 <label for="password">
                                     <i class="fas fa-lock text-warning me-2"></i>Create Password
                                 </label>
@@ -240,20 +253,20 @@
                                     <div class="strength-text" id="strengthText"></div>
                                 </div>
                             </div>
-                            
+
                             <div class="form-floating">
-                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" 
-                                       placeholder="Confirm Password" required>
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                    placeholder="Confirm Password" required>
                                 <label for="confirmPassword">
                                     <i class="fas fa-lock text-warning me-2"></i>Confirm Password
                                 </label>
                             </div>
                         </div>
-                        
+
                         <!-- Step 3: Terms & Completion -->
                         <div class="signup-step" id="signupStep3" style="display: none;">
                             <h4 class="script-font text-center mb-4">Almost There!</h4>
-                            
+
                             <div class="terms-section">
                                 <h5 class="text-warning mb-3">
                                     <i class="fas fa-heart me-2"></i>Welcome to the Happy Trails Family!
@@ -266,16 +279,16 @@
                                     <li><i class="fas fa-check text-success me-2"></i>Kavlin's artistic vision</li>
                                 </ul>
                             </div>
-                            
+
                             <div class="form-check mb-4">
                                 <input class="form-check-input" type="checkbox" id="termsCheck" required>
                                 <label class="form-check-label" for="termsCheck">
-                                    I agree to the 
-                                    <a href="#" class="text-warning">Terms of Service</a> and 
+                                    I agree to the
+                                    <a href="#" class="text-warning">Terms of Service</a> and
                                     <a href="#" class="text-warning">Privacy Policy</a>
                                 </label>
                             </div>
-                            
+
                             <div class="form-check mb-4">
                                 <input class="form-check-input" type="checkbox" id="newsletterCheck">
                                 <label class="form-check-label" for="newsletterCheck">
@@ -283,7 +296,7 @@
                                 </label>
                             </div>
                         </div>
-                        
+
                         <!-- Navigation Buttons -->
                         <div class="d-flex justify-content-between mt-4">
                             <button type="button" class="btn btn-outline-secondary" id="prevBtn" style="display: none;">
@@ -298,9 +311,9 @@
                                 </button>
                             </div>
                         </div>
-                        
+
                         <div class="text-center mt-4">
-                            <p class="mb-0">Already have an account? 
+                            <p class="mb-0">Already have an account?
                                 <a href="{{ url_for('login') }}" class="text-warning fw-semibold text-decoration-none">
                                     Welcome back!
                                 </a>
@@ -316,142 +329,142 @@
 
 {% block extra_js %}
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    let currentStep = 1;
-    const totalSteps = 3;
-    
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const submitBtn = document.getElementById('submitBtn');
-    
-    // Multi-step form navigation
-    function showStep(step) {
-        // Hide all steps
-        for (let i = 1; i <= totalSteps; i++) {
-            document.getElementById(`signupStep${i}`).style.display = 'none';
-            document.getElementById(`step${i}`).classList.remove('active', 'completed');
+    document.addEventListener('DOMContentLoaded', function () {
+        let currentStep = 1;
+        const totalSteps = 3;
+
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Multi-step form navigation
+        function showStep(step) {
+            // Hide all steps
+            for (let i = 1; i <= totalSteps; i++) {
+                document.getElementById(`signupStep${i}`).style.display = 'none';
+                document.getElementById(`step${i}`).classList.remove('active', 'completed');
+            }
+
+            // Show current step
+            document.getElementById(`signupStep${step}`).style.display = 'block';
+            document.getElementById(`step${step}`).classList.add('active');
+
+            // Mark completed steps
+            for (let i = 1; i < step; i++) {
+                document.getElementById(`step${i}`).classList.add('completed');
+            }
+
+            // Update navigation buttons
+            prevBtn.style.display = step > 1 ? 'block' : 'none';
+            nextBtn.style.display = step < totalSteps ? 'block' : 'none';
+            submitBtn.style.display = step === totalSteps ? 'block' : 'none';
         }
-        
-        // Show current step
-        document.getElementById(`signupStep${step}`).style.display = 'block';
-        document.getElementById(`step${step}`).classList.add('active');
-        
-        // Mark completed steps
-        for (let i = 1; i < step; i++) {
-            document.getElementById(`step${i}`).classList.add('completed');
-        }
-        
-        // Update navigation buttons
-        prevBtn.style.display = step > 1 ? 'block' : 'none';
-        nextBtn.style.display = step < totalSteps ? 'block' : 'none';
-        submitBtn.style.display = step === totalSteps ? 'block' : 'none';
-    }
-    
-    nextBtn.addEventListener('click', function() {
-        if (validateCurrentStep()) {
-            currentStep++;
-            showStep(currentStep);
-        }
-    });
-    
-    prevBtn.addEventListener('click', function() {
-        currentStep--;
-        showStep(currentStep);
-    });
-    
-    function validateCurrentStep() {
-        const currentStepElement = document.getElementById(`signupStep${currentStep}`);
-        const inputs = currentStepElement.querySelectorAll('input[required]');
-        let isValid = true;
-        
-        inputs.forEach(input => {
-            if (!input.value.trim()) {
-                input.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                input.classList.remove('is-invalid');
-                input.classList.add('is-valid');
+
+        nextBtn.addEventListener('click', function () {
+            if (validateCurrentStep()) {
+                currentStep++;
+                showStep(currentStep);
             }
         });
-        
-        // Additional validation for step 2 (passwords)
-        if (currentStep === 2) {
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            
-            if (password !== confirmPassword) {
-                document.getElementById('confirmPassword').classList.add('is-invalid');
-                isValid = false;
+
+        prevBtn.addEventListener('click', function () {
+            currentStep--;
+            showStep(currentStep);
+        });
+
+        function validateCurrentStep() {
+            const currentStepElement = document.getElementById(`signupStep${currentStep}`);
+            const inputs = currentStepElement.querySelectorAll('input[required]');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    input.classList.remove('is-invalid');
+                    input.classList.add('is-valid');
+                }
+            });
+
+            // Additional validation for step 2 (passwords)
+            if (currentStep === 2) {
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+
+                if (password !== confirmPassword) {
+                    document.getElementById('confirmPassword').classList.add('is-invalid');
+                    isValid = false;
+                }
+            }
+
+            return isValid;
+        }
+
+        // Password strength indicator
+        const passwordInput = document.getElementById('password');
+        const strengthBar = document.getElementById('strengthBar');
+        const strengthText = document.getElementById('strengthText');
+
+        passwordInput.addEventListener('input', function () {
+            const password = this.value;
+            const strength = calculatePasswordStrength(password);
+
+            strengthBar.style.width = strength.percentage + '%';
+            strengthBar.className = `strength-bar ${strength.colorClass}`;
+            strengthText.textContent = strength.text;
+            strengthText.className = `strength-text ${strength.textClass}`;
+        });
+
+        function calculatePasswordStrength(password) {
+            let score = 0;
+            let feedback = [];
+
+            if (password.length >= 8) score += 20;
+            else feedback.push('8+ characters');
+
+            if (/[a-z]/.test(password)) score += 20;
+            else feedback.push('lowercase');
+
+            if (/[A-Z]/.test(password)) score += 20;
+            else feedback.push('uppercase');
+
+            if (/[0-9]/.test(password)) score += 20;
+            else feedback.push('numbers');
+
+            if (/[^a-zA-Z0-9]/.test(password)) score += 20;
+            else feedback.push('symbols');
+
+            if (score < 40) {
+                return {
+                    percentage: score,
+                    colorClass: 'bg-danger',
+                    textClass: 'text-danger',
+                    text: '😟 Weak - Add ' + feedback.slice(0, 2).join(', ')
+                };
+            } else if (score < 60) {
+                return {
+                    percentage: score,
+                    colorClass: 'bg-warning',
+                    textClass: 'text-warning',
+                    text: '😐 Fair - Add ' + feedback.slice(0, 1).join(', ')
+                };
+            } else if (score < 80) {
+                return {
+                    percentage: score,
+                    colorClass: 'bg-info',
+                    textClass: 'text-info',
+                    text: '😊 Good - Almost there!'
+                };
+            } else {
+                return {
+                    percentage: score,
+                    colorClass: 'bg-success',
+                    textClass: 'text-success',
+                    text: '🎉 Excellent - Your password is strong!'
+                };
             }
         }
-        
-        return isValid;
-    }
-    
-    // Password strength indicator
-    const passwordInput = document.getElementById('password');
-    const strengthBar = document.getElementById('strengthBar');
-    const strengthText = document.getElementById('strengthText');
-    
-    passwordInput.addEventListener('input', function() {
-        const password = this.value;
-        const strength = calculatePasswordStrength(password);
-        
-        strengthBar.style.width = strength.percentage + '%';
-        strengthBar.className = `strength-bar ${strength.colorClass}`;
-        strengthText.textContent = strength.text;
-        strengthText.className = `strength-text ${strength.textClass}`;
     });
-    
-    function calculatePasswordStrength(password) {
-        let score = 0;
-        let feedback = [];
-        
-        if (password.length >= 8) score += 20;
-        else feedback.push('8+ characters');
-        
-        if (/[a-z]/.test(password)) score += 20;
-        else feedback.push('lowercase');
-        
-        if (/[A-Z]/.test(password)) score += 20;
-        else feedback.push('uppercase');
-        
-        if (/[0-9]/.test(password)) score += 20;
-        else feedback.push('numbers');
-        
-        if (/[^a-zA-Z0-9]/.test(password)) score += 20;
-        else feedback.push('symbols');
-        
-        if (score < 40) {
-            return {
-                percentage: score,
-                colorClass: 'bg-danger',
-                textClass: 'text-danger',
-                text: '😟 Weak - Add ' + feedback.slice(0, 2).join(', ')
-            };
-        } else if (score < 60) {
-            return {
-                percentage: score,
-                colorClass: 'bg-warning',
-                textClass: 'text-warning',
-                text: '😐 Fair - Add ' + feedback.slice(0, 1).join(', ')
-            };
-        } else if (score < 80) {
-            return {
-                percentage: score,
-                colorClass: 'bg-info',
-                textClass: 'text-info',
-                text: '😊 Good - Almost there!'
-            };
-        } else {
-            return {
-                percentage: score,
-                colorClass: 'bg-success',
-                textClass: 'text-success',
-                text: '🎉 Excellent - Your password is strong!'
-            };
-        }
-    }
-});
 </script>
 {% endblock %}
