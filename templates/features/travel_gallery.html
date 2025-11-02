@@ -10,7 +10,7 @@
 {% block content %}
 <!-- ============================================
      ✨ KAVLIN'S ENCHANTED 3D MEMORY GALLERY
-     A Magical Photo Experience
+     Phase 1: Gallery View | Phase 2: Upload System
      ============================================ -->
 <div class="gallery-wrapper">
     
@@ -23,7 +23,7 @@
                 wrapped in golden memories and painted with watercolor dreams.
             </p>
             <div class="gallery-hero-quote">
-                "Every memory deserves to be treasured like a precious Polaroid" - Kavlin 💖
+                "Share your journey, inspire the world" - Kavlin 💖
             </div>
             
             <!-- Gallery Stats -->
@@ -58,198 +58,495 @@
         </div>
     </section>
 
-    <!-- === SEARCH & FILTER CONTROLS === -->
-    <section class="gallery-controls">
+    <!-- ============================================
+         📑 PHASE 2: TAB NAVIGATION SYSTEM
+         ============================================ -->
+    <section class="gallery-tabs-wrapper">
         <div class="container">
-            
-            <!-- Search Bar -->
-            <div class="search-bar-wrapper">
-                <form class="search-bar" id="gallerySearchForm">
-                    <input type="text" 
-                           class="search-input" 
-                           placeholder="🔍 Search memories by location, photographer..."
-                           name="search">
-                    <button type="submit" class="search-btn">
-                        <i class="fas fa-search me-2"></i>Search
-                    </button>
-                </form>
-            </div>
-
-            <!-- Destination Filter -->
-            <div class="filter-section">
-                <label class="filter-label">
-                    📍 Filter by Destination
-                </label>
-                <div class="filter-buttons">
-                    <button class="filter-btn active" data-filter-type="destination" data-filter="all">
-                        <i class="fas fa-globe me-1"></i>All Places
-                    </button>
-                    {% for destination in destinations %}
-                    <button class="filter-btn" data-filter-type="destination" data-filter="{{ destination }}">
-                        <i class="fas fa-location-dot me-1"></i>{{ destination }}
-                    </button>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <!-- Photo Type Filter -->
-            <div class="filter-section">
-                <label class="filter-label">
-                    📸 Filter by Type
-                </label>
-                <div class="filter-buttons">
-                    <button class="filter-btn active" data-filter-type="type" data-filter="all">
-                        All Types
-                    </button>
-                    <button class="filter-btn" data-filter-type="type" data-filter="landscape">
-                        <i class="fas fa-mountain me-1"></i>Landscapes
-                    </button>
-                    <button class="filter-btn" data-filter-type="type" data-filter="people">
-                        <i class="fas fa-users me-1"></i>People
-                    </button>
-                    <button class="filter-btn" data-filter-type="type" data-filter="bus">
-                        <i class="fas fa-bus me-1"></i>Buses
-                    </button>
-                    <button class="filter-btn" data-filter-type="type" data-filter="heritage">
-                        <i class="fas fa-landmark me-1"></i>Heritage
-                    </button>
-                </div>
-            </div>
-
-            <!-- Season Filter -->
-            <div class="filter-section">
-                <label class="filter-label">
-                    🌸 Filter by Season
-                </label>
-                <div class="filter-buttons">
-                    <button class="filter-btn active" data-filter-type="season" data-filter="all">
-                        All Seasons
-                    </button>
-                    <button class="filter-btn" data-filter-type="season" data-filter="spring">
-                        <i class="fas fa-seedling me-1"></i>Spring
-                    </button>
-                    <button class="filter-btn" data-filter-type="season" data-filter="summer">
-                        <i class="fas fa-sun me-1"></i>Summer
-                    </button>
-                    <button class="filter-btn" data-filter-type="season" data-filter="monsoon">
-                        <i class="fas fa-cloud-rain me-1"></i>Monsoon
-                    </button>
-                    <button class="filter-btn" data-filter-type="season" data-filter="autumn">
-                        <i class="fas fa-leaf me-1"></i>Autumn
-                    </button>
-                    <button class="filter-btn" data-filter-type="season" data-filter="winter">
-                        <i class="fas fa-snowflake me-1"></i>Winter
-                    </button>
-                </div>
-            </div>
-
-            <!-- Sort Controls -->
-            <div class="sort-controls">
-                <span class="sort-label">
-                    <i class="fas fa-sort me-2"></i>Sort by:
-                </span>
-                <select class="sort-select" id="sortSelect">
-                    <option value="latest">Latest First</option>
-                    <option value="popular">Most Popular</option>
-                    <option value="views">Most Viewed</option>
-                </select>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- === ENCHANTED POLAROID GALLERY === -->
-    <section class="gallery-section">
-        <div class="container">
-            
-            <div class="gallery-grid">
-                {% for photo in photos %}
-                <div class="photo-card" 
-                     data-destination="{{ photo.destination }}"
-                     data-type="{{ photo.type }}"
-                     data-season="{{ photo.season }}"
-                     data-date="{{ photo.date }}"
-                     data-likes="{{ photo.likes }}"
-                     data-views="{{ photo.views }}"
-                     data-photo-id="{{ photo.id }}">
-                    
-                    <!-- Decorative Elements -->
-                    {% set flowers = ['🌸', '🌺', '🌼', '🌻', '🌷'] %}
-                    {% set stamps = ['VISITED', 'MEMORIES', 'JOURNEY', 'ADVENTURE'] %}
-                    
-                    <span class="pressed-flower">{{ flowers[loop.index0 % 5] }}</span>
-                    <span class="travel-stamp">{{ stamps[loop.index0 % 4] }}</span>
-                    <span class="coffee-stain"></span>
-                    
-                    <!-- Photo Image -->
-                    <div class="photo-image-wrapper">
-                        <img src="{{ photo.image }}" alt="{{ photo.location }}" class="photo-image">
-                        <div class="watercolor-overlay"></div>
-                    </div>
-
-                    <!-- Photo Info -->
-                    <div class="photo-info">
-                        <div class="photo-location">{{ photo.location }}</div>
-                        <div class="photo-photographer">
-                            <i class="fas fa-camera me-1"></i>{{ photo.photographer }}
-                        </div>
-                        
-                        <div class="photo-tags">
-                            <span class="photo-tag">📍 {{ photo.destination }}</span>
-                            <span class="photo-tag">{{ photo.type|capitalize }}</span>
-                            <span class="photo-tag">{{ photo.season|capitalize }}</span>
-                        </div>
-                        
-                        <div class="photo-actions">
-                            <!-- Stats -->
-                            <div class="photo-stats">
-                                <span class="stat likes">
-                                    <i class="fas fa-heart"></i>
-                                    <span>{{ photo.likes }}</span>
-                                </span>
-                                <span class="stat">
-                                    <i class="fas fa-eye"></i>
-                                    <span>{{ photo.views }}</span>
-                                </span>
-                            </div>
-                            
-                            <!-- Action Buttons -->
-                            <div class="photo-action-btns">
-                                <button class="photo-action-btn" 
-                                        onclick="likePhoto(this, '{{ photo.id }}')"
-                                        title="Like this photo">
-                                    <i class="far fa-heart"></i>
-                                </button>
-                                <button class="photo-action-btn" 
-                                        onclick="sharePhoto('{{ photo.id }}', '{{ photo.location }}')"
-                                        title="Share">
-                                    <i class="fas fa-share-alt"></i>
-                                </button>
-                                <button class="photo-action-btn" 
-                                        onclick="viewOnMap('{{ photo.location }}')"
-                                        title="View on map">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Handwritten Note -->
-                    <span class="handwritten-note">{{ photo.date }}</span>
-                </div>
-                {% endfor %}
-            </div>
-
-            <!-- Load More Button -->
-            <div class="load-more-wrapper">
-                <button class="load-more-btn" onclick="loadMorePhotos()">
-                    <i class="fas fa-plus-circle me-2"></i>
-                    Load More Memories
+            <div class="gallery-tabs">
+                <!-- Tab 1: Gallery View (Phase 1) -->
+                <button class="gallery-tab active" data-tab="gallery-view">
+                    <i class="fas fa-images"></i>
+                    <span>Gallery View</span>
+                </button>
+                
+                <!-- Tab 2: Upload Photos (Phase 2) -->
+                <button class="gallery-tab" data-tab="upload-photos">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Upload Photos</span>
+                </button>
+                
+                <!-- Tab 3: My Uploads (Phase 2) -->
+                {% if current_user.is_authenticated %}
+                <button class="gallery-tab" data-tab="my-uploads">
+                    <i class="fas fa-user-images"></i>
+                    <span>My Uploads</span>
+                </button>
+                {% endif %}
+                
+                <!-- Tab 4: Pending Review (Phase 2) -->
+                <button class="gallery-tab" data-tab="pending-review">
+                    <i class="fas fa-clock"></i>
+                    <span>Pending Review</span>
                 </button>
             </div>
-
         </div>
     </section>
+
+    <!-- ============================================
+         📸 TAB 1: GALLERY VIEW (PHASE 1)
+         ============================================ -->
+    <div id="gallery-view" class="gallery-tab-content active">
+        
+        <!-- === SEARCH & FILTER CONTROLS === -->
+        <section class="gallery-controls">
+            <div class="container">
+                
+                <!-- Search Bar -->
+                <div class="search-bar-wrapper">
+                    <form class="search-bar" id="gallerySearchForm">
+                        <input type="text" 
+                               class="search-input" 
+                               placeholder="🔍 Search memories by location, photographer..."
+                               name="search">
+                        <button type="submit" class="search-btn">
+                            <i class="fas fa-search me-2"></i>Search
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Destination Filter -->
+                <div class="filter-section">
+                    <label class="filter-label">
+                        📍 Filter by Destination
+                    </label>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter-type="destination" data-filter="all">
+                            <i class="fas fa-globe me-1"></i>All Places
+                        </button>
+                        {% for destination in destinations %}
+                        <button class="filter-btn" data-filter-type="destination" data-filter="{{ destination }}">
+                            <i class="fas fa-location-dot me-1"></i>{{ destination }}
+                        </button>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Photo Type Filter -->
+                <div class="filter-section">
+                    <label class="filter-label">
+                        📸 Filter by Type
+                    </label>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter-type="type" data-filter="all">
+                            All Types
+                        </button>
+                        <button class="filter-btn" data-filter-type="type" data-filter="landscape">
+                            <i class="fas fa-mountain me-1"></i>Landscapes
+                        </button>
+                        <button class="filter-btn" data-filter-type="type" data-filter="people">
+                            <i class="fas fa-users me-1"></i>People
+                        </button>
+                        <button class="filter-btn" data-filter-type="type" data-filter="bus">
+                            <i class="fas fa-bus me-1"></i>Buses
+                        </button>
+                        <button class="filter-btn" data-filter-type="type" data-filter="heritage">
+                            <i class="fas fa-landmark me-1"></i>Heritage
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Season Filter -->
+                <div class="filter-section">
+                    <label class="filter-label">
+                        🌸 Filter by Season
+                    </label>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter-type="season" data-filter="all">
+                            All Seasons
+                        </button>
+                        <button class="filter-btn" data-filter-type="season" data-filter="spring">
+                            <i class="fas fa-seedling me-1"></i>Spring
+                        </button>
+                        <button class="filter-btn" data-filter-type="season" data-filter="summer">
+                            <i class="fas fa-sun me-1"></i>Summer
+                        </button>
+                        <button class="filter-btn" data-filter-type="season" data-filter="monsoon">
+                            <i class="fas fa-cloud-rain me-1"></i>Monsoon
+                        </button>
+                        <button class="filter-btn" data-filter-type="season" data-filter="autumn">
+                            <i class="fas fa-leaf me-1"></i>Autumn
+                        </button>
+                        <button class="filter-btn" data-filter-type="season" data-filter="winter">
+                            <i class="fas fa-snowflake me-1"></i>Winter
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sort Controls -->
+                <div class="sort-controls">
+                    <span class="sort-label">
+                        <i class="fas fa-sort me-2"></i>Sort by:
+                    </span>
+                    <select class="sort-select" id="sortSelect">
+                        <option value="latest">Latest First</option>
+                        <option value="popular">Most Popular</option>
+                        <option value="views">Most Viewed</option>
+                    </select>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- === ENCHANTED POLAROID GALLERY === -->
+        <section class="gallery-section">
+            <div class="container">
+                
+                <div class="gallery-grid">
+                    {% for photo in photos %}
+                    <div class="photo-card" 
+                         data-destination="{{ photo.destination }}"
+                         data-type="{{ photo.type }}"
+                         data-season="{{ photo.season }}"
+                         data-date="{{ photo.date }}"
+                         data-likes="{{ photo.likes }}"
+                         data-views="{{ photo.views }}"
+                         data-photo-id="{{ photo.id }}">
+                        
+                        <!-- Decorative Elements -->
+                        {% set flowers = ['🌸', '🌺', '🌼', '🌻', '🌷'] %}
+                        {% set stamps = ['VISITED', 'MEMORIES', 'JOURNEY', 'ADVENTURE'] %}
+                        
+                        <span class="pressed-flower">{{ flowers[loop.index0 % 5] }}</span>
+                        <span class="travel-stamp">{{ stamps[loop.index0 % 4] }}</span>
+                        <span class="coffee-stain"></span>
+                        
+                        <!-- Photo Image -->
+                        <div class="photo-image-wrapper">
+                            <img src="{{ photo.image }}" alt="{{ photo.location }}" class="photo-image">
+                            <div class="watercolor-overlay"></div>
+                        </div>
+
+                        <!-- Photo Info -->
+                        <div class="photo-info">
+                            <div class="photo-location">{{ photo.location }}</div>
+                            <div class="photo-photographer">
+                                <i class="fas fa-camera me-1"></i>{{ photo.photographer }}
+                            </div>
+                            
+                            <div class="photo-tags">
+                                <span class="photo-tag">📍 {{ photo.destination }}</span>
+                                <span class="photo-tag">{{ photo.type|capitalize }}</span>
+                                <span class="photo-tag">{{ photo.season|capitalize }}</span>
+                            </div>
+                            
+                            <div class="photo-actions">
+                                <!-- Stats -->
+                                <div class="photo-stats">
+                                    <span class="stat likes">
+                                        <i class="fas fa-heart"></i>
+                                        <span>{{ photo.likes }}</span>
+                                    </span>
+                                    <span class="stat">
+                                        <i class="fas fa-eye"></i>
+                                        <span>{{ photo.views }}</span>
+                                    </span>
+                                </div>
+                                
+                                <!-- Action Buttons -->
+                                <div class="photo-action-btns">
+                                    <button class="photo-action-btn" 
+                                            onclick="likePhoto(this, '{{ photo.id }}')"
+                                            title="Like this photo">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                    <button class="photo-action-btn" 
+                                            onclick="sharePhoto('{{ photo.id }}', '{{ photo.location }}')"
+                                            title="Share">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="photo-action-btn" 
+                                            onclick="viewOnMap('{{ photo.location }}')"
+                                            title="View on map">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Handwritten Note -->
+                        <span class="handwritten-note">{{ photo.date }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Load More Button -->
+                <div class="load-more-wrapper">
+                    <button class="load-more-btn" onclick="loadMorePhotos()">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        Load More Memories
+                    </button>
+                </div>
+
+            </div>
+        </section>
+        
+    </div>
+
+    <!-- ============================================
+         📤 TAB 2: UPLOAD PHOTOS (PHASE 2)
+         ============================================ -->
+    <div id="upload-photos" class="gallery-tab-content">
+        <section class="upload-section">
+            <div class="container">
+                
+                <!-- Upload Header -->
+                <div class="upload-header">
+                    <h2 class="upload-title">Share Your Journey 📸</h2>
+                    <p class="upload-subtitle">
+                        Your memories inspire others! Upload your beautiful travel photos and
+                        become part of Kavlin's Enchanted Gallery community.
+                    </p>
+                </div>
+
+                <!-- Upload Container -->
+                <div class="upload-container">
+                    
+                    <!-- Drag & Drop Zone -->
+                    <div class="upload-dropzone" id="uploadDropzone">
+                        <div class="dropzone-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="dropzone-text">Drag & Drop Your Photos Here</div>
+                        <div class="dropzone-subtext">or click to browse your files</div>
+                        <button type="button" class="browse-btn" id="browseBtn">
+                            <i class="fas fa-folder-open me-2"></i>
+                            Browse Files
+                        </button>
+                        <input type="file" id="fileInput" accept="image/jpeg,image/jpg,image/png,image/heic" multiple hidden>
+                    </div>
+
+                    <!-- Upload Guidelines -->
+                    <div class="upload-guidelines">
+                        <h3 class="guidelines-title">
+                            <i class="fas fa-info-circle"></i>
+                            Upload Guidelines
+                        </h3>
+                        <ul class="guidelines-list">
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Maximum 5 photos per upload session</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Each photo should be under 10MB</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Supported formats: JPG, PNG, HEIC</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Photos will be reviewed before appearing in gallery</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Please upload your own original photos only</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Add meaningful captions to help others discover your memories</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Preview Grid -->
+                    <div class="preview-grid" id="previewGrid"></div>
+
+                    <!-- Upload Form -->
+                    <div id="uploadFormSection" style="display: none;">
+                        <form class="upload-form" id="uploadForm">
+                            
+                            <!-- Photo Details Section -->
+                            <div class="form-section">
+                                <h3 class="form-section-title">
+                                    <i class="fas fa-info-circle"></i>
+                                    Photo Details
+                                </h3>
+                                
+                                <!-- Destination Selection -->
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Destination <span class="required">*</span>
+                                    </label>
+                                    <div class="icon-grid">
+                                        {% for destination in destinations %}
+                                        <div class="icon-option" data-type="destination" data-value="{{ destination|lower }}">
+                                            <i class="fas fa-map-pin"></i>
+                                            <span>{{ destination }}</span>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <!-- Photo Type Selection -->
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Photo Type <span class="required">*</span>
+                                    </label>
+                                    <div class="icon-grid">
+                                        <div class="icon-option" data-type="photo-type" data-value="landscape">
+                                            <i class="fas fa-mountain"></i>
+                                            <span>Landscape</span>
+                                        </div>
+                                        <div class="icon-option" data-type="photo-type" data-value="people">
+                                            <i class="fas fa-users"></i>
+                                            <span>People</span>
+                                        </div>
+                                        <div class="icon-option" data-type="photo-type" data-value="bus">
+                                            <i class="fas fa-bus"></i>
+                                            <span>Bus</span>
+                                        </div>
+                                        <div class="icon-option" data-type="photo-type" data-value="heritage">
+                                            <i class="fas fa-landmark"></i>
+                                            <span>Heritage</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Season Selection -->
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Season <span class="required">*</span>
+                                    </label>
+                                    <div class="icon-grid">
+                                        <div class="icon-option" data-type="season" data-value="spring">
+                                            <i class="fas fa-seedling"></i>
+                                            <span>Spring</span>
+                                        </div>
+                                        <div class="icon-option" data-type="season" data-value="summer">
+                                            <i class="fas fa-sun"></i>
+                                            <span>Summer</span>
+                                        </div>
+                                        <div class="icon-option" data-type="season" data-value="monsoon">
+                                            <i class="fas fa-cloud-rain"></i>
+                                            <span>Monsoon</span>
+                                        </div>
+                                        <div class="icon-option" data-type="season" data-value="autumn">
+                                            <i class="fas fa-leaf"></i>
+                                            <span>Autumn</span>
+                                        </div>
+                                        <div class="icon-option" data-type="season" data-value="winter">
+                                            <i class="fas fa-snowflake"></i>
+                                            <span>Winter</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Location Name -->
+                                <div class="form-group">
+                                    <label class="form-label" for="photoLocation">
+                                        Location Name
+                                    </label>
+                                    <input type="text" 
+                                           id="photoLocation" 
+                                           class="form-input" 
+                                           placeholder="e.g., Mountain Peak, Valley View..."
+                                           maxlength="100">
+                                </div>
+
+                                <!-- Caption -->
+                                <div class="form-group caption-group">
+                                    <label class="form-label" for="photoCaption">
+                                        Caption <span class="required">*</span>
+                                    </label>
+                                    <textarea id="photoCaption" 
+                                              class="form-textarea" 
+                                              placeholder="Share your story behind this photo..."
+                                              maxlength="500"
+                                              required></textarea>
+                                    <button type="button" 
+                                            class="emoji-picker-btn" 
+                                            onclick="toggleEmojiPicker()"
+                                            title="Add emoji">
+                                        😊
+                                    </button>
+                                </div>
+
+                            </div>
+
+                            <!-- Upload Progress -->
+                            <div id="uploadProgress" class="upload-progress"></div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="submit-upload-btn" id="submitUploadBtn">
+                                <i class="fas fa-cloud-upload-alt me-2"></i>
+                                Upload Photos
+                            </button>
+
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         📊 TAB 3: MY UPLOADS (PHASE 2)
+         ============================================ -->
+    <div id="my-uploads" class="gallery-tab-content">
+        <section class="my-uploads-section">
+            <div class="container">
+                <div class="upload-header">
+                    <h2 class="upload-title">My Uploaded Photos 📷</h2>
+                    <p class="upload-subtitle">
+                        Track the status of your uploaded photos and see their performance.
+                    </p>
+                </div>
+
+                <div class="uploads-grid" id="myUploadsGrid">
+                    <!-- Dynamically populated via JavaScript -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         ⏳ TAB 4: PENDING REVIEW (PHASE 2)
+         ============================================ -->
+    <div id="pending-review" class="gallery-tab-content">
+        <section class="my-uploads-section">
+            <div class="container">
+                <div class="upload-header">
+                    <h2 class="upload-title">Photos Pending Review ⏳</h2>
+                    <p class="upload-subtitle">
+                        These beautiful photos are waiting to be approved by our moderation team.
+                    </p>
+                </div>
+
+                <div class="uploads-grid">
+                    <div class="upload-card">
+                        <span class="upload-status pending">Pending</span>
+                        <div class="photo-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400" alt="Sample" class="photo-image">
+                        </div>
+                        <div class="photo-info">
+                            <div class="photo-location">Beautiful Mountain View</div>
+                            <div class="photo-photographer">
+                                <i class="fas fa-camera me-1"></i>Community Upload
+                            </div>
+                            <div class="photo-date">
+                                <i class="fas fa-calendar me-1"></i>2024-01-24
+                            </div>
+                        </div>
+                    </div>
+                    <!-- More pending cards would be loaded dynamically -->
+                </div>
+            </div>
+        </section>
+    </div>
 
     <!-- === LIGHTBOX WITH 3D FLIP === -->
     <div id="lightbox" class="lightbox">
