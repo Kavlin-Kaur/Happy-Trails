@@ -1,0 +1,277 @@
+{% extends 'base.html' %}
+
+{% block title %}Travel Gallery - Happy Trails{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/travel_gallery.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<!-- ============================================
+     ✨ KAVLIN'S ENCHANTED 3D MEMORY GALLERY
+     A Magical Photo Experience
+     ============================================ -->
+<div class="gallery-wrapper">
+    
+    <!-- === HERO SECTION === -->
+    <section class="gallery-hero">
+        <div class="container">
+            <h1 class="gallery-hero-title">✨ Kavlin's Memory Gallery</h1>
+            <p class="gallery-hero-subtitle">
+                Step into an enchanted world where every photo floats like a cherished Polaroid,
+                wrapped in golden memories and painted with watercolor dreams.
+            </p>
+            <div class="gallery-hero-quote">
+                "Every memory deserves to be treasured like a precious Polaroid" - Kavlin 💖
+            </div>
+            
+            <!-- Gallery Stats -->
+            <div class="gallery-stats">
+                <div class="stat-box">
+                    <span class="stat-number">{{ photos|length }}+</span>
+                    <span class="stat-label">Photos</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">{{ destinations|length }}</span>
+                    <span class="stat-label">Destinations</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">{{ total_views }}</span>
+                    <span class="stat-label">Views</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">{{ total_likes }}</span>
+                    <span class="stat-label">Likes</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- === THEATER CURTAIN REVEAL === -->
+    <section class="curtain-container">
+        <div class="curtain curtain-left"></div>
+        <div class="curtain curtain-right"></div>
+        <div class="curtain-message">
+            <i class="fas fa-sparkles me-2"></i>
+            Opening the gallery...
+        </div>
+    </section>
+
+    <!-- === SEARCH & FILTER CONTROLS === -->
+    <section class="gallery-controls">
+        <div class="container">
+            
+            <!-- Search Bar -->
+            <div class="search-bar-wrapper">
+                <form class="search-bar" id="gallerySearchForm">
+                    <input type="text" 
+                           class="search-input" 
+                           placeholder="🔍 Search memories by location, photographer..."
+                           name="search">
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search me-2"></i>Search
+                    </button>
+                </form>
+            </div>
+
+            <!-- Destination Filter -->
+            <div class="filter-section">
+                <label class="filter-label">
+                    📍 Filter by Destination
+                </label>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter-type="destination" data-filter="all">
+                        <i class="fas fa-globe me-1"></i>All Places
+                    </button>
+                    {% for destination in destinations %}
+                    <button class="filter-btn" data-filter-type="destination" data-filter="{{ destination }}">
+                        <i class="fas fa-location-dot me-1"></i>{{ destination }}
+                    </button>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Photo Type Filter -->
+            <div class="filter-section">
+                <label class="filter-label">
+                    📸 Filter by Type
+                </label>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter-type="type" data-filter="all">
+                        All Types
+                    </button>
+                    <button class="filter-btn" data-filter-type="type" data-filter="landscape">
+                        <i class="fas fa-mountain me-1"></i>Landscapes
+                    </button>
+                    <button class="filter-btn" data-filter-type="type" data-filter="people">
+                        <i class="fas fa-users me-1"></i>People
+                    </button>
+                    <button class="filter-btn" data-filter-type="type" data-filter="bus">
+                        <i class="fas fa-bus me-1"></i>Buses
+                    </button>
+                    <button class="filter-btn" data-filter-type="type" data-filter="heritage">
+                        <i class="fas fa-landmark me-1"></i>Heritage
+                    </button>
+                </div>
+            </div>
+
+            <!-- Season Filter -->
+            <div class="filter-section">
+                <label class="filter-label">
+                    🌸 Filter by Season
+                </label>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter-type="season" data-filter="all">
+                        All Seasons
+                    </button>
+                    <button class="filter-btn" data-filter-type="season" data-filter="spring">
+                        <i class="fas fa-seedling me-1"></i>Spring
+                    </button>
+                    <button class="filter-btn" data-filter-type="season" data-filter="summer">
+                        <i class="fas fa-sun me-1"></i>Summer
+                    </button>
+                    <button class="filter-btn" data-filter-type="season" data-filter="monsoon">
+                        <i class="fas fa-cloud-rain me-1"></i>Monsoon
+                    </button>
+                    <button class="filter-btn" data-filter-type="season" data-filter="autumn">
+                        <i class="fas fa-leaf me-1"></i>Autumn
+                    </button>
+                    <button class="filter-btn" data-filter-type="season" data-filter="winter">
+                        <i class="fas fa-snowflake me-1"></i>Winter
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sort Controls -->
+            <div class="sort-controls">
+                <span class="sort-label">
+                    <i class="fas fa-sort me-2"></i>Sort by:
+                </span>
+                <select class="sort-select" id="sortSelect">
+                    <option value="latest">Latest First</option>
+                    <option value="popular">Most Popular</option>
+                    <option value="views">Most Viewed</option>
+                </select>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- === ENCHANTED POLAROID GALLERY === -->
+    <section class="gallery-section">
+        <div class="container">
+            
+            <div class="gallery-grid">
+                {% for photo in photos %}
+                <div class="photo-card" 
+                     data-destination="{{ photo.destination }}"
+                     data-type="{{ photo.type }}"
+                     data-season="{{ photo.season }}"
+                     data-date="{{ photo.date }}"
+                     data-likes="{{ photo.likes }}"
+                     data-views="{{ photo.views }}"
+                     data-photo-id="{{ photo.id }}">
+                    
+                    <!-- Decorative Elements -->
+                    {% set flowers = ['🌸', '🌺', '🌼', '🌻', '🌷'] %}
+                    {% set stamps = ['VISITED', 'MEMORIES', 'JOURNEY', 'ADVENTURE'] %}
+                    
+                    <span class="pressed-flower">{{ flowers[loop.index0 % 5] }}</span>
+                    <span class="travel-stamp">{{ stamps[loop.index0 % 4] }}</span>
+                    <span class="coffee-stain"></span>
+                    
+                    <!-- Photo Image -->
+                    <div class="photo-image-wrapper">
+                        <img src="{{ photo.image }}" alt="{{ photo.location }}" class="photo-image">
+                        <div class="watercolor-overlay"></div>
+                    </div>
+
+                    <!-- Photo Info -->
+                    <div class="photo-info">
+                        <div class="photo-location">{{ photo.location }}</div>
+                        <div class="photo-photographer">
+                            <i class="fas fa-camera me-1"></i>{{ photo.photographer }}
+                        </div>
+                        
+                        <div class="photo-tags">
+                            <span class="photo-tag">📍 {{ photo.destination }}</span>
+                            <span class="photo-tag">{{ photo.type|capitalize }}</span>
+                            <span class="photo-tag">{{ photo.season|capitalize }}</span>
+                        </div>
+                        
+                        <div class="photo-actions">
+                            <!-- Stats -->
+                            <div class="photo-stats">
+                                <span class="stat likes">
+                                    <i class="fas fa-heart"></i>
+                                    <span>{{ photo.likes }}</span>
+                                </span>
+                                <span class="stat">
+                                    <i class="fas fa-eye"></i>
+                                    <span>{{ photo.views }}</span>
+                                </span>
+                            </div>
+                            
+                            <!-- Action Buttons -->
+                            <div class="photo-action-btns">
+                                <button class="photo-action-btn" 
+                                        onclick="likePhoto(this, '{{ photo.id }}')"
+                                        title="Like this photo">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button class="photo-action-btn" 
+                                        onclick="sharePhoto('{{ photo.id }}', '{{ photo.location }}')"
+                                        title="Share">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <button class="photo-action-btn" 
+                                        onclick="viewOnMap('{{ photo.location }}')"
+                                        title="View on map">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Handwritten Note -->
+                    <span class="handwritten-note">{{ photo.date }}</span>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Load More Button -->
+            <div class="load-more-wrapper">
+                <button class="load-more-btn" onclick="loadMorePhotos()">
+                    <i class="fas fa-plus-circle me-2"></i>
+                    Load More Memories
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- === LIGHTBOX WITH 3D FLIP === -->
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-content">
+            <span class="lightbox-close">&times;</span>
+            <button class="lightbox-nav lightbox-prev">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <img src="" alt="Lightbox Photo" class="lightbox-image">
+            <button class="lightbox-nav lightbox-next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <div class="lightbox-info">
+                <div class="lightbox-location">Location Name</div>
+                <div class="lightbox-photographer">Photographer Name</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/travel_gallery.js') }}"></script>
+{% endblock %}
