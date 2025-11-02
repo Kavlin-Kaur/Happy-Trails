@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+
+{% block title %}Route Explorer - Happy Trails{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/route_explorer.css') }}">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<!-- ============================================
+     🗺️ ROUTE EXPLORER - PHASE 1
+     Interactive Map & Route Filtering
+     ============================================ -->
+<div class="route-explorer-wrapper">
+    
+    <!-- === HERO SECTION === -->
+    <section class="explorer-hero">
+        <div class="container">
+            <h1 class="explorer-hero-title">🗺️ Discover Your Journey</h1>
+            <p class="explorer-hero-subtitle">
+                Explore scenic routes through the beautiful hills of Himachal Pradesh.
+                Find the perfect path for your next adventure with Happy Trails.
+            </p>
+            <div class="explorer-hero-quote">
+                "The journey matters as much as the destination" - Kavlin 💖
+            </div>
+        </div>
+    </section>
+
+    <!-- === ROUTE EXPLORER MAIN SECTION === -->
+    <section class="explorer-main-section">
+        <div class="container-fluid">
+            <div class="explorer-layout">
+                
+                <!-- LEFT SIDEBAR: Filters & Route Cards -->
+                <aside class="explorer-sidebar">
+                    
+                    <!-- Search Bar -->
+                    <div class="explorer-search">
+                        <div class="search-box">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" 
+                                   id="routeSearchInput" 
+                                   class="search-input" 
+                                   placeholder="Search routes...">
+                        </div>
+                    </div>
+
+                    <!-- Filter Section -->
+                    <div class="filter-panel">
+                        <h3 class="filter-title">
+                            <i class="fas fa-filter"></i>
+                            Filter Routes
+                        </h3>
+
+                        <!-- From Location -->
+                        <div class="filter-group">
+                            <label class="filter-label">
+                                <i class="fas fa-map-marker-alt"></i>
+                                From
+                            </label>
+                            <select class="filter-select" id="filterFrom">
+                                <option value="">All Locations</option>
+                                <option value="Dharampur">Dharampur</option>
+                                <option value="Solan">Solan</option>
+                                <option value="Barog">Barog</option>
+                                <option value="Dagshai">Dagshai</option>
+                            </select>
+                        </div>
+
+                        <!-- To Location -->
+                        <div class="filter-group">
+                            <label class="filter-label">
+                                <i class="fas fa-location-arrow"></i>
+                                To
+                            </label>
+                            <select class="filter-select" id="filterTo">
+                                <option value="">All Locations</option>
+                                <option value="Dharampur">Dharampur</option>
+                                <option value="Solan">Solan</option>
+                                <option value="Barog">Barog</option>
+                                <option value="Dagshai">Dagshai</option>
+                            </select>
+                        </div>
+
+                        <!-- Bus Type -->
+                        <div class="filter-group">
+                            <label class="filter-label">
+                                <i class="fas fa-bus"></i>
+                                Bus Type
+                            </label>
+                            <div class="filter-pills">
+                                <button class="filter-pill active" data-type="all">
+                                    All Types
+                                </button>
+                                <button class="filter-pill" data-type="Standard">
+                                    Standard
+                                </button>
+                                <button class="filter-pill" data-type="Deluxe">
+                                    Deluxe
+                                </button>
+                                <button class="filter-pill" data-type="Premium">
+                                    Premium
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Reset Filters -->
+                        <button class="reset-filters-btn" id="resetFiltersBtn">
+                            <i class="fas fa-redo"></i>
+                            Reset Filters
+                        </button>
+                    </div>
+
+                    <!-- Route Cards -->
+                    <div class="route-cards-container" id="routeCardsContainer">
+                        <!-- Dynamically populated via JavaScript -->
+                    </div>
+
+                </aside>
+
+                <!-- RIGHT MAIN CONTENT: Interactive Map -->
+                <main class="explorer-map-container">
+                    
+                    <!-- Map Controls Overlay -->
+                    <div class="map-controls-overlay">
+                        <div class="map-stats">
+                            <div class="stat-badge">
+                                <i class="fas fa-route"></i>
+                                <span id="totalRoutesCount">{{ routes|length }}</span> Routes
+                            </div>
+                            <div class="stat-badge">
+                                <i class="fas fa-map-pin"></i>
+                                <span id="totalStopsCount">0</span> Stops
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Map -->
+                    <div id="routeMap" class="route-map"></div>
+
+                    <!-- Map Legend -->
+                    <div class="map-legend">
+                        <h4 class="legend-title">
+                            <i class="fas fa-info-circle"></i>
+                            Legend
+                        </h4>
+                        <div class="legend-items">
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: #FFD700;"></span>
+                                <span class="legend-label">Standard</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: #32CD32;"></span>
+                                <span class="legend-label">Deluxe</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: #FF6347;"></span>
+                                <span class="legend-label">Premium</span>
+                            </div>
+                            <div class="legend-item">
+                                <i class="fas fa-map-marker-alt" style="color: #FF8C00;"></i>
+                                <span class="legend-label">Bus Stops</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </main>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- === QUICK STATS SECTION === -->
+    <section class="quick-stats-section">
+        <div class="container">
+            <div class="quick-stats-grid">
+                <div class="quick-stat-card">
+                    <div class="stat-icon">🚌</div>
+                    <div class="stat-number">{{ routes|length }}</div>
+                    <div class="stat-label">Active Routes</div>
+                </div>
+                <div class="quick-stat-card">
+                    <div class="stat-icon">📍</div>
+                    <div class="stat-number">{{ destinations|length }}</div>
+                    <div class="stat-label">Destinations</div>
+                </div>
+                <div class="quick-stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-number">~45m</div>
+                    <div class="stat-label">Avg Duration</div>
+                </div>
+                <div class="quick-stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">On-Time Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    // Pass route data from Flask to JavaScript
+    const ROUTES_DATA = {{ routes_json|safe }};
+    const DESTINATIONS = {{ destinations|tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/route_explorer.js') }}"></script>
+{% endblock %}
