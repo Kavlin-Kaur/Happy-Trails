@@ -10,8 +10,8 @@
 
 {% block content %}
 <!-- ============================================
-     🗺️ ROUTE EXPLORER - PHASE 1
-     Interactive Map & Route Filtering
+     🗺️ ROUTE EXPLORER - PHASES 1 & 2
+     Interactive Map & Route Comparison
      ============================================ -->
 <div class="route-explorer-wrapper">
     
@@ -29,149 +29,319 @@
         </div>
     </section>
 
-    <!-- === ROUTE EXPLORER MAIN SECTION === -->
-    <section class="explorer-main-section">
-        <div class="container-fluid">
-            <div class="explorer-layout">
+    <!-- ============================================
+         📑 TAB NAVIGATION SYSTEM
+         ============================================ -->
+    <section class="explorer-tabs-wrapper">
+        <div class="container">
+            <div class="explorer-tabs">
+                <!-- Tab 1: Map View (Phase 1) -->
+                <button class="explorer-tab active" data-tab="map-view">
+                    <i class="fas fa-map"></i>
+                    <span>Map View</span>
+                </button>
                 
-                <!-- LEFT SIDEBAR: Filters & Route Cards -->
-                <aside class="explorer-sidebar">
-                    
-                    <!-- Search Bar -->
-                    <div class="explorer-search">
-                        <div class="search-box">
-                            <i class="fas fa-search search-icon"></i>
-                            <input type="text" 
-                                   id="routeSearchInput" 
-                                   class="search-input" 
-                                   placeholder="Search routes...">
-                        </div>
-                    </div>
-
-                    <!-- Filter Section -->
-                    <div class="filter-panel">
-                        <h3 class="filter-title">
-                            <i class="fas fa-filter"></i>
-                            Filter Routes
-                        </h3>
-
-                        <!-- From Location -->
-                        <div class="filter-group">
-                            <label class="filter-label">
-                                <i class="fas fa-map-marker-alt"></i>
-                                From
-                            </label>
-                            <select class="filter-select" id="filterFrom">
-                                <option value="">All Locations</option>
-                                <option value="Dharampur">Dharampur</option>
-                                <option value="Solan">Solan</option>
-                                <option value="Barog">Barog</option>
-                                <option value="Dagshai">Dagshai</option>
-                            </select>
-                        </div>
-
-                        <!-- To Location -->
-                        <div class="filter-group">
-                            <label class="filter-label">
-                                <i class="fas fa-location-arrow"></i>
-                                To
-                            </label>
-                            <select class="filter-select" id="filterTo">
-                                <option value="">All Locations</option>
-                                <option value="Dharampur">Dharampur</option>
-                                <option value="Solan">Solan</option>
-                                <option value="Barog">Barog</option>
-                                <option value="Dagshai">Dagshai</option>
-                            </select>
-                        </div>
-
-                        <!-- Bus Type -->
-                        <div class="filter-group">
-                            <label class="filter-label">
-                                <i class="fas fa-bus"></i>
-                                Bus Type
-                            </label>
-                            <div class="filter-pills">
-                                <button class="filter-pill active" data-type="all">
-                                    All Types
-                                </button>
-                                <button class="filter-pill" data-type="Standard">
-                                    Standard
-                                </button>
-                                <button class="filter-pill" data-type="Deluxe">
-                                    Deluxe
-                                </button>
-                                <button class="filter-pill" data-type="Premium">
-                                    Premium
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Reset Filters -->
-                        <button class="reset-filters-btn" id="resetFiltersBtn">
-                            <i class="fas fa-redo"></i>
-                            Reset Filters
-                        </button>
-                    </div>
-
-                    <!-- Route Cards -->
-                    <div class="route-cards-container" id="routeCardsContainer">
-                        <!-- Dynamically populated via JavaScript -->
-                    </div>
-
-                </aside>
-
-                <!-- RIGHT MAIN CONTENT: Interactive Map -->
-                <main class="explorer-map-container">
-                    
-                    <!-- Map Controls Overlay -->
-                    <div class="map-controls-overlay">
-                        <div class="map-stats">
-                            <div class="stat-badge">
-                                <i class="fas fa-route"></i>
-                                <span id="totalRoutesCount">{{ routes|length }}</span> Routes
-                            </div>
-                            <div class="stat-badge">
-                                <i class="fas fa-map-pin"></i>
-                                <span id="totalStopsCount">0</span> Stops
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Interactive Map -->
-                    <div id="routeMap" class="route-map"></div>
-
-                    <!-- Map Legend -->
-                    <div class="map-legend">
-                        <h4 class="legend-title">
-                            <i class="fas fa-info-circle"></i>
-                            Legend
-                        </h4>
-                        <div class="legend-items">
-                            <div class="legend-item">
-                                <span class="legend-color" style="background: #FFD700;"></span>
-                                <span class="legend-label">Standard</span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-color" style="background: #32CD32;"></span>
-                                <span class="legend-label">Deluxe</span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-color" style="background: #FF6347;"></span>
-                                <span class="legend-label">Premium</span>
-                            </div>
-                            <div class="legend-item">
-                                <i class="fas fa-map-marker-alt" style="color: #FF8C00;"></i>
-                                <span class="legend-label">Bus Stops</span>
-                            </div>
-                        </div>
-                    </div>
-
-                </main>
-
+                <!-- Tab 2: Compare Routes (Phase 2) -->
+                <button class="explorer-tab" data-tab="compare-routes">
+                    <i class="fas fa-balance-scale"></i>
+                    <span>Compare Routes</span>
+                </button>
+                
+                <!-- Tab 3: Route Details (Phase 2) -->
+                <button class="explorer-tab" data-tab="route-details">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Route Details</span>
+                </button>
             </div>
         </div>
     </section>
+
+    <!-- ============================================
+         📍 TAB 1: MAP VIEW (PHASE 1)
+         ============================================ -->
+    <div id="map-view" class="explorer-tab-content active">
+        <section class="explorer-main-section">
+            <div class="container-fluid">
+                <div class="explorer-layout">
+                    
+                    <!-- LEFT SIDEBAR: Filters & Route Cards -->
+                    <aside class="explorer-sidebar">
+                        
+                        <!-- Search Bar -->
+                        <div class="explorer-search">
+                            <div class="search-box">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" 
+                                       id="routeSearchInput" 
+                                       class="search-input" 
+                                       placeholder="Search routes...">
+                            </div>
+                        </div>
+
+                        <!-- Filter Section -->
+                        <div class="filter-panel">
+                            <h3 class="filter-title">
+                                <i class="fas fa-filter"></i>
+                                Filter Routes
+                            </h3>
+
+                            <!-- From Location -->
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    From
+                                </label>
+                                <select class="filter-select" id="filterFrom">
+                                    <option value="">All Locations</option>
+                                    <option value="Dharampur">Dharampur</option>
+                                    <option value="Solan">Solan</option>
+                                    <option value="Barog">Barog</option>
+                                    <option value="Dagshai">Dagshai</option>
+                                </select>
+                            </div>
+
+                            <!-- To Location -->
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-location-arrow"></i>
+                                    To
+                                </label>
+                                <select class="filter-select" id="filterTo">
+                                    <option value="">All Locations</option>
+                                    <option value="Dharampur">Dharampur</option>
+                                    <option value="Solan">Solan</option>
+                                    <option value="Barog">Barog</option>
+                                    <option value="Dagshai">Dagshai</option>
+                                </select>
+                            </div>
+
+                            <!-- Bus Type -->
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-bus"></i>
+                                    Bus Type
+                                </label>
+                                <div class="filter-pills">
+                                    <button class="filter-pill active" data-type="all">
+                                        All Types
+                                    </button>
+                                    <button class="filter-pill" data-type="Standard">
+                                        Standard
+                                    </button>
+                                    <button class="filter-pill" data-type="Deluxe">
+                                        Deluxe
+                                    </button>
+                                    <button class="filter-pill" data-type="Premium">
+                                        Premium
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Reset Filters -->
+                            <button class="reset-filters-btn" id="resetFiltersBtn">
+                                <i class="fas fa-redo"></i>
+                                Reset Filters
+                            </button>
+                        </div>
+
+                        <!-- Route Cards -->
+                        <div class="route-cards-container" id="routeCardsContainer">
+                            <!-- Dynamically populated via JavaScript -->
+                        </div>
+
+                    </aside>
+
+                    <!-- RIGHT MAIN CONTENT: Interactive Map -->
+                    <main class="explorer-map-container">
+                        
+                        <!-- Map Controls Overlay -->
+                        <div class="map-controls-overlay">
+                            <div class="map-stats">
+                                <div class="stat-badge">
+                                    <i class="fas fa-route"></i>
+                                    <span id="totalRoutesCount">{{ routes|length }}</span> Routes
+                                </div>
+                                <div class="stat-badge">
+                                    <i class="fas fa-map-pin"></i>
+                                    <span id="totalStopsCount">0</span> Stops
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Map -->
+                        <div id="routeMap" class="route-map"></div>
+
+                        <!-- Map Legend -->
+                        <div class="map-legend">
+                            <h4 class="legend-title">
+                                <i class="fas fa-info-circle"></i>
+                                Legend
+                            </h4>
+                            <div class="legend-items">
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background: #FFD700;"></span>
+                                    <span class="legend-label">Standard</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background: #32CD32;"></span>
+                                    <span class="legend-label">Deluxe</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background: #FF6347;"></span>
+                                    <span class="legend-label">Premium</span>
+                                </div>
+                                <div class="legend-item">
+                                    <i class="fas fa-map-marker-alt" style="color: #FF8C00;"></i>
+                                    <span class="legend-label">Bus Stops</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </main>
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         📊 TAB 2: COMPARE ROUTES (PHASE 2)
+         ============================================ -->
+    <div id="compare-routes" class="explorer-tab-content">
+        <section class="compare-section">
+            <div class="container">
+                
+                <!-- Compare Header -->
+                <div class="compare-header">
+                    <h2 class="compare-title">
+                        <i class="fas fa-balance-scale"></i>
+                        Route Comparison Tool
+                    </h2>
+                    <p class="compare-subtitle">
+                        Select up to 3 routes to compare side-by-side. Find the best route for your journey!
+                    </p>
+                </div>
+
+                <!-- Route Selection -->
+                <div class="route-selection-panel">
+                    <h3 class="selection-title">
+                        <i class="fas fa-hand-pointer"></i>
+                        Select Routes to Compare
+                    </h3>
+                    <div class="selection-grid" id="selectionGrid">
+                        <!-- Dynamically populated -->
+                    </div>
+                    <button class="compare-btn" id="compareSelectedBtn" disabled>
+                        <i class="fas fa-chart-bar me-2"></i>
+                        Compare Selected Routes
+                    </button>
+                </div>
+
+                <!-- Comparison Result -->
+                <div class="comparison-result" id="comparisonResult" style="display: none;">
+                    
+                    <!-- Optimal Route Suggestion -->
+                    <div class="optimal-suggestion" id="optimalSuggestion">
+                        <!-- Dynamically populated -->
+                    </div>
+
+                    <!-- Comparison Table -->
+                    <div class="comparison-table-wrapper">
+                        <h3 class="comparison-section-title">
+                            <i class="fas fa-table"></i>
+                            Detailed Comparison
+                        </h3>
+                        <div class="comparison-table" id="comparisonTable">
+                            <!-- Dynamically populated -->
+                        </div>
+                    </div>
+
+                    <!-- Visual Charts -->
+                    <div class="comparison-charts">
+                        <h3 class="comparison-section-title">
+                            <i class="fas fa-chart-line"></i>
+                            Visual Analysis
+                        </h3>
+                        <div class="charts-grid">
+                            <div class="chart-card">
+                                <h4 class="chart-title">Distance Comparison</h4>
+                                <canvas id="distanceChart"></canvas>
+                            </div>
+                            <div class="chart-card">
+                                <h4 class="chart-title">Duration Comparison</h4>
+                                <canvas id="durationChart"></canvas>
+                            </div>
+                            <div class="chart-card">
+                                <h4 class="chart-title">Price Comparison</h4>
+                                <canvas id="priceChart"></canvas>
+                            </div>
+                            <div class="chart-card">
+                                <h4 class="chart-title">Overall Rating</h4>
+                                <canvas id="ratingChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="comparison-actions">
+                        <button class="action-btn export-btn" onclick="exportComparison()">
+                            <i class="fas fa-download"></i>
+                            Export Comparison
+                        </button>
+                        <button class="action-btn save-btn" onclick="saveComparison()">
+                            <i class="fas fa-bookmark"></i>
+                            Save Comparison
+                        </button>
+                        <button class="action-btn reset-btn" onclick="resetComparison()">
+                            <i class="fas fa-redo"></i>
+                            New Comparison
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         📋 TAB 3: ROUTE DETAILS (PHASE 2)
+         ============================================ -->
+    <div id="route-details" class="explorer-tab-content">
+        <section class="details-section">
+            <div class="container">
+                
+                <!-- Details Header -->
+                <div class="details-header">
+                    <h2 class="details-title">
+                        <i class="fas fa-info-circle"></i>
+                        Detailed Route Information
+                    </h2>
+                    <p class="details-subtitle">
+                        Comprehensive information about each route including schedules, amenities, and booking options.
+                    </p>
+                </div>
+
+                <!-- Route Selector -->
+                <div class="route-selector-panel">
+                    <label class="selector-label">
+                        <i class="fas fa-route"></i>
+                        Select a Route to View Details
+                    </label>
+                    <select class="route-selector" id="detailsRouteSelector">
+                        <option value="">Choose a route...</option>
+                        <!-- Dynamically populated -->
+                    </select>
+                </div>
+
+                <!-- Route Details Content -->
+                <div class="route-details-content" id="routeDetailsContent" style="display: none;">
+                    <!-- Dynamically populated -->
+                </div>
+
+            </div>
+        </section>
+    </div>
 
     <!-- === QUICK STATS SECTION === -->
     <section class="quick-stats-section">
@@ -206,6 +376,7 @@
 
 {% block extra_js %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     // Pass route data from Flask to JavaScript
     const ROUTES_DATA = {{ routes_json|safe }};
