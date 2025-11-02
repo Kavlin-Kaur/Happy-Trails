@@ -2580,3 +2580,1078 @@
     color: #6C757D;
     line-height: 1.7;
 }
+
+/* ============================================
+   ⭐ PHASE 5: KAVLIN'S FAVORITES & ADVANCED
+   Personal Recommendations & Advanced Features
+   ============================================ */
+
+/* === FAVORITES SECTION === */
+.favorites-section {
+    padding: 50px 0;
+}
+
+/* Kavlin's Introduction */
+.kavlin-intro {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 140, 0, 0.15));
+    border-radius: 30px;
+    padding: 50px;
+    margin-bottom: 60px;
+    border: 3px solid rgba(255, 215, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.kavlin-intro::before {
+    content: '💖';
+    position: absolute;
+    top: -30px;
+    right: 50px;
+    font-size: 8rem;
+    opacity: 0.1;
+    animation: heartbeat 2s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.kavlin-intro-content {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.kavlin-avatar {
+    position: relative;
+    text-align: center;
+}
+
+.kavlin-avatar img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 5px solid #FFD700;
+    box-shadow: 0 10px 40px rgba(255, 215, 0, 0.4);
+    animation: avatarFloat 3s ease-in-out infinite;
+}
+
+@keyframes avatarFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.kavlin-badge {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+}
+
+.kavlin-intro-text {
+    padding: 20px;
+}
+
+.kavlin-intro-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: #F57F17;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.kavlin-intro-description {
+    color: #2C3E50;
+    line-height: 1.8;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.kavlin-signature {
+    font-size: 1.2rem;
+    color: #6C757D;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Travel Mood Selector */
+.mood-selector-section {
+    background: white;
+    border-radius: 25px;
+    padding: 40px;
+    margin-bottom: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.mood-selector-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.2rem;
+    color: #F57F17;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.mood-selector-subtitle {
+    text-align: center;
+    color: #6C757D;
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+.mood-pills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.mood-pill {
+    background: rgba(255, 249, 230, 0.5);
+    border: 3px solid rgba(255, 215, 0, 0.3);
+    border-radius: 20px;
+    padding: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mood-pill:hover {
+    border-color: #FFD700;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
+    background: rgba(255, 215, 0, 0.2);
+}
+
+.mood-pill.active {
+    border-color: #FFD700;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 140, 0, 0.2));
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+}
+
+.mood-icon {
+    font-size: 3rem;
+    display: block;
+    animation: moodBounce 2s ease-in-out infinite;
+}
+
+@keyframes moodBounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.mood-label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2C3E50;
+    display: block;
+}
+
+.mood-description {
+    font-size: 0.9rem;
+    color: #6C757D;
+    display: block;
+}
+
+/* Seasonal Recommendations */
+.seasonal-recommendations {
+    background: white;
+    border-radius: 25px;
+    padding: 40px;
+    margin-bottom: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.seasonal-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.2rem;
+    color: #F57F17;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.seasonal-tabs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.seasonal-tab {
+    background: rgba(255, 249, 230, 0.5);
+    border: 2px solid #E9ECEF;
+    color: #2C3E50;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.seasonal-tab:hover,
+.seasonal-tab.active {
+    border-color: #FFD700;
+    background: rgba(255, 215, 0, 0.2);
+    color: #F57F17;
+    transform: translateY(-2px);
+}
+
+.seasonal-content {
+    min-height: 300px;
+}
+
+.seasonal-route-card {
+    background: rgba(255, 249, 230, 0.5);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 250px 1fr auto;
+    gap: 25px;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.seasonal-route-card:hover {
+    border-color: #FFD700;
+    transform: translateX(5px);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+}
+
+.seasonal-route-image {
+    width: 250px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.seasonal-route-info h4 {
+    font-size: 1.4rem;
+    color: #2C3E50;
+    margin-bottom: 10px;
+}
+
+.seasonal-route-reason {
+    background: white;
+    border-left: 4px solid #FFD700;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.seasonal-route-reason strong {
+    color: #F57F17;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.seasonal-route-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Top Picks Section */
+.top-picks-section {
+    margin-bottom: 60px;
+}
+
+.top-picks-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: #F57F17;
+    text-align: center;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.top-picks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.top-pick-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    border: 3px solid transparent;
+}
+
+.top-pick-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(255, 215, 0, 0.4);
+    border-color: #FFD700;
+}
+
+.top-pick-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
+}
+
+.top-pick-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.top-pick-body {
+    padding: 25px;
+}
+
+.top-pick-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2C3E50;
+    margin-bottom: 15px;
+}
+
+.top-pick-kavlin-note {
+    background: rgba(255, 249, 230, 0.7);
+    border-left: 4px solid #FFD700;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-style: italic;
+    color: #6C757D;
+}
+
+.top-pick-kavlin-note::before {
+    content: '"';
+    font-size: 2rem;
+    color: #FFD700;
+    line-height: 0;
+    margin-right: 5px;
+}
+
+.top-pick-meta {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: #6C757D;
+}
+
+.top-pick-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Advanced Search */
+.advanced-search-section {
+    background: white;
+    border-radius: 25px;
+    padding: 40px;
+    margin-bottom: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.advanced-search-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.2rem;
+    color: #F57F17;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.advanced-search-panel {
+    background: rgba(255, 249, 230, 0.5);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.search-filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.filter-advanced-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filter-advanced-label {
+    font-weight: 600;
+    color: #2C3E50;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+}
+
+.filter-advanced-select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #E9ECEF;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-advanced-select:focus {
+    border-color: #FFD700;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.1);
+}
+
+.price-range-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.price-slider {
+    width: 100%;
+    height: 8px;
+    border-radius: 5px;
+    background: linear-gradient(to right, #FFD700, #FF8C00);
+    outline: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+.price-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #FFD700;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.price-range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    color: #F57F17;
+}
+
+.amenities-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.amenity-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: #2C3E50;
+    cursor: pointer;
+}
+
+.amenity-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #FFD700;
+}
+
+.search-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.search-advanced-btn,
+.search-reset-btn {
+    padding: 15px 40px;
+    border-radius: 25px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+}
+
+.search-advanced-btn {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+}
+
+.search-advanced-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(255, 215, 0, 0.5);
+}
+
+.search-reset-btn {
+    background: #6C757D;
+    color: white;
+}
+
+.search-reset-btn:hover {
+    background: #495057;
+    transform: translateY(-3px);
+}
+
+.search-results {
+    animation: slideInUp 0.5s ease-out;
+}
+
+/* Collections Section */
+.collections-section {
+    background: white;
+    border-radius: 25px;
+    padding: 40px;
+    margin-bottom: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.collections-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.collections-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.2rem;
+    color: #F57F17;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.create-collection-btn {
+    background: linear-gradient(135deg, #32CD32, #228B22);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 5px 20px rgba(50, 205, 50, 0.3);
+}
+
+.create-collection-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(50, 205, 50, 0.4);
+}
+
+.collections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.collection-card {
+    background: rgba(255, 249, 230, 0.5);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: 20px;
+    padding: 25px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.collection-card:hover {
+    border-color: #FFD700;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+}
+
+.collection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.collection-icon {
+    font-size: 2.5rem;
+}
+
+.collection-privacy {
+    font-size: 0.8rem;
+    color: #6C757D;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.collection-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2C3E50;
+    margin-bottom: 10px;
+}
+
+.collection-description {
+    color: #6C757D;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.collection-stats {
+    display: flex;
+    gap: 20px;
+    font-size: 0.85rem;
+    color: #F57F17;
+    font-weight: 600;
+}
+
+.collection-stat {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Collection Modal */
+.collection-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+.collection-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+.collection-modal-content {
+    position: relative;
+    background: white;
+    border-radius: 25px;
+    max-width: 600px;
+    width: 90%;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.4s ease-out;
+}
+
+.collection-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.collection-modal-close:hover {
+    background: #FF6347;
+    color: white;
+    transform: rotate(90deg);
+}
+
+.collection-modal-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: #F57F17;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.collection-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #2C3E50;
+    font-size: 0.95rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #E9ECEF;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #FFD700;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.1);
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.btn-create-collection,
+.btn-cancel {
+    flex: 1;
+    padding: 14px;
+    border-radius: 25px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-create-collection {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+}
+
+.btn-create-collection:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+}
+
+.btn-cancel {
+    background: #E9ECEF;
+    color: #6C757D;
+}
+
+.btn-cancel:hover {
+    background: #DEE2E6;
+}
+
+/* Route History */
+.history-section {
+    background: white;
+    border-radius: 25px;
+    padding: 40px;
+    margin-bottom: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.history-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.2rem;
+    color: #F57F17;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.history-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+    padding-left: 40px;
+}
+
+.history-timeline::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, #FFD700, #FF8C00);
+}
+
+.history-item {
+    position: relative;
+    background: rgba(255, 249, 230, 0.5);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.history-item::before {
+    content: '';
+    position: absolute;
+    left: -33px;
+    top: 20px;
+    width: 15px;
+    height: 15px;
+    background: #FFD700;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.3);
+}
+
+.history-item:hover {
+    border-color: #FFD700;
+    transform: translateX(5px);
+    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+}
+
+.history-time {
+    font-size: 0.85rem;
+    color: #6C757D;
+    margin-bottom: 8px;
+}
+
+.history-route-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2C3E50;
+    margin-bottom: 5px;
+}
+
+.history-action {
+    font-size: 0.9rem;
+    color: #F57F17;
+    font-weight: 600;
+}
+
+/* Kavlin's Tips */
+.kavlin-tips-section {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 140, 0, 0.1));
+    border-radius: 25px;
+    padding: 50px 40px;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.tips-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: #F57F17;
+    text-align: center;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.tip-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.tip-card:hover {
+    border-color: #FFD700;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
+}
+
+.tip-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.tip-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2C3E50;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.tip-text {
+    color: #6C757D;
+    line-height: 1.7;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+/* Empty States */
+.collections-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6C757D;
+}
+
+.collections-empty-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.collections-empty-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+.history-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6C757D;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 992px) {
+    .kavlin-intro-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .mood-pills-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+    
+    .seasonal-route-card {
+        grid-template-columns: 1fr;
+    }
+    
+    .seasonal-route-image {
+        width: 100%;
+    }
+    
+    .top-picks-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .search-filters-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .collections-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .kavlin-intro {
+        padding: 30px 20px;
+    }
+    
+    .kavlin-intro-title {
+        font-size: 2rem;
+    }
+    
+    .mood-selector-title {
+        font-size: 1.8rem;
+    }
+    
+    .seasonal-tabs {
+        gap: 10px;
+    }
+    
+    .seasonal-tab {
+        padding: 10px 18px;
+        font-size: 0.85rem;
+    }
+    
+    .tips-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .search-actions {
+        flex-direction: column;
+    }
+    
+    .search-advanced-btn,
+    .search-reset-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .history-timeline {
+        padding-left: 30px;
+    }
+}
+
+/* Animations */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

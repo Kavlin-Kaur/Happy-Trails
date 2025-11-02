@@ -64,6 +64,13 @@
                     <i class="fas fa-mountain"></i>
                     <span>Scenic Highlights</span>
                 </button>
+
+                <!-- Tab 6: Kavlin's Favorites (Phase 5) - NEW! -->
+                <button class="explorer-tab" data-tab="kavlins-favorites">
+                    <i class="fas fa-heart"></i>
+                    <span>Kavlin's Favorites</span>
+                </button>
+
             </div>
         </div>
     </section>
@@ -427,14 +434,6 @@
         </section>
     </div>
 
-
----
-
-## 📂 **File 1: Update `templates/features/route_explorer.html`**
-
-**Add the Scenic Highlights tab (after Weather tab, before Quick Stats):**
-
-```html
     <!-- ============================================
          🏔️ TAB 5: SCENIC HIGHLIGHTS (PHASE 4)
          ============================================ -->
@@ -586,6 +585,329 @@
             </button>
             <div id="poiModalBody">
                 <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         ⭐ TAB 6: KAVLIN'S FAVORITES (PHASE 5)
+         ============================================ -->
+    <div id="kavlins-favorites" class="explorer-tab-content">
+        <section class="favorites-section">
+            <div class="container">
+                
+                <!-- Kavlin's Introduction -->
+                <div class="kavlin-intro">
+                    <div class="kavlin-intro-content">
+                        <div class="kavlin-avatar">
+                            <img src="{{ url_for('static', filename='images/Kavlin Bitmoji.png') }}" alt="Kavlin">
+                            <div class="kavlin-badge">Founder</div>
+                        </div>
+                        <div class="kavlin-intro-text">
+                            <h2 class="kavlin-intro-title">
+                                <i class="fas fa-heart"></i>
+                                Routes Close to My Heart
+                            </h2>
+                            <p class="kavlin-intro-description">
+                                As the founder of Happy Trails, I've traveled every single route countless times. 
+                                Each journey has taught me something beautiful about these mountains, the people, 
+                                and life itself. Here, I share my personal favorites - routes that never fail to 
+                                fill my soul with joy. Whether you're seeking adventure, romance, or simply peace, 
+                                these are the paths I'd take you on if I were your guide.
+                            </p>
+                            <div class="kavlin-signature">
+                                With love, <span style="font-family: 'Caveat', cursive; font-size: 1.5rem; color: #F57F17;">Kavlin</span> 💖
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Travel Mood Selector -->
+                <div class="mood-selector-section">
+                    <h3 class="mood-selector-title">
+                        <i class="fas fa-magic"></i>
+                        What's Your Travel Mood Today?
+                    </h3>
+                    <p class="mood-selector-subtitle">
+                        Let me suggest routes based on how you're feeling
+                    </p>
+                    <div class="mood-pills-grid">
+                        <button class="mood-pill" data-mood="romantic" onclick="filterByMood('romantic')">
+                            <span class="mood-icon">💑</span>
+                            <span class="mood-label">Romantic Escape</span>
+                            <span class="mood-description">For couples seeking magic</span>
+                        </button>
+                        <button class="mood-pill" data-mood="adventure" onclick="filterByMood('adventure')">
+                            <span class="mood-icon">🏔️</span>
+                            <span class="mood-label">Adventure Seeker</span>
+                            <span class="mood-description">Thrill and excitement</span>
+                        </button>
+                        <button class="mood-pill" data-mood="family" onclick="filterByMood('family')">
+                            <span class="mood-icon">👨‍👩‍👧‍👦</span>
+                            <span class="mood-label">Family Friendly</span>
+                            <span class="mood-description">Safe for all ages</span>
+                        </button>
+                        <button class="mood-pill" data-mood="solo" onclick="filterByMood('solo')">
+                            <span class="mood-icon">🎒</span>
+                            <span class="mood-label">Solo Explorer</span>
+                            <span class="mood-description">Find yourself</span>
+                        </button>
+                        <button class="mood-pill" data-mood="photographer" onclick="filterByMood('photographer')">
+                            <span class="mood-icon">📸</span>
+                            <span class="mood-label">Photographer's Dream</span>
+                            <span class="mood-description">Capture beauty</span>
+                        </button>
+                        <button class="mood-pill" data-mood="peaceful" onclick="filterByMood('peaceful')">
+                            <span class="mood-icon">🧘</span>
+                            <span class="mood-label">Peaceful Retreat</span>
+                            <span class="mood-description">Relaxation & calm</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Seasonal Recommendations -->
+                <div class="seasonal-recommendations">
+                    <h3 class="seasonal-title">
+                        <i class="fas fa-calendar-alt"></i>
+                        My Seasonal Favorites
+                    </h3>
+                    <div class="seasonal-tabs">
+                        <button class="seasonal-tab active" data-season="spring" onclick="showSeasonRoutes('spring')">
+                            <i class="fas fa-seedling"></i>
+                            Spring
+                        </button>
+                        <button class="seasonal-tab" data-season="summer" onclick="showSeasonRoutes('summer')">
+                            <i class="fas fa-sun"></i>
+                            Summer
+                        </button>
+                        <button class="seasonal-tab" data-season="monsoon" onclick="showSeasonRoutes('monsoon')">
+                            <i class="fas fa-cloud-rain"></i>
+                            Monsoon
+                        </button>
+                        <button class="seasonal-tab" data-season="autumn" onclick="showSeasonRoutes('autumn')">
+                            <i class="fas fa-leaf"></i>
+                            Autumn
+                        </button>
+                        <button class="seasonal-tab" data-season="winter" onclick="showSeasonRoutes('winter')">
+                            <i class="fas fa-snowflake"></i>
+                            Winter
+                        </button>
+                    </div>
+                    <div class="seasonal-content" id="seasonalContent">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Kavlin's Top Picks -->
+                <div class="top-picks-section">
+                    <h3 class="top-picks-title">
+                        <i class="fas fa-star"></i>
+                        Kavlin's All-Time Favorite Routes
+                    </h3>
+                    <div class="top-picks-grid" id="topPicksGrid">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Advanced Search -->
+                <div class="advanced-search-section">
+                    <h3 class="advanced-search-title">
+                        <i class="fas fa-search-plus"></i>
+                        Advanced Route Search
+                    </h3>
+                    <div class="advanced-search-panel">
+                        <div class="search-filters-grid">
+                            <!-- Price Range -->
+                            <div class="filter-advanced-group">
+                                <label class="filter-advanced-label">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    Price Range
+                                </label>
+                                <div class="price-range-container">
+                                    <input type="range" id="priceRangeMin" class="price-slider" min="0" max="200" value="0">
+                                    <input type="range" id="priceRangeMax" class="price-slider" min="0" max="200" value="200">
+                                    <div class="price-range-labels">
+                                        <span id="priceMinLabel">₹0</span>
+                                        <span id="priceMaxLabel">₹200</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Duration -->
+                            <div class="filter-advanced-group">
+                                <label class="filter-advanced-label">
+                                    <i class="fas fa-clock"></i>
+                                    Max Duration
+                                </label>
+                                <select class="filter-advanced-select" id="durationFilter">
+                                    <option value="all">Any Duration</option>
+                                    <option value="30">Up to 30 minutes</option>
+                                    <option value="60">Up to 1 hour</option>
+                                    <option value="90">Up to 1.5 hours</option>
+                                    <option value="120">Up to 2 hours</option>
+                                </select>
+                            </div>
+
+                            <!-- Amenities -->
+                            <div class="filter-advanced-group">
+                                <label class="filter-advanced-label">
+                                    <i class="fas fa-check-circle"></i>
+                                    Required Amenities
+                                </label>
+                                <div class="amenities-checkboxes">
+                                    <label class="amenity-checkbox">
+                                        <input type="checkbox" value="wifi"> WiFi
+                                    </label>
+                                    <label class="amenity-checkbox">
+                                        <input type="checkbox" value="ac"> AC
+                                    </label>
+                                    <label class="amenity-checkbox">
+                                        <input type="checkbox" value="meals"> Meals
+                                    </label>
+                                    <label class="amenity-checkbox">
+                                        <input type="checkbox" value="entertainment"> Entertainment
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Time Preference -->
+                            <div class="filter-advanced-group">
+                                <label class="filter-advanced-label">
+                                    <i class="fas fa-sun"></i>
+                                    Preferred Time
+                                </label>
+                                <select class="filter-advanced-select" id="timeFilter">
+                                    <option value="all">Any Time</option>
+                                    <option value="morning">Morning (6 AM - 12 PM)</option>
+                                    <option value="afternoon">Afternoon (12 PM - 6 PM)</option>
+                                    <option value="evening">Evening (6 PM - 10 PM)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="search-actions">
+                            <button class="search-advanced-btn" onclick="performAdvancedSearch()">
+                                <i class="fas fa-search"></i>
+                                Search Routes
+                            </button>
+                            <button class="search-reset-btn" onclick="resetAdvancedSearch()">
+                                <i class="fas fa-redo"></i>
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                    <div class="search-results" id="advancedSearchResults" style="display: none;">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Route Collections -->
+                <div class="collections-section">
+                    <div class="collections-header">
+                        <h3 class="collections-title">
+                            <i class="fas fa-folder-open"></i>
+                            Your Route Collections
+                        </h3>
+                        <button class="create-collection-btn" onclick="showCreateCollectionModal()">
+                            <i class="fas fa-plus"></i>
+                            Create Collection
+                        </button>
+                    </div>
+                    <div class="collections-grid" id="collectionsGrid">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Route History -->
+                <div class="history-section">
+                    <h3 class="history-title">
+                        <i class="fas fa-history"></i>
+                        Recently Viewed Routes
+                    </h3>
+                    <div class="history-timeline" id="historyTimeline">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Kavlin's Travel Tips -->
+                <div class="kavlin-tips-section">
+                    <h3 class="tips-title">
+                        <i class="fas fa-lightbulb"></i>
+                        Kavlin's Personal Travel Tips
+                    </h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <div class="tip-icon">🌅</div>
+                            <h4 class="tip-title">Golden Hour Magic</h4>
+                            <p class="tip-text">Take the earliest morning bus for sunrise views. The mountains look their best between 6-8 AM, and you'll have the roads mostly to yourself.</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">💬</div>
+                            <h4 class="tip-title">Talk to Locals</h4>
+                            <p class="tip-text">Our drivers know hidden gems along every route. Don't hesitate to ask for recommendations - they love sharing stories!</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">📸</div>
+                            <h4 class="tip-title">Window Seat Strategy</h4>
+                            <p class="tip-text">For best views: Right side for Dharampur→Solan, left side for Solan→Barog. Trust me, I've done the research!</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">🎒</div>
+                            <h4 class="tip-title">Pack Light</h4>
+                            <p class="tip-text">Mountain roads have curves. Less luggage means more comfort. Plus, you'll have room for souvenirs!</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">☕</div>
+                            <h4 class="tip-title">Chai Stops</h4>
+                            <p class="tip-text">The tea at Solan bus terminal is legendary. Give yourself 15 minutes to enjoy it properly.</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">🌧️</div>
+                            <h4 class="tip-title">Monsoon Romance</h4>
+                            <p class="tip-text">Don't skip travel in rain! The routes through pine forests are absolutely magical when mist rolls in.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- Create Collection Modal -->
+    <div class="collection-modal" id="collectionModal" style="display: none;">
+        <div class="collection-modal-overlay" onclick="closeCollectionModal()"></div>
+        <div class="collection-modal-content">
+            <button class="collection-modal-close" onclick="closeCollectionModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="collection-modal-title">
+                <i class="fas fa-folder-plus"></i>
+                Create New Collection
+            </h3>
+            <div class="collection-form">
+                <div class="form-group">
+                    <label>Collection Name</label>
+                    <input type="text" id="collectionName" class="form-control" placeholder="e.g., Weekend Getaways">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="collectionDescription" class="form-control" rows="3" placeholder="Describe your collection..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Privacy</label>
+                    <select id="collectionPrivacy" class="form-control">
+                        <option value="private">Private (Only you)</option>
+                        <option value="public">Public (Anyone can view)</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button class="btn-create-collection" onclick="createCollection()">
+                        <i class="fas fa-check"></i>
+                        Create Collection
+                    </button>
+                    <button class="btn-cancel" onclick="closeCollectionModal()">
+                        Cancel
+                    </button>
+                </div>
             </div>
         </div>
     </div>
