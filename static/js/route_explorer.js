@@ -1326,3 +1326,554 @@ window.resetComparison = resetComparison;
 window.bookRoute = bookRoute;
 
 console.log('📊 Phase 2: Comparison & Details loaded successfully! 💖');
+
+/* ============================================
+   🌤️ PHASE 3: WEATHER INTEGRATION
+   Weather Data & Real-Time Updates
+   ============================================ */
+
+// Global weather variables
+let weatherData = {};
+let weatherUpdateInterval = null;
+
+// Weather icon mapping
+const weatherIcons = {
+    'Clear': '☀️',
+    'Clouds': '☁️',
+    'Rain': '🌧️',
+    'Drizzle': '🌦️',
+    'Thunderstorm': '⛈️',
+    'Snow': '🌨️',
+    'Mist': '🌫️',
+    'Fog': '🌫️',
+    'Haze': '🌫️',
+    'Smoke': '💨',
+    'Dust': '💨',
+    'Sand': '💨'
+};
+
+// ============================================
+// WEATHER TAB INITIALIZATION
+// ============================================
+
+function initializeWeather() {
+    const weatherTab = document.querySelector('[data-tab="weather-conditions"]');
+    if (weatherTab) {
+        weatherTab.addEventListener('click', loadWeatherTab);
+    }
+    
+    console.log('🌤️ Weather system initialized');
+}
+
+function loadWeatherTab() {
+    // Check if weather data is already loaded
+    if (Object.keys(weatherData).length === 0) {
+        fetchWeatherData();
+    }
+    
+    // Setup auto-refresh (every 30 minutes)
+    if (weatherUpdateInterval) {
+        clearInterval(weatherUpdateInterval);
+    }
+    
+    weatherUpdateInterval = setInterval(() => {
+        fetchWeatherData(true);
+    }, 1800000); // 30 minutes
+}
+
+// ============================================
+// FETCH WEATHER DATA
+// ============================================
+
+async function fetchWeatherData(isRefresh = false) {
+    if (!isRefresh) {
+        showWeatherLoading();
+    }
+    
+    const destinations = ['Dharampur', 'Solan', 'Barog', 'Dagshai'];
+    const promises = [];
+    
+    // Fetch weather for each destination
+    for (const destination of destinations) {
+        promises.push(fetchCityWeather(destination));
+    }
+    
+    try {
+        const results = await Promise.all(promises);
+        
+        results.forEach((data, index) => {
+            if (data) {
+                weatherData[destinations[index]] = data;
+            }
+        });
+        
+        // Render weather UI
+        renderWeatherCards();
+        renderTravelRecommendations();
+        renderForecast();
+        checkWeatherAlerts();
+        
+        // Update timestamp
+        updateWeatherTimestamp();
+        
+        // Hide loading
+        hideWeatherLoading();
+        
+        if (isRefresh) {
+            showToast('Weather data refreshed! 🌤️', 2000);
+        }
+        
+    } catch (error) {
+        console.error('Weather fetch error:', error);
+        showWeatherError();
+    }
+}
+
+async function fetchCityWeather(city) {
+    // Use approximate coordinates for Himachal Pradesh cities
+    const cityCoords = {
+        'Dharampur': { lat: 30.8750, lon: 77.0500 },
+        'Solan': { lat: 30.9100, lon: 77.1734 },
+        'Barog': { lat: 30.9600, lon: 77.0700 },
+        'Dagshai': { lat: 30.9900, lon: 76.9800 }
+    };
+    
+    const coords = cityCoords[city];
+    if (!coords) return null;
+    
+    try {
+        const response = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${coords.lat}&lon=${coords.lon}&appid=${WEATHER_API_KEY}&units=metric`
+        );
+        
+        if (!response.ok) {
+            throw new Error(`Weather API error: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        return {
+            city: city,
+            temp: Math.round(data.main.temp),
+            feels_like: Math.round(data.main.feels_like),
+            condition: data.weather[0].main,
+            description: data.weather[0].description,
+            humidity: data.main.humidity,
+            wind_speed: data.wind.speed,
+            pressure: data.main.pressure,
+            visibility: data.visibility / 1000, // Convert to km
+            sunrise: new Date(data.sys.sunrise * 1000),
+            sunset: new Date(data.sys.sunset * 1000),
+            icon: weatherIcons[data.weather[0].main] || '🌤️'
+        };
+        
+    } catch (error) {
+        console.error(`Error fetching weather for ${city}:`, error);
+        return null;
+    }
+}
+
+// ============================================
+// RENDER WEATHER UI
+// ============================================
+
+function renderWeatherCards() {
+    const container = document.getElementById('weatherCardsGrid');
+    if (!container) return;
+    
+    const cities = Object.keys(weatherData);
+    
+    if (cities.length === 0) {
+        return;
+    }
+    
+    container.innerHTML = cities.map((city, index) => {
+        const weather = weatherData[city];
+        const conditionClass = weather.condition.toLowerCase();
+        const isBestTime = weather.temp >= 15 && weather.temp <= 25 && 
+                          !['Rain', 'Thunderstorm', 'Snow'].includes(weather.condition);
+        
+        return `
+            <div class="weather-card ${conditionClass}" style="animation-delay: ${index * 0.1}s">
+                ${isBestTime ? `
+                    <div class="best-time-badge">
+                        <i class="fas fa-star"></i>
+                        Best Time to Travel
+                    </div>
+                ` : ''}
+                
+                <div class="weather-card-header">
+                    <div class="weather-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        ${city}
+                    </div>
+                    <div class="weather-icon-large ${conditionClass}">
+                        ${weather.icon}
+                    </div>
+                </div>
+                
+                <div class="weather-temp">
+                    ${weather.temp}
+                    <span class="weather-temp-unit">°C</span>
+                </div>
+                
+                <div class="weather-condition">
+                    ${weather.description}
+                </div>
+                
+                <div class="weather-details">
+                    <div class="weather-detail-item">
+                        <i class="fas fa-temperature-low"></i>
+                        <div>
+                            <div class="weather-detail-label">Feels Like</div>
+                            <div class="weather-detail-value">${weather.feels_like}°C</div>
+                        </div>
+                    </div>
+                    
+                    <div class="weather-detail-item">
+                        <i class="fas fa-tint"></i>
+                        <div>
+                            <div class="weather-detail-label">Humidity</div>
+                            <div class="weather-detail-value">${weather.humidity}%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="weather-detail-item">
+                        <i class="fas fa-wind"></i>
+                        <div>
+                            <div class="weather-detail-label">Wind Speed</div>
+                            <div class="weather-detail-value">${weather.wind_speed} m/s</div>
+                        </div>
+                    </div>
+                    
+                    <div class="weather-detail-item">
+                        <i class="fas fa-eye"></i>
+                        <div>
+                            <div class="weather-detail-label">Visibility</div>
+                            <div class="weather-detail-value">${weather.visibility} km</div>
+                        </div>
+                    </div>
+                    
+                    <div class="weather-detail-item">
+                        <i class="fas fa-sun"></i>
+                        <div>
+                            <div class="weather-detail-label">Sunrise</div>
+                            <div class="weather-detail-value">${formatTime(weather.sunrise)}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="weather-detail-item">
+                        <i class="fas fa-moon"></i>
+                        <div>
+                            <div class="weather-detail-label">Sunset</div>
+                            <div class="weather-detail-value">${formatTime(weather.sunset)}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    container.style.display = 'grid';
+}
+
+function renderTravelRecommendations() {
+    const container = document.getElementById('recommendationsGrid');
+    if (!container) return;
+    
+    const recommendations = generateRecommendations();
+    
+    container.innerHTML = recommendations.map(rec => `
+        <div class="recommendation-card">
+            <div class="recommendation-icon">${rec.icon}</div>
+            <div class="recommendation-title">${rec.title}</div>
+            <div class="recommendation-text">${rec.text}</div>
+            <span class="recommendation-badge ${rec.type}">${rec.badge}</span>
+        </div>
+    `).join('');
+    
+    document.getElementById('travelRecommendations').style.display = 'block';
+}
+
+function generateRecommendations() {
+    const recommendations = [];
+    const cities = Object.keys(weatherData);
+    
+    // Find best weather
+    const bestWeather = cities.reduce((best, city) => {
+        const weather = weatherData[city];
+        const score = calculateWeatherScore(weather);
+        return score > (best.score || 0) ? { city, score, weather } : best;
+    }, {});
+    
+    if (bestWeather.city) {
+        recommendations.push({
+            icon: '⭐',
+            title: `Best Conditions: ${bestWeather.city}`,
+            text: `Perfect weather with ${bestWeather.weather.temp}°C and ${bestWeather.weather.description}. Ideal for travel!`,
+            type: 'good',
+            badge: 'Recommended'
+        });
+    }
+    
+    // Check for rain
+    const rainyRoutes = cities.filter(city => 
+        ['Rain', 'Drizzle', 'Thunderstorm'].includes(weatherData[city].condition)
+    );
+    
+    if (rainyRoutes.length > 0) {
+        recommendations.push({
+            icon: '🌧️',
+            title: 'Rain Expected',
+            text: `${rainyRoutes.join(', ')} experiencing rain. Carry umbrellas and allow extra travel time.`,
+            type: 'warning',
+            badge: 'Caution'
+        });
+    }
+    
+    // Temperature advice
+    const coldRoutes = cities.filter(city => weatherData[city].temp < 10);
+    if (coldRoutes.length > 0) {
+        recommendations.push({
+            icon: '🧥',
+            title: 'Cold Weather Alert',
+            text: `${coldRoutes.join(', ')} are quite cold. Wear warm clothes and carry jackets.`,
+            type: 'warning',
+            badge: 'Advisory'
+        });
+    }
+    
+    // Visibility check
+    const lowVisibility = cities.filter(city => weatherData[city].visibility < 5);
+    if (lowVisibility.length > 0) {
+        recommendations.push({
+            icon: '🌫️',
+            title: 'Low Visibility',
+            text: `Reduced visibility in ${lowVisibility.join(', ')}. Drivers should exercise extra caution.`,
+            type: 'alert',
+            badge: 'Alert'
+        });
+    }
+    
+    // Add general tip if no special conditions
+    if (recommendations.length === 1) {
+        recommendations.push({
+            icon: '💡',
+            title: 'Travel Tip',
+            text: 'Weather conditions are generally favorable. Perfect day for your journey!',
+            type: 'good',
+            badge: 'Good to Go'
+        });
+    }
+    
+    return recommendations;
+}
+
+function calculateWeatherScore(weather) {
+    let score = 0;
+    
+    // Temperature score (15-25°C is ideal)
+    if (weather.temp >= 15 && weather.temp <= 25) score += 40;
+    else if (weather.temp >= 10 && weather.temp <= 30) score += 20;
+    
+    // Condition score
+    if (weather.condition === 'Clear') score += 30;
+    else if (weather.condition === 'Clouds') score += 20;
+    else if (['Rain', 'Thunderstorm', 'Snow'].includes(weather.condition)) score -= 20;
+    
+    // Visibility score
+    if (weather.visibility >= 10) score += 20;
+    else if (weather.visibility >= 5) score += 10;
+    
+    // Wind score
+    if (weather.wind_speed <= 5) score += 10;
+    
+    return score;
+}
+
+function renderForecast() {
+    const container = document.getElementById('forecastCarousel');
+    if (!container) return;
+    
+    // Generate mock 7-day forecast
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const today = new Date();
+    
+    const forecast = Array.from({ length: 7 }, (_, i) => {
+        const date = new Date(today);
+        date.setDate(date.getDate() + i);
+        
+        // Simulate forecast data
+        const conditions = ['Clear', 'Clouds', 'Rain', 'Drizzle'];
+        const condition = conditions[Math.floor(Math.random() * conditions.length)];
+        
+        return {
+            day: days[date.getDay()],
+            date: date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }),
+            icon: weatherIcons[condition] || '🌤️',
+            high: Math.round(20 + Math.random() * 10),
+            low: Math.round(10 + Math.random() * 10),
+            condition: condition
+        };
+    });
+    
+    container.innerHTML = forecast.map((day, index) => `
+        <div class="forecast-day-card" style="animation-delay: ${index * 0.1}s">
+            <div class="forecast-day-name">${day.day}</div>
+            <div class="forecast-day-date">${day.date}</div>
+            <div class="forecast-icon">${day.icon}</div>
+            <div class="forecast-temp-range">
+                <span class="forecast-temp-high">${day.high}°</span>
+                <span class="forecast-temp-low">${day.low}°</span>
+            </div>
+            <div class="forecast-condition">${day.condition}</div>
+        </div>
+    `).join('');
+    
+    document.getElementById('forecastSection').style.display = 'block';
+}
+
+function checkWeatherAlerts() {
+    const container = document.getElementById('weatherAlerts');
+    if (!container) return;
+    
+    const alerts = [];
+    const cities = Object.keys(weatherData);
+    
+    // Check for severe weather
+    cities.forEach(city => {
+        const weather = weatherData[city];
+        
+        if (weather.condition === 'Thunderstorm') {
+            alerts.push({
+                title: `⚠️ Thunderstorm Warning - ${city}`,
+                text: 'Severe thunderstorm expected. Avoid travel if possible. If traveling, stay updated with weather conditions.'
+            });
+        }
+        
+        if (weather.wind_speed > 15) {
+            alerts.push({
+                title: `💨 High Wind Alert - ${city}`,
+                text: `Strong winds (${weather.wind_speed} m/s) expected. Drive carefully and secure loose items.`
+            });
+        }
+        
+        if (weather.temp < 5) {
+            alerts.push({
+                title: `❄️ Cold Wave - ${city}`,
+                text: 'Extremely cold conditions. Wear multiple layers and carry warm beverages.'
+            });
+        }
+    });
+    
+    if (alerts.length > 0) {
+        container.innerHTML = `
+            <div class="alert-header">
+                <div class="alert-icon">⚠️</div>
+                <h3 class="alert-title">Weather Alerts</h3>
+            </div>
+            <div class="alert-content">
+                ${alerts.map(alert => `
+                    <div class="alert-item">
+                        <div class="alert-item-title">${alert.title}</div>
+                        <div class="alert-item-text">${alert.text}</div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        container.style.display = 'block';
+    } else {
+        container.style.display = 'none';
+    }
+}
+
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
+
+function showWeatherLoading() {
+    const loading = document.getElementById('weatherLoading');
+    const cardsGrid = document.getElementById('weatherCardsGrid');
+    
+    if (loading) loading.style.display = 'block';
+    if (cardsGrid) cardsGrid.style.display = 'none';
+}
+
+function hideWeatherLoading() {
+    const loading = document.getElementById('weatherLoading');
+    if (loading) loading.style.display = 'none';
+}
+
+function showWeatherError() {
+    const loading = document.getElementById('weatherLoading');
+    const cardsGrid = document.getElementById('weatherCardsGrid');
+    
+    if (loading) {
+        loading.innerHTML = `
+            <div class="weather-error">
+                <div class="weather-error-icon">⚠️</div>
+                <div class="weather-error-title">Unable to Load Weather Data</div>
+                <div class="weather-error-text">
+                    There was an error fetching weather information. 
+                    Please check your internet connection and try again.
+                </div>
+                <button class="refresh-weather-btn" onclick="fetchWeatherData()" style="margin-top: 20px;">
+                    <i class="fas fa-sync-alt me-2"></i>
+                    Retry
+                </button>
+            </div>
+        `;
+    }
+    
+    if (cardsGrid) cardsGrid.style.display = 'none';
+}
+
+function updateWeatherTimestamp() {
+    const element = document.getElementById('weatherLastUpdate');
+    if (element) {
+        const now = new Date();
+        element.textContent = now.toLocaleString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric'
+        });
+    }
+}
+
+function formatTime(date) {
+    return date.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    });
+}
+
+function refreshWeatherData() {
+    fetchWeatherData(true);
+}
+
+// ============================================
+// UPDATE INITIALIZATION
+// ============================================
+
+// Update the main initialization
+const originalInitRouteExplorer2 = initializeRouteExplorer;
+initializeRouteExplorer = function() {
+    originalInitRouteExplorer2();
+    initializeWeather();
+};
+
+// Make functions globally accessible
+window.refreshWeatherData = refreshWeatherData;
+
+// Cleanup on page unload
+window.addEventListener('beforeunload', () => {
+    if (weatherUpdateInterval) {
+        clearInterval(weatherUpdateInterval);
+    }
+});
+
+console.log('🌤️ Phase 3: Weather Integration loaded successfully! 💖');
