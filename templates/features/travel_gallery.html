@@ -59,8 +59,8 @@
     </section>
 
     <!-- ============================================
-     📑 PHASE 2 & 3: TAB NAVIGATION SYSTEM
-     ============================================ -->
+        📑 PHASE 2, 3 & 4: TAB NAVIGATION SYSTEM
+        ============================================ -->
     <section class="gallery-tabs-wrapper">
         <div class="container">
             <div class="gallery-tabs">
@@ -84,13 +84,25 @@
                 </button>
                 {% endif %}
                 
-                <!-- Tab 4: My Diaries (Phase 3) - NEW! -->
+                <!-- Tab 4: My Diaries (Phase 3) -->
                 <button class="gallery-tab" data-tab="my-diaries">
                     <i class="fas fa-book-open"></i>
                     <span>My Diaries</span>
                 </button>
                 
-                <!-- Tab 5: Pending Review (Phase 2) -->
+                <!-- Tab 5: Timeline (Phase 4) - NEW! -->
+                <button class="gallery-tab" data-tab="timeline">
+                    <i class="fas fa-timeline"></i>
+                    <span>Timeline</span>
+                </button>
+                
+                <!-- Tab 6: Collections (Phase 4) - NEW! -->
+                <button class="gallery-tab" data-tab="collections">
+                    <i class="fas fa-layer-group"></i>
+                    <span>Collections</span>
+                </button>
+                
+                <!-- Tab 7: Pending Review (Phase 2) -->
                 <button class="gallery-tab" data-tab="pending-review">
                     <i class="fas fa-clock"></i>
                     <span>Pending Review</span>
@@ -581,6 +593,132 @@
                 <!-- Diaries Grid -->
                 <div class="diary-grid" id="diaryGrid">
                     <!-- Dynamically populated via JavaScript -->
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         📅 TAB 6: TIMELINE (PHASE 4)
+         ============================================ -->
+    <div id="timeline" class="gallery-tab-content">
+        <section class="timeline-section">
+            <div class="container">
+                
+                <!-- Timeline Header -->
+                <div class="timeline-header">
+                    <h2 class="upload-title">Your Journey Timeline 📅</h2>
+                    <p class="upload-subtitle">
+                        A visual story of your travels through time. Every memory, every moment, beautifully organized.
+                    </p>
+                </div>
+
+                <!-- Timeline Stats -->
+                <div class="timeline-stats" id="timelineStats">
+                    <!-- Dynamically populated via JavaScript -->
+                </div>
+
+                <!-- Heat Map Calendar -->
+                <div class="heatmap-container">
+                    <h3 class="heatmap-title">Your Travel Activity 🔥</h3>
+                    <div class="heatmap-grid" id="heatmapGrid">
+                        <!-- Dynamically populated via JavaScript -->
+                    </div>
+                    <div style="text-align: center; margin-top: 15px; color: #6C757D; font-size: 0.85rem;">
+                        <span style="margin-right: 20px;">Less <span style="display: inline-block; width: 12px; height: 12px; background: #E9ECEF; border-radius: 2px; margin: 0 5px;"></span></span>
+                        <span style="display: inline-block; width: 12px; height: 12px; background: rgba(255, 215, 0, 0.3); border-radius: 2px; margin: 0 5px;"></span>
+                        <span style="display: inline-block; width: 12px; height: 12px; background: rgba(255, 215, 0, 0.5); border-radius: 2px; margin: 0 5px;"></span>
+                        <span style="display: inline-block; width: 12px; height: 12px; background: rgba(255, 215, 0, 0.7); border-radius: 2px; margin: 0 5px;"></span>
+                        <span style="display: inline-block; width: 12px; height: 12px; background: #FFD700; border-radius: 2px; margin: 0 5px;"></span>
+                        <span style="margin-left: 5px;">More</span>
+                    </div>
+                </div>
+
+                <!-- Milestones -->
+                <div class="milestones-container">
+                    <h3 class="milestones-title">Your Achievements 🏆</h3>
+                    <div class="milestones-grid" id="milestonesGrid">
+                        <!-- Dynamically populated via JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Year Navigator -->
+                <div class="year-navigator" id="yearNavigator">
+                    <!-- Dynamically populated via JavaScript -->
+                </div>
+
+                <!-- Timeline Container -->
+                <div class="timeline-container" id="timelineContainer">
+                    <!-- Dynamically populated via JavaScript -->
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         📦 TAB 7: COLLECTIONS (PHASE 4)
+         ============================================ -->
+    <div id="collections" class="gallery-tab-content">
+        <section class="collections-section">
+            <div class="container">
+                
+                <!-- Collections Header -->
+                <div class="collections-header">
+                    <div class="upload-header" style="margin-bottom: 0;">
+                        <h2 class="upload-title">Photo Collections 📦</h2>
+                        <p class="upload-subtitle">
+                            Organize your photos into beautiful collections. Auto-generated smart albums and your custom creations.
+                        </p>
+                    </div>
+                    <button class="create-collection-btn" id="createCollectionBtn">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        Create Collection
+                    </button>
+                </div>
+
+                <!-- Auto Collections -->
+                <div class="auto-collections">
+                    <h3 class="auto-collections-title">
+                        <i class="fas fa-magic me-2"></i>
+                        Smart Collections
+                    </h3>
+                    <p style="color: #6C757D; margin-bottom: 25px;">
+                        Automatically organized collections based on your photos
+                    </p>
+                    <div class="auto-collections-grid" id="autoCollectionsGrid">
+                        <!-- Dynamically populated via JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Manual Collections -->
+                <div class="manual-collections">
+                    <h3 class="manual-collections-title">
+                        <i class="fas fa-folder me-2"></i>
+                        My Collections
+                    </h3>
+                    <p style="color: #6C757D; margin-bottom: 25px;">
+                        Your custom photo collections
+                    </p>
+                    <div class="collections-grid" id="manualCollectionsGrid">
+                        <!-- Dynamically populated via JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Empty State (if no collections) -->
+                <div id="emptyCollectionsState" style="display: none; text-align: center; padding: 80px 20px;">
+                    <i class="fas fa-folder-open" style="font-size: 5rem; color: #E9ECEF; margin-bottom: 25px; display: block;"></i>
+                    <h3 style="font-family: 'Dancing Script', cursive; font-size: 2rem; color: #2C3E50; margin-bottom: 15px;">
+                        No Collections Yet
+                    </h3>
+                    <p style="color: #6C757D; font-size: 1.1rem; margin-bottom: 30px;">
+                        Create your first collection to organize your travel memories!
+                    </p>
+                    <button class="create-collection-btn" onclick="openCollectionModal()">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        Create Your First Collection
+                    </button>
                 </div>
 
             </div>

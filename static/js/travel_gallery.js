@@ -1876,3 +1876,524 @@ initializeEnchantedGallery = function() {
 };
 
 console.log('📖 Phase 3: Diary System loaded successfully! 💖');
+
+/* ============================================
+   📅 PHASE 4: MEMORY TIMELINE & COLLECTIONS
+   Visual Journey Through Time
+   ============================================ */
+
+// Global timeline and collections variables
+let timelineData = [];
+let collectionsData = [];
+let currentYear = new Date().getFullYear();
+let selectedCollection = null;
+
+// ============================================
+// TIMELINE INITIALIZATION
+// ============================================
+
+function initializeTimeline() {
+    const timelineTab = document.querySelector('[data-tab="timeline"]');
+    if (timelineTab) {
+        timelineTab.addEventListener('click', loadTimeline);
+    }
+    
+    console.log('📅 Timeline system initialized');
+}
+
+function loadTimeline() {
+    generateTimelineData();
+    renderTimelineStats();
+    renderYearNavigator();
+    renderTimeline();
+    renderHeatMap();
+    renderMilestones();
+    
+    showGalleryToast('Loading your journey timeline... 🗓️', 2000);
+}
+
+function generateTimelineData() {
+    // Generate sample timeline data based on existing photos
+    timelineData = [
+        {
+            id: 1,
+            date: '2024-03-15',
+            title: 'Mountain Adventure Begins',
+            description: 'Started our incredible journey through the Himalayan peaks with breathtaking views.',
+            photos: [
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
+                'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=400'
+            ],
+            location: 'Dharampur',
+            tags: ['Mountain', 'Adventure', 'Spring'],
+            mood: '🏔️'
+        },
+        {
+            id: 2,
+            date: '2024-06-20',
+            title: 'Summer Roads',
+            description: 'Exploring the beautiful summer routes with perfect weather and stunning landscapes.',
+            photos: [
+                'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400'
+            ],
+            location: 'Solan',
+            tags: ['Summer', 'Roads', 'Exploration'],
+            mood: '☀️'
+        },
+        {
+            id: 3,
+            date: '2024-07-25',
+            title: 'Monsoon Magic',
+            description: 'Experiencing the enchanting rains and misty landscapes of Barog tunnel area.',
+            photos: [
+                'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400',
+                'https://images.unsplash.com/photo-1527838832700-5059252407fa?w=400',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400'
+            ],
+            location: 'Barog',
+            tags: ['Monsoon', 'Rain', 'Heritage'],
+            mood: '🌧️'
+        },
+        {
+            id: 4,
+            date: '2024-10-05',
+            title: 'Autumn Colors',
+            description: 'Walking through history in the colonial cantonment town with beautiful autumn foliage.',
+            photos: [
+                'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=400',
+                'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400'
+            ],
+            location: 'Dagshai',
+            tags: ['Autumn', 'Heritage', 'History'],
+            mood: '🍂'
+        },
+        {
+            id: 5,
+            date: '2023-12-10',
+            title: 'Winter Wonderland',
+            description: 'Snow-covered peaks and cozy mountain retreats made this winter unforgettable.',
+            photos: [
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400'
+            ],
+            location: 'Dharampur',
+            tags: ['Winter', 'Snow', 'Cozy'],
+            mood: '❄️'
+        },
+        {
+            id: 6,
+            date: '2023-08-18',
+            title: 'Valley Views',
+            description: 'Discovered hidden valleys with panoramic views that took our breath away.',
+            photos: [
+                'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400',
+                'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=400'
+            ],
+            location: 'Solan',
+            tags: ['Valley', 'Views', 'Nature'],
+            mood: '🌄'
+        }
+    ];
+}
+
+function renderTimelineStats() {
+    const statsContainer = document.getElementById('timelineStats');
+    if (!statsContainer) return;
+    
+    const totalPhotos = timelineData.reduce((sum, item) => sum + item.photos.length, 0);
+    const uniqueLocations = [...new Set(timelineData.map(item => item.location))].length;
+    const totalDays = timelineData.length;
+    const firstDate = new Date(timelineData[timelineData.length - 1].date);
+    const lastDate = new Date(timelineData[0].date);
+    const daysDiff = Math.floor((lastDate - firstDate) / (1000 * 60 * 60 * 24));
+    
+    statsContainer.innerHTML = `
+        <div class="timeline-stat-card">
+            <span class="timeline-stat-icon">📸</span>
+            <span class="timeline-stat-number">${totalPhotos}</span>
+            <span class="timeline-stat-label">Total Photos</span>
+        </div>
+        <div class="timeline-stat-card">
+            <span class="timeline-stat-icon">📍</span>
+            <span class="timeline-stat-number">${uniqueLocations}</span>
+            <span class="timeline-stat-label">Destinations</span>
+        </div>
+        <div class="timeline-stat-card">
+            <span class="timeline-stat-icon">🗓️</span>
+            <span class="timeline-stat-number">${totalDays}</span>
+            <span class="timeline-stat-label">Travel Days</span>
+        </div>
+        <div class="timeline-stat-card">
+            <span class="timeline-stat-icon">⏱️</span>
+            <span class="timeline-stat-number">${daysDiff}</span>
+            <span class="timeline-stat-label">Days Traveled</span>
+        </div>
+    `;
+    
+    // Animate numbers
+    animateStatNumbers();
+}
+
+function animateStatNumbers() {
+    const statNumbers = document.querySelectorAll('.timeline-stat-number');
+    statNumbers.forEach(stat => {
+        const target = parseInt(stat.textContent);
+        let current = 0;
+        const increment = target / 50;
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                stat.textContent = target;
+                clearInterval(timer);
+            } else {
+                stat.textContent = Math.floor(current);
+            }
+        }, 20);
+    });
+}
+
+function renderYearNavigator() {
+    const navigatorContainer = document.getElementById('yearNavigator');
+    if (!navigatorContainer) return;
+    
+    const years = [...new Set(timelineData.map(item => new Date(item.date).getFullYear()))].sort((a, b) => b - a);
+    
+    navigatorContainer.innerHTML = years.map(year => `
+        <button class="year-btn ${year === currentYear ? 'active' : ''}" onclick="filterByYear(${year})">
+            ${year}
+        </button>
+    `).join('');
+}
+
+function filterByYear(year) {
+    currentYear = year;
+    
+    // Update active button
+    document.querySelectorAll('.year-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (parseInt(btn.textContent) === year) {
+            btn.classList.add('active');
+        }
+    });
+    
+    renderTimeline();
+    showGalleryToast(`Showing memories from ${year} 📅`, 2000);
+}
+
+function renderTimeline() {
+    const timelineContainer = document.getElementById('timelineContainer');
+    if (!timelineContainer) return;
+    
+    const filteredData = timelineData.filter(item => 
+        new Date(item.date).getFullYear() === currentYear
+    );
+    
+    if (filteredData.length === 0) {
+        timelineContainer.innerHTML = `
+            <div style="text-align: center; padding: 50px; color: #6C757D;">
+                <i class="fas fa-calendar-times" style="font-size: 3rem; margin-bottom: 20px; display: block;"></i>
+                <p style="font-size: 1.2rem;">No memories from ${currentYear} yet.</p>
+                <p>Start creating memories to see them here!</p>
+            </div>
+        `;
+        return;
+    }
+    
+    timelineContainer.innerHTML = `
+        <div class="timeline-line"></div>
+        ${filteredData.map((item, index) => {
+            const date = new Date(item.date);
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const formattedDate = `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+            
+            return `
+                <div class="timeline-item" style="animation-delay: ${index * 0.1}s">
+                    <div class="timeline-marker">${item.mood}</div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">${formattedDate}</div>
+                        <h3 class="timeline-title">${item.title}</h3>
+                        <div class="timeline-photos">
+                            ${item.photos.map(photo => `
+                                <div class="timeline-photo" onclick="openLightboxFromTimeline('${photo}')">
+                                    <img src="${photo}" alt="${item.title}">
+                                </div>
+                            `).join('')}
+                        </div>
+                        <p class="timeline-description">${item.description}</p>
+                        <div class="timeline-tags">
+                            <span class="timeline-tag">📍 ${item.location}</span>
+                            ${item.tags.map(tag => `<span class="timeline-tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('')}
+    `;
+}
+
+function openLightboxFromTimeline(photoUrl) {
+    // Reuse existing lightbox functionality
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.querySelector('.lightbox-image');
+    
+    lightboxImage.src = photoUrl;
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function renderHeatMap() {
+    const heatmapGrid = document.getElementById('heatmapGrid');
+    if (!heatmapGrid) return;
+    
+    // Generate 365 cells (one year)
+    const cells = [];
+    const today = new Date();
+    
+    for (let i = 364; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        
+        // Check if there are memories on this date
+        const memoriesCount = timelineData.filter(item => {
+            const itemDate = new Date(item.date);
+            return itemDate.toDateString() === date.toDateString();
+        }).length;
+        
+        let level = 0;
+        if (memoriesCount > 0) level = 1;
+        if (memoriesCount > 2) level = 2;
+        if (memoriesCount > 4) level = 3;
+        if (memoriesCount > 6) level = 4;
+        
+        cells.push(`
+            <div class="heatmap-cell ${level > 0 ? `level-${level}` : ''}" 
+                 title="${date.toDateString()}: ${memoriesCount} memories"
+                 data-count="${memoriesCount}">
+            </div>
+        `);
+    }
+    
+    heatmapGrid.innerHTML = cells.join('');
+}
+
+function renderMilestones() {
+    const milestonesGrid = document.getElementById('milestonesGrid');
+    if (!milestonesGrid) return;
+    
+    const totalPhotos = timelineData.reduce((sum, item) => sum + item.photos.length, 0);
+    const uniqueLocations = [...new Set(timelineData.map(item => item.location))].length;
+    const totalDays = timelineData.length;
+    
+    const milestones = [
+        { icon: '📸', name: 'First Photo', unlocked: totalPhotos >= 1 },
+        { icon: '🎯', name: '10 Photos', unlocked: totalPhotos >= 10 },
+        { icon: '🌟', name: '50 Photos', unlocked: totalPhotos >= 50 },
+        { icon: '💎', name: '100 Photos', unlocked: totalPhotos >= 100 },
+        { icon: '🗺️', name: 'Explorer', unlocked: uniqueLocations >= 3 },
+        { icon: '🏆', name: 'Adventurer', unlocked: uniqueLocations >= 5 },
+        { icon: '📅', name: 'Week Traveler', unlocked: totalDays >= 7 },
+        { icon: '🎖️', name: 'Month Traveler', unlocked: totalDays >= 30 }
+    ];
+    
+    milestonesGrid.innerHTML = milestones.map(milestone => `
+        <div class="milestone-badge ${milestone.unlocked ? '' : 'locked'}">
+            <span class="milestone-icon">${milestone.icon}</span>
+            <div class="milestone-name">${milestone.name}</div>
+        </div>
+    `).join('');
+}
+
+// ============================================
+// COLLECTIONS INITIALIZATION
+// ============================================
+
+function initializeCollections() {
+    const collectionsTab = document.querySelector('[data-tab="collections"]');
+    if (collectionsTab) {
+        collectionsTab.addEventListener('click', loadCollections);
+    }
+    
+    const createCollectionBtn = document.getElementById('createCollectionBtn');
+    if (createCollectionBtn) {
+        createCollectionBtn.addEventListener('click', openCollectionModal);
+    }
+    
+    console.log('📦 Collections system initialized');
+}
+
+function loadCollections() {
+    generateCollectionsData();
+    renderAutoCollections();
+    renderManualCollections();
+    
+    showGalleryToast('Loading your collections... 📦', 2000);
+}
+
+function generateCollectionsData() {
+    // Auto-generated collections
+    const destinations = [...new Set(timelineData.map(item => item.location))];
+    const years = [...new Set(timelineData.map(item => new Date(item.date).getFullYear()))];
+    
+    collectionsData = {
+        auto: [
+            { id: 'all', name: 'All Photos', icon: '🌍', count: timelineData.reduce((sum, item) => sum + item.photos.length, 0) },
+            { id: 'recent', name: 'Recent', icon: '⏰', count: 15 },
+            { id: 'favorites', name: 'Favorites', icon: '❤️', count: 8 },
+            ...destinations.map(dest => ({
+                id: `dest-${dest}`,
+                name: dest,
+                icon: '📍',
+                count: timelineData.filter(item => item.location === dest).reduce((sum, item) => sum + item.photos.length, 0)
+            }))
+        ],
+        manual: [
+            {
+                id: 1,
+                name: 'Best of 2024',
+                description: 'My favorite moments from this year',
+                photos: [
+                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
+                    'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=400',
+                    'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400',
+                    'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400',
+                    'https://images.unsplash.com/photo-1527838832700-5059252407fa?w=400',
+                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400'
+                ],
+                date: '2024-11-01',
+                isPublic: true
+            },
+            {
+                id: 2,
+                name: 'Mountain Memories',
+                description: 'All the peaks I conquered',
+                photos: [
+                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
+                    'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400',
+                    'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400'
+                ],
+                date: '2024-10-15',
+                isPublic: true
+            },
+            {
+                id: 3,
+                name: 'Rainy Days',
+                description: 'Monsoon magic captured',
+                photos: [
+                    'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=400',
+                    'https://images.unsplash.com/photo-1527838832700-5059252407fa?w=400'
+                ],
+                date: '2024-08-20',
+                isPublic: false
+            }
+        ]
+    };
+}
+
+function renderAutoCollections() {
+    const autoGrid = document.getElementById('autoCollectionsGrid');
+    if (!autoGrid) return;
+    
+    autoGrid.innerHTML = collectionsData.auto.map(collection => `
+        <div class="auto-collection-card" onclick="viewAutoCollection('${collection.id}')">
+            <span class="auto-collection-icon">${collection.icon}</span>
+            <div class="auto-collection-name">${collection.name}</div>
+            <div class="auto-collection-count">${collection.count} photos</div>
+        </div>
+    `).join('');
+}
+
+function renderManualCollections() {
+    const manualGrid = document.getElementById('manualCollectionsGrid');
+    if (!manualGrid) return;
+    
+    manualGrid.innerHTML = collectionsData.manual.map(collection => `
+        <div class="collection-card" onclick="viewCollection(${collection.id})">
+            <div class="collection-cover">
+                <div class="collection-mosaic">
+                    ${collection.photos.slice(0, 6).map(photo => `
+                        <img src="${photo}" alt="${collection.name}">
+                    `).join('')}
+                </div>
+            </div>
+            <div class="collection-info">
+                <h3 class="collection-name">${collection.name}</h3>
+                <div class="collection-meta">
+                    <span><i class="fas fa-images"></i> ${collection.photos.length} photos</span>
+                    <span><i class="fas fa-${collection.isPublic ? 'globe' : 'lock'}"></i> ${collection.isPublic ? 'Public' : 'Private'}</span>
+                </div>
+                <p class="collection-description">${collection.description}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+function viewAutoCollection(collectionId) {
+    showGalleryToast(`Opening ${collectionId} collection... 📂`, 2000);
+    // In production, filter and display photos from this collection
+}
+
+function viewCollection(collectionId) {
+    const collection = collectionsData.manual.find(c => c.id === collectionId);
+    if (!collection) return;
+    
+    selectedCollection = collection;
+    
+    // Create collection view modal
+    const modal = document.createElement('div');
+    modal.className = 'collection-modal active';
+    modal.innerHTML = `
+        <div class="collection-modal-content">
+            <div class="collection-modal-header">
+                <h2 class="collection-modal-title">${collection.name}</h2>
+                <button class="diary-modal-close" onclick="closeCollectionView()" style="position: absolute; top: 20px; right: 20px;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="collection-modal-body">
+                <p style="color: #6C757D; font-size: 1.1rem; margin-bottom: 30px; text-align: center;">
+                    ${collection.description}
+                </p>
+                <div class="gallery-grid">
+                    ${collection.photos.map(photo => `
+                        <div class="photo-card" style="animation: cardSlideIn 0.5s ease-out;">
+                            <div class="photo-image-wrapper">
+                                <img src="${photo}" alt="${collection.name}" class="photo-image">
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+    
+    showGalleryToast(`Viewing ${collection.name} 📸`, 2000);
+}
+
+function closeCollectionView() {
+    const modal = document.querySelector('.collection-modal');
+    if (modal) {
+        modal.remove();
+        document.body.style.overflow = '';
+    }
+}
+
+function openCollectionModal() {
+    showGalleryToast('Collection creator coming soon! 🎨', 3000);
+    // In Phase 5, this will open a full collection creator
+}
+
+// ============================================
+// UPDATE INITIALIZATION
+// ============================================
+
+// Update the main initialization
+const originalInit3 = initializeEnchantedGallery;
+initializeEnchantedGallery = function() {
+    originalInit3();
+    initializeTimeline();
+    initializeCollections();
+};
+
+console.log('📅 Phase 4: Timeline & Collections loaded successfully! 💖');
