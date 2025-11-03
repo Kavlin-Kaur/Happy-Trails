@@ -2528,7 +2528,17 @@ function viewStoryDetail(storyId) {
                         Comments (${story.comments})
                     </h3>
                     <div style="background: rgba(255, 249, 230, 0.5); border-radius: 15px; padding: 30px; text-align: center;">
-                        <p style="color: #6C757D;">Comments feature coming in Phase 4! 💬</p>
+                        <p style="color: #6C757D; margin-bottom: 15px;">
+                            <i class="fas fa-lightbulb" style="color: #FFD700; font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+                            Want to discuss this story? Head over to the <strong>Community Forum</strong> tab! 💬
+                        </p>
+                        <button onclick="closeStoryDetail(); document.querySelector('[data-tab=\\'community-forum\\']').click();" 
+                                style="background: linear-gradient(135deg, #32CD32, #228B22); color: white; border: none; 
+                                    padding: 12px 24px; border-radius: 20px; font-weight: 600; cursor: pointer; 
+                                    transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-comments"></i>
+                            Go to Forum
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2963,3 +2973,1112 @@ window.shareStory = shareStory;
 window.usePrompt = usePrompt;
 
 console.log('📖 Phase 3: Traveler\'s Tales & Story Sharing loaded successfully! 💖');
+
+/* ============================================
+   💬 PHASE 4: COMMUNITY FORUM
+   Discussion Boards & Threads
+   ============================================ */
+
+// Global Phase 4 variables
+let allThreads = [];
+let filteredThreads = [];
+let displayedThreads = [];
+let threadsPerPage = 10;
+let currentThreadsPage = 1;
+let activeForumCategory = 'all';
+
+// Sample forum threads data
+const SAMPLE_THREADS = [
+    {
+        id: 1,
+        title: 'Best time to visit Solan during monsoon season?',
+        content: 'Planning my first trip to Solan in July. Is it safe to travel during monsoon? What are the must-see places that are accessible? Any recommendations would be greatly appreciated!',
+        category: 'route-planning',
+        type: 'question',
+        author: {
+            name: 'Priya Sharma',
+            avatar: 'https://i.pravatar.cc/150?img=5',
+            id: 1,
+            reputation: 245
+        },
+        createdAt: '2025-11-01T14:30:00',
+        lastActivity: '2025-11-03T06:45:00',
+        views: 127,
+        replies: 8,
+        votes: 15,
+        isPinned: false,
+        isAnswered: true,
+        tags: ['solan', 'monsoon', 'safety']
+    },
+    {
+        id: 2,
+        title: 'Official: New Premium Route HT-109 Launching December 2025!',
+        content: 'Exciting news from Happy Trails! We are launching a new premium route connecting Dharampur to Shimla with luxury seating and onboard WiFi. Early bird bookings start next month. What features would you like to see on this route?',
+        category: 'bus-experience',
+        type: 'announcement',
+        author: {
+            name: 'Kavlin (Founder)',
+            avatar: 'https://i.pravatar.cc/150?img=33',
+            id: 0,
+            reputation: 9999
+        },
+        createdAt: '2025-11-03T06:00:00',
+        lastActivity: '2025-11-03T06:55:00',
+        views: 342,
+        replies: 23,
+        votes: 89,
+        isPinned: true,
+        isAnswered: false,
+        tags: ['announcement', 'new-route', 'premium']
+    },
+    {
+        id: 3,
+        title: 'Hidden gems along HT-103: My photography guide',
+        content: 'After traveling HT-103 over 50 times, I\'ve discovered some amazing photo spots that most tourists miss. Here\'s my comprehensive guide with exact locations, best times for lighting, and tips for capturing the perfect mountain shots. Includes GPS coordinates and sample photos!',
+        category: 'photo-sharing',
+        type: 'guide',
+        author: {
+            name: 'Arjun Mehta',
+            avatar: 'https://i.pravatar.cc/150?img=12',
+            id: 2,
+            reputation: 567
+        },
+        createdAt: '2025-11-02T10:15:00',
+        lastActivity: '2025-11-03T05:20:00',
+        views: 234,
+        replies: 15,
+        votes: 42,
+        isPinned: true,
+        isAnswered: false,
+        tags: ['photography', 'HT-103', 'guide', 'hidden-spots']
+    },
+    {
+        id: 4,
+        title: 'Budget hotels near Barog station - recommendations?',
+        content: 'Looking for clean, budget-friendly accommodation near Barog bus station. My budget is ₹1000-1500 per night. Prefer places within walking distance. Any suggestions from fellow travelers?',
+        category: 'accommodations',
+        type: 'question',
+        author: {
+            name: 'Neha Singh',
+            avatar: 'https://i.pravatar.cc/150?img=1',
+            id: 5,
+            reputation: 123
+        },
+        createdAt: '2025-11-02T16:45:00',
+        lastActivity: '2025-11-03T04:30:00',
+        views: 89,
+        replies: 6,
+        votes: 8,
+        isPinned: false,
+        isAnswered: true,
+        tags: ['barog', 'budget', 'hotels']
+    },
+    {
+        id: 5,
+        title: 'The roadside dhaba with the BEST maggi you\'ll ever taste!',
+        content: 'So I found this amazing dhaba between Solan and Barog that serves the most incredible maggi. The owner makes it with special mountain spices and fresh herbs from his garden. Located exactly 15km from Solan on the left side. Look for the blue and white building. Trust me, you won\'t regret stopping!',
+        category: 'food-dining',
+        type: 'review',
+        author: {
+            name: 'Vikram Patel',
+            avatar: 'https://i.pravatar.cc/150?img=13',
+            id: 4,
+            reputation: 445
+        },
+        createdAt: '2025-11-02T08:20:00',
+        lastActivity: '2025-11-02T22:10:00',
+        views: 198,
+        replies: 12,
+        votes: 34,
+        isPinned: false,
+        isAnswered: false,
+        tags: ['food', 'maggi', 'dhaba', 'solan-barog']
+    },
+    {
+        id: 6,
+        title: 'Solo female traveler safety tips for Happy Trails routes',
+        content: 'As someone who\'s been traveling solo on Happy Trails for 2 years, I wanted to share some safety tips specifically for women traveling alone. Covering everything from seat selection to communication with drivers and emergency contacts. Feel free to add your own tips!',
+        category: 'travel-tips',
+        type: 'guide',
+        author: {
+            name: 'Sneha Reddy',
+            avatar: 'https://i.pravatar.cc/150?img=10',
+            id: 8,
+            reputation: 678
+        },
+        createdAt: '2025-11-01T12:00:00',
+        lastActivity: '2025-11-02T20:15:00',
+        views: 412,
+        replies: 27,
+        votes: 67,
+        isPinned: false,
+        isAnswered: false,
+        tags: ['solo-travel', 'safety', 'women', 'tips']
+    },
+    {
+        id: 7,
+        title: 'How to book tickets? App not working!',
+        content: 'Hi everyone, I\'m trying to book tickets for tomorrow but the app keeps crashing when I select payment method. Is there an alternative way to book? Please help, I need to travel urgently!',
+        category: 'help-support',
+        type: 'question',
+        author: {
+            name: 'Raj Kumar',
+            avatar: 'https://i.pravatar.cc/150?img=8',
+            id: 6,
+            reputation: 45
+        },
+        createdAt: '2025-11-03T02:30:00',
+        lastActivity: '2025-11-03T03:15:00',
+        views: 56,
+        replies: 4,
+        votes: 3,
+        isPinned: false,
+        isAnswered: true,
+        tags: ['booking', 'technical-issue', 'urgent']
+    },
+    {
+        id: 8,
+        title: 'Weekend meetup: Dagshai heritage walk - Nov 10th',
+        content: 'Organizing a heritage walk in Dagshai on November 10th for Happy Trails community members. We\'ll explore the historic cantonment area, visit the jail museum, and have lunch at a local restaurant. Meeting at Dagshai bus stop at 10 AM. Anyone interested?',
+        category: 'general-chat',
+        type: 'meetup',
+        author: {
+            name: 'Manish Gupta',
+            avatar: 'https://i.pravatar.cc/150?img=11',
+            id: 11,
+            reputation: 890
+        },
+        createdAt: '2025-11-01T18:30:00',
+        lastActivity: '2025-11-02T15:45:00',
+        views: 167,
+        replies: 11,
+        votes: 22,
+        isPinned: false,
+        isAnswered: false,
+        tags: ['meetup', 'dagshai', 'heritage', 'weekend']
+    },
+    {
+        id: 9,
+        title: 'First time traveler - what should I expect?',
+        content: 'This will be my first time using Happy Trails. I\'m traveling from Dharampur to Solan next week. What should I know beforehand? How early should I reach the bus stop? Any unwritten rules I should be aware of? Thanks!',
+        category: 'travel-tips',
+        type: 'question',
+        author: {
+            name: 'Kavya Iyer',
+            avatar: 'https://i.pravatar.cc/150?img=16',
+            id: 10,
+            reputation: 12
+        },
+        createdAt: '2025-11-02T11:20:00',
+        lastActivity: '2025-11-02T19:30:00',
+        views: 143,
+        replies: 9,
+        votes: 12,
+        isPinned: false,
+        isAnswered: true,
+        tags: ['first-time', 'beginner', 'tips']
+    },
+    {
+        id: 10,
+        title: 'Comparing HT-101 vs HT-105: Which one should I take?',
+        content: 'Both routes go from Dharampur to Solan but HT-105 is labeled as Deluxe. What\'s the actual difference? Is the extra cost worth it? Looking for honest reviews from people who\'ve tried both.',
+        category: 'route-planning',
+        type: 'discussion',
+        author: {
+            name: 'Rohit Sharma',
+            avatar: 'https://i.pravatar.cc/150?img=15',
+            id: 9,
+            reputation: 234
+        },
+        createdAt: '2025-11-01T20:00:00',
+        lastActivity: '2025-11-02T14:20:00',
+        views: 201,
+        replies: 14,
+        votes: 18,
+        isPinned: false,
+        isAnswered: true,
+        tags: ['HT-101', 'HT-105', 'comparison', 'deluxe']
+    },
+    {
+        id: 11,
+        title: 'Lost my bag on bus yesterday - found! Thank you driver uncle!',
+        content: 'I want to publicly thank the driver of HT-102 yesterday (Nov 2nd, 3 PM departure). I left my bag with my laptop and documents on the bus. He noticed it, kept it safe, and waited for me when I came back panicking. Such honesty is rare these days. Thank you so much! 🙏',
+        category: 'general-chat',
+        type: 'discussion',
+        author: {
+            name: 'Ananya Desai',
+            avatar: 'https://i.pravatar.cc/150?img=20',
+            id: 12,
+            reputation: 156
+        },
+        createdAt: '2025-11-02T19:00:00',
+        lastActivity: '2025-11-02T21:45:00',
+        views: 312,
+        replies: 18,
+        votes: 78,
+        isPinned: false,
+        isAnswered: false,
+        tags: ['appreciation', 'lost-found', 'driver']
+    },
+    {
+        id: 12,
+        title: 'Winter travel tips: November to February',
+        content: 'With winter approaching, here are some essential tips for traveling on Happy Trails routes during cold months. Includes packing list, route conditions, best time to travel, and safety precautions. Updated for 2025-2026 winter season.',
+        category: 'travel-tips',
+        type: 'guide',
+        author: {
+            name: 'Aditya Kumar',
+            avatar: 'https://i.pravatar.cc/150?img=14',
+            id: 7,
+            reputation: 789
+        },
+        createdAt: '2025-11-01T09:00:00',
+        lastActivity: '2025-11-02T16:30:00',
+        views: 267,
+        replies: 16,
+        votes: 45,
+        isPinned: false,
+        isAnswered: false,
+        tags: ['winter', 'tips', 'packing', 'safety']
+    },
+    {
+        id: 13,
+        title: 'Best photography spots on each route - crowd-sourced list',
+        content: 'Let\'s create the ultimate photography guide together! Share your favorite photo spots on any Happy Trails route. Include route number, approximate location, best time for lighting, and what makes it special. I\'ll compile everything into a comprehensive guide!',
+        category: 'photo-sharing',
+        type: 'discussion',
+        author: {
+            name: 'Priya Sharma',
+            avatar: 'https://i.pravatar.cc/150?img=5',
+            id: 1,
+            reputation: 245
+        },
+        createdAt: '2025-11-01T15:00:00',
+        lastActivity: '2025-11-02T12:00:00',
+        views: 189,
+        replies: 21,
+        votes: 38,
+        isPinned: false,
+        isAnswered: false,
+        tags: ['photography', 'spots', 'collaboration']
+    },
+    {
+        id: 14,
+        title: 'Senior citizen discount - how to avail?',
+        content: 'My parents (both 65+) want to travel on Happy Trails. I heard there\'s a senior citizen discount but can\'t find information on the website. Can someone guide me on how to avail this? Do they need to show any ID? What\'s the discount percentage?',
+        category: 'help-support',
+        type: 'question',
+        author: {
+            name: 'Vikram Patel',
+            avatar: 'https://i.pravatar.cc/150?img=13',
+            id: 4,
+            reputation: 445
+        },
+        createdAt: '2025-11-02T14:00:00',
+        lastActivity: '2025-11-02T18:00:00',
+        views: 78,
+        replies: 5,
+        votes: 7,
+        isPinned: false,
+        isAnswered: true,
+        tags: ['senior-citizen', 'discount', 'booking']
+    },
+    {
+        id: 15,
+        title: 'Sunrise view from Kasauli viewpoint - MUST SEE!',
+        content: 'Just witnessed the most breathtaking sunrise from Kasauli viewpoint accessible via HT-103. Arrived at 5:30 AM and it was totally worth it. The way the first rays hit the Himalayas is indescribable. Sharing some photos! Best time: November to March for clear skies.',
+        category: 'photo-sharing',
+        type: 'review',
+        author: {
+            name: 'Sneha Reddy',
+            avatar: 'https://i.pravatar.cc/150?img=10',
+            id: 8,
+            reputation: 678
+        },
+        createdAt: '2025-11-03T06:30:00',
+        lastActivity: '2025-11-03T06:50:00',
+        views: 92,
+        replies: 7,
+        votes: 19,
+        isPinned: false,
+        isAnswered: false,
+        tags: ['sunrise', 'kasauli', 'HT-103', 'photos']
+    }
+];
+
+// Category metadata
+const FORUM_CATEGORIES = {
+    'route-planning': { label: 'Route Planning', icon: '🗺️', color: '#8A2BE2' },
+    'travel-tips': { label: 'Travel Tips', icon: '🎒', color: '#32CD32' },
+    'accommodations': { label: 'Accommodations', icon: '🏨', color: '#FF6347' },
+    'food-dining': { label: 'Food & Dining', icon: '🍜', color: '#FFD700' },
+    'bus-experience': { label: 'Bus Experience', icon: '🚌', color: '#4682B4' },
+    'photo-sharing': { label: 'Photo Sharing', icon: '📸', color: '#FF69B4' },
+    'help-support': { label: 'Help & Support', icon: '🆘', color: '#DC143C' },
+    'general-chat': { label: 'General Chat', icon: '💬', color: '#9370DB' }
+};
+
+// Thread type metadata
+const THREAD_TYPES = {
+    'question': { label: 'Question', icon: '❓' },
+    'discussion': { label: 'Discussion', icon: '💭' },
+    'announcement': { label: 'Announcement', icon: '📢' },
+    'guide': { label: 'Guide', icon: '📚' },
+    'review': { label: 'Review', icon: '⭐' },
+    'meetup': { label: 'Meetup', icon: '👥' }
+};
+
+// ============================================
+// COMMUNITY FORUM INITIALIZATION
+// ============================================
+
+function initializeCommunityForum() {
+    // Load threads data
+    allThreads = SAMPLE_THREADS;
+    filteredThreads = [...allThreads];
+    
+    // Render initial data
+    renderThreadsList();
+    renderTrendingTopics();
+    updateForumStats();
+    
+    console.log('💬 Community Forum initialized');
+}
+
+// ============================================
+// RENDERING FUNCTIONS
+// ============================================
+
+function renderThreadsList() {
+    const container = document.getElementById('threadsList');
+    if (!container) return;
+    
+    // Calculate pagination
+    const startIndex = (currentThreadsPage - 1) * threadsPerPage;
+    const endIndex = startIndex + threadsPerPage;
+    displayedThreads = filteredThreads.slice(0, endIndex);
+    
+    if (displayedThreads.length === 0) {
+        container.innerHTML = `
+            <div class="travelers-empty" style="padding: 60px 20px;">
+                <div class="travelers-empty-icon">💬</div>
+                <h3>No threads found</h3>
+                <p>Be the first to start a discussion!</p>
+            </div>
+        `;
+        
+        document.getElementById('loadMoreForum').style.display = 'none';
+        return;
+    }
+    
+    container.innerHTML = displayedThreads.map(thread => createThreadCard(thread)).join('');
+    
+    // Show/hide load more button
+    const loadMoreContainer = document.getElementById('loadMoreForum');
+    if (loadMoreContainer) {
+        loadMoreContainer.style.display = displayedThreads.length < filteredThreads.length ? 'block' : 'none';
+    }
+}
+
+function createThreadCard(thread) {
+    const category = FORUM_CATEGORIES[thread.category];
+    const threadType = THREAD_TYPES[thread.type];
+    const timeAgo = getTimeAgo(thread.lastActivity);
+    
+    return `
+        <div class="thread-item ${thread.isPinned ? 'pinned' : ''} ${thread.isAnswered ? 'answered' : ''}" 
+             onclick="viewThreadDetail(${thread.id})">
+            
+            <div class="thread-header-row">
+                <div class="thread-meta-left">
+                    <div class="thread-badges">
+                        ${thread.isPinned ? '<span class="thread-badge badge-pinned"><i class="fas fa-thumbtack"></i> Pinned</span>' : ''}
+                        ${thread.isAnswered ? '<span class="thread-badge badge-answered"><i class="fas fa-check"></i> Answered</span>' : ''}
+                        <span class="thread-badge badge-type">${threadType.icon} ${threadType.label}</span>
+                        <span class="thread-badge badge-category">${category.icon} ${category.label}</span>
+                    </div>
+                    
+                    <h3 class="thread-title-text">${thread.title}</h3>
+                    
+                    <div class="thread-preview">${thread.content}</div>
+                    
+                    <div class="thread-author-info">
+                        <img src="${thread.author.avatar}" alt="${thread.author.name}" class="thread-author-avatar">
+                        <div>
+                            <div class="thread-author-name">${thread.author.name}</div>
+                            <div class="thread-timestamp">Started ${timeAgo} • Last activity ${timeAgo}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="thread-stats">
+                    <div class="thread-stat">
+                        <div class="thread-stat-value">${thread.views}</div>
+                        <div class="thread-stat-label">Views</div>
+                    </div>
+                    <div class="thread-stat">
+                        <div class="thread-stat-value">${thread.replies}</div>
+                        <div class="thread-stat-label">Replies</div>
+                    </div>
+                    <div class="thread-stat">
+                        <div class="thread-stat-value">${thread.votes}</div>
+                        <div class="thread-stat-label">Votes</div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    `;
+}
+
+function renderTrendingTopics() {
+    const container = document.getElementById('trendingList');
+    if (!container) return;
+    
+    // Get top 5 trending threads (by votes + views)
+    const trending = [...allThreads]
+        .sort((a, b) => (b.votes + b.views * 0.1) - (a.votes + a.views * 0.1))
+        .slice(0, 5);
+    
+    container.innerHTML = trending.map(thread => `
+        <div class="trending-item" onclick="viewThreadDetail(${thread.id})">
+            <div class="trending-item-title">${thread.title}</div>
+            <div class="trending-item-meta">
+                <span><i class="fas fa-fire"></i> ${thread.votes} votes</span>
+                <span><i class="fas fa-eye"></i> ${thread.views} views</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ============================================
+// THREAD DETAIL VIEW
+// ============================================
+
+function viewThreadDetail(threadId) {
+    const thread = allThreads.find(t => t.id === threadId);
+    if (!thread) return;
+    
+    const modal = document.getElementById('threadDetailModal');
+    const modalBody = document.getElementById('threadDetailBody');
+    
+    if (!modal || !modalBody) return;
+    
+    const category = FORUM_CATEGORIES[thread.category];
+    const threadType = THREAD_TYPES[thread.type];
+    const timeAgo = getTimeAgo(thread.createdAt);
+    
+    // Increment view count
+    thread.views++;
+    
+    // Generate sample replies
+    const sampleReplies = generateSampleReplies(thread);
+    
+    modalBody.innerHTML = `
+        <div style="padding: 40px;">
+            <!-- Thread Header -->
+            <div class="thread-badges" style="margin-bottom: 15px;">
+                ${thread.isPinned ? '<span class="thread-badge badge-pinned"><i class="fas fa-thumbtack"></i> Pinned</span>' : ''}
+                ${thread.isAnswered ? '<span class="thread-badge badge-answered"><i class="fas fa-check"></i> Answered</span>' : ''}
+                <span class="thread-badge badge-type">${threadType.icon} ${threadType.label}</span>
+                <span class="thread-badge badge-category">${category.icon} ${category.label}</span>
+            </div>
+            
+            <h1 style="font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: #2C3E50; 
+                       margin-bottom: 20px; line-height: 1.3;">
+                ${thread.title}
+            </h1>
+            
+            <!-- Author Info -->
+            <div style="display: flex; align-items: center; gap: 15px; padding-bottom: 25px; 
+                        border-bottom: 2px solid rgba(50, 205, 50, 0.2); margin-bottom: 25px;">
+                <img src="${thread.author.avatar}" alt="${thread.author.name}" 
+                     style="width: 60px; height: 60px; border-radius: 50%; border: 3px solid #32CD32; object-fit: cover;">
+                <div style="flex: 1;">
+                    <div style="font-weight: 700; color: #2C3E50; font-size: 1.1rem; margin-bottom: 5px;">
+                        ${thread.author.name}
+                        ${thread.author.reputation > 500 ? '<i class="fas fa-star" style="color: #FFD700; margin-left: 5px;"></i>' : ''}
+                    </div>
+                    <div style="color: #6C757D; font-size: 0.9rem;">
+                        Posted ${timeAgo} • ${thread.author.reputation} reputation points
+                    </div>
+                </div>
+                <div style="display: flex; gap: 15px; align-items: center; color: #6C757D; font-size: 0.9rem;">
+                    <div><i class="fas fa-eye"></i> ${thread.views} views</div>
+                    <div><i class="fas fa-comment"></i> ${thread.replies} replies</div>
+                    <div><i class="fas fa-thumbs-up"></i> ${thread.votes} votes</div>
+                </div>
+            </div>
+            
+            <!-- Thread Content -->
+            <div style="color: #2C3E50; line-height: 1.8; font-size: 1.05rem; margin-bottom: 30px;">
+                ${thread.content.split('\n\n').map(p => `<p style="margin-bottom: 15px;">${p}</p>`).join('')}
+            </div>
+            
+            <!-- Tags -->
+            ${thread.tags && thread.tags.length > 0 ? `
+                <div style="margin-bottom: 30px;">
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        ${thread.tags.map(tag => `
+                            <span style="background: rgba(50, 205, 50, 0.1); border: 1px solid #32CD32; 
+                                         color: #228B22; padding: 4px 12px; border-radius: 12px; 
+                                         font-size: 0.8rem; font-weight: 600;">
+                                #${tag}
+                            </span>
+                        `).join('')}
+                    </div>
+                </div>
+            ` : ''}
+            
+            <!-- Thread Actions -->
+            <div style="display: flex; gap: 15px; padding: 20px 0; border-top: 2px solid rgba(50, 205, 50, 0.2); 
+                        border-bottom: 2px solid rgba(50, 205, 50, 0.2); margin-bottom: 30px;">
+                <button class="reply-action-btn" onclick="upvoteThread(${thread.id})">
+                    <i class="fas fa-thumbs-up"></i>
+                    Upvote (${thread.votes})
+                </button>
+                <button class="reply-action-btn" onclick="bookmarkThread(${thread.id})">
+                    <i class="fas fa-bookmark"></i>
+                    Bookmark
+                </button>
+                <button class="reply-action-btn" onclick="shareThread(${thread.id})">
+                    <i class="fas fa-share-alt"></i>
+                    Share
+                </button>
+                <button class="reply-action-btn" onclick="reportThread(${thread.id})">
+                    <i class="fas fa-flag"></i>
+                    Report
+                </button>
+            </div>
+            
+            <!-- Replies Section -->
+            <div class="replies-section">
+                <h3 class="replies-title">
+                    <i class="fas fa-comments"></i>
+                    Replies (${thread.replies})
+                </h3>
+                
+                ${sampleReplies.map(reply => `
+                    <div class="reply-item">
+                        <div class="reply-header">
+                            <div class="reply-author-info">
+                                <img src="${reply.author.avatar}" alt="${reply.author.name}" class="reply-author-avatar">
+                                <div>
+                                    <div class="reply-author-name">${reply.author.name}</div>
+                                    <div class="reply-timestamp">${getTimeAgo(reply.createdAt)}</div>
+                                </div>
+                            </div>
+                            <div class="reply-votes">
+                                <button class="vote-btn" onclick="event.stopPropagation(); upvoteReply(${reply.id})">
+                                    <i class="fas fa-chevron-up"></i>
+                                </button>
+                                <span class="vote-count">${reply.votes}</span>
+                                <button class="vote-btn" onclick="event.stopPropagation(); downvoteReply(${reply.id})">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="reply-content">${reply.content}</div>
+                        <div class="reply-actions">
+                            <button class="reply-action-btn" onclick="event.stopPropagation(); quoteReply(${reply.id})">
+                                <i class="fas fa-quote-right"></i>
+                                Quote
+                            </button>
+                            <button class="reply-action-btn" onclick="event.stopPropagation(); likeReply(${reply.id})">
+                                <i class="fas fa-heart"></i>
+                                Like
+                            </button>
+                        </div>
+                    </div>
+                `).join('')}
+                
+                <!-- Reply Form -->
+                <div class="reply-form">
+                    <h4 style="font-weight: 700; color: #2C3E50; margin-bottom: 15px;">
+                        <i class="fas fa-reply"></i>
+                        Add Your Reply
+                    </h4>
+                    <textarea id="replyContent" placeholder="Share your thoughts, answer questions, or contribute to the discussion..."></textarea>
+                    <button class="reply-submit-btn" onclick="submitReply(${thread.id})">
+                        <i class="fas fa-paper-plane"></i>
+                        Post Reply
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    modal.style.display = 'flex';
+    updateForumStats();
+}
+
+function generateSampleReplies(thread) {
+    // Generate realistic replies based on thread type
+    const replies = [];
+    const replyCount = Math.min(thread.replies, 3); // Show first 3 replies
+    
+    for (let i = 0; i < replyCount; i++) {
+        replies.push({
+            id: Date.now() + i,
+            author: SAMPLE_TRAVELERS[i % SAMPLE_TRAVELERS.length],
+            content: getSampleReplyContent(thread.type, i),
+            createdAt: new Date(Date.now() - (i + 1) * 3600000).toISOString(),
+            votes: Math.floor(Math.random() * 20) + 1
+        });
+    }
+    
+    return replies;
+}
+
+function getSampleReplyContent(type, index) {
+    const responses = {
+        'question': [
+            'I traveled this route last month and had a great experience! The monsoon makes it even more beautiful with waterfalls everywhere. Just carry an umbrella and waterproof bag.',
+            'I\'d recommend avoiding weekends if possible as it gets crowded. Weekdays are much better for enjoying the scenery.',
+            'Check the weather forecast before you go. If heavy rain is predicted, sometimes routes get delayed due to landslides.'
+        ],
+        'announcement': [
+            'This is amazing news! Finally WiFi on buses. Will definitely try this route when it launches.',
+            'Can we get reclining seats too? That would make long journeys so much more comfortable!',
+            'Looking forward to this! Any idea about the pricing compared to current premium routes?'
+        ],
+        'guide': [
+            'Thanks for sharing! Saved this guide for my next trip. The GPS coordinates are super helpful.',
+            'Amazing guide! I\'ve been to a couple of these spots and they\'re incredible. Adding the others to my list.',
+            'This is exactly what I was looking for! Do you have similar guides for other routes?'
+        ]
+    };
+    
+    const defaultReplies = [
+        'Great post! Thanks for sharing this information with the community.',
+        'I had a similar experience. Happy Trails really has the best service!',
+        'Thanks for bringing this up. Very helpful discussion!'
+    ];
+    
+    const categoryReplies = responses[type] || defaultReplies;
+    return categoryReplies[index % categoryReplies.length];
+}
+
+function closeThreadDetail() {
+    const modal = document.getElementById('threadDetailModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// ============================================
+// THREAD CREATION
+// ============================================
+
+function openThreadEditor() {
+    const modal = document.getElementById('threadEditorModal');
+    if (!modal) return;
+    
+    // Clear form
+    document.getElementById('threadCategory').value = '';
+    document.getElementById('threadType').value = '';
+    document.getElementById('threadTitle').value = '';
+    document.getElementById('threadContent').value = '';
+    document.getElementById('threadTags').value = '';
+    
+    // Update counters
+    updateThreadCharCounter('threadTitle', 'threadTitleCount');
+    updateThreadCharCounter('threadContent', 'threadContentCount');
+    
+    // Setup event listeners
+    setupThreadFormCounters();
+    
+    modal.style.display = 'flex';
+}
+
+function closeThreadEditor() {
+    const modal = document.getElementById('threadEditorModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function setupThreadFormCounters() {
+    const titleInput = document.getElementById('threadTitle');
+    const contentInput = document.getElementById('threadContent');
+    
+    if (titleInput) {
+        titleInput.addEventListener('input', () => {
+            updateThreadCharCounter('threadTitle', 'threadTitleCount');
+        });
+    }
+    
+    if (contentInput) {
+        contentInput.addEventListener('input', () => {
+            updateThreadCharCounter('threadContent', 'threadContentCount');
+        });
+    }
+}
+
+function updateThreadCharCounter(inputId, counterId) {
+    const input = document.getElementById(inputId);
+    const counter = document.getElementById(counterId);
+    
+    if (input && counter) {
+        counter.textContent = input.value.length;
+    }
+}
+
+function publishThread() {
+    // Get form values
+    const category = document.getElementById('threadCategory').value;
+    const type = document.getElementById('threadType').value;
+    const title = document.getElementById('threadTitle').value.trim();
+    const content = document.getElementById('threadContent').value.trim();
+    const tagsInput = document.getElementById('threadTags').value.trim();
+    
+    // Validate
+    if (!category) {
+        showToast('⚠️ Please select a category!', 3000);
+        return;
+    }
+    
+    if (!type) {
+        showToast('⚠️ Please select a thread type!', 3000);
+        return;
+    }
+    
+    if (!title || title.length < 10) {
+        showToast('⚠️ Thread title must be at least 10 characters!', 3000);
+        return;
+    }
+    
+    if (!content || content.length < 20) {
+        showToast('⚠️ Thread content must be at least 20 characters!', 3000);
+        return;
+    }
+    
+    // Parse tags
+    const tags = tagsInput ? tagsInput.split(',').map(t => t.trim()).filter(t => t) : [];
+    
+    // Create new thread
+    const newThread = {
+        id: Date.now(),
+        title: title,
+        content: content,
+        category: category,
+        type: type,
+        author: {
+            name: userProfile ? userProfile.name : 'Anonymous Traveler',
+            avatar: userProfile && userProfile.photo ? userProfile.photo : '/static/images/default-avatar.png',
+            id: CURRENT_USER.isAuthenticated ? 'current-user' : 0,
+            reputation: 0
+        },
+        createdAt: new Date().toISOString(),
+        lastActivity: new Date().toISOString(),
+        views: 0,
+        replies: 0,
+        votes: 0,
+        isPinned: false,
+        isAnswered: false,
+        tags: tags
+    };
+    
+    // Add to threads
+    allThreads.unshift(newThread);
+    filteredThreads = [...allThreads];
+    
+    // Re-render
+    renderThreadsList();
+    updateForumStats();
+    
+    // Close modal
+    closeThreadEditor();
+    
+    showToast('Thread published successfully! 💬', 3000);
+}
+
+function saveThreadDraft() {
+    const category = document.getElementById('threadCategory').value;
+    const type = document.getElementById('threadType').value;
+    const title = document.getElementById('threadTitle').value.trim();
+    const content = document.getElementById('threadContent').value.trim();
+    
+    if (!title && !content) {
+        showToast('⚠️ Nothing to save!', 2000);
+        return;
+    }
+    
+    const draft = {
+        category,
+        type,
+        title,
+        content,
+        savedAt: new Date().toISOString()
+    };
+    
+    localStorage.setItem('happytrails_thread_draft', JSON.stringify(draft));
+    
+    showToast('Draft saved! 💾', 2000);
+}
+
+// ============================================
+// FILTERING & SEARCH
+// ============================================
+
+function filterThreadsByCategory(category) {
+    activeForumCategory = category;
+    
+    // Update category pills
+    document.querySelectorAll('.category-item').forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('data-category') === category) {
+            item.classList.add('active');
+        }
+    });
+    
+    // Filter threads
+    if (category === 'all') {
+        filteredThreads = [...allThreads];
+    } else {
+        filteredThreads = allThreads.filter(t => t.category === category);
+    }
+    
+    currentThreadsPage = 1;
+    renderThreadsList();
+    
+    showToast(`Showing ${filteredThreads.length} threads`, 2000);
+}
+
+function searchThreads() {
+    const searchTerm = document.getElementById('forumSearchInput').value.toLowerCase();
+    
+    if (activeForumCategory === 'all') {
+        filteredThreads = allThreads.filter(thread => {
+            return thread.title.toLowerCase().includes(searchTerm) ||
+                   thread.content.toLowerCase().includes(searchTerm) ||
+                   thread.author.name.toLowerCase().includes(searchTerm) ||
+                   (thread.tags && thread.tags.some(tag => tag.toLowerCase().includes(searchTerm)));
+        });
+    } else {
+        filteredThreads = allThreads.filter(thread => {
+            const matchesCategory = thread.category === activeForumCategory;
+            const matchesSearch = thread.title.toLowerCase().includes(searchTerm) ||
+                                 thread.content.toLowerCase().includes(searchTerm) ||
+                                 thread.author.name.toLowerCase().includes(searchTerm);
+            return matchesCategory && matchesSearch;
+        });
+    }
+    
+    currentThreadsPage = 1;
+    renderThreadsList();
+}
+
+function sortThreads() {
+    const sortBy = document.getElementById('forumSort').value;
+    
+    switch(sortBy) {
+        case 'latest':
+            filteredThreads.sort((a, b) => new Date(b.lastActivity) - new Date(a.lastActivity));
+            break;
+        case 'popular':
+            filteredThreads.sort((a, b) => b.votes - a.votes);
+            break;
+        case 'trending':
+            filteredThreads.sort((a, b) => (b.votes + b.views * 0.1) - (a.votes + a.views * 0.1));
+            break;
+        case 'unanswered':
+            filteredThreads = filteredThreads.filter(t => !t.isAnswered);
+            break;
+        case 'oldest':
+            filteredThreads.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+            break;
+    }
+    
+    currentThreadsPage = 1;
+    renderThreadsList();
+}
+
+function loadMoreThreads() {
+    currentThreadsPage++;
+    renderThreadsList();
+    
+    // Scroll to newly loaded content
+    const list = document.getElementById('threadsList');
+    if (list) {
+        const newCards = list.children[displayedThreads.length - threadsPerPage];
+        if (newCards) {
+            newCards.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+}
+
+// ============================================
+// THREAD INTERACTIONS
+// ============================================
+
+function upvoteThread(threadId) {
+    const thread = allThreads.find(t => t.id === threadId);
+    if (!thread) return;
+    
+    thread.votes++;
+    
+    // Update detail view if open
+    const modal = document.getElementById('threadDetailModal');
+    if (modal && modal.style.display === 'flex') {
+        viewThreadDetail(threadId);
+    }
+    
+    showToast('Upvoted! 👍', 2000);
+}
+
+function bookmarkThread(threadId) {
+    const bookmarks = JSON.parse(localStorage.getItem('happytrails_bookmarked_threads') || '[]');
+    
+    if (bookmarks.includes(threadId)) {
+        const index = bookmarks.indexOf(threadId);
+        bookmarks.splice(index, 1);
+        showToast('Bookmark removed! 📑', 2000);
+    } else {
+        bookmarks.push(threadId);
+        showToast('Thread bookmarked! 🔖', 2000);
+    }
+    
+    localStorage.setItem('happytrails_bookmarked_threads', JSON.stringify(bookmarks));
+}
+
+function shareThread(threadId) {
+    const thread = allThreads.find(t => t.id === threadId);
+    if (!thread) return;
+    
+    const shareUrl = `${window.location.origin}/travel-companions?thread=${threadId}`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: thread.title,
+            text: thread.content.substring(0, 100) + '...',
+            url: shareUrl
+        }).catch(() => {
+            copyToClipboard(shareUrl);
+        });
+    } else {
+        copyToClipboard(shareUrl);
+    }
+    
+    showToast('Thread link copied! 📋', 2000);
+}
+
+function reportThread(threadId) {
+    showToast('Thread reported. Our moderators will review it. 🚩', 3000);
+}
+
+function submitReply(threadId) {
+    const content = document.getElementById('replyContent').value.trim();
+    
+    if (!content || content.length < 10) {
+        showToast('⚠️ Reply must be at least 10 characters!', 3000);
+        return;
+    }
+    
+    const thread = allThreads.find(t => t.id === threadId);
+    if (thread) {
+        thread.replies++;
+        thread.lastActivity = new Date().toISOString();
+    }
+    
+    showToast('Reply posted successfully! 💬', 2000);
+    
+    // Refresh thread detail
+    setTimeout(() => {
+        viewThreadDetail(threadId);
+    }, 500);
+}
+
+function upvoteReply(replyId) {
+    showToast('Reply upvoted! 👍', 2000);
+}
+
+function downvoteReply(replyId) {
+    showToast('Reply downvoted! 👎', 2000);
+}
+
+function quoteReply(replyId) {
+    showToast('Reply quoted! Use the reply box below. 💬', 2000);
+}
+
+function likeReply(replyId) {
+    showToast('Reply liked! ❤️', 2000);
+}
+
+function updateForumStats() {
+    const totalThreads = allThreads.length;
+    const totalReplies = allThreads.reduce((sum, t) => sum + t.replies, 0);
+    const activeMembers = new Set(allThreads.map(t => t.author.id)).size;
+    const trendingCount = allThreads.filter(t => t.votes > 20).length;
+    
+    const totalThreadsEl = document.getElementById('totalThreads');
+    const totalRepliesEl = document.getElementById('totalReplies');
+    const activeMembersEl = document.getElementById('activeMembers');
+    const trendingThreadsEl = document.getElementById('trendingThreads');
+    
+    if (totalThreadsEl) totalThreadsEl.textContent = totalThreads;
+    if (totalRepliesEl) totalRepliesEl.textContent = totalReplies;
+    if (activeMembersEl) activeMembersEl.textContent = activeMembers;
+    if (trendingThreadsEl) trendingThreadsEl.textContent = trendingCount;
+}
+
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
+
+function getTimeAgo(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const seconds = Math.floor((now - date) / 1000);
+    
+    if (seconds < 60) return 'just now';
+    if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
+    if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
+    if (seconds < 604800) return `${Math.floor(seconds / 86400)} days ago`;
+    
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+// ============================================
+// UPDATE MAIN INITIALIZATION
+// ============================================
+
+// Update the main initialization
+const originalInitTravelCompanions3 = initializeTravelCompanions;
+initializeTravelCompanions = function() {
+    originalInitTravelCompanions3();
+    
+    // Initialize forum when tab is clicked
+    const forumTab = document.querySelector('[data-tab="community-forum"]');
+    if (forumTab) {
+        forumTab.addEventListener('click', function() {
+            // Check if already initialized
+            if (allThreads.length === 0) {
+                initializeCommunityForum();
+            }
+        });
+    }
+};
+
+// Make functions globally accessible
+window.openThreadEditor = openThreadEditor;
+window.closeThreadEditor = closeThreadEditor;
+window.publishThread = publishThread;
+window.saveThreadDraft = saveThreadDraft;
+window.viewThreadDetail = viewThreadDetail;
+window.closeThreadDetail = closeThreadDetail;
+window.filterThreadsByCategory = filterThreadsByCategory;
+window.searchThreads = searchThreads;
+window.sortThreads = sortThreads;
+window.loadMoreThreads = loadMoreThreads;
+window.upvoteThread = upvoteThread;
+window.bookmarkThread = bookmarkThread;
+window.shareThread = shareThread;
+window.reportThread = reportThread;
+window.submitReply = submitReply;
+window.upvoteReply = upvoteReply;
+window.downvoteReply = downvoteReply;
+window.quoteReply = quoteReply;
+window.likeReply = likeReply;
+
+console.log('💬 Phase 4: Community Forum & Discussion Boards loaded successfully! 💖');
