@@ -516,7 +516,7 @@ def traffic_update(bus_id):
 
 @app.route('/poetry-corner')
 def poetry_corner():
-    # Sample poetry data - later can be from database
+    # Sample poetry data - Phase 1
     travel_poems = [
         {
             'title': 'The Road Not Taken',
@@ -596,7 +596,62 @@ def poetry_corner():
         }
     ]
     
-    return render_template('features/poetry_corner.html', travel_poems=travel_poems)
+    # Quote of the Day data - Phase 2
+    # In production, this would rotate daily from database
+    from datetime import date
+    
+    quotes_collection = [
+        {
+            'quote': 'The journey of a thousand miles begins with a single step.',
+            'author': 'Lao Tzu',
+            'category': 'Journey',
+            'bg_image': 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200',
+            'color_scheme': 'sunset'
+        },
+        {
+            'quote': 'Not all those who wander are lost.',
+            'author': 'J.R.R. Tolkien',
+            'category': 'Wanderlust',
+            'bg_image': 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1200',
+            'color_scheme': 'forest'
+        },
+        {
+            'quote': 'Travel is the only thing you buy that makes you richer.',
+            'author': 'Unknown',
+            'category': 'Wisdom',
+            'bg_image': 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200',
+            'color_scheme': 'ocean'
+        },
+        {
+            'quote': 'Every ticket holds a sunrise, every departure a promise, every arrival a celebration.',
+            'author': 'Kavlin',
+            'category': 'Hope',
+            'bg_image': 'https://images.unsplash.com/photo-1495954484750-af469f2f9be5?w=1200',
+            'color_scheme': 'sunrise',
+            'is_kavlin': True
+        },
+        {
+            'quote': 'Adventures fill your soul with colors no palette can capture.',
+            'author': 'Kavlin',
+            'category': 'Adventure',
+            'bg_image': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200',
+            'color_scheme': 'vibrant',
+            'is_kavlin': True
+        }
+    ]
+    
+    # Select quote based on day of year (rotates daily)
+    day_of_year = date.today().timetuple().tm_yday
+    today_quote = quotes_collection[day_of_year % len(quotes_collection)]
+    
+    # Recent quotes for carousel
+    recent_quotes = quotes_collection[:4]
+    
+    return render_template('features/poetry_corner.html', 
+                          travel_poems=travel_poems,
+                          today_quote=today_quote,
+                          recent_quotes=recent_quotes,
+                          current_date=date.today())
 
 # Initialize the database and add sample data
 # Replace the @app.before_first_request decorator with this code
