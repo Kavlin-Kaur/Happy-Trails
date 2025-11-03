@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copyright Notice | Happy Trails - Kavlin's Mountain Bus Service</title>
+    <meta name="description" content="Copyright and intellectual property information for Happy Trails. Learn about usage permissions, attribution requirements, and content ownership.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Caveat:wght@400;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ============================================
+           GLOBAL STYLES
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #FF6347;
+            --secondary-color: #32CD32;
+            --accent-color: #FFD700;
+            --dark-color: #2C3E50;
+            --light-color: #ECF0F1;
+            --purple-color: #8A2BE2;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #FFF9E6 0%, #FFE6E6 100%);
+            min-height: 100vh;
+        }
+
+        /* ============================================
+           HEADER
+           ============================================ */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), #FF8C69);
+            color: white;
+            padding: 30px 20px;
+            box-shadow: 0 4px 20px rgba(255, 99, 71, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .header-icon {
+            font-size: 2.5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .back-btn {
+            background: white;
+            color: var(--primary-color);
+            padding: 10px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ============================================
+           MAIN CONTENT
+           ============================================ */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: white;
+            border-radius: 25px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            border: 3px solid var(--primary-color);
+        }
+
+        .hero-icon {
+            font-size: 5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .hero-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #6C757D;
+            margin-bottom: 20px;
+        }
+
+        .last-updated {
+            display: inline-block;
+            background: rgba(255, 99, 71, 0.1);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .content-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid rgba(255, 99, 71, 0.2);
+        }
+
+        .section-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+        }
+
+        .section-title {
+            font-family: 'Caveat', cursive;
+            font-size: 2.5rem;
+            color: var(--dark-color);
+            font-weight: 700;
+        }
+
+        .section-content {
+            color: #6C757D;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 15px;
+        }
+
+        .section-content ul,
+        .section-content ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        .section-content li {
+            margin-bottom: 12px;
+        }
+
+        .section-content strong {
+            color: var(--dark-color);
+            font-weight: 600;
+        }
+
+        /* Info Boxes */
+        .info-box {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+            border-left: 4px solid var(--accent-color);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .info-box.success {
+            background: linear-gradient(135deg, rgba(50, 205, 50, 0.1), rgba(50, 205, 50, 0.05));
+            border-left-color: var(--secondary-color);
+        }
+
+        .info-box.warning {
+            background: linear-gradient(135deg, rgba(255, 99, 71, 0.1), rgba(255, 99, 71, 0.05));
+            border-left-color: var(--primary-color);
+        }
+
+        .info-box-title {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Copyright Statement */
+        .copyright-statement {
+            background: linear-gradient(135deg, var(--primary-color), #FF8C69);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            line-height: 1.8;
+            margin: 30px 0;
+            box-shadow: 0 8px 25px rgba(255, 99, 71, 0.4);
+        }
+
+        /* Contact Card */
+        .contact-card {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(147, 112, 219, 0.05));
+            border: 2px solid var(--purple-color);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .contact-card h4 {
+            color: var(--purple-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            color: #6C757D;
+        }
+
+        .contact-item i {
+            color: var(--purple-color);
+            font-size: 1.2rem;
+            width: 25px;
+        }
+
+        .contact-item a {
+            color: var(--purple-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .page-footer {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+        }
+
+        .page-footer p {
+            color: #6C757D;
+            margin-bottom: 15px;
+        }
+
+        .footer-heart {
+            color: var(--primary-color);
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            10%, 30% { transform: scale(1.1); }
+            20%, 40% { transform: scale(1); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-section {
+                padding: 40px 25px;
+            }
+
+            .content-section {
+                padding: 25px 20px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .header-title {
+                font-size: 1.4rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-icon {
+                font-size: 3.5rem;
+            }
+
+            .section-icon {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-title">
+                <i class="fas fa-copyright header-icon"></i>
+                <span>Copyright Notice</span>
+            </div>
+            <a href="/" class="back-btn">
+                <i class="fas fa-home"></i>
+                <span>Back to Home</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <i class="fas fa-balance-scale hero-icon"></i>
+            <h1 class="hero-title">Copyright & Intellectual Property</h1>
+            <p class="hero-subtitle">
+                Protecting our creative work while fostering a community of respect and collaboration
+            </p>
+            <div class="last-updated">
+                <i class="fas fa-clock"></i>
+                Last Updated: November 3, 2025
+            </div>
+        </section>
+
+        <!-- Copyright Statement -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-certificate section-icon"></i>
+                <h2 class="section-title">Official Copyright Statement</h2>
+            </div>
+            <div class="copyright-statement">
+                © 2024-2025 Happy Trails Bus Service. All Rights Reserved.<br>
+                Designed and Developed with <i class="fas fa-heart"></i> by Kavlin<br>
+                "Making Every Journey a Happy Trail"
+            </div>
+            <div class="section-content">
+                <p>
+                    <strong>Happy Trails</strong> and all related content, including but not limited to text, 
+                    graphics, logos, icons, images, audio clips, video clips, data compilations, software, 
+                    and the compilation thereof (collectively, the "Content") are the property of 
+                    <strong>Happy Trails Bus Service</strong> or its content suppliers and are protected by 
+                    Indian and international copyright laws.
+                </p>
+                <p>
+                    The compilation of all Content on this website is the exclusive property of Happy Trails 
+                    and is protected by Indian and international copyright laws. All software used on this 
+                    site is the property of Happy Trails or its software suppliers and is protected by 
+                    Indian and international copyright laws.
+                </p>
+            </div>
+        </section>
+
+        <!-- Content Ownership -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-shield-alt section-icon"></i>
+                <h2 class="section-title">What We Own</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    Happy Trails owns and retains all rights to the following intellectual property:
+                </p>
+                <ul>
+                    <li>
+                        <strong>Brand Name & Logo:</strong> "Happy Trails" name, logo, and all variations thereof
+                    </li>
+                    <li>
+                        <strong>Website Design:</strong> Overall design, layout, look-and-feel, and graphics
+                    </li>
+                    <li>
+                        <strong>Original Content:</strong> All text, articles, blog posts, and written materials
+                    </li>
+                    <li>
+                        <strong>Photography:</strong> Original photographs of routes, buses, and scenic locations
+                    </li>
+                    <li>
+                        <strong>Custom Graphics:</strong> Icons, illustrations, maps, and visual elements
+                    </li>
+                    <li>
+                        <strong>Route Information:</strong> Proprietary route data, schedules, and itineraries
+                    </li>
+                    <li>
+                        <strong>Software & Code:</strong> Website functionality, booking system, and applications
+                    </li>
+                    <li>
+                        <strong>Marketing Materials:</strong> Advertisements, brochures, and promotional content
+                    </li>
+                    <li>
+                        <strong>Slogans & Taglines:</strong> "Making Every Journey a Happy Trail" and other phrases
+                    </li>
+                </ul>
+                
+                <div class="info-box warning">
+                    <div class="info-box-title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Important Notice
+                    </div>
+                    <p>
+                        Unauthorized use, reproduction, or distribution of any copyrighted material from 
+                        this website without express written permission is strictly prohibited and may 
+                        result in legal action.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Usage Permissions -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-check-circle section-icon"></i>
+                <h2 class="section-title">What You CAN Do</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    We encourage sharing and appreciate your support! You are permitted to:
+                </p>
+                
+                <div class="info-box success">
+                    <div class="info-box-title">
+                        <i class="fas fa-thumbs-up"></i>
+                        Allowed Uses (With Attribution)
+                    </div>
+                    <ul>
+                        <li>
+                            <strong>Share Links:</strong> Share links to our website on social media, blogs, 
+                            or other platforms
+                        </li>
+                        <li>
+                            <strong>Quote Content:</strong> Quote reasonable excerpts (up to 200 words) with 
+                            proper attribution and a link back to the source
+                        </li>
+                        <li>
+                            <strong>Educational Use:</strong> Use content for non-commercial educational purposes 
+                            with proper citation
+                        </li>
+                        <li>
+                            <strong>Personal Reference:</strong> Print or save pages for your personal, 
+                            non-commercial reference
+                        </li>
+                        <li>
+                            <strong>Social Media Sharing:</strong> Share our posts, photos, and content using 
+                            built-in sharing features
+                        </li>
+                        <li>
+                            <strong>Reviews & Testimonials:</strong> Write reviews about your experience with 
+                            Happy Trails
+                        </li>
+                        <li>
+                            <strong>News Reporting:</strong> Use content for legitimate news reporting with 
+                            proper attribution
+                        </li>
+                    </ul>
+                </div>
+
+                <p style="margin-top: 20px;">
+                    <strong>Always Required:</strong> Proper attribution and a clear link to 
+                    <a href="https://happytrails.vercel.app" style="color: var(--primary-color); font-weight: 600;">
+                        https://happytrails.vercel.app
+                    </a>
+                </p>
+            </div>
+        </section>
+
+        <!-- Restrictions -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-ban section-icon"></i>
+                <h2 class="section-title">What You CANNOT Do</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    The following uses are strictly prohibited without written permission:
+                </p>
+                
+                <div class="info-box warning">
+                    <div class="info-box-title">
+                        <i class="fas fa-times-circle"></i>
+                        Prohibited Uses
+                    </div>
+                    <ol>
+                        <li>
+                            <strong>Commercial Use:</strong> Using any content for commercial purposes, 
+                            including advertising or selling products/services
+                        </li>
+                        <li>
+                            <strong>Reproduction:</strong> Copying, reproducing, or republishing significant 
+                            portions of content on other websites or platforms
+                        </li>
+                        <li>
+                            <strong>Modification:</strong> Altering, editing, or creating derivative works 
+                            from our content, images, or designs
+                        </li>
+                        <li>
+                            <strong>Branding Misuse:</strong> Using our logo, name, or branding in any way 
+                            that suggests endorsement or affiliation
+                        </li>
+                        <li>
+                            <strong>Automated Scraping:</strong> Using bots, scrapers, or automated tools 
+                            to extract data from our website
+                        </li>
+                        <li>
+                            <strong>Misleading Use:</strong> Presenting our content as your own or 
+                            without proper attribution
+                        </li>
+                        <li>
+                            <strong>Competitive Use:</strong> Using our content to compete directly with 
+                            our business services
+                        </li>
+                        <li>
+                            <strong>Database Rights:</strong> Extracting or re-utilizing substantial 
+                            portions of our database contents
+                        </li>
+                        <li>
+                            <strong>Reverse Engineering:</strong> Attempting to reverse engineer, 
+                            decompile, or disassemble our software or applications
+                        </li>
+                    </ol>
+                </div>
+
+                <p style="margin-top: 20px; font-weight: 600; color: var(--primary-color);">
+                    <i class="fas fa-gavel"></i> Violation of these restrictions may result in legal action 
+                    and claims for damages.
+                </p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <p style="font-size: 1.1rem;">
+            Made with <i class="fas fa-heart footer-heart"></i> by <strong>Kavlin</strong>
+        </p>
+        <p style="font-size: 0.9rem; color: #95a5a6;">
+            Happy Trails Bus Service - Making Every Journey a Happy Trail 🚌💖
+        </p>
+    </footer>
+
+</body>
+</html>
