@@ -1772,3 +1772,780 @@
         flex-direction: column;
     }
 }
+
+/* ============================================
+   📖 PHASE 3: TRAVELER'S TALES
+   Story Sharing & Reading
+   ============================================ */
+
+/* === TALES SECTION === */
+.tales-section {
+    padding: 50px 0;
+}
+
+/* Tales Header */
+.tales-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.tales-header-content {
+    flex: 1;
+    min-width: 300px;
+}
+
+.tales-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: #F57F17;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.tales-subtitle {
+    color: #6C757D;
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+.share-story-btn {
+    background: linear-gradient(135deg, #FF6347, #DC143C);
+    color: white;
+    border: none;
+    padding: 18px 35px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 10px 30px rgba(220, 53, 69, 0.4);
+    white-space: nowrap;
+}
+
+.share-story-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(220, 53, 69, 0.5);
+}
+
+/* Tales Stats */
+.tales-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 25px;
+    margin-bottom: 50px;
+}
+
+.tale-stat-card {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(255, 99, 71, 0.3);
+    transition: all 0.3s ease;
+}
+
+.tale-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(255, 99, 71, 0.3);
+    border-color: #FF6347;
+}
+
+.tale-stat-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.tale-stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #FF6347;
+    margin-bottom: 8px;
+}
+
+.tale-stat-label {
+    font-size: 0.9rem;
+    color: #6C757D;
+    font-weight: 600;
+}
+
+/* Featured Stories */
+.featured-stories-section {
+    background: linear-gradient(135deg, rgba(255, 99, 71, 0.1), rgba(220, 53, 69, 0.1));
+    border-radius: 25px;
+    padding: 40px;
+    margin-bottom: 50px;
+    border: 2px solid rgba(255, 99, 71, 0.3);
+}
+
+.featured-stories-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.2rem;
+    color: #DC143C;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.featured-stories-subtitle {
+    color: #6C757D;
+    margin-bottom: 30px;
+    font-size: 1.05rem;
+}
+
+.featured-stories-carousel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+}
+
+/* Writing Prompts */
+.writing-prompts-section {
+    background: white;
+    border-radius: 25px;
+    padding: 35px;
+    margin-bottom: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.prompts-title {
+    font-family: 'Caveat', cursive;
+    font-size: 1.8rem;
+    color: #F57F17;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.prompts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.prompt-card {
+    background: rgba(255, 249, 230, 0.5);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.prompt-card:hover {
+    border-color: #FFD700;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+}
+
+.prompt-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+
+.prompt-text {
+    color: #2C3E50;
+    font-weight: 600;
+    font-style: italic;
+    line-height: 1.6;
+}
+
+/* Search & Filter Panel */
+.tales-search-panel {
+    background: white;
+    border-radius: 25px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.tales-search-header {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.search-box-tales {
+    flex: 1;
+    min-width: 250px;
+    position: relative;
+}
+
+.search-box-tales i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #FFD700;
+    font-size: 1.1rem;
+}
+
+.search-box-tales input {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 2px solid #E9ECEF;
+    border-radius: 15px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.search-box-tales input:focus {
+    border-color: #FFD700;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.1);
+}
+
+.filter-dropdowns {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.tales-filter-select {
+    padding: 12px 15px;
+    border: 2px solid #E9ECEF;
+    border-radius: 15px;
+    font-size: 0.95rem;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 150px;
+}
+
+.tales-filter-select:focus {
+    border-color: #FFD700;
+    outline: none;
+}
+
+/* Category Pills */
+.category-pills-container {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+}
+
+.category-pill {
+    background: rgba(255, 249, 230, 0.5);
+    border: 2px solid #E9ECEF;
+    color: #2C3E50;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.category-pill:hover,
+.category-pill.active {
+    border-color: #FF6347;
+    background: rgba(255, 99, 71, 0.2);
+    color: #DC143C;
+    transform: translateY(-2px);
+}
+
+/* Stories Grid */
+.stories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.story-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.story-card:hover {
+    border-color: #FF6347;
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(255, 99, 71, 0.3);
+}
+
+.story-card.featured {
+    border-color: #FFD700;
+    background: linear-gradient(to bottom, rgba(255, 215, 0, 0.05), white);
+}
+
+.story-featured-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+}
+
+.story-image-container {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+}
+
+.story-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.story-card:hover .story-image {
+    transform: scale(1.05);
+}
+
+.story-category-badge {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #FF6347;
+}
+
+.story-card-body {
+    padding: 25px;
+}
+
+.story-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2C3E50;
+    margin-bottom: 10px;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.story-subtitle {
+    color: #6C757D;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.story-author-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(255, 99, 71, 0.1);
+}
+
+.story-author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #FF6347;
+    object-fit: cover;
+}
+
+.story-author-details {
+    flex: 1;
+}
+
+.story-author-name {
+    font-weight: 700;
+    color: #2C3E50;
+    font-size: 0.95rem;
+}
+
+.story-publish-date {
+    font-size: 0.8rem;
+    color: #6C757D;
+}
+
+.story-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #6C757D;
+}
+
+.story-meta-left {
+    display: flex;
+    gap: 15px;
+}
+
+.story-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.story-route-tag {
+    background: rgba(255, 215, 0, 0.2);
+    border: 1px solid #FFD700;
+    color: #F57F17;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* Load More Tales */
+.load-more-tales {
+    text-align: center;
+}
+
+/* Story Editor Modal */
+.story-editor-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+.story-editor-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+.story-editor-content {
+    position: relative;
+    background: white;
+    border-radius: 25px;
+    max-width: 900px;
+    max-height: 90vh;
+    width: 90%;
+    overflow-y: auto;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.4s ease-out;
+}
+
+.story-editor-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.story-editor-close:hover {
+    background: #FF6347;
+    color: white;
+    transform: rotate(90deg);
+}
+
+.story-editor-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: #DC143C;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.story-editor-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #2C3E50;
+    font-size: 0.95rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #E9ECEF;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #FF6347;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(255, 99, 71, 0.1);
+}
+
+.story-textarea {
+    resize: vertical;
+    min-height: 200px;
+    line-height: 1.7;
+}
+
+.char-count {
+    font-size: 0.8rem;
+    color: #6C757D;
+    text-align: right;
+}
+
+.story-meta-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #6C757D;
+}
+
+.read-time {
+    color: #FF6347;
+    font-weight: 600;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.image-upload-area {
+    border: 2px dashed #E9ECEF;
+    border-radius: 15px;
+    padding: 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.image-upload-area:hover {
+    border-color: #FF6347;
+    background: rgba(255, 99, 71, 0.05);
+}
+
+.image-upload-area i {
+    font-size: 3rem;
+    color: #FF6347;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.image-upload-area p {
+    font-weight: 600;
+    color: #2C3E50;
+    margin-bottom: 5px;
+}
+
+.image-upload-area small {
+    color: #6C757D;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.btn-save-draft,
+.btn-publish-story {
+    flex: 1;
+    padding: 15px;
+    border-radius: 25px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1rem;
+}
+
+.btn-save-draft {
+    background: rgba(255, 215, 0, 0.2);
+    border: 2px solid #FFD700;
+    color: #F57F17;
+}
+
+.btn-save-draft:hover {
+    background: rgba(255, 215, 0, 0.3);
+}
+
+.btn-publish-story {
+    background: linear-gradient(135deg, #FF6347, #DC143C);
+    color: white;
+    box-shadow: 0 5px 20px rgba(220, 53, 69, 0.4);
+}
+
+.btn-publish-story:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(220, 53, 69, 0.5);
+}
+
+/* Story Detail Modal */
+.story-detail-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+.story-detail-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+.story-detail-content {
+    position: relative;
+    background: white;
+    border-radius: 25px;
+    max-width: 900px;
+    max-height: 90vh;
+    width: 90%;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.4s ease-out;
+}
+
+.story-detail-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.story-detail-close:hover {
+    background: #FF6347;
+    color: white;
+    transform: rotate(90deg);
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 992px) {
+    .tales-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .share-story-btn {
+        justify-content: center;
+    }
+    
+    .tales-search-header {
+        flex-direction: column;
+    }
+    
+    .filter-dropdowns {
+        flex-direction: column;
+    }
+    
+    .tales-filter-select {
+        width: 100%;
+    }
+    
+    .stories-grid,
+    .featured-stories-carousel {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .tales-title {
+        font-size: 2rem;
+    }
+    
+    .tales-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .prompts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .story-editor-content {
+        padding: 25px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+}

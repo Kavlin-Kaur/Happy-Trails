@@ -1718,3 +1718,1248 @@ window.findMyMatch = findMyMatch;
 window.saveSearch = saveSearch;
 
 console.log('🔍 Phase 2: Travel Buddy Finder & Matching System loaded successfully! 💖');
+
+/* ============================================
+   📖 PHASE 3: TRAVELER'S TALES
+   Story Sharing & Reading
+   ============================================ */
+
+// Global Phase 3 variables
+let allStories = [];
+let filteredStories = [];
+let displayedStories = [];
+let storiesPerPage = 6;
+let currentStoriesPage = 1;
+let activeCategory = 'all';
+let userStories = [];
+
+// Sample stories data
+const SAMPLE_STORIES = [
+    {
+        id: 1,
+        title: 'Sunrise at 10,000 Feet: A Journey of Self-Discovery',
+        subtitle: 'How a simple bus ride changed my perspective on life',
+        content: `It was 5:30 AM when I boarded the HT-101 from Dharampur. The morning mist clung to the mountains like a soft blanket, and I was the only passenger crazy enough to take the first bus.
+
+As we climbed higher, something magical happened. The sun began to rise, painting the sky in shades of orange and pink I'd never seen before. Our driver, an elderly gentleman named Ram Singh, pulled over at a viewpoint without me asking.
+
+"First time on this route?" he asked with a knowing smile.
+
+I nodded, unable to speak, tears streaming down my face. Not from sadness, but from the overwhelming beauty of it all. In that moment, at 10,000 feet above sea level, I realized I'd been living my entire life at ground level - afraid to climb, afraid to see what lay beyond.
+
+Ram Singh shared his chai with me. We sat in silence, watching the world wake up. He told me he'd been driving this route for 30 years and never got tired of this view.
+
+"The mountains teach us patience," he said. "They were here before us, and they'll be here long after. All our worries? They're just clouds passing by."
+
+That sunrise changed me. I went back to the city a different person - calmer, more grateful, ready to climb my own mountains.`,
+        route: 'HT-101',
+        category: 'life-changing',
+        author: {
+            name: 'Priya Sharma',
+            avatar: 'https://i.pravatar.cc/150?img=5',
+            id: 1
+        },
+        image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+        publishDate: '2025-10-15',
+        readTime: 8,
+        likes: 234,
+        comments: 45,
+        bookmarked: false,
+        featured: true,
+        kavlinsPick: true,
+        views: 1245
+    },
+    {
+        id: 2,
+        title: 'The Chai Wallah Who Saved My Day',
+        subtitle: 'A heartwarming encounter at Barog station',
+        content: `I missed my connecting bus at Barog. Typical me - always running late. I sat on a bench, frustrated and hungry, when an elderly chai wallah approached me.
+
+"Beta, you look troubled. Have some chai," he said, handing me a steaming cup.
+
+I tried to pay, but he refused. "First cup is always free for troubled souls," he smiled.
+
+We got talking. He'd been selling chai at this station for 40 years. He'd seen thousands of travelers - happy, sad, lost, found. He told me stories of people he'd met, lives he'd touched with just a cup of tea.
+
+"You know what I've learned?" he asked. "Life is like this chai. Sometimes too hot, sometimes too sweet, sometimes bitter. But you drink it anyway, because the warmth matters more than the taste."
+
+That wisdom from a chai wallah taught me more than any self-help book ever could.
+
+When my bus finally arrived, he waved goodbye like an old friend. I still think about him every time I drink chai.
+
+Three months later, I went back to thank him. He'd passed away the week before. His son now runs the stall. He told me his father always said, "Every cup of chai is a prayer for safe travels."
+
+I cried. For a stranger who became a friend. For wisdom shared over a clay cup. For the reminder that kindness lives in the smallest gestures.`,
+        route: 'HT-102',
+        category: 'spiritual',
+        author: {
+            name: 'Arjun Mehta',
+            avatar: 'https://i.pravatar.cc/150?img=12',
+            id: 2
+        },
+        image: 'https://images.unsplash.com/photo-1516684732162-798a0062be99?w=800',
+        publishDate: '2025-10-20',
+        readTime: 6,
+        likes: 189,
+        comments: 32,
+        bookmarked: false,
+        featured: true,
+        kavlinsPick: true,
+        views: 892
+    },
+    {
+        id: 3,
+        title: 'When My Mother Finally Smiled',
+        subtitle: 'A family healing journey through the mountains',
+        content: `My mother hadn't smiled in three years. Not since Dad passed away. She'd become a shadow of herself - going through the motions but not really living.
+
+I surprised her with tickets on the HT-105 Deluxe route. "Just one day," I pleaded. "One day in the mountains with me."
+
+She agreed reluctantly. For the first hour, she stared out the window, silent. Then, slowly, something changed.
+
+A little girl in the seat ahead started singing "Paharon ki rani, Paharon ki rani." My mother's lips moved. She was mouthing the words - a song she used to sing to me.
+
+At Kasauli viewpoint, we got off for photos. The wind whipped through her hair, and for the first time in years, she laughed. Really laughed.
+
+"Your father proposed to me at a viewpoint just like this," she said, tears in her eyes. But they were happy tears.
+
+We spent the day talking - really talking - for the first time since his death. She told me stories about their travels together, dreams they'd shared, places they'd promised to visit.
+
+"He'd want me to keep traveling," she said as we boarded the bus back. "He'd want me to keep living."
+
+That bus ride gave me my mother back. The mountains healed what grief had broken.
+
+Now we travel together every month. She's planning a solo trip to Manali next spring. She's 65 and discovering herself again.
+
+Dad would be proud.`,
+        route: 'HT-105',
+        category: 'family',
+        author: {
+            name: 'Rahul Verma',
+            avatar: 'https://i.pravatar.cc/150?img=14',
+            id: 4
+        },
+        image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800',
+        publishDate: '2025-10-25',
+        readTime: 7,
+        likes: 456,
+        comments: 89,
+        bookmarked: false,
+        featured: true,
+        kavlinsPick: true,
+        views: 2134
+    },
+    {
+        id: 4,
+        title: 'I Proposed on a Moving Bus (And She Said Yes!)',
+        subtitle: 'The most unconventional proposal ever',
+        content: `Everyone said I was crazy. "Propose on a bus? Are you insane?"
+
+But Neha and I had our first conversation on a Happy Trails bus. We'd met on HT-101, became friends, fell in love - all while traveling these routes together.
+
+So yes, I was going to propose on a bus.
+
+I coordinated with the driver (thank you, Suresh bhai!), the conductor, even some regular passengers. Operation Bus Proposal was underway.
+
+As we approached the tunnel near Barog, the lights dimmed (as planned). Neha looked confused.
+
+Then, the passengers started singing "Tum Hi Ho" - off-key, enthusiastic, perfect.
+
+She looked at me. I was on one knee in the aisle, ring in hand, nervous as hell.
+
+"Neha, we've traveled hundreds of kilometers together. Can we travel the rest of life together too?"
+
+She laughed. Then cried. Then said YES!
+
+The entire bus erupted in cheers. Strangers were hugging, crying, taking photos. The driver honked the horn non-stop.
+
+We got free chai at the next stop. Passengers gave us blessings, advice, and one aunty ji insisted on feeding us laddoos she'd packed.
+
+That evening, we had 47 unofficial "wedding guests" - all fellow passengers who witnessed our engagement.
+
+Best. Proposal. Ever.
+
+P.S. We're getting married next month. And yes, we've invited Suresh bhai and the entire crew!`,
+        route: 'HT-101',
+        category: 'romance',
+        author: {
+            name: 'Vikram Patel',
+            avatar: 'https://i.pravatar.cc/150?img=13',
+            id: 4
+        },
+        image: 'https://images.unsplash.com/photo-1518176258769-f227c798150e?w=800',
+        publishDate: '2025-10-28',
+        readTime: 5,
+        likes: 567,
+        comments: 123,
+        bookmarked: false,
+        featured: false,
+        kavlinsPick: false,
+        views: 3456
+    },
+    {
+        id: 5,
+        title: 'The Day I Lost My Luggage and Found Myself',
+        subtitle: 'Solo travel adventures and misadventures',
+        content: `They say solo travel is empowering. They don't mention it can also be terrifying.
+
+I was on my first solo trip, clutching my backpack like a lifeline. At Solan, I got off to buy samosas. The bus left. With my luggage.
+
+Panic. Pure panic.
+
+I stood there, alone in an unknown town, no clothes, no toiletries, no plan. Just me, my phone, and a bag of samosas.
+
+A local shopkeeper saw my tears. "First time solo?" she asked.
+
+I nodded, embarrassed. She made me sit, gave me water, called the bus company. "Your bag will be at the next stop. You can catch the evening bus."
+
+I had five hours to kill in Solan. She convinced me to explore instead of sulking.
+
+Those five hours changed everything. I wandered narrow lanes, ate street food (best pakoras EVER), talked to locals, visited a tiny temple, bought handicrafts.
+
+I wasn't a tourist following an itinerary. I was a traveler, experiencing life.
+
+When I finally got my bag back, I realized I hadn't needed it at all. The best part of my trip was the unplanned detour.
+
+Now I travel with a tiny backpack and a huge sense of adventure. Because sometimes you need to lose your luggage to find yourself.`,
+        route: 'HT-102',
+        category: 'solo-travel',
+        author: {
+            name: 'Neha Singh',
+            avatar: 'https://i.pravatar.cc/150?img=1',
+            id: 5
+        },
+        image: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800',
+        publishDate: '2025-10-30',
+        readTime: 6,
+        likes: 298,
+        comments: 67,
+        bookmarked: false,
+        featured: false,
+        kavlinsPick: false,
+        views: 1567
+    },
+    {
+        id: 6,
+        title: 'The Monkey That Stole My Lunch (And My Heart)',
+        subtitle: 'When wildlife encounters go hilariously wrong',
+        content: `I was warned about monkeys. "Don't eat outside," they said. "Keep your bags closed," they said.
+
+Did I listen? Of course not.
+
+I was having a peaceful lunch at Kasauli viewpoint - sandwich in one hand, phone in the other, taking selfies like a basic tourist.
+
+Then HE appeared. A monkey. Not just any monkey - a CHONKY boy. He looked at my sandwich. I looked at him. Time froze.
+
+"Shoo," I said weakly.
+
+He tilted his head. "That's cute," his expression said. "Now gimme the sandwich."
+
+What happened next was pure chaos. He grabbed my sandwich. I grabbed it back. He grabbed my bag. I screamed. He screamed (do monkeys scream? This one did).
+
+Other tourists were filming. No one helped. EVERYONE WAS FILMING.
+
+The monkey won. He ran away with my sandwich, chips, AND my dignity. He sat on a tree, eating MY lunch, making eye contact the whole time.
+
+But here's the thing - it was hilarious. I laughed until I cried. Other tourists shared their food with me. We bonded over monkey warfare stories.
+
+That chonky monkey taught me not to take life too seriously. Sometimes you lose your lunch. Sometimes life is absurd. Laugh anyway.
+
+I named him Gerald. If you visit Kasauli, say hi to Gerald for me. And hide your sandwiches.`,
+        route: 'HT-103',
+        category: 'funny',
+        author: {
+            name: 'Aditya Kumar',
+            avatar: 'https://i.pravatar.cc/150?img=14',
+            id: 7
+        },
+        image: 'https://images.unsplash.com/photo-1540573133985-87b6da6d54a9?w=800',
+        publishDate: '2025-11-01',
+        readTime: 4,
+        likes: 789,
+        comments: 234,
+        bookmarked: false,
+        featured: false,
+        kavlinsPick: true,
+        views: 4567
+    },
+    {
+        id: 7,
+        title: 'The Temple Bell That Rings for Love',
+        subtitle: 'A spiritual encounter at Dagshai',
+        content: `There's an old temple near Dagshai that locals say grants wishes. I didn't believe in such things.
+
+But I was heartbroken, directionless, and the bus stopped there anyway. So I walked up.
+
+An old priest was ringing the bell. Each ring echoed through the mountains, clear and pure.
+
+"Ring it three times," he told me. "Once for what was, once for what is, once for what will be."
+
+I rang the bell. The first ring was for my lost love - painful but necessary. The second was for my present confusion - accepting where I was. The third...
+
+The third ring felt different. Hopeful. Like a promise.
+
+"Love returns," the priest said simply. "Not always as we expect, but it returns."
+
+Three months later, I met Maya. We were both regular Happy Trails travelers. We bonded over mountain stories and chai.
+
+Last week, she told me she loved me.
+
+I took her to that temple. We rang the bell together - three times.
+
+Once for what was, once for what is, once for what will be.
+
+The priest remembered me. He smiled.
+
+"I told you," he said. "Love always returns."`,
+        route: 'HT-103',
+        category: 'spiritual',
+        author: {
+            name: 'Karan Malhotra',
+            avatar: 'https://i.pravatar.cc/150?img=11',
+            id: 8
+        },
+        image: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=800',
+        publishDate: '2025-11-02',
+        readTime: 5,
+        likes: 345,
+        comments: 78,
+        bookmarked: false,
+        featured: false,
+        kavlinsPick: false,
+        views: 1890
+    },
+    {
+        id: 8,
+        title: 'Maggi at Midnight: A Foodie\'s Mountain Adventure',
+        subtitle: 'Finding the best roadside food on HT routes',
+        content: `I'm a food blogger, and I've eaten at Michelin-starred restaurants worldwide.
+
+But the best meal I ever had? Maggi at a roadside dhaba at midnight, somewhere between Solan and Barog.
+
+Our bus broke down (classic adventure, right?). Instead of panicking, our driver suggested we all walk to a nearby dhaba.
+
+Picture this: 20 strangers at midnight, sitting on plastic chairs under the stars, eating Maggi and pakoras.
+
+The dhaba owner, Sharma ji, made us special "mountain-style" Maggi with extra butter, cheese, and love. He told us stories of travelers he'd fed over 30 years.
+
+We sang songs. A couple shared their anniversary cake. Someone played guitar. It became a spontaneous party.
+
+That Maggi - simple, cheap, roadside Maggi - tasted like happiness.
+
+I've tried to recreate it at home. I can't. Because it wasn't about the food.
+
+It was about the moment. The mountains. The strangers who became friends. The driver who turned a breakdown into an adventure.
+
+Food tastes better when seasoned with good company.
+
+P.S. I still visit Sharma ji's dhaba. He never charges me for Maggi. "Food critics get free food," he says with a wink. "Friends eat free."`,
+        route: 'HT-102',
+        category: 'food-culture',
+        author: {
+            name: 'Sneha Reddy',
+            avatar: 'https://i.pravatar.cc/150?img=10',
+            id: 8
+        },
+        image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800',
+        publishDate: '2025-11-03',
+        readTime: 6,
+        likes: 412,
+        comments: 95,
+        bookmarked: false,
+        featured: false,
+        kavlinsPick: true,
+        views: 2345
+    },
+    {
+        id: 9,
+        title: 'My Son\'s First Mountain: A Father\'s Joy',
+        subtitle: 'Introducing the next generation to travel',
+        content: `My son is 5. Yesterday, I took him on his first mountain bus ride.
+
+He'd been begging for months. "Papa, when can I see the mountains? The REAL mountains?"
+
+We boarded HT-105 early morning. He was glued to the window, eyes wide with wonder.
+
+"Papa, why are the mountains wearing clouds?"
+"Papa, can we touch the sky from here?"
+"Papa, do gods really live up there?"
+
+Every question was a poem. Every reaction was pure joy.
+
+When we reached the highest point, he asked to get off. We stood at the viewpoint, his tiny hand in mine.
+
+"This is the biggest thing I've ever seen," he whispered.
+
+I realized he wasn't talking about the mountains. He was talking about the world - suddenly so much bigger than his bedroom, his school, his playground.
+
+On the way back, he fell asleep on my lap. I looked at his peaceful face and thought about my own father, who first brought me to these mountains 30 years ago.
+
+This is how traditions begin. This is how love for travel passes from one generation to the next.
+
+Someday, my son will bring his children here. He'll tell them, "This is where Dadu first showed me the mountains."
+
+And the circle will continue.`,
+        route: 'HT-105',
+        category: 'family',
+        author: {
+            name: 'Rohit Sharma',
+            avatar: 'https://i.pravatar.cc/150?img=15',
+            id: 9
+        },
+        image: 'https://images.unsplash.com/photo-1476304884326-cd2c88572c5f?w=800',
+        publishDate: '2025-11-03',
+        readTime: 5,
+        likes: 523,
+        comments: 112,
+        bookmarked: false,
+        featured: false,
+        kavlinsPick: false,
+        views: 2890
+    },
+    {
+        id: 10,
+        title: 'The 70-Year-Old Solo Traveler Who Inspired Me',
+        subtitle: 'Age is just a number when it comes to adventure',
+        content: `I met Mrs. Lakshmi on HT-104. She was 70, traveling alone with just a small bag.
+
+"Where are you headed?" I asked.
+
+"Everywhere," she smiled. "I have time now."
+
+She told me her story. After her husband passed, her children wanted her to "settle down" - meaning stop living.
+
+"I settled down for 50 years," she said. "Raised kids, managed a home, took care of everyone. Now it's my turn."
+
+She travels every week. Different routes, different places. She's made friends on every bus, tried every local food, collected stories like souvenirs.
+
+"But aren't you afraid?" I asked. "Traveling alone at your age?"
+
+She laughed. "Beta, I lived through partition, raised four kids on one salary, fought cancer twice. A bus ride doesn't scare me."
+
+She showed me her journal - pages filled with sketches, pressed flowers, ticket stubs, memories.
+
+"Life doesn't end at retirement," she said. "It begins."
+
+I was 28 and making excuses for not traveling. Too busy. Too broke. Too scared.
+
+She was 70 and finding reasons to explore. So much time. So much world. So much life.
+
+We exchanged numbers. She texts me photos from her trips with captions like "Still not settling down!"
+
+If Mrs. Lakshmi can travel at 70, what's stopping you?`,
+        route: 'HT-104',
+        category: 'life-changing',
+        author: {
+            name: 'Kavya Iyer',
+            avatar: 'https://i.pravatar.cc/150?img=16',
+            id: 10
+        },
+        image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800',
+        publishDate: '2025-11-03',
+        readTime: 6,
+        likes: 678,
+        comments: 145,
+        bookmarked: false,
+        featured: false,
+        kavlinsPick: true,
+        views: 3678
+    },
+    {
+        id: 11,
+        title: 'The Accident That Changed Everything',
+        subtitle: 'A close call that reminded me what matters',
+        content: `We almost didn't make it.
+
+A landslide on HT-108. Rocks the size of cars tumbling down. Our driver swerved, passengers screamed, time slowed down.
+
+We stopped inches from the edge. INCHES.
+
+For 10 seconds, nobody spoke. We were frozen, processing how close we'd come to...
+
+Then someone started crying. Then laughing. Then we were all crying and laughing together.
+
+Strangers hugged. Numbers were exchanged. "Stay in touch," everyone said. And meant it.
+
+The bus was stuck for 3 hours. We couldn't go forward or back. Just... wait.
+
+But something beautiful happened. We talked. REALLY talked.
+
+About dreams we'd postponed. Calls we'd forgotten to make. I-love-yous we'd assumed could wait.
+
+One man called his estranged brother, right there, in front of everyone. "I'm sorry," he said. "Life's too short for this."
+
+Another woman decided to quit her job and start the business she'd dreamed about.
+
+I realized I'd been living on autopilot, taking tomorrow for granted.
+
+When we finally got moving, nobody complained about the delay. We were grateful for the reminder.
+
+Life doesn't wait. Dreams don't wait. Love doesn't wait.
+
+Whatever you've been postponing - do it now.`,
+        route: 'HT-108',
+        category: 'life-changing',
+        author: {
+            name: 'Manish Gupta',
+            avatar: 'https://i.pravatar.cc/150?img=11',
+            id: 11
+        },
+        image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+        publishDate: '2025-11-03',
+        readTime: 7,
+        likes: 891,
+        comments: 189,
+        bookmarked: false,
+        featured: false,
+        kavlinsPick: false,
+        views: 4234
+    },
+    {
+        id: 12,
+        title: 'Dancing in the Rain: An Unexpected Adventure',
+        subtitle: 'When monsoon turns a journey into magic',
+        content: `The forecast said "light drizzle." The sky said "LOL NO."
+
+Torrential rain hit our bus on HT-106. The kind that turns roads into rivers.
+
+We had to stop and wait it out. The driver announced we'd be there for at least an hour.
+
+That's when the magic happened.
+
+A girl in the back started playing "Baarish" on her phone. Another girl started singing. Then we ALL started singing.
+
+Then someone said, "Screw it, let's dance!"
+
+And we did. In the rain. On the side of a mountain road. Twenty strangers dancing to Bollywood songs, soaking wet, not caring.
+
+An elderly couple did a slow dance. A kid showed us his TikTok moves. Our driver joined in with classical moves that put us all to shame.
+
+We were cold, wet, and having the time of our lives.
+
+A passing truck stopped. The drivers got out and danced with us.
+
+Someone had pakoras in their bag. They got shared. Wet pakoras. Still delicious.
+
+When the rain finally stopped, nobody wanted to leave. We'd created a moment of pure, unfiltered joy.
+
+Now, whenever it rains, I smile. Because I remember the day I danced in a downpour with strangers who became friends.
+
+Life isn't about waiting for the storm to pass. It's about learning to dance in the rain.`,
+        route: 'HT-106',
+        category: 'mountain-adventures',
+        author: {
+            name: 'Ananya Desai',
+            avatar: 'https://i.pravatar.cc/150?img=20',
+            id: 12
+        },
+        image: 'https://images.unsplash.com/photo-1501999635878-71cb5379c2d8?w=800',
+        publishDate: '2025-11-03',
+        readTime: 5,
+        likes: 756,
+        comments: 167,
+        bookmarked: false,
+        featured: false,
+        kavlinsPick: true,
+        views: 3890
+    }
+];
+
+// Category labels and icons
+const STORY_CATEGORIES = {
+    'mountain-adventures': { label: 'Mountain Adventures', icon: '🏔️' },
+    'romance': { label: 'Romance & Connection', icon: '💑' },
+    'funny': { label: 'Funny Moments', icon: '😂' },
+    'spiritual': { label: 'Spiritual Journeys', icon: '🙏' },
+    'food-culture': { label: 'Food & Culture', icon: '🍜' },
+    'solo-travel': { label: 'Solo Travel', icon: '🎒' },
+    'family': { label: 'Family Tales', icon: '👨‍👩‍👧‍👦' },
+    'life-changing': { label: 'Life Changing', icon: '🌟' }
+};
+
+// ============================================
+// TRAVELER'S TALES INITIALIZATION
+// ============================================
+
+function initializeTravelersTales() {
+    // Load stories data
+    allStories = SAMPLE_STORIES;
+    filteredStories = [...allStories];
+    
+    // Load user stories from localStorage
+    loadUserStories();
+    
+    // Render initial data
+    renderFeaturedStories();
+    renderStoriesGrid();
+    updateTalesStats();
+    
+    // Setup form character counters
+    setupStoryFormCounters();
+    
+    console.log('📖 Traveler\'s Tales initialized');
+}
+
+// ============================================
+// RENDERING FUNCTIONS
+// ============================================
+
+function renderFeaturedStories() {
+    const container = document.getElementById('featuredStoriesCarousel');
+    if (!container) return;
+    
+    const featuredStories = allStories.filter(s => s.featured).slice(0, 3);
+    
+    if (featuredStories.length === 0) {
+        container.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: #6C757D;">
+                <p>No featured stories yet. Be the first to share your tale!</p>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = featuredStories.map(story => createStoryCard(story, true)).join('');
+}
+
+function renderStoriesGrid() {
+    const container = document.getElementById('storiesGrid');
+    if (!container) return;
+    
+    // Calculate pagination
+    const startIndex = (currentStoriesPage - 1) * storiesPerPage;
+    const endIndex = startIndex + storiesPerPage;
+    displayedStories = filteredStories.slice(0, endIndex);
+    
+    if (displayedStories.length === 0) {
+        container.innerHTML = `
+            <div class="travelers-empty" style="grid-column: 1 / -1;">
+                <div class="travelers-empty-icon">📖</div>
+                <h3>No stories found</h3>
+                <p>Try adjusting your filters or be the first to share a story!</p>
+            </div>
+        `;
+        
+        document.getElementById('loadMoreTales').style.display = 'none';
+        return;
+    }
+    
+    container.innerHTML = displayedStories.map(story => createStoryCard(story, false)).join('');
+    
+    // Show/hide load more button
+    const loadMoreContainer = document.getElementById('loadMoreTales');
+    if (loadMoreContainer) {
+        loadMoreContainer.style.display = displayedStories.length < filteredStories.length ? 'block' : 'none';
+    }
+}
+
+function createStoryCard(story, isFeatured = false) {
+    const category = STORY_CATEGORIES[story.category];
+    const dateStr = new Date(story.publishDate).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
+    
+    return `
+        <div class="story-card ${isFeatured ? 'featured' : ''}" onclick="viewStoryDetail(${story.id})">
+            <div class="story-image-container">
+                ${story.kavlinsPick ? '<div class="story-featured-badge"><i class="fas fa-crown"></i> Kavlin\'s Pick</div>' : ''}
+                <img src="${story.image}" alt="${story.title}" class="story-image">
+                <div class="story-category-badge">
+                    ${category.icon} ${category.label}
+                </div>
+            </div>
+            <div class="story-card-body">
+                <h3 class="story-title">${story.title}</h3>
+                <p class="story-subtitle">${story.subtitle}</p>
+                
+                <div class="story-author-info">
+                    <img src="${story.author.avatar}" alt="${story.author.name}" class="story-author-avatar">
+                    <div class="story-author-details">
+                        <div class="story-author-name">${story.author.name}</div>
+                        <div class="story-publish-date">${dateStr} · ${story.readTime} min read</div>
+                    </div>
+                </div>
+                
+                <div class="story-meta">
+                    <div class="story-meta-left">
+                        <div class="story-meta-item">
+                            <i class="fas fa-heart"></i>
+                            <span>${story.likes}</span>
+                        </div>
+                        <div class="story-meta-item">
+                            <i class="fas fa-comment"></i>
+                            <span>${story.comments}</span>
+                        </div>
+                        <div class="story-meta-item">
+                            <i class="fas fa-eye"></i>
+                            <span>${story.views}</span>
+                        </div>
+                    </div>
+                    <div class="story-route-tag">${story.route}</div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// ============================================
+// STORY DETAIL VIEW
+// ============================================
+
+function viewStoryDetail(storyId) {
+    const story = allStories.find(s => s.id === storyId);
+    if (!story) return;
+    
+    const modal = document.getElementById('storyDetailModal');
+    const modalBody = document.getElementById('storyDetailBody');
+    
+    if (!modal || !modalBody) return;
+    
+    const category = STORY_CATEGORIES[story.category];
+    const dateStr = new Date(story.publishDate).toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+    
+    // Split content into paragraphs
+    const paragraphs = story.content.split('\n\n').filter(p => p.trim());
+    
+    modalBody.innerHTML = `
+        <div style="position: relative;">
+            <!-- Header Image -->
+            <div style="position: relative; height: 400px; overflow: hidden; border-radius: 25px 25px 0 0;">
+                <img src="${story.image}" alt="${story.title}" 
+                     style="width: 100%; height: 100%; object-fit: cover;">
+                ${story.kavlinsPick ? `
+                    <div style="position: absolute; top: 20px; left: 20px; background: linear-gradient(135deg, #FFD700, #FF8C00); 
+                                color: white; padding: 8px 16px; border-radius: 20px; font-weight: 700; display: flex; 
+                                align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);">
+                        <i class="fas fa-crown"></i>
+                        Kavlin's Pick
+                    </div>
+                ` : ''}
+            </div>
+            
+            <!-- Content -->
+            <div style="padding: 40px;">
+                <!-- Category & Route -->
+                <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <span style="background: rgba(255, 99, 71, 0.2); border: 2px solid #FF6347; color: #DC143C; 
+                                 padding: 6px 14px; border-radius: 15px; font-size: 0.85rem; font-weight: 600; 
+                                 display: inline-flex; align-items: center; gap: 6px;">
+                        ${category.icon} ${category.label}
+                    </span>
+                    <span style="background: rgba(255, 215, 0, 0.2); border: 2px solid #FFD700; color: #F57F17; 
+                                 padding: 6px 14px; border-radius: 15px; font-size: 0.85rem; font-weight: 600;">
+                        ${story.route}
+                    </span>
+                </div>
+                
+                <!-- Title -->
+                <h1 style="font-family: 'Dancing Script', cursive; font-size: 2.8rem; color: #2C3E50; 
+                           margin-bottom: 15px; line-height: 1.3;">
+                    ${story.title}
+                </h1>
+                
+                <!-- Subtitle -->
+                <p style="font-size: 1.3rem; color: #6C757D; margin-bottom: 25px; font-weight: 500;">
+                    ${story.subtitle}
+                </p>
+                
+                <!-- Author Info -->
+                <div style="display: flex; align-items: center; gap: 15px; padding-bottom: 25px; 
+                            border-bottom: 2px solid rgba(255, 99, 71, 0.2); margin-bottom: 30px;">
+                    <img src="${story.author.avatar}" alt="${story.author.name}" 
+                         style="width: 60px; height: 60px; border-radius: 50%; border: 3px solid #FF6347; object-fit: cover;">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 700; color: #2C3E50; font-size: 1.1rem; margin-bottom: 5px;">
+                            ${story.author.name}
+                        </div>
+                        <div style="color: #6C757D; font-size: 0.9rem;">
+                            ${dateStr} · ${story.readTime} min read
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 15px; align-items: center; color: #6C757D; font-size: 0.9rem;">
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <i class="fas fa-eye"></i>
+                            <span>${story.views}</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <i class="fas fa-heart"></i>
+                            <span>${story.likes}</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <i class="fas fa-comment"></i>
+                            <span>${story.comments}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Story Content -->
+                <div style="color: #2C3E50; line-height: 1.9; font-size: 1.1rem;">
+                    ${paragraphs.map(p => `<p style="margin-bottom: 25px;">${p}</p>`).join('')}
+                </div>
+                
+                <!-- Actions -->
+                <div style="display: flex; gap: 15px; margin-top: 40px; padding-top: 30px; 
+                            border-top: 2px solid rgba(255, 99, 71, 0.2);">
+                    <button class="btn-create-collection" onclick="likeStory(${story.id})" style="flex: 1;">
+                        <i class="fas fa-heart"></i>
+                        Like Story (${story.likes})
+                    </button>
+                    <button class="btn-save-draft" onclick="bookmarkStory(${story.id})" style="flex: 1;">
+                        <i class="fas fa-bookmark"></i>
+                        Bookmark
+                    </button>
+                    <button class="btn-cancel" onclick="shareStory(${story.id})" style="flex: 1;">
+                        <i class="fas fa-share-alt"></i>
+                        Share
+                    </button>
+                </div>
+                
+                <!-- Comments Section -->
+                <div style="margin-top: 50px;">
+                    <h3 style="font-family: 'Caveat', cursive; font-size: 2rem; color: #F57F17; margin-bottom: 20px;">
+                        <i class="fas fa-comments"></i>
+                        Comments (${story.comments})
+                    </h3>
+                    <div style="background: rgba(255, 249, 230, 0.5); border-radius: 15px; padding: 30px; text-align: center;">
+                        <p style="color: #6C757D;">Comments feature coming in Phase 4! 💬</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    modal.style.display = 'flex';
+    
+    // Increment view count (in a real app, this would be a backend call)
+    story.views++;
+    updateTalesStats();
+}
+
+function closeStoryDetail() {
+    const modal = document.getElementById('storyDetailModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// ============================================
+// STORY EDITOR
+// ============================================
+
+function openStoryEditor(prompt = '') {
+    const modal = document.getElementById('storyEditorModal');
+    if (!modal) return;
+    
+    // Clear form
+    document.getElementById('storyTitle').value = '';
+    document.getElementById('storySubtitle').value = '';
+    document.getElementById('storyContent').value = prompt;
+    document.getElementById('storyRoute').value = '';
+    document.getElementById('storyCategory').value = '';
+    
+    // Update counters
+    updateCharCounter('storyTitle', 'titleCount');
+    updateCharCounter('storySubtitle', 'subtitleCount');
+    updateCharCounter('storyContent', 'contentCount');
+    updateReadingTime();
+    
+    modal.style.display = 'flex';
+}
+
+function closeStoryEditor() {
+    const modal = document.getElementById('storyEditorModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function setupStoryFormCounters() {
+    const titleInput = document.getElementById('storyTitle');
+    const subtitleInput = document.getElementById('storySubtitle');
+    const contentInput = document.getElementById('storyContent');
+    
+    if (titleInput) {
+        titleInput.addEventListener('input', () => {
+            updateCharCounter('storyTitle', 'titleCount');
+        });
+    }
+    
+    if (subtitleInput) {
+        subtitleInput.addEventListener('input', () => {
+            updateCharCounter('storySubtitle', 'subtitleCount');
+        });
+    }
+    
+    if (contentInput) {
+        contentInput.addEventListener('input', () => {
+            updateCharCounter('storyContent', 'contentCount');
+            updateReadingTime();
+        });
+    }
+}
+
+function updateCharCounter(inputId, counterId) {
+    const input = document.getElementById(inputId);
+    const counter = document.getElementById(counterId);
+    
+    if (input && counter) {
+        counter.textContent = input.value.length;
+    }
+}
+
+function updateReadingTime() {
+    const content = document.getElementById('storyContent').value;
+    const wordCount = content.trim().split(/\s+/).length;
+    const readTime = Math.max(1, Math.ceil(wordCount / 200)); // Average reading speed: 200 words/min
+    
+    const readTimeEl = document.getElementById('readingTime');
+    if (readTimeEl) {
+        readTimeEl.textContent = readTime;
+    }
+}
+
+function publishStory() {
+    // Get form values
+    const title = document.getElementById('storyTitle').value.trim();
+    const subtitle = document.getElementById('storySubtitle').value.trim();
+    const content = document.getElementById('storyContent').value.trim();
+    const route = document.getElementById('storyRoute').value;
+    const category = document.getElementById('storyCategory').value;
+    
+    // Validate
+    if (!title) {
+        showToast('⚠️ Please enter a story title!', 3000);
+        return;
+    }
+    
+    if (!content || content.length < 100) {
+        showToast('⚠️ Story content must be at least 100 characters!', 3000);
+        return;
+    }
+    
+    if (!route) {
+        showToast('⚠️ Please select a route!', 3000);
+        return;
+    }
+    
+    if (!category) {
+        showToast('⚠️ Please select a category!', 3000);
+        return;
+    }
+    
+    // Calculate reading time
+    const wordCount = content.split(/\s+/).length;
+    const readTime = Math.max(1, Math.ceil(wordCount / 200));
+    
+    // Create new story
+    const newStory = {
+        id: Date.now(),
+        title: title,
+        subtitle: subtitle || 'A Happy Trails journey',
+        content: content,
+        route: route,
+        category: category,
+        author: {
+            name: userProfile ? userProfile.name : 'Anonymous Traveler',
+            avatar: userProfile && userProfile.photo ? userProfile.photo : '/static/images/default-avatar.png',
+            id: CURRENT_USER.isAuthenticated ? 'current-user' : 0
+        },
+        image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800', // Default image
+        publishDate: new Date().toISOString().split('T')[0],
+        readTime: readTime,
+        likes: 0,
+        comments: 0,
+        bookmarked: false,
+        featured: false,
+        kavlinsPick: false,
+        views: 0
+    };
+    
+    // Add to stories
+    allStories.unshift(newStory);
+    filteredStories = [...allStories];
+    
+    // Save user story
+    userStories.push(newStory);
+    saveUserStories();
+    
+    // Re-render
+    renderStoriesGrid();
+    updateTalesStats();
+    
+    // Close modal
+    closeStoryEditor();
+    
+    showToast('Story published successfully! 🎉', 3000);
+}
+
+function saveStoryDraft() {
+    const title = document.getElementById('storyTitle').value.trim();
+    const subtitle = document.getElementById('storySubtitle').value.trim();
+    const content = document.getElementById('storyContent').value.trim();
+    const route = document.getElementById('storyRoute').value;
+    const category = document.getElementById('storyCategory').value;
+    
+    if (!title && !content) {
+        showToast('⚠️ Nothing to save!', 2000);
+        return;
+    }
+    
+    const draft = {
+        title,
+        subtitle,
+        content,
+        route,
+        category,
+        savedAt: new Date().toISOString()
+    };
+    
+    localStorage.setItem('happytrails_story_draft', JSON.stringify(draft));
+    
+    showToast('Draft saved! 💾', 2000);
+}
+
+function loadUserStories() {
+    const stored = localStorage.getItem('happytrails_user_stories');
+    if (stored) {
+        try {
+            userStories = JSON.parse(stored);
+            // Add user stories to all stories
+            userStories.forEach(story => {
+                if (!allStories.find(s => s.id === story.id)) {
+                    allStories.unshift(story);
+                }
+            });
+        } catch (e) {
+            userStories = [];
+        }
+    }
+}
+
+function saveUserStories() {
+    localStorage.setItem('happytrails_user_stories', JSON.stringify(userStories));
+}
+
+// ============================================
+// FILTERING & SEARCH
+// ============================================
+
+function searchStories() {
+    const searchTerm = document.getElementById('talesSearchInput').value.toLowerCase();
+    
+    filteredStories = allStories.filter(story => {
+        return story.title.toLowerCase().includes(searchTerm) ||
+               story.subtitle.toLowerCase().includes(searchTerm) ||
+               story.content.toLowerCase().includes(searchTerm) ||
+               story.author.name.toLowerCase().includes(searchTerm);
+    });
+    
+    currentStoriesPage = 1;
+    renderStoriesGrid();
+}
+
+function filterByCategory(category) {
+    activeCategory = category;
+    
+    // Update pills
+    document.querySelectorAll('.category-pill').forEach(pill => {
+        pill.classList.remove('active');
+        if (pill.getAttribute('data-category') === category) {
+            pill.classList.add('active');
+        }
+    });
+    
+    // Update dropdown
+    document.getElementById('categoryFilter').value = category;
+    
+    filterStories();
+}
+
+function filterStories() {
+    const category = document.getElementById('categoryFilter').value;
+    const route = document.getElementById('routeFilterTales').value;
+    
+    filteredStories = allStories.filter(story => {
+        // Category filter
+        if (category !== 'all' && story.category !== category) {
+            return false;
+        }
+        
+        // Route filter
+        if (route !== 'all' && story.route !== route) {
+            return false;
+        }
+        
+        return true;
+    });
+    
+    currentStoriesPage = 1;
+    renderStoriesGrid();
+    
+    showToast(`Found ${filteredStories.length} stories! 📖`, 2000);
+}
+
+function sortStories() {
+    const sortBy = document.getElementById('sortTales').value;
+    
+    switch(sortBy) {
+        case 'latest':
+            filteredStories.sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate));
+            break;
+        case 'popular':
+            filteredStories.sort((a, b) => b.likes - a.likes);
+            break;
+        case 'trending':
+            filteredStories.sort((a, b) => (b.views * 0.5 + b.likes * 0.5) - (a.views * 0.5 + a.likes * 0.5));
+            break;
+        case 'oldest':
+            filteredStories.sort((a, b) => new Date(a.publishDate) - new Date(b.publishDate));
+            break;
+    }
+    
+    currentStoriesPage = 1;
+    renderStoriesGrid();
+}
+
+function loadMoreStories() {
+    currentStoriesPage++;
+    renderStoriesGrid();
+    
+    // Scroll to newly loaded content
+    const grid = document.getElementById('storiesGrid');
+    if (grid) {
+        const newCards = grid.children[displayedStories.length - storiesPerPage];
+        if (newCards) {
+            newCards.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+}
+
+// ============================================
+// STORY INTERACTIONS
+// ============================================
+
+function likeStory(storyId) {
+    const story = allStories.find(s => s.id === storyId);
+    if (!story) return;
+    
+    story.likes++;
+    updateTalesStats();
+    
+    // Update detail view if open
+    const modal = document.getElementById('storyDetailModal');
+    if (modal && modal.style.display === 'flex') {
+        viewStoryDetail(storyId);
+    }
+    
+    showToast('Story liked! ❤️', 2000);
+}
+
+function bookmarkStory(storyId) {
+    const story = allStories.find(s => s.id === storyId);
+    if (!story) return;
+    
+    story.bookmarked = !story.bookmarked;
+    
+    // Save to localStorage
+    const bookmarks = JSON.parse(localStorage.getItem('happytrails_bookmarked_stories') || '[]');
+    if (story.bookmarked) {
+        bookmarks.push(storyId);
+        showToast('Story bookmarked! 🔖', 2000);
+    } else {
+        const index = bookmarks.indexOf(storyId);
+        if (index > -1) bookmarks.splice(index, 1);
+        showToast('Bookmark removed! 📑', 2000);
+    }
+    localStorage.setItem('happytrails_bookmarked_stories', JSON.stringify(bookmarks));
+}
+
+function shareStory(storyId) {
+    const story = allStories.find(s => s.id === storyId);
+    if (!story) return;
+    
+    const shareUrl = `${window.location.origin}/travel-companions?story=${storyId}`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: story.title,
+            text: story.subtitle,
+            url: shareUrl
+        }).catch(() => {
+            copyToClipboard(shareUrl);
+        });
+    } else {
+        copyToClipboard(shareUrl);
+    }
+    
+    showToast('Story link copied! 📋', 2000);
+}
+
+function usePrompt(promptText) {
+    openStoryEditor(promptText);
+    showToast('Prompt loaded! Start writing... ✍️', 2000);
+}
+
+function updateTalesStats() {
+    const totalStories = allStories.length;
+    const activeWriters = new Set(allStories.map(s => s.author.id)).size;
+    const totalLikes = allStories.reduce((sum, s) => sum + s.likes, 0);
+    const totalComments = allStories.reduce((sum, s) => sum + s.comments, 0);
+    
+    const totalStoriesEl = document.getElementById('totalStories');
+    const activeWritersEl = document.getElementById('activeWriters');
+    const totalLikesEl = document.getElementById('totalLikes');
+    const totalCommentsEl = document.getElementById('totalComments');
+    
+    if (totalStoriesEl) totalStoriesEl.textContent = totalStories;
+    if (activeWritersEl) activeWritersEl.textContent = activeWriters;
+    if (totalLikesEl) totalLikesEl.textContent = totalLikes.toLocaleString();
+    if (totalCommentsEl) totalCommentsEl.textContent = totalComments;
+}
+
+// ============================================
+// UPDATE MAIN INITIALIZATION
+// ============================================
+
+// Update the main initialization
+const originalInitTravelCompanions2 = initializeTravelCompanions;
+initializeTravelCompanions = function() {
+    originalInitTravelCompanions2();
+    
+    // Initialize tales when tab is clicked
+    const talesTab = document.querySelector('[data-tab="travelers-tales"]');
+    if (talesTab) {
+        talesTab.addEventListener('click', function() {
+            // Check if already initialized
+            if (allStories.length === 0) {
+                initializeTravelersTales();
+            }
+        });
+    }
+};
+
+// Make functions globally accessible
+window.openStoryEditor = openStoryEditor;
+window.closeStoryEditor = closeStoryEditor;
+window.publishStory = publishStory;
+window.saveStoryDraft = saveStoryDraft;
+window.viewStoryDetail = viewStoryDetail;
+window.closeStoryDetail = closeStoryDetail;
+window.searchStories = searchStories;
+window.filterByCategory = filterByCategory;
+window.filterStories = filterStories;
+window.sortStories = sortStories;
+window.loadMoreStories = loadMoreStories;
+window.likeStory = likeStory;
+window.bookmarkStory = bookmarkStory;
+window.shareStory = shareStory;
+window.usePrompt = usePrompt;
+
+console.log('📖 Phase 3: Traveler\'s Tales & Story Sharing loaded successfully! 💖');
