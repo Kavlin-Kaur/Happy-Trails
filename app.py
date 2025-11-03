@@ -514,6 +514,90 @@ def traffic_update(bus_id):
         "delay_minutes": delay_minutes
     })
 
+@app.route('/poetry-corner')
+def poetry_corner():
+    # Sample poetry data - later can be from database
+    travel_poems = [
+        {
+            'title': 'The Road Not Taken',
+            'author': 'Robert Frost',
+            'lines': [
+                'Two roads diverged in a yellow wood,',
+                'And sorry I could not travel both',
+                'And be one traveler, long I stood',
+                'And looked down one as far as I could',
+                'To where it bent in the undergrowth;'
+            ],
+            'theme': 'choices',
+            'image': 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800'
+        },
+        {
+            'title': 'Where the Road Meets the Sky',
+            'author': 'Kavlin',
+            'lines': [
+                'In every journey, a story unfolds,',
+                'Where asphalt meets dreams, and hearts grow bold.',
+                'The bus hums a tune of places unknown,',
+                'And every mile whispers, "You\'re not alone."'
+            ],
+            'theme': 'journey',
+            'image': 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800',
+            'is_kavlin': True
+        },
+        {
+            'title': 'Windows to Wanderlust',
+            'author': 'Kavlin',
+            'lines': [
+                'Through windows wide, the world parades,',
+                'Mountains bow and valleys fade.',
+                'Each turn a verse, each stop a line,',
+                'Poetry in motion, beautifully divine.'
+            ],
+            'theme': 'wanderlust',
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+            'is_kavlin': True
+        },
+        {
+            'title': 'Song of the Open Road',
+            'author': 'Walt Whitman',
+            'lines': [
+                'Afoot and light-hearted I take to the open road,',
+                'Healthy, free, the world before me,',
+                'The long brown path before me leading wherever I choose.',
+            ],
+            'theme': 'freedom',
+            'image': 'https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=800'
+        },
+        {
+            'title': 'Ticket to Tomorrow',
+            'author': 'Kavlin',
+            'lines': [
+                'A ticket is more than paper and ink,',
+                'It\'s a promise, a dream, a hopeful link.',
+                'To sunrise views and evening gold,',
+                'To stories yet to be told.'
+            ],
+            'theme': 'hope',
+            'image': 'https://images.unsplash.com/photo-1527838832700-5059252407fa?w=800',
+            'is_kavlin': True
+        },
+        {
+            'title': 'The Bus Stop Philosopher',
+            'author': 'Kavlin',
+            'lines': [
+                'At the crossroads where strangers meet,',
+                'Time slows down, hearts skip a beat.',
+                'Stories shared in whispered tone,',
+                'In that moment, we\'re never alone.'
+            ],
+            'theme': 'connection',
+            'image': 'https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?w=800',
+            'is_kavlin': True
+        }
+    ]
+    
+    return render_template('features/poetry_corner.html', travel_poems=travel_poems)
+
 # Initialize the database and add sample data
 # Replace the @app.before_first_request decorator with this code
 # This is because newer Flask versions don't support before_first_request with application factories

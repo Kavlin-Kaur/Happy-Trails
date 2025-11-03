@@ -1,0 +1,940 @@
+{% extends 'base.html' %}
+
+{% block title %}Poetry Corner - Happy Trails{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   🎨 POETRY CORNER - PHASE 1: TRAVEL POETRY
+   Designed with love by Kavlin 💖
+   Modular CSS - Phase 1 Styles
+   ============================================ */
+
+/* === GLOBAL POETRY CORNER STYLES === */
+.poetry-corner-wrapper {
+    background: linear-gradient(135deg, #FFF8DC 0%, #FFE4E1 50%, #E6E6FA 100%);
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.poetry-corner-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 182, 193, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(230, 230, 250, 0.08) 0%, transparent 50%);
+    animation: poetrySparkle 10s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes poetrySparkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* === HERO SECTION === */
+.poetry-hero {
+    padding: 140px 0 80px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.poetry-hero-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 4.5rem;
+    background: linear-gradient(135deg, #FFD700 0%, #FF8C00 50%, #FF6347 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    animation: titleGlow 3s ease-in-out infinite;
+    text-shadow: 2px 2px 20px rgba(255, 215, 0, 0.3);
+}
+
+@keyframes titleGlow {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.2); }
+}
+
+.poetry-hero-subtitle {
+    font-size: 1.4rem;
+    color: #6C757D;
+    font-weight: 300;
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    line-height: 1.8;
+}
+
+.poetry-hero-quote {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.6rem;
+    color: #F57F17;
+    margin-top: 2rem;
+    font-weight: 600;
+}
+
+.poetry-floating-icon {
+    position: absolute;
+    font-size: 3rem;
+    opacity: 0.2;
+    animation: floatPoetry 6s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes floatPoetry {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-20px) rotate(5deg); }
+    75% { transform: translateY(-10px) rotate(-5deg); }
+}
+
+.icon-1 { top: 15%; left: 10%; animation-delay: 0s; }
+.icon-2 { top: 25%; right: 15%; animation-delay: 2s; }
+.icon-3 { bottom: 20%; left: 20%; animation-delay: 4s; }
+.icon-4 { bottom: 30%; right: 10%; animation-delay: 1s; }
+
+/* ============================================
+   📖 PHASE 1: TRAVEL POETRY SECTION
+   ============================================ */
+
+.section-divider {
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #FFD700, transparent);
+    border: none;
+    margin: 60px 0;
+    position: relative;
+}
+
+.section-divider::after {
+    content: '✨';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 0 15px;
+    font-size: 1.5rem;
+}
+
+.travel-poetry-section {
+    padding: 80px 0;
+    position: relative;
+    z-index: 2;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.5rem;
+    color: #F57F17;
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #FFD700, transparent);
+}
+
+.section-description {
+    font-size: 1.2rem;
+    color: #6C757D;
+    max-width: 600px;
+    margin: 1.5rem auto 0;
+    line-height: 1.8;
+}
+
+/* === FILTER TABS === */
+.poetry-filters {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+}
+
+.filter-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #FFD700;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-weight: 600;
+    color: #2C3E50;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    position: relative;
+    overflow: hidden;
+}
+
+.filter-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    transition: width 0.4s, height 0.4s;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+}
+
+.filter-btn:hover::before,
+.filter-btn.active::before {
+    width: 300px;
+    height: 300px;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+}
+
+/* === POEM CARDS === */
+.poetry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.poem-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    position: relative;
+    border: 2px solid transparent;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: cardFadeIn 0.6s ease-out forwards;
+}
+
+@keyframes cardFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.poem-card:nth-child(1) { animation-delay: 0.1s; }
+.poem-card:nth-child(2) { animation-delay: 0.2s; }
+.poem-card:nth-child(3) { animation-delay: 0.3s; }
+.poem-card:nth-child(4) { animation-delay: 0.4s; }
+.poem-card:nth-child(5) { animation-delay: 0.5s; }
+.poem-card:nth-child(6) { animation-delay: 0.6s; }
+
+.poem-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(255, 215, 0, 0.3);
+    border-color: #FFD700;
+}
+
+.poem-card.kavlin-special {
+    border: 2px solid #FFD700;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 249, 230, 0.95));
+}
+
+.poem-card.kavlin-special::before {
+    content: '💖';
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.8rem;
+    animation: heartbeat 2s ease-in-out infinite;
+    z-index: 10;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.1); }
+    50% { transform: scale(1); }
+    75% { transform: scale(1.05); }
+}
+
+.poem-image-wrapper {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+}
+
+.poem-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.poem-card:hover .poem-image {
+    transform: scale(1.1);
+}
+
+.poem-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 25px;
+}
+
+.poem-theme-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(255, 215, 0, 0.95);
+    color: #2C3E50;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+}
+
+.poem-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: white;
+    margin: 0;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.poem-author {
+    color: #FFD700;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 5px;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+.poem-author.kavlin-author {
+    color: #FFE4B5;
+    font-style: italic;
+}
+
+.poem-author.kavlin-author::before {
+    content: '✨ ';
+}
+
+.poem-author.kavlin-author::after {
+    content: ' ✨';
+}
+
+.poem-content {
+    padding: 30px;
+}
+
+.poem-lines {
+    font-size: 1.1rem;
+    line-height: 1.9;
+    color: #2C3E50;
+    font-style: italic;
+    margin: 0;
+    padding: 20px;
+    background: rgba(255, 249, 230, 0.5);
+    border-radius: 15px;
+    border-left: 4px solid #FFD700;
+    position: relative;
+}
+
+.poem-lines::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    font-size: 4rem;
+    color: rgba(255, 215, 0, 0.3);
+    font-family: Georgia, serif;
+    line-height: 1;
+}
+
+.poem-lines p {
+    margin: 0.5rem 0;
+}
+
+.poem-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.poem-btn {
+    background: transparent;
+    border: 2px solid #FFD700;
+    color: #F57F17;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.poem-btn:hover {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.poem-stats {
+    display: flex;
+    gap: 15px;
+    color: #6C757D;
+    font-size: 0.9rem;
+}
+
+.poem-stat {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* === LOAD MORE BUTTON === */
+.load-more-wrapper {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.load-more-btn {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    border: none;
+    color: white;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.load-more-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s;
+}
+
+.load-more-btn:hover::before {
+    left: 100%;
+}
+
+.load-more-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+    .poetry-hero-title {
+        font-size: 3rem;
+    }
+    
+    .section-title {
+        font-size: 2.5rem;
+    }
+    
+    .poetry-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .poem-image-wrapper {
+        height: 200px;
+    }
+    
+    .poem-title {
+        font-size: 1.6rem;
+    }
+    
+    .poem-lines {
+        font-size: 1rem;
+    }
+    
+    .poetry-filters {
+        gap: 10px;
+    }
+    
+    .filter-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .poetry-hero-title {
+        font-size: 2.2rem;
+    }
+    
+    .poetry-hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+}
+
+/* === SCROLL ANIMATIONS === */
+.fade-in-up {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.8s ease-out;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ============================================
+   🎨 END OF PHASE 1 STYLES
+   Next phases will add their styles below
+   ============================================ */
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- ============================================
+     🎨 POETRY CORNER - MAIN WRAPPER
+     ============================================ -->
+<div class="poetry-corner-wrapper">
+    
+    <!-- === HERO SECTION === -->
+    <section class="poetry-hero">
+        <div class="container">
+            <!-- Floating decorative icons -->
+            <div class="poetry-floating-icon icon-1">📖</div>
+            <div class="poetry-floating-icon icon-2">✨</div>
+            <div class="poetry-floating-icon icon-3">🌸</div>
+            <div class="poetry-floating-icon icon-4">🎨</div>
+            
+            <h1 class="poetry-hero-title">Poetry Corner</h1>
+            <p class="poetry-hero-subtitle">
+                Where words dance with wanderlust, and every verse is a journey waiting to unfold.
+                Welcome to a sanctuary of poetic expressions and travel-inspired verses.
+            </p>
+            <div class="poetry-hero-quote">
+                "Poetry is the rhythm of the soul, and travel is its melody" - Kavlin 💖
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Divider -->
+    <hr class="section-divider">
+
+    <!-- ============================================
+         📖 PHASE 1: TRAVEL POETRY SECTION
+         Modular Block - Can be extended independently
+         ============================================ -->
+    <section class="travel-poetry-section" id="travel-poetry">
+        <div class="container">
+            
+            <!-- Section Header -->
+            <div class="section-header">
+                <h2 class="section-title">Travel Poetry</h2>
+                <p class="section-description">
+                    A curated collection of timeless travel poems from renowned poets around the world,
+                    alongside exclusive verses crafted with love by Kavlin.
+                </p>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="poetry-filters">
+                <button class="filter-btn active" data-filter="all">
+                    <i class="fas fa-globe me-2"></i>All Poems
+                </button>
+                <button class="filter-btn" data-filter="kavlin">
+                    <i class="fas fa-heart me-2"></i>Kavlin's Poetry
+                </button>
+                <button class="filter-btn" data-filter="classic">
+                    <i class="fas fa-book me-2"></i>Classic Poets
+                </button>
+                <button class="filter-btn" data-filter="journey">
+                    <i class="fas fa-road me-2"></i>Journey
+                </button>
+                <button class="filter-btn" data-filter="wanderlust">
+                    <i class="fas fa-compass me-2"></i>Wanderlust
+                </button>
+            </div>
+
+            <!-- Poetry Grid -->
+            <div class="poetry-grid" id="poetryGrid">
+                {% for poem in travel_poems %}
+                <div class="poem-card {% if poem.is_kavlin %}kavlin-special{% endif %}" 
+                     data-theme="{{ poem.theme }}"
+                     data-author-type="{% if poem.is_kavlin %}kavlin{% else %}classic{% endif %}">
+                    
+                    <!-- Poem Image -->
+                    <div class="poem-image-wrapper">
+                        <img src="{{ poem.image }}" alt="{{ poem.title }}" class="poem-image">
+                        <div class="poem-overlay">
+                            <span class="poem-theme-badge">{{ poem.theme }}</span>
+                            <h3 class="poem-title">{{ poem.title }}</h3>
+                            <p class="poem-author {% if poem.is_kavlin %}kavlin-author{% endif %}">
+                                by {{ poem.author }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Poem Content -->
+                    <div class="poem-content">
+                        <div class="poem-lines">
+                            {% for line in poem.lines %}
+                            <p>{{ line }}</p>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Poem Actions -->
+                        <div class="poem-actions">
+                            <button class="poem-btn" onclick="sharePoem('{{ poem.title }}', '{{ poem.author }}')">
+                                <i class="fas fa-share-alt"></i> Share
+                            </button>
+                            <button class="poem-btn" onclick="savePoem(this)">
+                                <i class="far fa-heart"></i> Save
+                            </button>
+                            <div class="poem-stats">
+                                <span class="poem-stat">
+                                    <i class="fas fa-heart"></i> {{ range(100, 500) | random }}
+                                </span>
+                                <span class="poem-stat">
+                                    <i class="fas fa-eye"></i> {{ range(500, 2000) | random }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Load More Button -->
+            <div class="load-more-wrapper">
+                <button class="load-more-btn" onclick="loadMorePoems()">
+                    <i class="fas fa-plus-circle me-2"></i>
+                    Discover More Poetry
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============================================
+         🎯 PHASE 2+ SECTIONS WILL BE ADDED BELOW
+         Each phase adds its own modular section
+         ============================================ -->
+    
+    <!-- PLACEHOLDER for Quote of the Day (Phase 2) -->
+    <!-- PLACEHOLDER for User-Submitted Poems (Phase 3) -->
+    <!-- PLACEHOLDER for Verses Along the Way (Phase 4) -->
+    <!-- PLACEHOLDER for Poetry Blog Integration (Phase 5) -->
+
+</div>
+
+<!-- ============================================
+     📜 JAVASCRIPT - PHASE 1
+     Modular JS - Each phase adds its own functions
+     ============================================ -->
+<script>
+// ============================================
+// 🎨 POETRY CORNER - PHASE 1 JAVASCRIPT
+// ============================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('✨ Poetry Corner loading with Kavlin\'s magic...');
+    initializePhase1();
+});
+
+// === PHASE 1: TRAVEL POETRY FUNCTIONS ===
+
+function initializePhase1() {
+    setupFilterButtons();
+    setupScrollAnimations();
+    addPoetryMagic();
+    console.log('📖 Phase 1: Travel Poetry initialized successfully!');
+}
+
+// Filter functionality
+function setupFilterButtons() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const poemCards = document.querySelectorAll('.poem-card');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+            
+            // Update active button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+
+            // Filter poems
+            poemCards.forEach(card => {
+                const theme = card.getAttribute('data-theme');
+                const authorType = card.getAttribute('data-author-type');
+                
+                let shouldShow = false;
+                
+                if (filter === 'all') {
+                    shouldShow = true;
+                } else if (filter === 'kavlin' && authorType === 'kavlin') {
+                    shouldShow = true;
+                } else if (filter === 'classic' && authorType === 'classic') {
+                    shouldShow = true;
+                } else if (theme === filter) {
+                    shouldShow = true;
+                }
+
+                if (shouldShow) {
+                    card.style.display = 'block';
+                    card.style.animation = 'cardFadeIn 0.6s ease-out forwards';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Show toast
+            showPoetryToast(`Filtering by: ${this.textContent.trim()} ✨`);
+        });
+    });
+}
+
+// Scroll animations
+function setupScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in-up');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.section-header, .poetry-filters').forEach(el => {
+        observer.observe(el);
+    });
+}
+
+// Share poem
+function sharePoem(title, author) {
+    const text = `"${title}" by ${author} - From Happy Trails Poetry Corner 💖`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: text,
+            url: window.location.href
+        }).then(() => {
+            showPoetryToast('Poem shared successfully! 🎉');
+        }).catch(err => {
+            console.log('Share cancelled');
+        });
+    } else {
+        // Fallback: Copy to clipboard
+        navigator.clipboard.writeText(text + '\n' + window.location.href).then(() => {
+            showPoetryToast('Poem link copied to clipboard! 📋');
+        });
+    }
+}
+
+// Save poem (toggle heart)
+function savePoem(button) {
+    const icon = button.querySelector('i');
+    
+    if (icon.classList.contains('far')) {
+        icon.classList.remove('far');
+        icon.classList.add('fas');
+        button.style.color = '#FF6347';
+        showPoetryToast('Poem saved to your collection! 💖');
+    } else {
+        icon.classList.remove('fas');
+        icon.classList.add('far');
+        button.style.color = '';
+        showPoetryToast('Poem removed from collection');
+    }
+}
+
+// Load more poems
+function loadMorePoems() {
+    showPoetryToast('Loading more beautiful poetry... ✨');
+    
+    // Simulate loading (in real app, this would fetch from backend)
+    setTimeout(() => {
+        showPoetryToast('More poems coming soon! Stay tuned 📖', 3000);
+    }, 1000);
+}
+
+// Add magical hover effects
+function addPoetryMagic() {
+    const poemCards = document.querySelectorAll('.poem-card');
+    
+    poemCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            // Add subtle glow effect
+            this.style.transition = 'all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+        });
+    });
+
+    // Random sparkle effect
+    setInterval(createSparkle, 3000);
+}
+
+// Create sparkle effect
+function createSparkle() {
+    const sparkleEmojis = ['✨', '💫', '⭐', '🌟'];
+    const randomEmoji = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+    
+    const sparkle = document.createElement('div');
+    sparkle.className = 'sparkle-effect';
+    sparkle.textContent = randomEmoji;
+    sparkle.style.left = Math.random() * window.innerWidth + 'px';
+    sparkle.style.top = Math.random() * window.innerHeight + 'px';
+    
+    document.body.appendChild(sparkle);
+    
+    setTimeout(() => sparkle.remove(), 2000);
+}
+
+// Custom toast notification
+function showPoetryToast(message, duration = 3000) {
+    // Remove existing toast if any
+    const existingToast = document.querySelector('.poetry-toast');
+    if (existingToast) existingToast.remove();
+
+    const toast = document.createElement('div');
+    toast.className = 'poetry-toast';
+    toast.innerHTML = `
+        <i class="fas fa-feather-alt me-2"></i>
+        <span>${message}</span>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    // Animate in
+    setTimeout(() => toast.classList.add('show'), 100);
+    
+    // Remove after duration
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, duration);
+}
+
+// Add toast styles dynamically
+const toastStyle = document.createElement('style');
+toastStyle.textContent = `
+    .poetry-toast {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: linear-gradient(135deg, #FFD700, #FF8C00);
+        color: white;
+        padding: 15px 25px;
+        border-radius: 50px;
+        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+        font-weight: 600;
+        z-index: 10000;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+    }
+    
+    .poetry-toast.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .sparkle-effect {
+        position: fixed;
+        font-size: 1.5rem;
+        pointer-events: none;
+        animation: sparkleFloat 2s ease-out forwards;
+        z-index: 9999;
+    }
+    
+    @keyframes sparkleFloat {
+        0% { opacity: 1; transform: translateY(0) scale(0); }
+        50% { opacity: 1; transform: translateY(-30px) scale(1); }
+        100% { opacity: 0; transform: translateY(-60px) scale(0.5); }
+    }
+`;
+document.head.appendChild(toastStyle);
+
+// ============================================
+// 🎯 PHASE 2+ JAVASCRIPT WILL BE ADDED BELOW
+// Each phase adds its own functions
+// ============================================
+
+// PLACEHOLDER for Quote of the Day functions (Phase 2)
+// PLACEHOLDER for User Submission functions (Phase 3)
+// PLACEHOLDER for Verses Along the Way functions (Phase 4)
+// PLACEHOLDER for Blog Integration functions (Phase 5)
+
+console.log('💖 Poetry Corner by Kavlin - Phase 1 loaded successfully!');
+</script>
+
+{% endblock %}
