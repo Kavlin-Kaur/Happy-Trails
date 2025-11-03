@@ -1424,6 +1424,11 @@ def disclaimer():
     """Disclaimer page"""
     return render_template('footer/disclaimer.html')
 
+@app.route('/terms')
+def terms_of_service():
+    """Terms of service page"""
+    return render_template('footer/terms.html')
+
 # Run the application
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service | Happy Trails - Kavlin's Mountain Bus Service</title>
+    <meta name="description" content="Terms of Service for Happy Trails bus service. Legal terms and conditions governing platform use, bookings, and user obligations.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Caveat:wght@400;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ============================================
+           GLOBAL STYLES - HAPPY TRAILS THEME
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Primary Colors - Sunny Yellow Theme */
+            --primary-yellow: #FFD700;
+            --secondary-yellow: #FFF8DC;
+            --accent-yellow: #FFEB3B;
+            --deep-yellow: #F57F17;
+            
+            /* Complementary Colors */
+            --soft-pink: #FFE4E1;
+            --coral: #FF7F7F;
+            --lavender: #E6E6FA;
+            --mint: #F0FFF0;
+            
+            /* Neutral Colors */
+            --white: #FFFFFF;
+            --cream: #FFFEF7;
+            --light-gray: #F8F9FA;
+            --medium-gray: #6C757D;
+            --dark-gray: #343A40;
+            --charcoal: #2C3E50;
+            
+            /* Shadows & Effects */
+            --shadow-soft: 0 4px 20px rgba(255, 215, 0, 0.15);
+            --shadow-medium: 0 8px 30px rgba(255, 215, 0, 0.25);
+            --shadow-strong: 0 12px 40px rgba(255, 215, 0, 0.35);
+            
+            /* Gradients */
+            --gradient-sunrise: linear-gradient(135deg, #FFD700 0%, #FF8C00 50%, #FF6347 100%);
+            --gradient-sunset: linear-gradient(135deg, #FFE4B5 0%, #FFD700 50%, #DDA0DD 100%);
+            
+            /* Transitions */
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: var(--charcoal);
+            background: var(--cream);
+            overflow-x: hidden;
+        }
+
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================
+           HEADER
+           ============================================ */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--primary-yellow);
+            color: var(--charcoal);
+            padding: 25px 20px;
+            box-shadow: var(--shadow-soft);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--deep-yellow);
+        }
+
+        .header-icon {
+            font-size: 2.5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .back-btn, .print-btn {
+            background: var(--gradient-sunrise);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition-bounce);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-medium);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .print-btn {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+        }
+
+        .back-btn:hover, .print-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-strong);
+        }
+
+        /* ============================================
+           MAIN CONTENT
+           ============================================ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px 80px;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: var(--gradient-sunset);
+            border-radius: 30px;
+            padding: 80px 50px;
+            text-align: center;
+            box-shadow: var(--shadow-strong);
+            margin-bottom: 50px;
+            border: 3px solid var(--primary-yellow);
+            position: relative;
+            overflow: hidden;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 182, 193, 0.1) 0%, transparent 50%);
+            animation: sparkle 4s ease-in-out infinite;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-icon {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hero-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            background: var(--gradient-sunrise);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--medium-gray);
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .version-info {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--primary-yellow);
+            color: var(--deep-yellow);
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: var(--shadow-soft);
+            margin: 5px;
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-soft);
+            border-top: 4px solid var(--primary-yellow);
+            transition: var(--transition-smooth);
+            animation: slideIn 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .content-section:nth-child(1) { animation-delay: 0.1s; }
+        .content-section:nth-child(2) { animation-delay: 0.2s; }
+        .content-section:nth-child(3) { animation-delay: 0.3s; }
+        .content-section:nth-child(4) { animation-delay: 0.4s; }
+        .content-section:nth-child(5) { animation-delay: 0.5s; }
+
+        .content-section:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .section-icon {
+            font-size: 2.5rem;
+            background: var(--gradient-sunrise);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-title {
+            font-family: 'Caveat', cursive;
+            font-size: 2.5rem;
+            color: var(--charcoal);
+            font-weight: 700;
+        }
+
+        .section-content {
+            color: var(--medium-gray);
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 15px;
+        }
+
+        .section-content ul,
+        .section-content ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        .section-content li {
+            margin-bottom: 12px;
+        }
+
+        .section-content strong {
+            color: var(--charcoal);
+            font-weight: 600;
+        }
+
+        /* Info Boxes */
+        .info-box {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+            border-left: 4px solid var(--primary-yellow);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .info-box.important {
+            background: linear-gradient(135deg, rgba(255, 99, 71, 0.1), rgba(255, 99, 71, 0.05));
+            border-left-color: #FF6347;
+        }
+
+        .info-box.success {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(76, 175, 80, 0.05));
+            border-left-color: #4CAF50;
+        }
+
+        .info-box.info {
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.1), rgba(33, 150, 243, 0.05));
+            border-left-color: #2196F3;
+        }
+
+        .info-box-title {
+            font-weight: 700;
+            color: var(--charcoal);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Definition Cards */
+        .definitions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .definition-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 235, 59, 0.05));
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 25px;
+            transition: var(--transition-bounce);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .definition-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+            transition: var(--transition-smooth);
+            opacity: 0;
+        }
+
+        .definition-card:hover::before {
+            opacity: 1;
+        }
+
+        .definition-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+            border-color: var(--primary-yellow);
+        }
+
+        .definition-term {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--deep-yellow);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .definition-desc {
+            color: var(--medium-gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Terms Statement */
+        .terms-statement {
+            background: var(--gradient-sunrise);
+            color: white;
+            padding: 35px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 1.15rem;
+            font-weight: 600;
+            line-height: 1.9;
+            margin: 30px 0;
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Numbered Terms */
+        .terms-list {
+            counter-reset: term-counter;
+        }
+
+        .term-item {
+            background: rgba(255, 215, 0, 0.05);
+            border-left: 4px solid var(--primary-yellow);
+            padding: 20px;
+            padding-left: 70px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .term-item::before {
+            counter-increment: term-counter;
+            content: counter(term-counter);
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--gradient-sunrise);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .term-title {
+            font-weight: 700;
+            color: var(--charcoal);
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+
+        .term-desc {
+            color: var(--medium-gray);
+            line-height: 1.7;
+        }
+
+        /* Contact Card */
+        .contact-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 235, 59, 0.05));
+            border: 2px solid var(--primary-yellow);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .contact-card h4 {
+            color: var(--deep-yellow);
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            color: var(--medium-gray);
+        }
+
+        .contact-item i {
+            color: var(--deep-yellow);
+            font-size: 1.3rem;
+            width: 30px;
+        }
+
+        .contact-item a {
+            color: var(--deep-yellow);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+        }
+
+        .contact-item a:hover {
+            color: var(--primary-yellow);
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .page-footer {
+            background: white;
+            border-radius: 25px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+            margin-top: 50px;
+            border-top: 3px solid var(--primary-yellow);
+        }
+
+        .page-footer p {
+            color: var(--medium-gray);
+            margin-bottom: 10px;
+        }
+
+        .footer-heart {
+            color: var(--coral);
+            animation: float 1.5s ease-in-out infinite;
+        }
+
+        /* Print Styles */
+        @media print {
+            .header, .print-btn {
+                display: none !important;
+            }
+
+            body {
+                background: white;
+            }
+
+            .content-section {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .hero-section {
+                padding: 60px 35px;
+            }
+
+            .content-section {
+                padding: 35px 25px;
+            }
+
+            .definitions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-icon {
+                font-size: 4rem;
+            }
+
+            .hero-section {
+                padding: 50px 25px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .header-title {
+                font-size: 1.4rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-icon {
+                font-size: 3.5rem;
+            }
+
+            .section-icon {
+                font-size: 2rem;
+            }
+
+            .content-section {
+                padding: 25px 20px;
+            }
+
+            .term-item {
+                padding-left: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-title">
+                <i class="fas fa-file-contract header-icon"></i>
+                <span>Terms of Service</span>
+            </div>
+            <div class="header-actions">
+                <button class="print-btn" onclick="window.print()">
+                    <i class="fas fa-print"></i>
+                    <span>Print</span>
+                </button>
+                <a href="/" class="back-btn">
+                    <i class="fas fa-home"></i>
+                    <span>Back to Home</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <i class="fas fa-scroll hero-icon">📜</i>
+                <h1 class="hero-title">Terms of Service</h1>
+                <p class="hero-subtitle">
+                    Legal terms and conditions governing your use of Happy Trails platform and services
+                </p>
+                <div class="version-info">
+                    <i class="fas fa-code-branch"></i>
+                    Version 2.1
+                </div>
+                <div class="version-info">
+                    <i class="fas fa-clock"></i>
+                    Effective: November 3, 2025
+                </div>
+            </div>
+        </section>
+
+        <!-- Acceptance of Terms -->
+        <section class="content-section" id="acceptance">
+            <div class="section-header">
+                <i class="fas fa-handshake section-icon"></i>
+                <h2 class="section-title">1. Acceptance of Terms</h2>
+            </div>
+            <div class="section-content">
+                <div class="terms-statement">
+                    <i class="fas fa-check-circle" style="font-size: 2rem; margin-bottom: 15px; display: block;"></i>
+                    By accessing or using Happy Trails Bus Service ("Service", "Platform", "Website"), you agree 
+                    to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, you may 
+                    not use our Service.
+                </div>
+
+                <p>
+                    These Terms constitute a legally binding agreement between you ("User", "You", "Passenger") 
+                    and Happy Trails Bus Service ("Happy Trails", "We", "Us", "Our"), a transportation service 
+                    provider operating in Himachal Pradesh, India.
+                </p>
+
+                <div class="info-box important">
+                    <div class="info-box-title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Important Notice
+                    </div>
+                    <p>
+                        <strong>By using our Service, you represent and warrant that:</strong>
+                    </p>
+                    <ul style="margin-top: 10px;">
+                        <li>You have read, understood, and agree to be bound by these Terms</li>
+                        <li>You are at least 18 years old or have parental/guardian consent</li>
+                        <li>You have the legal capacity to enter into a binding contract</li>
+                        <li>You will use the Service in compliance with all applicable laws</li>
+                        <li>All information you provide is accurate and current</li>
+                    </ul>
+                </div>
+
+                <p>
+                    We reserve the right to modify these Terms at any time. Changes become effective immediately 
+                    upon posting. Your continued use of the Service after modifications constitutes acceptance 
+                    of the updated Terms.
+                </p>
+            </div>
+        </section>
+
+        <!-- Definitions -->
+        <section class="content-section" id="definitions">
+            <div class="section-header">
+                <i class="fas fa-book section-icon"></i>
+                <h2 class="section-title">2. Definitions</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    For the purposes of these Terms, the following definitions apply:
+                </p>
+
+                <div class="definitions-grid">
+                    <div class="definition-card">
+                        <div class="definition-term">
+                            <i class="fas fa-bus"></i>
+                            Service
+                        </div>
+                        <div class="definition-desc">
+                            Refers to the Happy Trails bus transportation service, website, mobile applications, 
+                            and all associated platforms and features.
+                        </div>
+                    </div>
+
+                    <div class="definition-card">
+                        <div class="definition-term">
+                            <i class="fas fa-user"></i>
+                            User/Passenger
+                        </div>
+                        <div class="definition-desc">
+                            Any individual who accesses, registers, or uses our Service, including website visitors 
+                            and ticket purchasers.
+                        </div>
+                    </div>
+
+                    <div class="definition-card">
+                        <div class="definition-term">
+                            <i class="fas fa-ticket-alt"></i>
+                            Booking
+                        </div>
+                        <div class="definition-desc">
+                            A confirmed reservation for travel on a specific route, date, and time, made through 
+                            our platform and confirmed by payment.
+                        </div>
+                    </div>
+
+                    <div class="definition-card">
+                        <div class="definition-term">
+                            <i class="fas fa-user-circle"></i>
+                            Account
+                        </div>
+                        <div class="definition-desc">
+                            A registered user profile with unique credentials that allows access to personalized 
+                            features and booking history.
+                        </div>
+                    </div>
+
+                    <div class="definition-card">
+                        <div class="definition-term">
+                            <i class="fas fa-receipt"></i>
+                            Fare
+                        </div>
+                        <div class="definition-desc">
+                            The price charged for transportation services, which may vary based on route, season, 
+                            seat type, and applicable discounts.
+                        </div>
+                    </div>
+
+                    <div class="definition-card">
+                        <div class="definition-term">
+                            <i class="fas fa-route"></i>
+                            Route
+                        </div>
+                        <div class="definition-desc">
+                            A designated travel path between departure and arrival points, including all scheduled 
+                            stops and transfers.
+                        </div>
+                    </div>
+
+                    <div class="definition-card">
+                        <div class="definition-term">
+                            <i class="fas fa-database"></i>
+                            Content
+                        </div>
+                        <div class="definition-desc">
+                            All text, graphics, images, videos, data, software, and other materials available on 
+                            the Happy Trails platform.
+                        </div>
+                    </div>
+
+                    <div class="definition-card">
+                        <div class="definition-term">
+                            <i class="fas fa-copyright"></i>
+                            Intellectual Property
+                        </div>
+                        <div class="definition-desc">
+                            All trademarks, logos, copyrights, patents, trade secrets, and proprietary rights owned 
+                            by Happy Trails.
+                        </div>
+                    </div>
+
+                    <div class="definition-card">
+                        <div class="definition-term">
+                            <i class="fas fa-shield-alt"></i>
+                            Force Majeure
+                        </div>
+                        <div class="definition-desc">
+                            Unforeseeable circumstances beyond our control, including natural disasters, weather events, 
+                            government actions, or pandemics.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- User Eligibility -->
+        <section class="content-section" id="eligibility">
+            <div class="section-header">
+                <i class="fas fa-user-check section-icon"></i>
+                <h2 class="section-title">3. User Eligibility</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    To use our Service, you must meet the following eligibility requirements:
+                </p>
+
+                <div class="terms-list">
+                    <div class="term-item">
+                        <div class="term-title">Age Requirement</div>
+                        <div class="term-desc">
+                            You must be at least 18 years old to create an account and make bookings independently. 
+                            Minors (under 18) may travel but must be accompanied by an adult or have written 
+                            parental/guardian consent.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Legal Capacity</div>
+                        <div class="term-desc">
+                            You must have the legal capacity to enter into a binding contract under applicable law. 
+                            If you lack legal capacity, bookings must be made by a parent, guardian, or authorized 
+                            representative.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Account Authenticity</div>
+                        <div class="term-desc">
+                            You must provide accurate, current, and complete information during registration. 
+                            Using false information or impersonating others is strictly prohibited and may result 
+                            in account termination.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Geographic Restrictions</div>
+                        <div class="term-desc">
+                            Our Service is primarily intended for users in India. Access from other jurisdictions 
+                            is permitted, but you are responsible for compliance with local laws regarding online 
+                            bookings and payments.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Account Suspension</div>
+                        <div class="term-desc">
+                            We reserve the right to refuse service, suspend, or terminate accounts that violate 
+                            these Terms, engage in fraudulent activity, or exhibit inappropriate behavior.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box info">
+                    <div class="info-box-title">
+                        <i class="fas fa-info-circle"></i>
+                        Special Circumstances
+                    </div>
+                    <p>
+                        For group bookings, corporate accounts, or special travel arrangements (school trips, 
+                        senior groups, etc.), additional eligibility requirements or documentation may be required. 
+                        Contact our customer service for details.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- [Continue with more sections in next message due to length...] -->
+
+        <!-- Contact Information -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-headset section-icon"></i>
+                <h2 class="section-title">Questions About These Terms?</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    If you have questions about these Terms of Service or need clarification, please contact us:
+                </p>
+
+                <div class="contact-card">
+                    <h4><i class="fas fa-phone-alt"></i> Contact Happy Trails</h4>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <strong>General Inquiries:</strong><br>
+                            <a href="mailto:info@happytrails.com">info@happytrails.com</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-balance-scale"></i>
+                        <div>
+                            <strong>Legal Department:</strong><br>
+                            <a href="mailto:legal@happytrails.com">legal@happytrails.com</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <strong>Customer Service:</strong><br>
+                            +91 (123) 456-7890
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <strong>Office Address:</strong><br>
+                            Happy Trails Bus Service<br>
+                            Dharampur, Himachal Pradesh, India
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box success">
+                    <div class="info-box-title">
+                        <i class="fas fa-heart"></i>
+                        We're Here to Help
+                    </div>
+                    <p>
+                        While these Terms are written in legal language for protection, we're committed to being 
+                        transparent, fair, and approachable. If anything is unclear or you have concerns, please 
+                        reach out – we're here to make your Happy Trails experience wonderful!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <p style="font-size: 1.1rem;">
+            Made with <i class="fas fa-heart footer-heart"></i> by <strong>Kavlin</strong>
+        </p>
+        <p style="font-size: 0.9rem;">
+            Happy Trails Bus Service - Making Every Journey a Happy Trail 🚌💖
+        </p>
+        <p style="font-size: 0.85rem; margin-top: 15px;">
+            Legal questions? Email us at 
+            <a href="mailto:legal@happytrails.com" style="color: var(--deep-yellow); text-decoration: none; font-weight: 600;">
+                legal@happytrails.com
+            </a>
+        </p>
+    </footer>
+
+    <script>
+        // Smooth Scroll for Internal Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.content-section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            observer.observe(section);
+        });
+    </script>
+
+</body>
+</html>
