@@ -516,7 +516,9 @@ def traffic_update(bus_id):
 
 @app.route('/poetry-corner')
 def poetry_corner():
-    # Sample poetry data - Phase 1
+    from datetime import date
+    
+    # Phase 1: Travel Poetry
     travel_poems = [
         {
             'title': 'The Road Not Taken',
@@ -596,9 +598,7 @@ def poetry_corner():
         }
     ]
     
-    # Quote of the Day data - Phase 2
-    from datetime import date
-    
+    # Phase 2: Quote of the Day
     quotes_collection = [
         {
             'quote': 'The journey of a thousand miles begins with a single step.',
@@ -643,8 +643,7 @@ def poetry_corner():
     today_quote = quotes_collection[day_of_year % len(quotes_collection)]
     recent_quotes = quotes_collection[:4]
     
-    # User-Submitted Poems data - Phase 3
-    # In production, fetch from database with pagination
+    # Phase 3: Community Poems
     community_poems = [
         {
             'id': 1,
@@ -722,7 +721,6 @@ def poetry_corner():
         }
     ]
     
-    # Submission themes for dropdown
     submission_themes = [
         'Journey & Adventure',
         'Mountains & Hills',
@@ -736,6 +734,182 @@ def poetry_corner():
         'Coming Home'
     ]
     
+    # Phase 4: Route Poems
+    route_poems = [
+        {
+            'route_number': 'HT-101',
+            'route_name': 'Dharampur → Solan',
+            'from_location': 'Dharampur',
+            'to_location': 'Solan',
+            'poem_title': 'Where Pine Forests Whisper',
+            'poem_excerpt': 'Through pine-scented paths we glide,\nWhere mountains and memories collide.\nEach kilometer a verse unspoken,\nEach moment a promise unbroken.',
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+            'best_season': 'Spring',
+            'season_icon': 'fas fa-seedling',
+            'route_type': 'mountain',
+            'is_kavlin_favorite': True
+        },
+        {
+            'route_number': 'HT-102',
+            'route_name': 'Solan → Barog',
+            'from_location': 'Solan',
+            'to_location': 'Barog',
+            'poem_title': 'Through the Tunnel of Time',
+            'poem_excerpt': 'Darkness embraces, then light returns,\nThrough tunnels where history yearns.\nBarog calls with stories old,\nIn every arch, legends told.',
+            'image': 'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=800',
+            'best_season': 'Monsoon',
+            'season_icon': 'fas fa-cloud-rain',
+            'route_type': 'heritage',
+            'is_kavlin_favorite': True
+        },
+        {
+            'route_number': 'HT-103',
+            'route_name': 'Barog → Dagshai',
+            'from_location': 'Barog',
+            'to_location': 'Dagshai',
+            'poem_title': 'Cantonment Dreams',
+            'poem_excerpt': 'Colonial echoes in mountain air,\nDagshai stands with timeless care.\nBarracks whisper tales of yore,\nOn this route, history we explore.',
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+            'best_season': 'Winter',
+            'season_icon': 'fas fa-snowflake',
+            'route_type': 'historical',
+            'is_kavlin_favorite': False
+        },
+        {
+            'route_number': 'HT-104',
+            'route_name': 'Dagshai → Dharampur',
+            'from_location': 'Dagshai',
+            'to_location': 'Dharampur',
+            'poem_title': 'Coming Full Circle',
+            'poem_excerpt': 'The journey ends where it began,\nFull circle, as life\'s perfect plan.\nFrom Dagshai back to Dharampur\'s grace,\nEvery return, a warm embrace.',
+            'image': 'https://images.unsplash.com/photo-1527838832700-5059252407fa?w=800',
+            'best_season': 'Autumn',
+            'season_icon': 'fas fa-leaf',
+            'route_type': 'scenic',
+            'is_kavlin_favorite': True
+        },
+        {
+            'route_number': 'HT-105',
+            'route_name': 'Dharampur → Barog (Express)',
+            'from_location': 'Dharampur',
+            'to_location': 'Barog',
+            'poem_title': 'The Swift Sojourn',
+            'poem_excerpt': 'Express lanes through emerald hills,\nRapid hearts and adventure thrills.\nFrom Dharampur to Barog we fly,\nBeneath the ever-changing sky.',
+            'image': 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800',
+            'best_season': 'Summer',
+            'season_icon': 'fas fa-sun',
+            'route_type': 'express',
+            'is_kavlin_favorite': False
+        },
+        {
+            'route_number': 'HT-106',
+            'route_name': 'Solan → Dagshai (Scenic)',
+            'from_location': 'Solan',
+            'to_location': 'Dagshai',
+            'poem_title': 'Valley of Verses',
+            'poem_excerpt': 'Scenic detours through valleys deep,\nWhere nature\'s secrets softly sleep.\nFrom Solan\'s charm to Dagshai\'s pride,\nPoetry flows with every ride.',
+            'image': 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800',
+            'best_season': 'All Seasons',
+            'season_icon': 'fas fa-infinity',
+            'route_type': 'scenic',
+            'is_kavlin_favorite': True
+        }
+    ]
+    
+    # Phase 5: Blog Posts
+    blog_posts = [
+        {
+            'id': 1,
+            'title': 'How Mountains Taught Me Poetry',
+            'author': 'Kavlin',
+            'author_avatar': './static/images/Kavlin Bitmoji.png',
+            'date': '2025-10-28',
+            'read_time': 8,
+            'category': 'poetry-process',
+            'category_label': 'Poetry Process',
+            'excerpt': 'The first time I saw the Himalayas, I didn\'t write a single word. I just stood there, humbled by their magnitude, realizing that sometimes silence is the loudest poetry. This is the story of how mountains taught me to listen before I learned to write.',
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+            'tags': ['Mountains', 'Writing', 'Inspiration', 'Himalayas'],
+            'likes': 234,
+            'comments': 45
+        },
+        {
+            'id': 2,
+            'title': 'The Bus Window Philosophy',
+            'author': 'Kavlin',
+            'author_avatar': './static/images/Kavlin Bitmoji.png',
+            'date': '2025-10-25',
+            'read_time': 6,
+            'category': 'travel-tales',
+            'category_label': 'Travel Tales',
+            'excerpt': 'Every bus window is a movie screen showing life\'s greatest film. Frame by frame, the world passes by, and in those fleeting moments, we find stories worth telling. Here\'s what I\'ve learned from thousands of hours gazing out windows.',
+            'image': 'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=800',
+            'tags': ['Travel', 'Philosophy', 'Observations'],
+            'likes': 189,
+            'comments': 32
+        },
+        {
+            'id': 3,
+            'title': 'Writing Between Stops: A Poet\'s Journey',
+            'author': 'Kavlin',
+            'author_avatar': './static/images/Kavlin Bitmoji.png',
+            'date': '2025-10-22',
+            'read_time': 10,
+            'category': 'poetry-process',
+            'category_label': 'Poetry Process',
+            'excerpt': 'They say the best poetry comes in quiet moments, but I\'ve found mine in the chaos of bus stations, the hum of engines, and the chatter of fellow travelers. This is my creative process, unconventional and beautiful.',
+            'image': 'https://images.unsplash.com/photo-1455849318743-b2233052fcff?w=800',
+            'tags': ['Writing Process', 'Creativity', 'Bus Travel'],
+            'likes': 267,
+            'comments': 58
+        },
+        {
+            'id': 4,
+            'title': 'A Traveler\'s Ode to Himachal',
+            'author': 'Priya Sharma',
+            'author_avatar': 'https://i.pravatar.cc/150?img=9',
+            'date': '2025-10-20',
+            'read_time': 7,
+            'category': 'guest-posts',
+            'category_label': 'Guest Post',
+            'excerpt': 'As a guest writer on Kavlin\'s blog, I wanted to share my love letter to Himachal Pradesh - the land that changed how I see travel, poetry, and life itself. Through Happy Trails, I found more than transportation; I found inspiration.',
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+            'tags': ['Himachal', 'Guest Post', 'Travel'],
+            'likes': 178,
+            'comments': 41
+        },
+        {
+            'id': 5,
+            'title': 'Why Every Route Needs a Poem',
+            'author': 'Kavlin',
+            'author_avatar': './static/images/Kavlin Bitmoji.png',
+            'date': '2025-10-18',
+            'read_time': 5,
+            'category': 'route-inspiration',
+            'category_label': 'Route Inspiration',
+            'excerpt': 'When I started Happy Trails, people thought pairing bus routes with poetry was quirky. Now they understand - every path has a story, every journey deserves to be honored with words that match its beauty.',
+            'image': 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800',
+            'tags': ['Routes', 'Poetry', 'Happy Trails'],
+            'likes': 312,
+            'comments': 67
+        },
+        {
+            'id': 6,
+            'title': 'From Engineer to Poet: My Journey',
+            'author': 'Kavlin',
+            'author_avatar': './static/images/Kavlin Bitmoji.png',
+            'date': '2025-10-15',
+            'read_time': 12,
+            'category': 'travel-tales',
+            'category_label': 'Travel Tales',
+            'excerpt': 'Everyone asks how an engineer ends up running a bus service that prioritizes poetry. The answer is simple: I followed my heart on a journey that started with a single bus ride and ended with a dream called Happy Trails.',
+            'image': 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800',
+            'tags': ['Personal', 'Story', 'Career Change'],
+            'likes': 445,
+            'comments': 89
+        }
+    ]
+    
     return render_template('features/poetry_corner.html', 
                           travel_poems=travel_poems,
                           today_quote=today_quote,
@@ -743,49 +917,9 @@ def poetry_corner():
                           current_date=date.today(),
                           community_poems=community_poems,
                           submission_themes=submission_themes,
+                          route_poems=route_poems,
+                          blog_posts=blog_posts,  # Added Phase 5
                           user_is_logged_in=current_user.is_authenticated)
-
-
-@app.route('/poetry-corner/submit', methods=['POST'])
-@login_required
-def submit_poem():
-    """Handle poem submission - Phase 3"""
-    try:
-        title = request.form.get('title', '').strip()
-        poem_text = request.form.get('poem_text', '').strip()
-        theme = request.form.get('theme', '').strip()
-        location = request.form.get('location', '').strip()
-        
-        # Validation
-        if not all([title, poem_text, theme]):
-            return jsonify({'success': False, 'message': 'Please fill all required fields'}), 400
-        
-        if len(poem_text) < 50:
-            return jsonify({'success': False, 'message': 'Poem must be at least 50 characters'}), 400
-        
-        if len(poem_text) > 500:
-            return jsonify({'success': False, 'message': 'Poem must not exceed 500 characters'}), 400
-        
-        # In production, save to database
-        # new_poem = CommunityPoem(
-        #     user_id=current_user.id,
-        #     title=title,
-        #     poem_text=poem_text,
-        #     theme=theme,
-        #     location=location,
-        #     status='pending'  # Pending moderation
-        # )
-        # db.session.add(new_poem)
-        # db.session.commit()
-        
-        return jsonify({
-            'success': True,
-            'message': 'Your poem has been submitted! It will appear after review.',
-            'poem_id': 'temp_' + str(hash(title))
-        })
-        
-    except Exception as e:
-        return jsonify({'success': False, 'message': 'An error occurred. Please try again.'}), 500
 
 # Run the application
 if __name__ == '__main__':
