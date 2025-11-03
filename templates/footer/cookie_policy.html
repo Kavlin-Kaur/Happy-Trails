@@ -69,6 +69,7 @@
             color: var(--charcoal);
             background: var(--cream);
             overflow-x: hidden;
+            padding-bottom: 100px;
         }
 
         /* ============================================
@@ -101,7 +102,464 @@
             }
         }
 
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
+            }
+        }
+
         /* ============================================
+           COOKIE CONSENT BANNER
+           ============================================ */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 248, 220, 0.98));
+            backdrop-filter: blur(20px);
+            border-top: 3px solid var(--primary-yellow);
+            box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.15);
+            padding: 25px;
+            z-index: 10000;
+            animation: slideUp 0.5s ease-out;
+            display: none;
+        }
+
+        .cookie-banner.show {
+            display: block;
+        }
+
+        .cookie-banner-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .cookie-banner-icon {
+            font-size: 3rem;
+            animation: cookieBounce 2s ease-in-out infinite;
+        }
+
+        .cookie-banner-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .cookie-banner-title {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--deep-yellow);
+            margin-bottom: 8px;
+        }
+
+        .cookie-banner-desc {
+            color: var(--medium-gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .cookie-banner-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .cookie-btn {
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            border: none;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cookie-btn-accept {
+            background: var(--gradient-sunrise);
+            color: white;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .cookie-btn-accept:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .cookie-btn-customize {
+            background: white;
+            color: var(--deep-yellow);
+            border: 2px solid var(--primary-yellow);
+        }
+
+        .cookie-btn-customize:hover {
+            background: rgba(255, 215, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .cookie-btn-reject {
+            background: transparent;
+            color: var(--medium-gray);
+            border: 2px solid var(--medium-gray);
+        }
+
+        .cookie-btn-reject:hover {
+            background: rgba(108, 117, 125, 0.1);
+            color: var(--charcoal);
+        }
+
+        /* ============================================
+           COOKIE PREFERENCE CENTER
+           ============================================ */
+        .preference-center-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 10001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .preference-center-modal.show {
+            display: flex;
+        }
+
+        .preference-center-content {
+            background: white;
+            border-radius: 30px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-strong);
+            border: 3px solid var(--primary-yellow);
+        }
+
+        .preference-center-header {
+            background: var(--gradient-sunrise);
+            color: white;
+            padding: 30px;
+            border-radius: 27px 27px 0 0;
+            text-align: center;
+        }
+
+        .preference-center-header h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .preference-center-body {
+            padding: 35px;
+        }
+
+        .cookie-preference-item {
+            background: rgba(255, 248, 220, 0.3);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: var(--transition-smooth);
+        }
+
+        .cookie-preference-item:hover {
+            border-color: var(--primary-yellow);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .cookie-preference-item.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .cookie-preference-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .cookie-preference-info {
+            flex: 1;
+        }
+
+        .cookie-preference-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--charcoal);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cookie-preference-desc {
+            color: var(--medium-gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #ccc;
+            border-radius: 30px;
+            transition: var(--transition-smooth);
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background: white;
+            border-radius: 50%;
+            transition: var(--transition-smooth);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background: var(--gradient-sunrise);
+        }
+
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+
+        .toggle-switch input:disabled + .toggle-slider {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .preference-center-footer {
+            padding: 0 35px 35px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ============================================
+           CONSENT HISTORY
+           ============================================ */
+        .consent-history {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 235, 59, 0.05));
+            border: 2px solid var(--primary-yellow);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .consent-history-title {
+            font-weight: 700;
+            color: var(--deep-yellow);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+
+        .consent-timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .consent-timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            bottom: 10px;
+            width: 2px;
+            background: linear-gradient(180deg, var(--primary-yellow), transparent);
+        }
+
+        .consent-timeline-item {
+            position: relative;
+            padding: 15px 0;
+        }
+
+        .consent-timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary-yellow);
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary-yellow);
+        }
+
+        .consent-timeline-date {
+            font-size: 0.85rem;
+            color: var(--medium-gray);
+            margin-bottom: 5px;
+        }
+
+        .consent-timeline-action {
+            font-weight: 600;
+            color: var(--charcoal);
+        }
+
+        /* ============================================
+           FAQ SECTION
+           ============================================ */
+        .faq-item {
+            background: white;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 15px;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .faq-item:hover {
+            border-color: var(--primary-yellow);
+            box-shadow: var(--shadow-soft);
+            transform: translateY(-2px);
+        }
+
+        .faq-question {
+            font-weight: 700;
+            color: var(--charcoal);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .faq-question-text {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .faq-icon {
+            color: var(--deep-yellow);
+            font-size: 1.3rem;
+        }
+
+        .faq-toggle {
+            color: var(--primary-yellow);
+            font-size: 1.2rem;
+            transition: var(--transition-smooth);
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            color: var(--medium-gray);
+            line-height: 1.8;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid rgba(255, 215, 0, 0.2);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            opacity: 0;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        /* ============================================
+           COOKIE STATUS INDICATOR
+           ============================================ */
+        .cookie-status {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            border: 3px solid var(--primary-yellow);
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-medium);
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            z-index: 999;
+            animation: pulse 2s infinite;
+        }
+
+        .cookie-status:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .cookie-status-icon {
+            font-size: 1.8rem;
+        }
+
+        .cookie-status-count {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--deep-yellow);
+        }
+
+        /* Rest of existing styles remain the same... */
+        /* [Previous CSS continues here - Header, Content Sections, Tables, etc.] */
+
+/* ============================================
            HEADER
            ============================================ */
         .header {
@@ -604,6 +1062,13 @@
             .cookie-types-grid {
                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             }
+
+            .cookie-status {
+                width: 60px;
+                height: 60px;
+                bottom: 20px;
+                right: 20px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -635,6 +1100,23 @@
             .cookie-types-grid {
                 grid-template-columns: 1fr;
             }
+
+            .cookie-banner-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .cookie-banner-actions {
+                justify-content: center;
+            }
+
+            .preference-center-content {
+                max-height: 95vh;
+            }
+
+            .preference-center-body {
+                padding: 25px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -659,10 +1141,164 @@
                 padding: 10px;
                 font-size: 0.85rem;
             }
+
+            .cookie-btn {
+                padding: 10px 20px;
+                font-size: 0.85rem;
+            }
+
+            .cookie-status {
+                width: 50px;
+                height: 50px;
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .cookie-status-icon {
+                font-size: 1.4rem;
+            }
+
+            .cookie-status-count {
+                font-size: 0.65rem;
+            }
         }
     </style>
 </head>
 <body>
+
+    <!-- Cookie Consent Banner -->
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-banner-content">
+            <div class="cookie-banner-icon">🍪</div>
+            <div class="cookie-banner-text">
+                <div class="cookie-banner-title">We Value Your Privacy</div>
+                <div class="cookie-banner-desc">
+                    We use cookies to enhance your browsing experience, provide personalized content, and analyze our traffic. 
+                    By clicking "Accept All", you consent to our use of cookies.
+                </div>
+            </div>
+            <div class="cookie-banner-actions">
+                <button class="cookie-btn cookie-btn-accept" onclick="acceptAllCookies()">
+                    <i class="fas fa-check"></i>
+                    Accept All
+                </button>
+                <button class="cookie-btn cookie-btn-customize" onclick="openPreferenceCenter()">
+                    <i class="fas fa-cog"></i>
+                    Customize
+                </button>
+                <button class="cookie-btn cookie-btn-reject" onclick="rejectAllCookies()">
+                    <i class="fas fa-times"></i>
+                    Reject All
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Preference Center Modal -->
+    <div class="preference-center-modal" id="preferenceCenterModal">
+        <div class="preference-center-content">
+            <div class="preference-center-header">
+                <h2>Cookie Preferences</h2>
+                <p>Customize your cookie settings below</p>
+            </div>
+            <div class="preference-center-body">
+                
+                <!-- Essential Cookies -->
+                <div class="cookie-preference-item disabled">
+                    <div class="cookie-preference-header">
+                        <div class="cookie-preference-info">
+                            <div class="cookie-preference-title">
+                                <i class="fas fa-shield-alt" style="color: var(--essential-color);"></i>
+                                Essential Cookies
+                                <span style="font-size: 0.75rem; background: rgba(76, 175, 80, 0.2); color: var(--essential-color); padding: 2px 8px; border-radius: 10px; font-weight: 600;">Always Active</span>
+                            </div>
+                            <div class="cookie-preference-desc">
+                                Required for basic website functionality. Cannot be disabled.
+                            </div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked disabled>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Functional Cookies -->
+                <div class="cookie-preference-item">
+                    <div class="cookie-preference-header">
+                        <div class="cookie-preference-info">
+                            <div class="cookie-preference-title">
+                                <i class="fas fa-cog" style="color: var(--functional-color);"></i>
+                                Functional Cookies
+                            </div>
+                            <div class="cookie-preference-desc">
+                                Enable enhanced features like remembering your preferences and settings.
+                            </div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="functionalCookies" onchange="updateCookiePreferences()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Analytics Cookies -->
+                <div class="cookie-preference-item">
+                    <div class="cookie-preference-header">
+                        <div class="cookie-preference-info">
+                            <div class="cookie-preference-title">
+                                <i class="fas fa-chart-line" style="color: var(--analytics-color);"></i>
+                                Analytics Cookies
+                            </div>
+                            <div class="cookie-preference-desc">
+                                Help us understand how visitors use our website to improve user experience.
+                            </div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="analyticsCookies" onchange="updateCookiePreferences()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Marketing Cookies -->
+                <div class="cookie-preference-item">
+                    <div class="cookie-preference-header">
+                        <div class="cookie-preference-info">
+                            <div class="cookie-preference-title">
+                                <i class="fas fa-bullhorn" style="color: var(--marketing-color);"></i>
+                                Marketing Cookies
+                            </div>
+                            <div class="cookie-preference-desc">
+                                Track your visits to show relevant advertisements and measure campaign effectiveness.
+                            </div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="marketingCookies" onchange="updateCookiePreferences()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="preference-center-footer">
+                <button class="cookie-btn cookie-btn-accept" onclick="savePreferences()">
+                    <i class="fas fa-save"></i>
+                    Save Preferences
+                </button>
+                <button class="cookie-btn cookie-btn-customize" onclick="closePreferenceCenter()">
+                    <i class="fas fa-times"></i>
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Status Indicator -->
+    <div class="cookie-status" onclick="openPreferenceCenter()" title="Manage Cookie Preferences">
+        <div class="cookie-status-icon">🍪</div>
+        <div class="cookie-status-count" id="cookieCount">0 active</div>
+    </div>
 
     <!-- Header -->
     <header class="header">
@@ -798,7 +1434,112 @@
             </div>
         </section>
 
-        <!-- How We Use Cookies -->
+<!-- Consent History Section -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-history section-icon"></i>
+                <h2 class="section-title">Your Consent History</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    Track when and how you've managed your cookie preferences:
+                </p>
+
+                <div class="consent-history">
+                    <div class="consent-history-title">
+                        <i class="fas fa-clipboard-list"></i>
+                        Recent Cookie Consent Activity
+                    </div>
+                    <div class="consent-timeline" id="consentTimeline">
+                        <div class="consent-timeline-item">
+                            <div class="consent-timeline-date">No consent history yet</div>
+                            <div class="consent-timeline-action">Use the preference center to manage your cookie settings</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box info">
+                    <div class="info-box-title">
+                        <i class="fas fa-shield-alt"></i>
+                        Privacy & Transparency
+                    </div>
+                    <p>
+                        Your consent choices are stored locally on your device and are never shared with third parties. 
+                        You can change your preferences at any time by clicking the cookie icon or visiting this page.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- First-Party vs Third-Party Cookies -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-exchange-alt section-icon"></i>
+                <h2 class="section-title">First-Party vs Third-Party Cookies</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    It's important to understand the difference between first-party and third-party cookies:
+                </p>
+
+                <div class="cookie-types-grid">
+                    <div class="cookie-type-card functional">
+                        <i class="fas fa-home cookie-type-icon"></i>
+                        <div class="cookie-type-name">First-Party Cookies</div>
+                        <div class="cookie-type-desc">
+                            Set directly by Happy Trails on happytrails.vercel.app domain. We have full control over 
+                            these cookies and use them to improve your experience on our website.
+                        </div>
+                    </div>
+
+                    <div class="cookie-type-card marketing">
+                        <i class="fas fa-globe cookie-type-icon"></i>
+                        <div class="cookie-type-name">Third-Party Cookies</div>
+                        <div class="cookie-type-desc">
+                            Set by external services like Google Analytics or advertising partners. These help us 
+                            analyze traffic and show relevant ads across the internet.
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: var(--deep-yellow);">
+                    <i class="fas fa-users"></i> Our Third-Party Partners
+                </h3>
+
+                <p>We work with the following trusted third-party services:</p>
+
+                <ul>
+                    <li>
+                        <strong>Google Analytics:</strong> Helps us understand website traffic and user behavior. 
+                        <a href="https://policies.google.com/privacy" target="_blank" style="color: var(--deep-yellow); font-weight: 600;">Privacy Policy</a>
+                    </li>
+                    <li>
+                        <strong>Google Fonts:</strong> Provides beautiful typography for our website. No tracking data is collected.
+                    </li>
+                    <li>
+                        <strong>Font Awesome:</strong> Icon library for enhanced visual elements. No personal data collected.
+                    </li>
+                    <li>
+                        <strong>Vercel Analytics:</strong> Website performance monitoring and optimization.
+                        <a href="https://vercel.com/legal/privacy-policy" target="_blank" style="color: var(--deep-yellow); font-weight: 600;">Privacy Policy</a>
+                    </li>
+                </ul>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Third-Party Cookie Control
+                    </div>
+                    <p>
+                        While we carefully select our partners, third-party cookies are governed by their respective 
+                        privacy policies. You can opt-out of third-party cookies through your browser settings or 
+                        the opt-out links provided in the "Managing Cookies" section below.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+<!-- How We Use Cookies -->
         <section class="content-section">
             <div class="section-header">
                 <i class="fas fa-tasks section-icon"></i>
@@ -856,7 +1597,7 @@
         <section class="content-section">
             <div class="section-header">
                 <i class="fas fa-hourglass-half section-icon"></i>
-                <h2 class="section-title">Cookie Duration</h2>
+                <h2 class="section-title">Cookie Duration & Data Retention</h2>
             </div>
             <div class="section-content">
                 <p>
@@ -883,17 +1624,32 @@
                     </div>
                 </div>
 
-                <p style="margin-top: 25px;">
-                    <strong>Session Cookies</strong> are essential for website functionality and expire as soon as 
-                    you close your browser. They help us manage your journey through the website, such as 
-                    remembering items in your cart during a single visit.
-                </p>
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: var(--deep-yellow);">
+                    <i class="fas fa-database"></i> Data Retention Policy
+                </h3>
 
                 <p>
-                    <strong>Persistent Cookies</strong> stay on your device even after you close your browser. 
-                    They help us recognize you as a returning visitor, remember your login credentials (if you 
-                    choose "Remember Me"), and maintain your preferences across sessions.
+                    We retain cookie data for the following durations:
                 </p>
+
+                <ul>
+                    <li><strong>Essential Cookies:</strong> Session only (deleted when browser closes)</li>
+                    <li><strong>Functional Cookies:</strong> Up to 1 year or until you change preferences</li>
+                    <li><strong>Analytics Cookies:</strong> Up to 2 years (Google Analytics standard)</li>
+                    <li><strong>Marketing Cookies:</strong> 30-90 days depending on campaign duration</li>
+                </ul>
+
+                <div class="info-box success">
+                    <div class="info-box-title">
+                        <i class="fas fa-broom"></i>
+                        Automatic Cleanup
+                    </div>
+                    <p>
+                        All cookies automatically expire after their retention period. You can also manually delete 
+                        cookies at any time through your browser settings or by clicking "Clear All Cookies" in our 
+                        preference center.
+                    </p>
+                </div>
             </div>
         </section>
 
@@ -985,6 +1741,12 @@
                                 <td>Used for targeted advertising and retargeting campaigns</td>
                                 <td>90 days</td>
                             </tr>
+                            <tr>
+                                <td><span class="cookie-name">ht_consent</span></td>
+                                <td><span class="cookie-type-badge essential">Essential</span></td>
+                                <td>Stores your cookie consent preferences</td>
+                                <td>1 year</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -1003,6 +1765,235 @@
             </div>
         </section>
 
+        <!-- International Compliance -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-globe-americas section-icon"></i>
+                <h2 class="section-title">International Compliance</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    Happy Trails is committed to complying with international data protection and privacy regulations:
+                </p>
+
+                <div class="cookie-types-grid">
+                    <div class="cookie-type-card essential">
+                        <i class="fas fa-shield-alt cookie-type-icon"></i>
+                        <div class="cookie-type-name">GDPR (EU)</div>
+                        <div class="cookie-type-desc">
+                            General Data Protection Regulation compliance for European users. We obtain explicit consent 
+                            and provide clear opt-out mechanisms.
+                        </div>
+                    </div>
+
+                    <div class="cookie-type-card functional">
+                        <i class="fas fa-flag-usa cookie-type-icon"></i>
+                        <div class="cookie-type-name">CCPA (California)</div>
+                        <div class="cookie-type-desc">
+                            California Consumer Privacy Act compliance. Users can request data deletion and opt-out 
+                            of data selling (we don't sell data).
+                        </div>
+                    </div>
+
+                    <div class="cookie-type-card analytics">
+                        <i class="fas fa-leaf cookie-type-icon"></i>
+                        <div class="cookie-type-name">PIPEDA (Canada)</div>
+                        <div class="cookie-type-desc">
+                            Personal Information Protection and Electronic Documents Act compliance for Canadian users.
+                        </div>
+                    </div>
+
+                    <div class="cookie-type-card marketing">
+                        <i class="fas fa-flag cookie-type-icon"></i>
+                        <div class="cookie-type-name">India IT Rules</div>
+                        <div class="cookie-type-desc">
+                            Compliance with Information Technology Act and data protection rules applicable in India.
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: var(--deep-yellow);">
+                    <i class="fas fa-balance-scale"></i> Your Legal Rights
+                </h3>
+
+                <p>
+                    Depending on your location, you may have the following rights regarding cookies and personal data:
+                </p>
+
+                <ul>
+                    <li><strong>Right to Access:</strong> Request information about cookies we use and data we collect</li>
+                    <li><strong>Right to Rectification:</strong> Correct inaccurate personal data</li>
+                    <li><strong>Right to Erasure:</strong> Request deletion of your data and cookies</li>
+                    <li><strong>Right to Restrict Processing:</strong> Limit how we use your data</li>
+                    <li><strong>Right to Data Portability:</strong> Receive your data in a machine-readable format</li>
+                    <li><strong>Right to Object:</strong> Opt-out of certain types of processing (especially marketing)</li>
+                    <li><strong>Right to Withdraw Consent:</strong> Change your cookie preferences at any time</li>
+                </ul>
+
+                <div class="info-box success">
+                    <div class="info-box-title">
+                        <i class="fas fa-envelope"></i>
+                        Exercise Your Rights
+                    </div>
+                    <p>
+                        To exercise any of these rights, please contact our Data Protection Officer at 
+                        <a href="mailto:privacy@happytrails.com" style="color: var(--essential-color); font-weight: 600;">
+                            privacy@happytrails.com
+                        </a> or use our preference center to manage cookie settings.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cookie FAQ -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-question-circle section-icon"></i>
+                <h2 class="section-title">Frequently Asked Questions</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    Find answers to common questions about cookies and privacy:
+                </p>
+
+                <!-- FAQ 1 -->
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <div class="faq-question-text">
+                            <i class="fas fa-cookie-bite faq-icon"></i>
+                            <span>What happens if I disable all cookies?</span>
+                        </div>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        If you disable all cookies, you won't be able to use essential features of our website, 
+                        including logging in, making bookings, or maintaining items in your cart. We recommend 
+                        keeping essential cookies enabled and customizing other cookie categories based on your 
+                        preferences.
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <div class="faq-question-text">
+                            <i class="fas fa-shield-alt faq-icon"></i>
+                            <span>Are cookies safe? Can they harm my device?</span>
+                        </div>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, cookies are completely safe! They are simple text files that cannot execute code, 
+                        install malware, or harm your device in any way. Cookies can only store data provided by 
+                        the website or your browser, and they cannot access other files on your computer.
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <div class="faq-question-text">
+                            <i class="fas fa-eye faq-icon"></i>
+                            <span>Can cookies track my browsing on other websites?</span>
+                        </div>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        First-party cookies set by Happy Trails can only track your activity on our website. However, 
+                        third-party cookies (like those from Google Analytics or advertising networks) can track your 
+                        browsing across multiple websites. You can disable third-party cookies through our preference 
+                        center or your browser settings.
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <div class="faq-question-text">
+                            <i class="fas fa-history faq-icon"></i>
+                            <span>How often should I clear my cookies?</span>
+                        </div>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        There's no need to regularly clear cookies unless you're troubleshooting website issues or 
+                        want to reset your browsing data. Cookies automatically expire after their set duration. 
+                        However, if you share your device with others or use a public computer, clearing cookies 
+                        after each session is a good security practice.
+                    </div>
+                </div>
+
+                <!-- FAQ 5 -->
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <div class="faq-question-text">
+                            <i class="fas fa-mobile-alt faq-icon"></i>
+                            <span>Do cookies work the same way on mobile devices?</span>
+                        </div>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, cookies work similarly on mobile browsers. However, mobile apps may use different 
+                        tracking technologies like device IDs or SDKs. When you use Happy Trails through a mobile 
+                        browser, the same cookie policy applies. You can manage cookies in your mobile browser 
+                        settings just like on desktop.
+                    </div>
+                </div>
+
+                <!-- FAQ 6 -->
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <div class="faq-question-text">
+                            <i class="fas fa-user-secret faq-icon"></i>
+                            <span>What's the difference between cookies and tracking pixels?</span>
+                        </div>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Cookies are text files stored on your device, while tracking pixels are tiny invisible images 
+                        embedded in web pages or emails. Both can track user behavior, but pixels don't require user 
+                        action to work. Happy Trails primarily uses cookies and is transparent about any tracking 
+                        technologies we employ.
+                    </div>
+                </div>
+
+                <!-- FAQ 7 -->
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <div class="faq-question-text">
+                            <i class="fas fa-sync-alt faq-icon"></i>
+                            <span>Will my preferences sync across devices?</span>
+                        </div>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Cookie preferences are stored locally on each device and don't automatically sync. If you're 
+                        logged in to your Happy Trails account, some preferences (like favorite routes) may sync 
+                        across devices, but cookie consent choices need to be set separately on each device and browser.
+                    </div>
+                </div>
+
+                <!-- FAQ 8 -->
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <div class="faq-question-text">
+                            <i class="fas fa-envelope faq-icon"></i>
+                            <span>How can I contact you about cookie concerns?</span>
+                        </div>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        We take your privacy concerns seriously! You can contact our Privacy Team at 
+                        <a href="mailto:privacy@happytrails.com" style="color: var(--deep-yellow); font-weight: 600;">
+                            privacy@happytrails.com
+                        </a> for any questions about cookies, data protection, or privacy. We typically respond 
+                        within 48 hours during business days.
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
         <!-- Managing Cookies -->
         <section class="content-section">
             <div class="section-header">
@@ -1018,13 +2009,17 @@
                 <div class="info-box success">
                     <div class="info-box-title">
                         <i class="fas fa-toggle-on"></i>
-                        Cookie Preference Center (Coming Soon)
+                        Cookie Preference Center
                     </div>
                     <p>
-                        We're developing a Cookie Preference Center that will allow you to easily manage your 
-                        cookie settings directly on our website. You'll be able to toggle different cookie 
-                        categories on or off with a single click.
+                        Click the floating cookie icon <span style="font-size: 1.3rem;">🍪</span> in the bottom 
+                        right corner of this page to open our Cookie Preference Center. You can toggle different 
+                        cookie categories on or off with a single click and see your changes take effect immediately.
                     </p>
+                    <button class="cookie-btn cookie-btn-accept" onclick="openPreferenceCenter()" style="margin-top: 15px;">
+                        <i class="fas fa-cog"></i>
+                        Open Preference Center
+                    </button>
                 </div>
 
                 <h3 style="margin-top: 30px; margin-bottom: 20px; color: var(--deep-yellow);">
@@ -1113,6 +2108,12 @@
                             www.aboutads.info/choices
                         </a>
                     </li>
+                    <li>
+                        <strong>Google Analytics Opt-Out:</strong> 
+                        <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" style="color: var(--deep-yellow); font-weight: 600;">
+                            Google Analytics Opt-Out Browser Add-on
+                        </a>
+                    </li>
                 </ul>
             </div>
         </section>
@@ -1136,6 +2137,272 @@
     </footer>
 
     <script>
+        // ============================================
+        // COOKIE CONSENT MANAGEMENT
+        // ============================================
+
+        // Check if user has already made cookie choices
+        window.addEventListener('DOMContentLoaded', function() {
+            const consent = getCookieConsent();
+            
+            if (!consent) {
+                // Show banner if no consent recorded
+                setTimeout(() => {
+                    document.getElementById('cookieBanner').classList.add('show');
+                }, 1000);
+            } else {
+                // Load preferences into preference center
+                loadSavedPreferences();
+            }
+
+            // Update cookie count
+            updateCookieCount();
+            
+            // Load consent history
+            loadConsentHistory();
+        });
+
+        function getCookieConsent() {
+            const consent = localStorage.getItem('ht_cookie_consent');
+            return consent ? JSON.parse(consent) : null;
+        }
+
+        function setCookieConsent(preferences) {
+            const consent = {
+                essential: true, // Always true
+                functional: preferences.functional || false,
+                analytics: preferences.analytics || false,
+                marketing: preferences.marketing || false,
+                timestamp: new Date().toISOString()
+            };
+            
+            localStorage.setItem('ht_cookie_consent', JSON.stringify(consent));
+            
+            // Add to consent history
+            addConsentHistory('preferences_updated', consent);
+            
+            // Update cookie count
+            updateCookieCount();
+            
+            // Reload consent history
+            loadConsentHistory();
+        }
+
+        function acceptAllCookies() {
+            setCookieConsent({
+                functional: true,
+                analytics: true,
+                marketing: true
+            });
+            
+            document.getElementById('cookieBanner').classList.remove('show');
+            
+            showToast('All cookies accepted! Thank you. 🍪', 3000);
+            
+            // Add to history
+            addConsentHistory('accepted_all');
+        }
+
+        function rejectAllCookies() {
+            setCookieConsent({
+                functional: false,
+                analytics: false,
+                marketing: false
+            });
+            
+            document.getElementById('cookieBanner').classList.remove('show');
+            
+            showToast('Only essential cookies will be used. ✓', 3000);
+            
+            // Add to history
+            addConsentHistory('rejected_all');
+        }
+
+        function openPreferenceCenter() {
+            document.getElementById('cookieBanner').classList.remove('show');
+            document.getElementById('preferenceCenterModal').classList.add('show');
+            loadSavedPreferences();
+        }
+
+        function closePreferenceCenter() {
+            document.getElementById('preferenceCenterModal').classList.remove('show');
+        }
+
+        function loadSavedPreferences() {
+            const consent = getCookieConsent();
+            
+            if (consent) {
+                document.getElementById('functionalCookies').checked = consent.functional;
+                document.getElementById('analyticsCookies').checked = consent.analytics;
+                document.getElementById('marketingCookies').checked = consent.marketing;
+            }
+        }
+
+        function updateCookiePreferences() {
+            // Real-time feedback (optional)
+            const functional = document.getElementById('functionalCookies').checked;
+            const analytics = document.getElementById('analyticsCookies').checked;
+            const marketing = document.getElementById('marketingCookies').checked;
+            
+            let count = 1; // Essential always active
+            if (functional) count++;
+            if (analytics) count++;
+            if (marketing) count++;
+            
+            // Could show preview of changes here
+        }
+
+        function savePreferences() {
+            const preferences = {
+                functional: document.getElementById('functionalCookies').checked,
+                analytics: document.getElementById('analyticsCookies').checked,
+                marketing: document.getElementById('marketingCookies').checked
+            };
+            
+            setCookieConsent(preferences);
+            closePreferenceCenter();
+            
+            showToast('Cookie preferences saved successfully! ✓', 3000);
+        }
+
+        function updateCookieCount() {
+            const consent = getCookieConsent();
+            let count = 1; // Essential always active
+            
+            if (consent) {
+                if (consent.functional) count++;
+                if (consent.analytics) count++;
+                if (consent.marketing) count++;
+            }
+            
+            document.getElementById('cookieCount').textContent = `${count} active`;
+        }
+
+        // ============================================
+        // CONSENT HISTORY
+        // ============================================
+
+        function addConsentHistory(action, details = {}) {
+            const history = JSON.parse(localStorage.getItem('ht_consent_history') || '[]');
+            
+            history.unshift({
+                action: action,
+                timestamp: new Date().toISOString(),
+                details: details
+            });
+            
+            // Keep only last 10 entries
+            if (history.length > 10) {
+                history.pop();
+            }
+            
+            localStorage.setItem('ht_consent_history', JSON.stringify(history));
+        }
+
+        function loadConsentHistory() {
+            const history = JSON.parse(localStorage.getItem('ht_consent_history') || '[]');
+            const timeline = document.getElementById('consentTimeline');
+            
+            if (!timeline) return;
+            
+            if (history.length === 0) {
+                timeline.innerHTML = `
+                    <div class="consent-timeline-item">
+                        <div class="consent-timeline-date">No consent history yet</div>
+                        <div class="consent-timeline-action">Use the preference center to manage your cookie settings</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            timeline.innerHTML = history.map(item => {
+                const date = new Date(item.timestamp);
+                const dateStr = date.toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric', 
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                let actionText = '';
+                switch(item.action) {
+                    case 'accepted_all':
+                        actionText = 'Accepted all cookies';
+                        break;
+                    case 'rejected_all':
+                        actionText = 'Rejected non-essential cookies';
+                        break;
+                    case 'preferences_updated':
+                        actionText = 'Updated cookie preferences';
+                        break;
+                    default:
+                        actionText = item.action;
+                }
+                
+                return `
+                    <div class="consent-timeline-item">
+                        <div class="consent-timeline-date">${dateStr}</div>
+                        <div class="consent-timeline-action">${actionText}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============================================
+        // FAQ TOGGLE
+        // ============================================
+
+        function toggleFAQ(element) {
+            element.classList.toggle('active');
+        }
+
+        // ============================================
+        // TOAST NOTIFICATIONS
+        // ============================================
+
+        function showToast(message, duration = 3000) {
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%) translateY(100px);
+                background: var(--gradient-sunrise);
+                color: white;
+                padding: 15px 30px;
+                border-radius: 50px;
+                box-shadow: var(--shadow-strong);
+                font-weight: 600;
+                z-index: 10002;
+                transition: transform 0.3s ease-out;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            `;
+            toast.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            
+            document.body.appendChild(toast);
+            
+            // Animate in
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+            }, 100);
+            
+            // Remove after duration
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(100px)';
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, duration);
+        }
+
+        // ============================================
+        // SMOOTH SCROLL & ANIMATIONS
+        // ============================================
+
         // Smooth Scroll for Internal Links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1170,6 +2437,13 @@
             section.style.transform = 'translateY(30px)';
             section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
             observer.observe(section);
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('preferenceCenterModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePreferenceCenter();
+            }
         });
     </script>
 
