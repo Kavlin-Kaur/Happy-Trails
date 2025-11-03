@@ -1202,13 +1202,287 @@
     <div id="events-groups" class="companions-tab-content">
         <section class="events-section">
             <div class="container">
-                <div class="coming-soon-message">
-                    <div class="coming-soon-icon">📅</div>
-                    <h3>Events & Group Bookings</h3>
-                    <p>Coming in Phase 5! Organize group trips, join events, and book together!</p>
+                
+                <!-- Events Header -->
+                <div class="events-header">
+                    <div class="events-header-content">
+                        <h2 class="events-title">
+                            <i class="fas fa-calendar-alt"></i>
+                            Group Bookings & Events
+                        </h2>
+                        <p class="events-subtitle">
+                            Plan group trips, join community events, and coordinate travel with fellow 
+                            Happy Trails enthusiasts. Making memories together, one journey at a time!
+                        </p>
+                    </div>
+                    <button class="create-event-btn" onclick="openEventCreator()">
+                        <i class="fas fa-plus"></i>
+                        Create Event
+                    </button>
                 </div>
+
+                <!-- Events Stats -->
+                <div class="events-stats">
+                    <div class="event-stat-card">
+                        <div class="event-stat-icon">📅</div>
+                        <div class="event-stat-value" id="totalEvents">45</div>
+                        <div class="event-stat-label">Total Events</div>
+                    </div>
+                    <div class="event-stat-card">
+                        <div class="event-stat-icon">👥</div>
+                        <div class="event-stat-value" id="totalParticipants">234</div>
+                        <div class="event-stat-label">Participants</div>
+                    </div>
+                    <div class="event-stat-card">
+                        <div class="event-stat-icon">🎯</div>
+                        <div class="event-stat-value" id="activeOrganizers">18</div>
+                        <div class="event-stat-label">Active Organizers</div>
+                    </div>
+                    <div class="event-stat-card">
+                        <div class="event-stat-icon">🔥</div>
+                        <div class="event-stat-value" id="eventsThisMonth">12</div>
+                        <div class="event-stat-label">This Month</div>
+                    </div>
+                </div>
+
+                <!-- Calendar Section -->
+                <div class="calendar-section">
+                    <div class="calendar-header">
+                        <h3 class="calendar-title">
+                            <i class="fas fa-calendar"></i>
+                            Event Calendar
+                        </h3>
+                        <div class="calendar-controls">
+                            <button class="calendar-nav-btn" onclick="previousMonth()">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <span class="calendar-month-year" id="calendarMonthYear">November 2025</span>
+                            <button class="calendar-nav-btn" onclick="nextMonth()">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            <button class="calendar-today-btn" onclick="goToToday()">
+                                <i class="fas fa-crosshairs"></i>
+                                Today
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Events Filter -->
+                <div class="events-filter-section">
+                    <h3 class="filter-title">
+                        <i class="fas fa-filter"></i>
+                        Browse Events
+                    </h3>
+                    <div class="events-filter-pills">
+                        <button class="event-filter-pill active" data-filter="all" onclick="filterEvents('all')">
+                            All Events
+                        </button>
+                        <button class="event-filter-pill" data-filter="group-trip" onclick="filterEvents('group-trip')">
+                            🗺️ Group Trips
+                        </button>
+                        <button class="event-filter-pill" data-filter="social-meetup" onclick="filterEvents('social-meetup')">
+                            🎉 Social Meetups
+                        </button>
+                        <button class="event-filter-pill" data-filter="photo-walk" onclick="filterEvents('photo-walk')">
+                            📸 Photo Walks
+                        </button>
+                        <button class="event-filter-pill" data-filter="food-tour" onclick="filterEvents('food-tour')">
+                            🍜 Food Tours
+                        </button>
+                        <button class="event-filter-pill" data-filter="adventure" onclick="filterEvents('adventure')">
+                            🏔️ Adventures
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Upcoming Events -->
+                <div class="upcoming-events-section">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="fas fa-fire"></i>
+                            Upcoming Events
+                        </h3>
+                        <div class="sort-controls">
+                            <label>Sort:</label>
+                            <select class="sort-select" id="eventSort" onchange="sortEvents()">
+                                <option value="date">By Date</option>
+                                <option value="popular">Most Popular</option>
+                                <option value="capacity">Spots Available</option>
+                                <option value="newest">Newly Added</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="events-grid" id="eventsGrid">
+                        <!-- Dynamically populated -->
+                    </div>
+
+                    <div class="load-more-events" id="loadMoreEvents">
+                        <button class="load-more-btn" onclick="loadMoreEvents()">
+                            <i class="fas fa-chevron-down"></i>
+                            Load More Events
+                        </button>
+                    </div>
+                </div>
+
+                <!-- My Events Sidebar -->
+                <div class="my-events-widget">
+                    <h4 class="widget-title">
+                        <i class="fas fa-user-check"></i>
+                        My Events
+                    </h4>
+                    <div class="my-events-tabs">
+                        <button class="my-event-tab active" data-tab="attending" onclick="switchMyEventsTab('attending')">
+                            Attending (<span id="myAttendingCount">0</span>)
+                        </button>
+                        <button class="my-event-tab" data-tab="hosting" onclick="switchMyEventsTab('hosting')">
+                            Hosting (<span id="myHostingCount">0</span>)
+                        </button>
+                    </div>
+                    <div id="myEventsList" class="my-events-list">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
             </div>
         </section>
+    </div>
+
+    <!-- Event Creator Modal -->
+    <div class="event-creator-modal" id="eventCreatorModal" style="display: none;">
+        <div class="event-creator-overlay" onclick="closeEventCreator()"></div>
+        <div class="event-creator-content">
+            <button class="event-creator-close" onclick="closeEventCreator()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="event-creator-title">
+                <i class="fas fa-calendar-plus"></i>
+                Create Group Event
+            </h3>
+            
+            <form class="event-creator-form" id="eventCreatorForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Event Category *</label>
+                        <select id="eventCategory" class="form-control">
+                            <option value="">Select category</option>
+                            <option value="group-trip">🗺️ Group Trip</option>
+                            <option value="social-meetup">🎉 Social Meetup</option>
+                            <option value="photo-walk">📸 Photo Walk</option>
+                            <option value="food-tour">🍜 Food Tour</option>
+                            <option value="adventure">🏔️ Adventure</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Route *</label>
+                        <select id="eventRoute" class="form-control">
+                            <option value="">Select route</option>
+                            <option value="HT-101">HT-101: Dharampur → Solan</option>
+                            <option value="HT-102">HT-102: Solan → Barog</option>
+                            <option value="HT-103">HT-103: Barog → Dagshai</option>
+                            <option value="HT-104">HT-104: Dagshai → Dharampur</option>
+                            <option value="HT-105">HT-105: Dharampur → Solan (Deluxe)</option>
+                            <option value="HT-106">HT-106: Dharampur → Solan (Premium)</option>
+                            <option value="HT-107">HT-107: Solan → Barog</option>
+                            <option value="HT-108">HT-108: Barog → Dagshai (Deluxe)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Event Title *</label>
+                    <input type="text" id="eventTitle" class="form-control" 
+                           placeholder="e.g., Sunrise Photography at Kasauli" maxlength="100">
+                    <div class="char-count"><span id="eventTitleCount">0</span>/100</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea id="eventDescription" class="form-control" rows="5"
+                              placeholder="Describe your event, what to expect, and any special instructions..."></textarea>
+                    <div class="char-count"><span id="eventDescCount">0</span> characters</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date *</label>
+                        <input type="date" id="eventDate" class="form-control" min="2025-11-03">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Time *</label>
+                        <input type="time" id="eventTime" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Meeting Point *</label>
+                        <input type="text" id="eventMeetingPoint" class="form-control" 
+                               placeholder="e.g., Dharampur Bus Station, Platform 2">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Capacity *</label>
+                        <input type="number" id="eventCapacity" class="form-control" 
+                               min="2" max="50" value="10">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Cost per Person (₹)</label>
+                        <input type="number" id="eventCost" class="form-control" 
+                               min="0" placeholder="0 for free events">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Difficulty Level</label>
+                        <select id="eventDifficulty" class="form-control">
+                            <option value="easy">Easy - All levels</option>
+                            <option value="moderate">Moderate - Some experience</option>
+                            <option value="challenging">Challenging - Experienced</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>What to Bring (comma-separated)</label>
+                    <input type="text" id="eventBring" class="form-control" 
+                           placeholder="e.g., Camera, Water bottle, Snacks, Comfortable shoes">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-save-draft" onclick="saveEventDraft()">
+                        <i class="fas fa-save"></i>
+                        Save Draft
+                    </button>
+                    <button type="button" class="btn-publish-story" onclick="publishEvent()">
+                        <i class="fas fa-calendar-check"></i>
+                        Create Event
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Event Detail Modal -->
+    <div class="event-detail-modal" id="eventDetailModal" style="display: none;">
+        <div class="event-detail-overlay" onclick="closeEventDetail()"></div>
+        <div class="event-detail-content">
+            <button class="event-detail-close" onclick="closeEventDetail()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="eventDetailBody">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
     </div>
 
 </div>

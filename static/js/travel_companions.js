@@ -4082,3 +4082,1304 @@ window.quoteReply = quoteReply;
 window.likeReply = likeReply;
 
 console.log('💬 Phase 4: Community Forum & Discussion Boards loaded successfully! 💖');
+
+/* ============================================
+   📅 PHASE 5: GROUP BOOKINGS & EVENTS
+   Event Calendar & Coordination
+   ============================================ */
+
+// Global Phase 5 variables
+let allEvents = [];
+let filteredEvents = [];
+let displayedEvents = [];
+let eventsPerPage = 6;
+let currentEventsPage = 1;
+let activeEventFilter = 'all';
+let currentCalendarDate = new Date(2025, 10, 3); // November 2025
+let myAttendingEvents = [];
+let myHostingEvents = [];
+
+// Sample events data
+const SAMPLE_EVENTS = [
+    {
+        id: 1,
+        title: 'Sunrise Photography Expedition at Kasauli',
+        description: 'Join us for an early morning photography session to capture the breathtaking sunrise over the Himalayas. Perfect for both beginners and experienced photographers. We\'ll visit 3 scenic viewpoints and share photography tips throughout the journey.',
+        category: 'photo-walk',
+        route: 'HT-103',
+        date: '2025-11-08',
+        time: '05:30',
+        meetingPoint: 'Barog Bus Station, Main Entrance',
+        capacity: 12,
+        participants: 8,
+        cost: 500,
+        difficulty: 'easy',
+        host: {
+            name: 'Arjun Mehta',
+            avatar: 'https://i.pravatar.cc/150?img=12',
+            id: 2
+        },
+        image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+        whatToBring: ['Camera/Phone', 'Tripod (optional)', 'Warm jacket', 'Water bottle'],
+        createdAt: '2025-10-25T10:00:00',
+        weather: 'Clear skies, 8°C'
+    },
+    {
+        id: 2,
+        title: 'Weekend Heritage Walk in Dagshai',
+        description: 'Explore the historic cantonment town of Dagshai with a guided heritage walk. Visit the famous Dagshai Jail Museum, colonial-era buildings, and learn about the town\'s rich military history. Includes lunch at a local heritage restaurant.',
+        category: 'social-meetup',
+        route: 'HT-104',
+        date: '2025-11-10',
+        time: '10:00',
+        meetingPoint: 'Dagshai Bus Stop',
+        capacity: 20,
+        participants: 15,
+        cost: 800,
+        difficulty: 'easy',
+        host: {
+            name: 'Manish Gupta',
+            avatar: 'https://i.pravatar.cc/150?img=11',
+            id: 11
+        },
+        image: 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=800',
+        whatToBring: ['Comfortable walking shoes', 'Hat/Cap', 'Sunscreen', 'Camera'],
+        createdAt: '2025-10-28T14:30:00',
+        weather: 'Partly cloudy, 15°C'
+    },
+    {
+        id: 3,
+        title: 'Mountain Food Trail: Solan to Barog',
+        description: 'A delicious journey exploring the best local eateries and roadside dhabas between Solan and Barog. Taste authentic Himachali cuisine, famous maggi varieties, and local sweets. Perfect for food lovers! Limited spots available.',
+        category: 'food-tour',
+        route: 'HT-102',
+        date: '2025-11-12',
+        time: '11:00',
+        meetingPoint: 'Solan Bus Terminal, Platform 3',
+        capacity: 10,
+        participants: 10,
+        cost: 1200,
+        difficulty: 'easy',
+        host: {
+            name: 'Sneha Reddy',
+            avatar: 'https://i.pravatar.cc/150?img=10',
+            id: 8
+        },
+        image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800',
+        whatToBring: ['Appetite!', 'Small bag for takeaways', 'Cash for extras', 'Camera'],
+        createdAt: '2025-10-30T09:15:00',
+        weather: 'Sunny, 18°C'
+    },
+    {
+        id: 4,
+        title: 'Beginners Trekking: Dagshai Hills Trail',
+        description: 'Perfect for first-time trekkers! A gentle 5km trail through pine forests with stunning valley views. Professional guide included. We\'ll take it slow with multiple breaks for photos and rest. Great way to start your trekking journey!',
+        category: 'adventure',
+        route: 'HT-103',
+        date: '2025-11-15',
+        time: '08:00',
+        meetingPoint: 'Dagshai Main Market',
+        capacity: 15,
+        participants: 7,
+        cost: 600,
+        difficulty: 'easy',
+        host: {
+            name: 'Vikram Patel',
+            avatar: 'https://i.pravatar.cc/150?img=13',
+            id: 4
+        },
+        image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=800',
+        whatToBring: ['Trekking shoes', 'Backpack', 'Water (2L)', 'Snacks', 'First aid kit'],
+        createdAt: '2025-11-01T16:00:00',
+        weather: 'Clear, 12°C'
+    },
+    {
+        id: 5,
+        title: 'Family Day Trip: Solan Fruit Gardens & Picnic',
+        description: 'A fun family outing to Solan\'s famous fruit gardens and orchards. Kids-friendly activities, fruit picking (seasonal), and a relaxing picnic lunch. Perfect for families with children of all ages. Games and activities organized!',
+        category: 'group-trip',
+        route: 'HT-101',
+        date: '2025-11-16',
+        time: '09:00',
+        meetingPoint: 'Dharampur Bus Station, Family Waiting Area',
+        capacity: 25,
+        participants: 18,
+        cost: 400,
+        difficulty: 'easy',
+        host: {
+            name: 'Rohit Sharma',
+            avatar: 'https://i.pravatar.cc/150?img=15',
+            id: 9
+        },
+        image: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800',
+        whatToBring: ['Picnic mat', 'Snacks', 'Games', 'Sun protection', 'Camera'],
+        createdAt: '2025-11-02T11:00:00',
+        weather: 'Sunny, 20°C'
+    },
+    {
+        id: 6,
+        title: 'Monsoon Photography Workshop',
+        description: 'Learn to capture the beauty of monsoon in the mountains! Professional photographer will teach techniques for shooting in rain, clouds, and mist. Includes hands-on practice at 4 scenic locations. All skill levels welcome.',
+        category: 'photo-walk',
+        route: 'HT-105',
+        date: '2025-11-20',
+        time: '07:00',
+        meetingPoint: 'Dharampur Bus Station, Platform 1',
+        capacity: 8,
+        participants: 6,
+        cost: 1500,
+        difficulty: 'moderate',
+        host: {
+            name: 'Priya Sharma',
+            avatar: 'https://i.pravatar.cc/150?img=5',
+            id: 1
+        },
+        image: 'https://images.unsplash.com/photo-1501999635878-71cb5379c2d8?w=800',
+        whatToBring: ['Camera with rain cover', 'Waterproof bag', 'Umbrella', 'Extra batteries'],
+        createdAt: '2025-11-01T08:30:00',
+        weather: 'Light rain expected, 14°C'
+    },
+    {
+        id: 7,
+        title: 'Sunset Chai & Stories at Kasauli Viewpoint',
+        description: 'A relaxing evening gathering to watch the sunset, sip hot chai, and share travel stories. Bring your best tales, meet fellow travelers, and enjoy the golden hour magic. Bonfire if weather permits!',
+        category: 'social-meetup',
+        route: 'HT-103',
+        date: '2025-11-22',
+        time: '16:00',
+        meetingPoint: 'Kasauli Bus Stop',
+        capacity: 30,
+        participants: 12,
+        cost: 0,
+        difficulty: 'easy',
+        host: {
+            name: 'Ananya Desai',
+            avatar: 'https://i.pravatar.cc/150?img=20',
+            id: 12
+        },
+        image: 'https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=800',
+        whatToBring: ['Warm clothes', 'A story to share', 'Snacks (optional)', 'Good vibes'],
+        createdAt: '2025-11-02T19:00:00',
+        weather: 'Clear evening, 10°C'
+    },
+    {
+        id: 8,
+        title: 'Traditional Himachali Cooking Class',
+        description: 'Learn to cook authentic Himachali dishes from a local chef! Hands-on cooking session followed by lunch together. Menu includes Siddu, Madra, and Aktori. Take home recipe cards and new culinary skills!',
+        category: 'food-tour',
+        route: 'HT-102',
+        date: '2025-11-25',
+        time: '10:30',
+        meetingPoint: 'Solan Market Square',
+        capacity: 12,
+        participants: 9,
+        cost: 900,
+        difficulty: 'easy',
+        host: {
+            name: 'Maya Krishnan',
+            avatar: 'https://i.pravatar.cc/150?img=9',
+            id: 3
+        },
+        image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800',
+        whatToBring: ['Apron', 'Notebook', 'Appetite', 'Camera for recipes'],
+        createdAt: '2025-10-29T13:00:00',
+        weather: 'Sunny, 16°C'
+    },
+    {
+        id: 9,
+        title: 'Night Sky Stargazing & Astronomy',
+        description: 'Experience the magic of Himalayan night skies! Professional astronomer with telescope will guide us through constellations, planets, and deep sky objects. Hot chocolate included. Clear weather forecast!',
+        category: 'adventure',
+        route: 'HT-104',
+        date: '2025-11-28',
+        time: '19:00',
+        meetingPoint: 'Dagshai Viewpoint Parking',
+        capacity: 20,
+        participants: 14,
+        cost: 700,
+        difficulty: 'easy',
+        host: {
+            name: 'Aditya Kumar',
+            avatar: 'https://i.pravatar.cc/150?img=14',
+            id: 7
+        },
+        image: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=800',
+        whatToBring: ['Very warm clothes', 'Blanket', 'Thermos', 'Red light flashlight'],
+        createdAt: '2025-11-01T20:00:00',
+        weather: 'Clear night, 5°C'
+    },
+    {
+        id: 10,
+        title: 'Colonial Architecture Photo Tour',
+        description: 'Capture the British-era colonial architecture of Barog and Solan. Professional architectural photographer will share composition tips and historical context. Perfect for photography enthusiasts and history buffs.',
+        category: 'photo-walk',
+        route: 'HT-102',
+        date: '2025-11-30',
+        time: '09:00',
+        meetingPoint: 'Barog Railway Station',
+        capacity: 10,
+        participants: 5,
+        cost: 650,
+        difficulty: 'moderate',
+        host: {
+            name: 'Kavya Iyer',
+            avatar: 'https://i.pravatar.cc/150?img=16',
+            id: 10
+        },
+        image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800',
+        whatToBring: ['Camera', 'Wide angle lens', 'Notebook', 'Walking shoes'],
+        createdAt: '2025-10-27T15:30:00',
+        weather: 'Partly cloudy, 14°C'
+    },
+    {
+        id: 11,
+        title: 'Winter Wildlife Spotting Trek',
+        description: 'Early morning trek through pine forests to spot winter birds and wildlife. Expert naturalist guide included. Binoculars available. Great for nature photography and wildlife enthusiasts. Moderate fitness required.',
+        category: 'adventure',
+        route: 'HT-108',
+        date: '2025-12-05',
+        time: '06:00',
+        meetingPoint: 'Barog Forest Rest House',
+        capacity: 12,
+        participants: 4,
+        cost: 800,
+        difficulty: 'moderate',
+        host: {
+            name: 'Raj Kumar',
+            avatar: 'https://i.pravatar.cc/150?img=8',
+            id: 6
+        },
+        image: 'https://images.unsplash.com/photo-1571771019784-3ff35f4f4277?w=800',
+        whatToBring: ['Binoculars', 'Camera with zoom', 'Quiet footwear', 'Warm layers'],
+        createdAt: '2025-11-02T07:00:00',
+        weather: 'Clear morning, 6°C'
+    },
+    {
+        id: 12,
+        title: 'Sunday Brunch & Board Games Meetup',
+        description: 'Casual Sunday brunch followed by board games session at a cozy café in Solan. Bring your favorite games or try ours! Perfect for making new friends in a relaxed setting. Vegetarian and vegan options available.',
+        category: 'social-meetup',
+        route: 'HT-101',
+        date: '2025-12-08',
+        time: '11:00',
+        meetingPoint: 'Solan Central Café',
+        capacity: 16,
+        participants: 11,
+        cost: 500,
+        difficulty: 'easy',
+        host: {
+            name: 'Neha Singh',
+            avatar: 'https://i.pravatar.cc/150?img=1',
+            id: 5
+        },
+        image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800',
+        whatToBring: ['Board games (optional)', 'Good mood', 'Appetite'],
+        createdAt: '2025-11-03T10:00:00',
+        weather: 'Indoor event'
+    },
+    {
+        id: 13,
+        title: 'Christmas Market Exploration & Shopping',
+        description: 'Visit the festive Christmas markets in Solan and Barog! Shop for local handicrafts, winter woolens, and holiday treats. Enjoy hot mulled wine, carols, and holiday cheer. Perfect for holiday shopping!',
+        category: 'group-trip',
+        route: 'HT-102',
+        date: '2025-12-15',
+        time: '10:00',
+        meetingPoint: 'Solan Bus Station Main Gate',
+        capacity: 20,
+        participants: 8,
+        cost: 300,
+        difficulty: 'easy',
+        host: {
+            name: 'Manish Gupta',
+            avatar: 'https://i.pravatar.cc/150?img=11',
+            id: 11
+        },
+        image: 'https://images.unsplash.com/photo-1482517967863-00e15c9b44be?w=800',
+        whatToBring: ['Shopping bags', 'Cash', 'Winter wear', 'Holiday spirit'],
+        createdAt: '2025-10-26T12:00:00',
+        weather: 'Chilly, 8°C'
+    },
+    {
+        id: 14,
+        title: 'New Year Eve Mountain Celebration',
+        description: 'Ring in 2026 with panoramic mountain views! Evening gathering with music, food, countdown, and fireworks display. Bonfire, DJ, and midnight feast. Book early - limited spots! Accommodation assistance available.',
+        category: 'social-meetup',
+        route: 'HT-106',
+        date: '2025-12-31',
+        time: '18:00',
+        meetingPoint: 'Kasauli Resort Parking',
+        capacity: 50,
+        participants: 32,
+        cost: 2500,
+        difficulty: 'easy',
+        host: {
+            name: 'Vikram Patel',
+            avatar: 'https://i.pravatar.cc/150?img=13',
+            id: 4
+        },
+        image: 'https://images.unsplash.com/photo-1467810563316-b5476525c0f9?w=800',
+        whatToBring: ['Party clothes', 'ID proof', 'Dancing shoes', 'Festive energy'],
+        createdAt: '2025-10-20T18:00:00',
+        weather: 'Cold night, 4°C'
+    },
+    {
+        id: 15,
+        title: 'Yoga & Meditation Retreat Weekend',
+        description: 'Two-day wellness retreat in the serene mountains. Daily yoga sessions, guided meditation, healthy meals, and nature walks. Disconnect from digital life and reconnect with yourself. All levels welcome. Mats provided.',
+        category: 'group-trip',
+        route: 'HT-105',
+        date: '2026-01-11',
+        time: '08:00',
+        meetingPoint: 'Dharampur Yoga Center',
+        capacity: 15,
+        participants: 10,
+        cost: 3500,
+        difficulty: 'easy',
+        host: {
+            name: 'Priya Sharma',
+            avatar: 'https://i.pravatar.cc/150?img=5',
+            id: 1
+        },
+        image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800',
+        whatToBring: ['Comfortable clothes', 'Water bottle', 'Open mind', 'Meditation cushion'],
+        createdAt: '2025-10-22T09:00:00',
+        weather: 'Cool morning, 10°C'
+    }
+];
+
+// Event category metadata
+const EVENT_CATEGORIES = {
+    'group-trip': { label: 'Group Trip', icon: '🗺️', color: '#FFD700' },
+    'social-meetup': { label: 'Social Meetup', icon: '🎉', color: '#FF6347' },
+    'photo-walk': { label: 'Photo Walk', icon: '📸', color: '#8A2BE2' },
+    'food-tour': { label: 'Food Tour', icon: '🍜', color: '#32CD32' },
+    'adventure': { label: 'Adventure', icon: '🏔️', color: '#4682B4' }
+};
+
+// ============================================
+// EVENTS & GROUPS INITIALIZATION
+// ============================================
+
+function initializeEventsGroups() {
+    // Load events data
+    allEvents = SAMPLE_EVENTS;
+    filteredEvents = [...allEvents];
+    
+    // Load user events
+    loadMyEvents();
+    
+    // Render initial data
+    renderCalendar();
+    renderEventsGrid();
+    updateEventsStats();
+    renderMyEvents();
+    
+    // Setup form character counters
+    setupEventFormCounters();
+    
+    console.log('📅 Events & Groups initialized');
+}
+
+// ============================================
+// CALENDAR RENDERING
+// ============================================
+
+function renderCalendar() {
+    const container = document.getElementById('calendarGrid');
+    if (!container) return;
+    
+    // Update month/year display
+    const monthYear = document.getElementById('calendarMonthYear');
+    if (monthYear) {
+        monthYear.textContent = currentCalendarDate.toLocaleDateString('en-US', { 
+            month: 'long', 
+            year: 'numeric' 
+        });
+    }
+    
+    // Get calendar data
+    const year = currentCalendarDate.getFullYear();
+    const month = currentCalendarDate.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const startingDayOfWeek = firstDay.getDay();
+    const totalDays = lastDay.getDate();
+    
+    // Day headers
+    const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    let calendarHTML = dayHeaders.map(day => 
+        `<div class="calendar-day-header">${day}</div>`
+    ).join('');
+    
+    // Previous month padding
+    const prevMonthLastDay = new Date(year, month, 0).getDate();
+    const prevMonthStart = prevMonthLastDay - startingDayOfWeek + 1;
+    
+    for (let i = 0; i < startingDayOfWeek; i++) {
+        const day = prevMonthStart + i;
+        calendarHTML += `
+            <div class="calendar-day other-month">
+                <div class="day-number">${day}</div>
+            </div>
+        `;
+    }
+    
+    // Current month days
+    const today = new Date();
+    for (let day = 1; day <= totalDays; day++) {
+        const currentDate = new Date(year, month, day);
+        const dateString = currentDate.toISOString().split('T')[0];
+        
+        // Check for events on this day
+        const dayEvents = allEvents.filter(event => event.date === dateString);
+        
+        const isToday = currentDate.toDateString() === today.toDateString();
+        
+        calendarHTML += `
+            <div class="calendar-day ${isToday ? 'today' : ''} ${dayEvents.length > 0 ? 'has-events' : ''}"
+                 onclick="viewDayEvents('${dateString}')">
+                <div class="day-number">${day}</div>
+                ${dayEvents.length > 0 ? `
+                    <div class="day-events">
+                        ${dayEvents.slice(0, 3).map(() => '<div class="day-event-dot"></div>').join('')}
+                    </div>
+                    <div class="day-event-count">${dayEvents.length} event${dayEvents.length !== 1 ? 's' : ''}</div>
+                ` : ''}
+            </div>
+        `;
+    }
+    
+    // Next month padding
+    const remainingCells = 42 - (startingDayOfWeek + totalDays);
+    for (let i = 1; i <= remainingCells; i++) {
+        calendarHTML += `
+            <div class="calendar-day other-month">
+                <div class="day-number">${i}</div>
+            </div>
+        `;
+    }
+    
+    container.innerHTML = calendarHTML;
+}
+
+function previousMonth() {
+    currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+    renderCalendar();
+}
+
+function nextMonth() {
+    currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+    renderCalendar();
+}
+
+function goToToday() {
+    currentCalendarDate = new Date(2025, 10, 3); // November 3, 2025
+    renderCalendar();
+}
+
+function viewDayEvents(dateString) {
+    const dayEvents = allEvents.filter(event => event.date === dateString);
+    
+    if (dayEvents.length === 0) {
+        showToast('No events on this day', 2000);
+        return;
+    }
+    
+    // Filter and scroll to events
+    activeEventFilter = 'all';
+    filteredEvents = dayEvents;
+    currentEventsPage = 1;
+    renderEventsGrid();
+    
+    // Scroll to events section
+    document.querySelector('.upcoming-events-section').scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+    });
+    
+    showToast(`Showing ${dayEvents.length} event${dayEvents.length !== 1 ? 's' : ''} on ${new Date(dateString).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}`, 3000);
+}
+
+// ============================================
+// EVENTS RENDERING
+// ============================================
+
+function renderEventsGrid() {
+    const container = document.getElementById('eventsGrid');
+    if (!container) return;
+    
+    // Calculate pagination
+    const startIndex = (currentEventsPage - 1) * eventsPerPage;
+    const endIndex = startIndex + eventsPerPage;
+    displayedEvents = filteredEvents.slice(0, endIndex);
+    
+    if (displayedEvents.length === 0) {
+        container.innerHTML = `
+            <div class="travelers-empty" style="grid-column: 1 / -1;">
+                <div class="travelers-empty-icon">📅</div>
+                <h3>No events found</h3>
+                <p>Be the first to create an event!</p>
+            </div>
+        `;
+        
+        document.getElementById('loadMoreEvents').style.display = 'none';
+        return;
+    }
+    
+    container.innerHTML = displayedEvents.map(event => createEventCard(event)).join('');
+    
+    // Show/hide load more button
+    const loadMoreContainer = document.getElementById('loadMoreEvents');
+    if (loadMoreContainer) {
+        loadMoreContainer.style.display = displayedEvents.length < filteredEvents.length ? 'block' : 'none';
+    }
+}
+
+function createEventCard(event) {
+    const category = EVENT_CATEGORIES[event.category];
+    const eventDate = new Date(event.date + 'T' + event.time);
+    const dateString = eventDate.toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric'
+    });
+    
+    const spotsLeft = event.capacity - event.participants;
+    const isFull = spotsLeft === 0;
+    const isFilling = spotsLeft <= 3 && spotsLeft > 0;
+    
+    return `
+        <div class="event-card" onclick="viewEventDetail(${event.id})">
+            <div class="event-card-image">
+                <img src="${event.image}" alt="${event.title}">
+                <div class="event-category-badge">
+                    ${category.icon} ${category.label}
+                </div>
+                <div class="event-capacity-badge ${isFull ? 'full' : isFilling ? 'filling' : ''}">
+                    <i class="fas fa-users"></i>
+                    ${isFull ? 'FULL' : `${spotsLeft} spot${spotsLeft !== 1 ? 's' : ''} left`}
+                </div>
+            </div>
+            
+            <div class="event-card-body">
+                <div class="event-date-time">
+                    <i class="fas fa-calendar"></i>
+                    <span>${dateString}</span>
+                    <i class="fas fa-clock"></i>
+                    <span>${event.time}</span>
+                </div>
+                
+                <h3 class="event-title">${event.title}</h3>
+                
+                <p class="event-description">${event.description}</p>
+                
+                <div class="event-host-info">
+                    <img src="${event.host.avatar}" alt="${event.host.name}" class="event-host-avatar">
+                    <div>
+                        <div class="event-host-name">${event.host.name}</div>
+                        <div class="event-host-label">Event Organizer</div>
+                    </div>
+                </div>
+                
+                <div class="event-details-row">
+                    <div class="event-detail-item">
+                        <i class="fas fa-route"></i>
+                        <span>${event.route}</span>
+                    </div>
+                    <div class="event-detail-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>${event.meetingPoint.split(',')[0]}</span>
+                    </div>
+                    <div class="event-detail-item">
+                        <i class="fas fa-rupee-sign"></i>
+                        <span>${event.cost === 0 ? 'Free' : '₹' + event.cost}</span>
+                    </div>
+                    <div class="event-detail-item">
+                        <i class="fas fa-signal"></i>
+                        <span>${capitalizeFirst(event.difficulty)}</span>
+                    </div>
+                </div>
+                
+                <div class="event-card-actions">
+                    ${!isFull ? `
+                        <button class="event-action-btn join-event-btn" onclick="event.stopPropagation(); joinEvent(${event.id})">
+                            <i class="fas fa-user-plus"></i>
+                            Join Event
+                        </button>
+                    ` : `
+                        <button class="event-action-btn join-event-btn" style="background: #DC143C;" onclick="event.stopPropagation(); joinWaitlist(${event.id})">
+                            <i class="fas fa-list"></i>
+                            Join Waitlist
+                        </button>
+                    `}
+                    <button class="event-action-btn view-event-btn" onclick="event.stopPropagation(); viewEventDetail(${event.id})">
+                        <i class="fas fa-eye"></i>
+                        View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// ============================================
+// EVENT DETAIL VIEW
+// ============================================
+
+function viewEventDetail(eventId) {
+    const event = allEvents.find(e => e.id === eventId);
+    if (!event) return;
+    
+    const modal = document.getElementById('eventDetailModal');
+    const modalBody = document.getElementById('eventDetailBody');
+    
+    if (!modal || !modalBody) return;
+    
+    const category = EVENT_CATEGORIES[event.category];
+    const eventDate = new Date(event.date + 'T' + event.time);
+    const dateString = eventDate.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+    
+    const spotsLeft = event.capacity - event.participants;
+    const isFull = spotsLeft === 0;
+    
+    // Generate sample participants
+    const participants = generateSampleParticipants(event.participants, event.host);
+    
+    modalBody.innerHTML = `
+        <div style="position: relative;">
+            <!-- Event Header Image -->
+            <div style="position: relative; height: 350px; overflow: hidden; border-radius: 25px 25px 0 0;">
+                <img src="${event.image}" alt="${event.title}" 
+                     style="width: 100%; height: 100%; object-fit: cover;">
+                <div style="position: absolute; top: 20px; left: 20px; display: flex; gap: 10px;">
+                    <span style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); 
+                                 padding: 8px 16px; border-radius: 15px; font-weight: 700; display: flex; 
+                                 align-items: center; gap: 8px; color: ${category.color};">
+                        ${category.icon} ${category.label}
+                    </span>
+                    <span style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); 
+                                 padding: 8px 16px; border-radius: 15px; font-weight: 700; color: #2C3E50;">
+                        ${event.route}
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Event Content -->
+            <div style="padding: 40px;">
+                <!-- Title -->
+                <h1 style="font-family: 'Dancing Script', cursive; font-size: 2.8rem; color: #2C3E50; 
+                           margin-bottom: 20px; line-height: 1.3;">
+                    ${event.title}
+                </h1>
+                
+                <!-- Event Info Grid -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+                            gap: 20px; margin-bottom: 30px;">
+                    <div style="background: rgba(138, 43, 226, 0.1); border-radius: 12px; padding: 15px;">
+                        <div style="color: #8A2BE2; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px;">
+                            <i class="fas fa-calendar"></i> Date & Time
+                        </div>
+                        <div style="color: #2C3E50; font-weight: 700;">${dateString}</div>
+                        <div style="color: #6C757D; font-size: 0.9rem;">${event.time}</div>
+                    </div>
+                    
+                    <div style="background: rgba(50, 205, 50, 0.1); border-radius: 12px; padding: 15px;">
+                        <div style="color: #228B22; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px;">
+                            <i class="fas fa-users"></i> Capacity
+                        </div>
+                        <div style="color: #2C3E50; font-weight: 700;">${event.participants}/${event.capacity} Joined</div>
+                        <div style="color: ${isFull ? '#DC143C' : '#228B22'}; font-size: 0.9rem; font-weight: 600;">
+                            ${isFull ? 'Event Full' : `${spotsLeft} spot${spotsLeft !== 1 ? 's' : ''} left`}
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(255, 215, 0, 0.1); border-radius: 12px; padding: 15px;">
+                        <div style="color: #F57F17; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px;">
+                            <i class="fas fa-rupee-sign"></i> Cost
+                        </div>
+                        <div style="color: #2C3E50; font-weight: 700; font-size: 1.5rem;">
+                            ${event.cost === 0 ? 'Free!' : '₹' + event.cost}
+                        </div>
+                        <div style="color: #6C757D; font-size: 0.9rem;">Per person</div>
+                    </div>
+                    
+                    <div style="background: rgba(255, 99, 71, 0.1); border-radius: 12px; padding: 15px;">
+                        <div style="color: #DC143C; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px;">
+                            <i class="fas fa-signal"></i> Difficulty
+                        </div>
+                        <div style="color: #2C3E50; font-weight: 700;">${capitalizeFirst(event.difficulty)}</div>
+                        <div style="color: #6C757D; font-size: 0.9rem;">Fitness level</div>
+                    </div>
+                </div>
+                
+                <!-- Host Info -->
+                <div style="background: rgba(255, 249, 230, 0.5); border-radius: 15px; padding: 20px; margin-bottom: 25px;">
+                    <h3 style="font-weight: 700; color: #2C3E50; margin-bottom: 15px;">
+                        <i class="fas fa-user-tie"></i> Event Organizer
+                    </h3>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <img src="${event.host.avatar}" alt="${event.host.name}" 
+                             style="width: 60px; height: 60px; border-radius: 50%; border: 3px solid #8A2BE2; object-fit: cover;">
+                        <div>
+                            <div style="font-weight: 700; color: #2C3E50; font-size: 1.1rem;">${event.host.name}</div>
+                            <div style="color: #6C757D; font-size: 0.9rem;">Organized ${Math.floor(Math.random() * 10) + 1} events</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Description -->
+                <div style="margin-bottom: 25px;">
+                    <h3 style="font-weight: 700; color: #2C3E50; margin-bottom: 15px;">
+                        <i class="fas fa-info-circle"></i> About This Event
+                    </h3>
+                    <p style="color: #6C757D; line-height: 1.8; font-size: 1.05rem;">${event.description}</p>
+                </div>
+                
+                <!-- Meeting Point -->
+                <div style="background: rgba(138, 43, 226, 0.05); border-left: 4px solid #8A2BE2; 
+                            padding: 15px; border-radius: 10px; margin-bottom: 25px;">
+                    <h4 style="font-weight: 700; color: #8A2BE2; margin-bottom: 10px;">
+                        <i class="fas fa-map-marker-alt"></i> Meeting Point
+                    </h4>
+                    <p style="color: #2C3E50; font-weight: 600;">${event.meetingPoint}</p>
+                </div>
+                
+                <!-- What to Bring -->
+                ${event.whatToBring && event.whatToBring.length > 0 ? `
+                    <div style="margin-bottom: 25px;">
+                        <h3 style="font-weight: 700; color: #2C3E50; margin-bottom: 15px;">
+                            <i class="fas fa-backpack"></i> What to Bring
+                        </h3>
+                        <ul style="color: #6C757D; line-height: 2; padding-left: 20px;">
+                            ${event.whatToBring.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+                
+                <!-- Weather -->
+                <div style="background: rgba(50, 205, 50, 0.1); border-radius: 12px; padding: 15px; margin-bottom: 25px;">
+                    <h4 style="font-weight: 700; color: #228B22; margin-bottom: 10px;">
+                        <i class="fas fa-cloud-sun"></i> Weather Forecast
+                    </h4>
+                    <p style="color: #2C3E50; font-weight: 600;">${event.weather}</p>
+                </div>
+                
+                <!-- Event Actions -->
+                <div style="display: flex; gap: 15px; margin-bottom: 30px;">
+                    ${!isFull ? `
+                        <button class="btn-create-collection" onclick="joinEvent(${event.id}); closeEventDetail();" style="flex: 1;">
+                            <i class="fas fa-user-plus"></i>
+                            Join This Event
+                        </button>
+                    ` : `
+                        <button class="btn-create-collection" onclick="joinWaitlist(${event.id}); closeEventDetail();" 
+                                style="flex: 1; background: linear-gradient(135deg, #DC143C, #A52A2A);">
+                            <i class="fas fa-list"></i>
+                            Join Waitlist
+                        </button>
+                    `}
+                    <button class="btn-save-draft" onclick="shareEvent(${event.id})" style="flex: 1;">
+                        <i class="fas fa-share-alt"></i>
+                        Share Event
+                    </button>
+                </div>
+                
+                <!-- Participants -->
+                <div class="participants-section">
+                    <h3 class="participants-title">
+                        <i class="fas fa-users"></i>
+                        Participants (${event.participants})
+                    </h3>
+                    <div class="participants-grid">
+                        ${participants.map(p => `
+                            <div class="participant-item">
+                                <img src="${p.avatar}" alt="${p.name}" class="participant-avatar">
+                                <div class="participant-name">${p.name}</div>
+                                ${p.isHost ? '<div class="participant-role">Organizer</div>' : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    modal.style.display = 'flex';
+}
+
+function generateSampleParticipants(count, host) {
+    const participants = [{ ...host, isHost: true }];
+    
+    const remaining = count - 1;
+    for (let i = 0; i < remaining && i < SAMPLE_TRAVELERS.length; i++) {
+        participants.push({
+            ...SAMPLE_TRAVELERS[i],
+            isHost: false
+        });
+    }
+    
+    return participants;
+}
+
+function closeEventDetail() {
+    const modal = document.getElementById('eventDetailModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// ============================================
+// EVENT CREATION
+// ============================================
+
+function openEventCreator() {
+    const modal = document.getElementById('eventCreatorModal');
+    if (!modal) return;
+    
+    // Clear form
+    document.getElementById('eventCategory').value = '';
+    document.getElementById('eventRoute').value = '';
+    document.getElementById('eventTitle').value = '';
+    document.getElementById('eventDescription').value = '';
+    document.getElementById('eventDate').value = '';
+    document.getElementById('eventTime').value = '';
+    document.getElementById('eventMeetingPoint').value = '';
+    document.getElementById('eventCapacity').value = '10';
+    document.getElementById('eventCost').value = '';
+    document.getElementById('eventDifficulty').value = 'easy';
+    document.getElementById('eventBring').value = '';
+    
+    // Update counters
+    updateEventCharCounter('eventTitle', 'eventTitleCount');
+    updateEventCharCounter('eventDescription', 'eventDescCount');
+    
+    modal.style.display = 'flex';
+}
+
+function closeEventCreator() {
+    const modal = document.getElementById('eventCreatorModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function setupEventFormCounters() {
+    const titleInput = document.getElementById('eventTitle');
+    const descInput = document.getElementById('eventDescription');
+    
+    if (titleInput) {
+        titleInput.addEventListener('input', () => {
+            updateEventCharCounter('eventTitle', 'eventTitleCount');
+        });
+    }
+    
+    if (descInput) {
+        descInput.addEventListener('input', () => {
+            updateEventCharCounter('eventDescription', 'eventDescCount');
+        });
+    }
+}
+
+function updateEventCharCounter(inputId, counterId) {
+    const input = document.getElementById(inputId);
+    const counter = document.getElementById(counterId);
+    
+    if (input && counter) {
+        counter.textContent = input.value.length;
+    }
+}
+
+function publishEvent() {
+    // Get form values
+    const category = document.getElementById('eventCategory').value;
+    const route = document.getElementById('eventRoute').value;
+    const title = document.getElementById('eventTitle').value.trim();
+    const description = document.getElementById('eventDescription').value.trim();
+    const date = document.getElementById('eventDate').value;
+    const time = document.getElementById('eventTime').value;
+    const meetingPoint = document.getElementById('eventMeetingPoint').value.trim();
+    const capacity = parseInt(document.getElementById('eventCapacity').value);
+    const cost = parseInt(document.getElementById('eventCost').value) || 0;
+    const difficulty = document.getElementById('eventDifficulty').value;
+    const bringInput = document.getElementById('eventBring').value.trim();
+    
+    // Validate
+    if (!category) {
+        showToast('⚠️ Please select an event category!', 3000);
+        return;
+    }
+    
+    if (!route) {
+        showToast('⚠️ Please select a route!', 3000);
+        return;
+    }
+    
+    if (!title || title.length < 10) {
+        showToast('⚠️ Event title must be at least 10 characters!', 3000);
+        return;
+    }
+    
+    if (!description || description.length < 50) {
+        showToast('⚠️ Description must be at least 50 characters!', 3000);
+        return;
+    }
+    
+    if (!date) {
+        showToast('⚠️ Please select an event date!', 3000);
+        return;
+    }
+    
+    if (!time) {
+        showToast('⚠️ Please select an event time!', 3000);
+        return;
+    }
+    
+    if (!meetingPoint) {
+        showToast('⚠️ Please specify a meeting point!', 3000);
+        return;
+    }
+    
+    if (!capacity || capacity < 2 || capacity > 50) {
+        showToast('⚠️ Capacity must be between 2 and 50!', 3000);
+        return;
+    }
+    
+    // Parse what to bring
+    const whatToBring = bringInput ? bringInput.split(',').map(item => item.trim()).filter(item => item) : [];
+    
+    // Create new event
+    const newEvent = {
+        id: Date.now(),
+        title: title,
+        description: description,
+        category: category,
+        route: route,
+        date: date,
+        time: time,
+        meetingPoint: meetingPoint,
+        capacity: capacity,
+        participants: 1, // Host is first participant
+        cost: cost,
+        difficulty: difficulty,
+        host: {
+            name: userProfile ? userProfile.name : 'Anonymous Organizer',
+            avatar: userProfile && userProfile.photo ? userProfile.photo : '/static/images/default-avatar.png',
+            id: CURRENT_USER.isAuthenticated ? 'current-user' : 0
+        },
+        image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800', // Default image
+        whatToBring: whatToBring,
+        createdAt: new Date().toISOString(),
+        weather: 'Check closer to date'
+    };
+    
+    // Add to events
+    allEvents.unshift(newEvent);
+    filteredEvents = [...allEvents];
+    
+    // Add to my hosting events
+    myHostingEvents.push(newEvent);
+    saveMyEvents();
+    
+    // Re-render
+    renderCalendar();
+    renderEventsGrid();
+    updateEventsStats();
+    renderMyEvents();
+    
+    // Close modal
+    closeEventCreator();
+    
+    showToast('Event created successfully! 🎉', 3000);
+}
+
+function saveEventDraft() {
+    const title = document.getElementById('eventTitle').value.trim();
+    const description = document.getElementById('eventDescription').value.trim();
+    
+    if (!title && !description) {
+        showToast('⚠️ Nothing to save!', 2000);
+        return;
+    }
+    
+    const draft = {
+        category: document.getElementById('eventCategory').value,
+        route: document.getElementById('eventRoute').value,
+        title,
+        description,
+        savedAt: new Date().toISOString()
+    };
+    
+    localStorage.setItem('happytrails_event_draft', JSON.stringify(draft));
+    
+    showToast('Draft saved! 💾', 2000);
+}
+
+// ============================================
+// EVENT INTERACTIONS
+// ============================================
+
+function joinEvent(eventId) {
+    const event = allEvents.find(e => e.id === eventId);
+    if (!event) return;
+    
+    if (event.participants >= event.capacity) {
+        showToast('⚠️ Event is full! Join the waitlist instead.', 3000);
+        return;
+    }
+    
+    // Check if already joined
+    if (myAttendingEvents.find(e => e.id === eventId)) {
+        showToast('You\'ve already joined this event! 📅', 2000);
+        return;
+    }
+    
+    event.participants++;
+    myAttendingEvents.push(event);
+    saveMyEvents();
+    
+    // Re-render
+    renderEventsGrid();
+    renderMyEvents();
+    updateEventsStats();
+    
+    showToast(`You've joined: ${event.title}! 🎉`, 3000);
+}
+
+function joinWaitlist(eventId) {
+    const event = allEvents.find(e => e.id === eventId);
+    if (!event) return;
+    
+    showToast(`Added to waitlist for: ${event.title}! You'll be notified if a spot opens. 📋`, 3000);
+}
+
+function shareEvent(eventId) {
+    const event = allEvents.find(e => e.id === eventId);
+    if (!event) return;
+    
+    const shareUrl = `${window.location.origin}/travel-companions?event=${eventId}`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: event.title,
+            text: event.description.substring(0, 100) + '...',
+            url: shareUrl
+        }).catch(() => {
+            copyToClipboard(shareUrl);
+        });
+    } else {
+        copyToClipboard(shareUrl);
+    }
+    
+    showToast('Event link copied! 📋', 2000);
+}
+
+// ============================================
+// FILTERING & SEARCH
+// ============================================
+
+function filterEvents(category) {
+    activeEventFilter = category;
+    
+    // Update pills
+    document.querySelectorAll('.event-filter-pill').forEach(pill => {
+        pill.classList.remove('active');
+        if (pill.getAttribute('data-filter') === category) {
+            pill.classList.add('active');
+        }
+    });
+    
+    // Filter events
+    if (category === 'all') {
+        filteredEvents = [...allEvents];
+    } else {
+        filteredEvents = allEvents.filter(e => e.category === category);
+    }
+    
+    currentEventsPage = 1;
+    renderEventsGrid();
+    
+    showToast(`Showing ${filteredEvents.length} events`, 2000);
+}
+
+function sortEvents() {
+    const sortBy = document.getElementById('eventSort').value;
+    
+    switch(sortBy) {
+        case 'date':
+            filteredEvents.sort((a, b) => new Date(a.date + 'T' + a.time) - new Date(b.date + 'T' + b.time));
+            break;
+        case 'popular':
+            filteredEvents.sort((a, b) => b.participants - a.participants);
+            break;
+        case 'capacity':
+            filteredEvents.sort((a, b) => (b.capacity - b.participants) - (a.capacity - a.participants));
+            break;
+        case 'newest':
+            filteredEvents.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            break;
+    }
+    
+    currentEventsPage = 1;
+    renderEventsGrid();
+}
+
+function loadMoreEvents() {
+    currentEventsPage++;
+    renderEventsGrid();
+    
+    // Scroll to newly loaded content
+    const grid = document.getElementById('eventsGrid');
+    if (grid) {
+        const newCards = grid.children[displayedEvents.length - eventsPerPage];
+        if (newCards) {
+            newCards.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+}
+
+// ============================================
+// MY EVENTS
+// ============================================
+
+function loadMyEvents() {
+    // For demo, randomly assign some events
+    myAttendingEvents = allEvents.filter((e, i) => i % 3 === 0).slice(0, 3);
+    myHostingEvents = allEvents.filter(e => e.host.id === (userProfile ? userProfile.id : 0));
+}
+
+function saveMyEvents() {
+    localStorage.setItem('happytrails_my_attending_events', JSON.stringify(myAttendingEvents.map(e => e.id)));
+    localStorage.setItem('happytrails_my_hosting_events', JSON.stringify(myHostingEvents.map(e => e.id)));
+}
+
+function renderMyEvents() {
+    const attendingCountEl = document.getElementById('myAttendingCount');
+    const hostingCountEl = document.getElementById('myHostingCount');
+    
+    if (attendingCountEl) attendingCountEl.textContent = myAttendingEvents.length;
+    if (hostingCountEl) hostingCountEl.textContent = myHostingEvents.length;
+    
+    // Render attending by default
+    switchMyEventsTab('attending');
+}
+
+function switchMyEventsTab(tab) {
+    // Update tabs
+    document.querySelectorAll('.my-event-tab').forEach(t => {
+        t.classList.remove('active');
+        if (t.getAttribute('data-tab') === tab) {
+            t.classList.add('active');
+        }
+    });
+    
+    const container = document.getElementById('myEventsList');
+    if (!container) return;
+    
+    const events = tab === 'attending' ? myAttendingEvents : myHostingEvents;
+    
+    if (events.length === 0) {
+        container.innerHTML = `
+            <div style="text-align: center; padding: 30px; color: #6C757D;">
+                <i class="fas fa-calendar-times" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                <p>No events yet</p>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = events.map(event => {
+        const eventDate = new Date(event.date + 'T' + event.time);
+        const dateString = eventDate.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric'
+        });
+        
+        return `
+            <div class="my-event-item" onclick="viewEventDetail(${event.id})">
+                <div class="my-event-title">${event.title}</div>
+                <div class="my-event-date">
+                    <i class="fas fa-calendar"></i>
+                    ${dateString} at ${event.time}
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
+
+function updateEventsStats() {
+    const totalEvents = allEvents.length;
+    const totalParticipants = allEvents.reduce((sum, e) => sum + e.participants, 0);
+    const activeOrganizers = new Set(allEvents.map(e => e.host.id)).size;
+    
+    // Events this month (November 2025)
+    const thisMonth = allEvents.filter(e => {
+        const eventDate = new Date(e.date);
+        return eventDate.getMonth() === 10 && eventDate.getFullYear() === 2025;
+    }).length;
+    
+    const totalEventsEl = document.getElementById('totalEvents');
+    const totalParticipantsEl = document.getElementById('totalParticipants');
+    const activeOrganizersEl = document.getElementById('activeOrganizers');
+    const eventsThisMonthEl = document.getElementById('eventsThisMonth');
+    
+    if (totalEventsEl) totalEventsEl.textContent = totalEvents;
+    if (totalParticipantsEl) totalParticipantsEl.textContent = totalParticipants;
+    if (activeOrganizersEl) activeOrganizersEl.textContent = activeOrganizers;
+    if (eventsThisMonthEl) eventsThisMonthEl.textContent = thisMonth;
+}
+
+function capitalizeFirst(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// ============================================
+// UPDATE MAIN INITIALIZATION
+// ============================================
+
+// Update the main initialization
+const originalInitTravelCompanions4 = initializeTravelCompanions;
+initializeTravelCompanions = function() {
+    originalInitTravelCompanions4();
+    
+    // Initialize events when tab is clicked
+    const eventsTab = document.querySelector('[data-tab="events-groups"]');
+    if (eventsTab) {
+        eventsTab.addEventListener('click', function() {
+            // Check if already initialized
+            if (allEvents.length === 0) {
+                initializeEventsGroups();
+            }
+        });
+    }
+};
+
+// Make functions globally accessible
+window.openEventCreator = openEventCreator;
+window.closeEventCreator = closeEventCreator;
+window.publishEvent = publishEvent;
+window.saveEventDraft = saveEventDraft;
+window.viewEventDetail = viewEventDetail;
+window.closeEventDetail = closeEventDetail;
+window.filterEvents = filterEvents;
+window.sortEvents = sortEvents;
+window.loadMoreEvents = loadMoreEvents;
+window.joinEvent = joinEvent;
+window.joinWaitlist = joinWaitlist;
+window.shareEvent = shareEvent;
+window.previousMonth = previousMonth;
+window.nextMonth = nextMonth;
+window.goToToday = goToToday;
+window.viewDayEvents = viewDayEvents;
+window.switchMyEventsTab = switchMyEventsTab;
+
+console.log('📅 Phase 5: Group Bookings & Event Calendar loaded successfully! 💖');
