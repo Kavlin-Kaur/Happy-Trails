@@ -1429,6 +1429,11 @@ def terms_of_service():
     """Terms of service page"""
     return render_template('footer/terms.html')
 
+@app.route('/privacy')
+def privacy_policy():
+    """Privacy policy page"""
+    return render_template('footer/privacy.html')
+
 # Run the application
 if __name__ == '__main__':
     app.run(debug=True)
