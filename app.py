@@ -1414,6 +1414,16 @@ def copyright_notice():
     """Copyright notice page"""
     return render_template('footer/copyright.html')
 
+@app.route('/cookie-policy')
+def cookie_policy():
+    """Cookie policy page"""
+    return render_template('footer/cookie_policy.html')
+
+@app.route('/disclaimer')
+def disclaimer():
+    """Disclaimer page"""
+    return render_template('footer/disclaimer.html')
+
 # Run the application
 if __name__ == '__main__':
     app.run(debug=True)
