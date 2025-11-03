@@ -11,9 +11,9 @@
         align-items: center;
         position: relative;
         overflow: hidden;
-        padding-top: 100px;
+        padding: 30px 0;
     }
-    
+
     .auth-section::before {
         content: '';
         position: absolute;
@@ -21,12 +21,12 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-image: 
+        background-image:
             radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
             radial-gradient(circle at 80% 20%, rgba(255, 182, 193, 0.1) 0%, transparent 50%);
         animation: sparkle 4s ease-in-out infinite;
     }
-    
+
     .auth-card {
         background: rgba(255, 255, 255, 0.95);
         border-radius: 30px;
@@ -40,24 +40,31 @@
         margin: 0 auto;
         animation: slideInFromBottom 0.8s ease-out;
     }
-    
+
     @keyframes slideInFromBottom {
-        0% { opacity: 0; transform: translateY(50px); }
-        100% { opacity: 1; transform: translateY(0); }
+        0% {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
-    
+
     .auth-logo {
-        height: 80px;
-        width: auto;
+        max-width: 100px;
+        height: auto;
         filter: drop-shadow(var(--shadow-soft));
         animation: float 3s ease-in-out infinite;
     }
-    
+
     .login-form .form-group {
         margin-bottom: 1.5rem;
         position: relative;
     }
-    
+
     .login-form .form-control {
         border: 2px solid var(--secondary-yellow);
         border-radius: 15px;
@@ -66,14 +73,14 @@
         transition: var(--transition-smooth);
         background: rgba(255, 255, 255, 0.9);
     }
-    
+
     .login-form .form-control:focus {
         border-color: var(--primary-yellow);
         box-shadow: var(--glow-yellow);
         outline: none;
         background: white;
     }
-    
+
     .input-group-text {
         background: var(--gradient-sunrise);
         border: none;
@@ -81,7 +88,7 @@
         border-radius: 15px 0 0 15px;
         border-right: none;
     }
-    
+
     .btn-auth {
         background: var(--gradient-sunrise);
         border: none;
@@ -96,19 +103,19 @@
         width: 100%;
         margin-top: 1rem;
     }
-    
+
     .btn-auth:hover {
         transform: translateY(-3px) scale(1.02);
         box-shadow: var(--shadow-strong);
         color: white;
     }
-    
+
     .social-login {
         border-top: 1px solid rgba(255, 215, 0, 0.3);
         padding-top: 2rem;
         margin-top: 2rem;
     }
-    
+
     .social-btn {
         width: 60px;
         height: 60px;
@@ -122,45 +129,54 @@
         border: 2px solid var(--secondary-yellow);
         color: var(--charcoal);
     }
-    
+
     .social-btn:hover {
         background: var(--primary-yellow);
         transform: translateY(-5px) scale(1.1);
         color: var(--charcoal);
     }
-    
+
     .welcome-text {
         text-align: center;
         margin-bottom: 2rem;
     }
-    
+
     .welcome-text h2 {
         color: var(--deep-yellow);
         margin-bottom: 0.5rem;
     }
-    
+
     .form-check-input:checked {
         background-color: var(--primary-yellow);
         border-color: var(--primary-yellow);
     }
-    
+
     .floating-elements {
         position: absolute;
         width: 100%;
         height: 100%;
         pointer-events: none;
     }
-    
+
     .floating-heart {
         position: absolute;
         font-size: 2rem;
         color: rgba(255, 215, 0, 0.3);
         animation: floatUpDown 6s ease-in-out infinite;
     }
-    
+
     @keyframes floatUpDown {
-        0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
-        50% { transform: translateY(-30px) rotate(10deg); opacity: 0.8; }
+
+        0%,
+        100% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 0.3;
+        }
+
+        50% {
+            transform: translateY(-30px) rotate(10deg);
+            opacity: 0.8;
+        }
     }
 </style>
 {% endblock %}
@@ -173,13 +189,14 @@
         <div class="floating-heart" style="bottom: 20%; left: 20%; animation-delay: 4s;">🌟</div>
         <div class="floating-heart" style="bottom: 10%; right: 10%; animation-delay: 1s;">💫</div>
     </div>
-    
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-6">
                 <div class="auth-card">
                     <div class="welcome-text">
-                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Happy Trails Logo" class="auth-logo mb-3">
+                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Happy Trails Logo"
+                            class="auth-logo mb-3">
                         <h2 class="script-font">Welcome Back!</h2>
                         <p class="text-muted">Login to continue your beautiful journey with Happy Trails</p>
                         <div class="mb-3">
@@ -188,7 +205,7 @@
                             </small>
                         </div>
                     </div>
-                    
+
                     <form class="login-form" method="post" action="{{ url_for('login') }}">
                         <div class="form-group">
                             <label for="email" class="form-label fw-semibold">
@@ -198,11 +215,11 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-envelope"></i>
                                 </span>
-                                <input type="email" class="form-control" id="email" name="email" 
-                                       placeholder="Enter your email" required>
+                                <input type="email" class="form-control" id="email" name="email"
+                                    placeholder="Enter your email" required>
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="password" class="form-label fw-semibold">
                                 <i class="fas fa-lock text-warning me-2"></i>Password
@@ -211,14 +228,14 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-lock"></i>
                                 </span>
-                                <input type="password" class="form-control" id="password" name="password" 
-                                       placeholder="Enter your password" required>
+                                <input type="password" class="form-control" id="password" name="password"
+                                    placeholder="Enter your password" required>
                                 <button class="btn btn-outline-secondary toggle-password" type="button">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
                         </div>
-                        
+
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="rememberMe" name="remember">
@@ -230,20 +247,20 @@
                                 <i class="fas fa-key me-1"></i>Forgot password?
                             </a>
                         </div>
-                        
+
                         <button type="submit" class="btn btn-auth">
                             <i class="fas fa-sign-in-alt me-2"></i>Login to Happy Trails
                         </button>
-                        
+
                         <div class="text-center mt-4">
-                            <p class="mb-0">Don't have an account? 
+                            <p class="mb-0">Don't have an account?
                                 <a href="{{ url_for('signup') }}" class="text-warning fw-semibold text-decoration-none">
                                     Join our family
                                 </a>
                             </p>
                         </div>
                     </form>
-                    
+
                     <div class="social-login">
                         <p class="text-center mb-3 script-font">Or continue with social login</p>
                         <div class="d-flex justify-content-center">
