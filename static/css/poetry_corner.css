@@ -1,0 +1,2003 @@
+/* ============================================
+   🎨 POETRY CORNER - COMPLETE STYLESHEET
+   Designed with love by Kavlin 💖
+   All 4 Phases + Tab Navigation
+   ============================================ */
+
+/* === GLOBAL STYLES === */
+.poetry-corner-wrapper {
+    background: linear-gradient(135deg, #FFF8DC 0%, #FFE4E1 50%, #E6E6FA 100%);
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.poetry-corner-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 182, 193, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(230, 230, 250, 0.08) 0%, transparent 50%);
+    animation: poetrySparkle 10s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes poetrySparkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* === HERO SECTION === */
+.poetry-hero {
+    padding: 140px 0 60px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.poetry-hero-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 4.5rem;
+    background: linear-gradient(135deg, #FFD700 0%, #FF8C00 50%, #FF6347 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.2); }
+}
+
+.poetry-hero-subtitle {
+    font-size: 1.4rem;
+    color: #6C757D;
+    font-weight: 300;
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    line-height: 1.8;
+}
+
+.poetry-hero-quote {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.6rem;
+    color: #F57F17;
+    margin-top: 2rem;
+    font-weight: 600;
+}
+
+.poetry-floating-icon {
+    position: absolute;
+    font-size: 3rem;
+    opacity: 0.2;
+    animation: floatPoetry 6s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes floatPoetry {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-20px) rotate(5deg); }
+    75% { transform: translateY(-10px) rotate(-5deg); }
+}
+
+.icon-1 { top: 15%; left: 10%; animation-delay: 0s; }
+.icon-2 { top: 25%; right: 15%; animation-delay: 2s; }
+.icon-3 { bottom: 20%; left: 20%; animation-delay: 4s; }
+.icon-4 { bottom: 30%; right: 10%; animation-delay: 1s; }
+
+/* ============================================
+   📑 TAB NAVIGATION SYSTEM
+   ============================================ */
+
+.poetry-tabs-section {
+    padding: 40px 0 80px;
+    position: relative;
+    z-index: 3;
+}
+
+.tabs-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    padding: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+.tabs-nav {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    flex: 1;
+    min-width: 200px;
+    padding: 20px 30px;
+    background: transparent;
+    border: 2px solid #E9ECEF;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: #6C757D;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.tab-btn i {
+    font-size: 1.8rem;
+    transition: transform 0.3s ease;
+}
+
+.tab-btn-label {
+    font-size: 0.95rem;
+}
+
+.tab-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+}
+
+.tab-btn:hover {
+    border-color: #FFD700;
+    transform: translateY(-3px);
+}
+
+.tab-btn:hover i {
+    transform: scale(1.1);
+}
+
+.tab-btn.active {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    border-color: #FFD700;
+    color: white;
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+}
+
+.tab-btn.active::before {
+    opacity: 1;
+}
+
+.tab-content {
+    display: none;
+    animation: tabFadeIn 0.6s ease-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes tabFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile Tab Navigation */
+@media (max-width: 768px) {
+    .tabs-nav {
+        flex-direction: column;
+    }
+    
+    .tab-btn {
+        min-width: 100%;
+        flex-direction: row;
+        justify-content: center;
+    }
+    
+    .tab-btn i {
+        font-size: 1.5rem;
+    }
+}
+
+/* ============================================
+   PHASE 1: TRAVEL POETRY STYLES
+   ============================================ */
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.5rem;
+    color: #F57F17;
+    margin-bottom: 1rem;
+}
+
+.section-description {
+    font-size: 1.2rem;
+    color: #6C757D;
+    max-width: 600px;
+    margin: 1.5rem auto 0;
+    line-height: 1.8;
+}
+
+.poetry-filters {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+}
+
+.filter-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #FFD700;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-weight: 600;
+    color: #2C3E50;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    transform: translateY(-3px);
+}
+
+.poetry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.poem-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    border: 2px solid transparent;
+}
+
+.poem-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(255, 215, 0, 0.3);
+    border-color: #FFD700;
+}
+
+.poem-card.kavlin-special {
+    border: 2px solid #FFD700;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 249, 230, 0.95));
+}
+
+.poem-card.kavlin-special::before {
+    content: '💖';
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.8rem;
+    animation: heartbeat 2s ease-in-out infinite;
+    z-index: 10;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.1); }
+    50% { transform: scale(1); }
+    75% { transform: scale(1.05); }
+}
+
+.poem-image-wrapper {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+}
+
+.poem-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.poem-card:hover .poem-image {
+    transform: scale(1.1);
+}
+
+.poem-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 25px;
+}
+
+.poem-theme-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(255, 215, 0, 0.95);
+    color: #2C3E50;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.poem-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: white;
+    margin: 0;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.poem-author {
+    color: #FFD700;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+.poem-author.kavlin-author {
+    color: #FFE4B5;
+    font-style: italic;
+}
+
+.poem-author.kavlin-author::before { content: '✨ '; }
+.poem-author.kavlin-author::after { content: ' ✨'; }
+
+.poem-content {
+    padding: 30px;
+}
+
+.poem-lines {
+    font-size: 1.1rem;
+    line-height: 1.9;
+    color: #2C3E50;
+    font-style: italic;
+    padding: 20px;
+    background: rgba(255, 249, 230, 0.5);
+    border-radius: 15px;
+    border-left: 4px solid #FFD700;
+}
+
+.poem-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.poem-btn {
+    background: transparent;
+    border: 2px solid #FFD700;
+    color: #F57F17;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.poem-btn:hover {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   💬 PHASE 2: QUOTE OF THE DAY STYLES
+   ============================================ */
+
+.quote-of-day-section {
+    padding: 80px 0;
+    position: relative;
+    z-index: 2;
+}
+
+/* === MAIN QUOTE CARD === */
+.quote-main-card {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 30px;
+    padding: 80px 60px;
+    margin: 40px 0;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s ease;
+    animation: fadeInScale 1s ease-out;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.quote-main-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
+}
+
+.quote-main-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 140, 0, 0.1));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.quote-main-card:hover::before {
+    opacity: 1;
+}
+
+.quote-badge {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #2C3E50;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.quote-kavlin-badge {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+    animation: heartbeat 2s ease-in-out infinite;
+}
+
+.quote-content-wrapper {
+    position: relative;
+    text-align: center;
+    margin: 60px 0 40px;
+}
+
+.quote-icon-left,
+.quote-icon-right {
+    font-size: 4rem;
+    color: rgba(255, 215, 0, 0.8);
+    font-family: Georgia, serif;
+    position: absolute;
+    line-height: 1;
+}
+
+.quote-icon-left {
+    top: -20px;
+    left: -10px;
+}
+
+.quote-icon-right {
+    bottom: -40px;
+    right: -10px;
+}
+
+.quote-text-main {
+    font-size: 2.2rem;
+    line-height: 1.6;
+    color: white;
+    font-weight: 400;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+    padding: 0 40px;
+    position: relative;
+    z-index: 1;
+}
+
+.quote-author-main {
+    text-align: center;
+    font-size: 1.4rem;
+    color: #FFE4B5;
+    font-weight: 600;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+.author-dash {
+    margin-right: 10px;
+}
+
+.quote-category-badge {
+    text-align: center;
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    margin-bottom: 30px;
+}
+
+.quote-actions-main {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.quote-action-btn {
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    color: #2C3E50;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.quote-action-btn:hover {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+}
+
+/* === QUOTE STATS BAR === */
+.quote-stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin: 40px 0;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.stat-item i {
+    font-size: 1.8rem;
+}
+
+.stat-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2C3E50;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #6C757D;
+    font-weight: 500;
+}
+
+/* === RECENT QUOTES CAROUSEL === */
+.recent-quotes-section {
+    margin: 60px 0;
+}
+
+.recent-quotes-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: #F57F17;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.quotes-carousel-wrapper {
+    position: relative;
+    padding: 0 60px;
+}
+
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    border: none;
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+    z-index: 10;
+}
+
+.carousel-nav:hover {
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+}
+
+.carousel-nav.prev {
+    left: 0;
+}
+
+.carousel-nav.next {
+    right: 0;
+}
+
+.quotes-carousel {
+    display: flex;
+    gap: 25px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 20px 0;
+    scrollbar-width: none;
+}
+
+.quotes-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.quote-mini-card {
+    flex: 0 0 300px;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.quote-mini-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+    border-color: #FFD700;
+}
+
+.quote-mini-card.kavlin-quote {
+    border-color: #FFD700;
+    background: linear-gradient(135deg, #FFFFFF, #FFF9E6);
+}
+
+.quote-mini-image {
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.mini-kavlin-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4);
+    animation: heartbeat 2s ease-in-out infinite;
+}
+
+.quote-mini-content {
+    padding: 20px;
+}
+
+.quote-mini-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #2C3E50;
+    font-style: italic;
+    margin-bottom: 15px;
+}
+
+.quote-mini-author {
+    font-size: 0.9rem;
+    color: #F57F17;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.quote-mini-category {
+    display: inline-block;
+    background: rgba(255, 215, 0, 0.2);
+    color: #F57F17;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.quote-mini-btn {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 2px solid #FFD700;
+    color: #F57F17;
+    border-radius: 0 0 18px 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quote-mini-btn:hover {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+}
+
+/* === SUBSCRIBE SECTION === */
+.quote-subscribe-section {
+    margin: 60px 0;
+}
+
+.subscribe-card {
+    background: linear-gradient(135deg, #FFFFFF, #FFF8DC);
+    border-radius: 30px;
+    padding: 50px 40px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.subscribe-icon {
+    font-size: 3.5rem;
+    color: #FFD700;
+    margin-bottom: 20px;
+    animation: float 3s ease-in-out infinite;
+}
+
+.subscribe-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: #F57F17;
+    margin-bottom: 15px;
+}
+
+.subscribe-description {
+    font-size: 1.1rem;
+    color: #6C757D;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    line-height: 1.7;
+}
+
+.subscribe-form {
+    max-width: 600px;
+    margin: 0 auto 20px;
+}
+
+.subscribe-input-group {
+    display: flex;
+    gap: 10px;
+    background: white;
+    padding: 8px;
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #FFD700;
+    font-size: 1.1rem;
+}
+
+.subscribe-input {
+    flex: 1;
+    border: none;
+    padding: 15px 15px 15px 50px;
+    font-size: 1rem;
+    border-radius: 50px;
+    outline: none;
+}
+
+.subscribe-btn {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    border: none;
+    color: white;
+    padding: 15px 35px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+    white-space: nowrap;
+}
+
+.subscribe-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+}
+
+.subscribe-note {
+    font-size: 0.85rem;
+    color: #6C757D;
+    margin: 0;
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+    .quote-main-card {
+        padding: 60px 30px;
+    }
+    
+    .quote-text-main {
+        font-size: 1.6rem;
+        padding: 0 20px;
+    }
+    
+    .quote-icon-left,
+    .quote-icon-right {
+        font-size: 3rem;
+    }
+    
+    .quote-actions-main {
+        flex-direction: column;
+    }
+    
+    .quote-action-btn {
+        width: 100%;
+    }
+    
+    .quote-stats-bar {
+        gap: 30px;
+    }
+    
+    .stat-number {
+        font-size: 1.4rem;
+    }
+    
+    .quotes-carousel-wrapper {
+        padding: 0 50px;
+    }
+    
+    .quote-mini-card {
+        flex: 0 0 280px;
+    }
+    
+    .subscribe-input-group {
+        flex-direction: column;
+        border-radius: 25px;
+    }
+    
+    .subscribe-input {
+        padding: 15px 20px 15px 50px;
+    }
+    
+    .subscribe-btn {
+        width: 100%;
+        border-radius: 20px;
+    }
+}
+
+/* ============================================
+   🎨 END OF PHASE 2 STYLES
+   ============================================ */
+
+/* ============================================
+   ✍️ PHASE 3: USER-SUBMITTED POEMS STYLES
+   Independent from Phases 1 & 2
+   ============================================ */
+
+.user-poems-section {
+    padding: 80px 0;
+    position: relative;
+    z-index: 2;
+}
+
+/* === GUEST CTA === */
+.guest-submission-cta {
+    background: linear-gradient(135deg, #FFFFFF, #FFF9E6);
+    border-radius: 30px;
+    padding: 60px 40px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    margin: 40px 0;
+}
+
+.guest-icon {
+    font-size: 4rem;
+    color: #FFD700;
+    margin-bottom: 25px;
+    animation: float 3s ease-in-out infinite;
+}
+
+.guest-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: #F57F17;
+    margin-bottom: 15px;
+}
+
+.guest-message {
+    font-size: 1.2rem;
+    color: #6C757D;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    line-height: 1.7;
+}
+
+.guest-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.btn-guest-action {
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn-guest-action.primary {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+}
+
+.btn-guest-action.secondary {
+    background: white;
+    color: #F57F17;
+    border: 2px solid #FFD700;
+}
+
+.btn-guest-action:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(255, 215, 0, 0.3);
+}
+
+/* === SUBMISSION FORM === */
+.poem-submission-wrapper {
+    margin: 40px 0 60px;
+}
+
+.submission-card {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 30px;
+    padding: 40px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(255, 215, 0, 0.2);
+}
+
+.submission-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.submission-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: #F57F17;
+    margin-bottom: 10px;
+}
+
+.submission-subtitle {
+    font-size: 1.1rem;
+    color: #6C757D;
+    font-style: italic;
+}
+
+/* Form Steps */
+.form-steps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+    padding: 30px 0;
+    position: relative;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    z-index: 2;
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #E9ECEF;
+    color: #6C757D;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.step.active .step-number {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+}
+
+.step-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #6C757D;
+    transition: color 0.3s ease;
+}
+
+.step.active .step-label {
+    color: #F57F17;
+}
+
+.step-connector {
+    width: 100px;
+    height: 2px;
+    background: #E9ECEF;
+    margin: 0 20px;
+    position: relative;
+    top: -25px;
+}
+
+/* Form Steps Content */
+.form-step {
+    display: none;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.form-step.active {
+    display: block;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: #2C3E50;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.required {
+    color: #FF6347;
+}
+
+.form-control-custom {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid #E9ECEF;
+    border-radius: 15px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.form-control-custom:focus {
+    border-color: #FFD700;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.1);
+}
+
+.poem-textarea {
+    font-family: 'Georgia', serif;
+    line-height: 1.8;
+    resize: vertical;
+    min-height: 200px;
+}
+
+.form-hint {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: #6C757D;
+    font-style: italic;
+}
+
+.char-counter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #6C757D;
+}
+
+.char-status {
+    font-weight: 600;
+}
+
+.char-status.valid {
+    color: #28a745;
+}
+
+.char-status.invalid {
+    color: #dc3545;
+}
+
+/* Poetry Tips */
+.poetry-tips {
+    background: rgba(255, 249, 230, 0.7);
+    border-left: 4px solid #FFD700;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 25px 0;
+}
+
+.tips-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.5rem;
+    color: #F57F17;
+    margin-bottom: 15px;
+}
+
+.tips-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tips-list li {
+    padding: 8px 0;
+    font-size: 0.95rem;
+    color: #2C3E50;
+    line-height: 1.6;
+}
+
+/* Preview Card */
+.preview-card {
+    background: linear-gradient(135deg, #FFFFFF, #FFF9E6);
+    border-radius: 20px;
+    padding: 30px;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    margin-bottom: 25px;
+}
+
+.preview-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.8rem;
+    color: #F57F17;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.preview-content {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.preview-poem-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2C3E50;
+    margin-bottom: 8px;
+}
+
+.preview-poem-author {
+    color: #F57F17;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.preview-poem-meta {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.preview-theme,
+.preview-location {
+    display: inline-block;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.preview-theme {
+    background: rgba(255, 215, 0, 0.2);
+    color: #F57F17;
+}
+
+.preview-location {
+    background: rgba(52, 152, 219, 0.1);
+    color: #3498db;
+}
+
+.preview-poem-text {
+    font-family: 'Georgia', serif;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #2C3E50;
+    font-style: italic;
+    white-space: pre-line;
+    padding: 20px;
+    background: rgba(255, 249, 230, 0.3);
+    border-radius: 10px;
+    border-left: 3px solid #FFD700;
+}
+
+/* Submission Agreement */
+.submission-agreement {
+    margin: 25px 0;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    margin-top: 4px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.checkbox-text {
+    font-size: 0.95rem;
+    color: #6C757D;
+    line-height: 1.6;
+}
+
+/* Form Navigation */
+.form-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-form-nav,
+.btn-form-submit {
+    padding: 15px 35px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+}
+
+.btn-form-nav.prev {
+    background: white;
+    color: #6C757D;
+    border: 2px solid #E9ECEF;
+}
+
+.btn-form-nav.prev:hover {
+    border-color: #FFD700;
+    color: #F57F17;
+}
+
+.btn-form-nav.next {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.btn-form-nav.next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+}
+
+.btn-form-submit {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+    flex: 2;
+}
+
+.btn-form-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+}
+
+/* === COMMUNITY GALLERY === */
+.community-gallery-section {
+    margin-top: 80px;
+}
+
+.gallery-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3rem;
+    color: #F57F17;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.gallery-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #6C757D;
+    margin-bottom: 50px;
+}
+
+/* Featured Poems Banner */
+.featured-poems-banner {
+    background: linear-gradient(135deg, #FFF9E6, #FFE4B5);
+    border-radius: 25px;
+    padding: 40px;
+    margin-bottom: 50px;
+    border: 3px solid #FFD700;
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+}
+
+.featured-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: #F57F17;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.featured-poems-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+/* Community Poems Grid */
+.community-poems-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+/* Community Poem Card */
+.community-poem-card {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+}
+
+.community-poem-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+    border-color: rgba(255, 215, 0, 0.5);
+}
+
+.community-poem-card.featured {
+    border-color: #FFD700;
+    background: linear-gradient(135deg, #FFFFFF, #FFFEF7);
+}
+
+.featured-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+    animation: heartbeat 2s ease-in-out infinite;
+}
+
+/* Poem Card Header */
+.poem-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.author-info {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.author-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 3px solid #FFD700;
+    object-fit: cover;
+}
+
+.author-details {
+    flex: 1;
+}
+
+.author-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #2C3E50;
+    margin: 0 0 5px 0;
+}
+
+.poem-meta {
+    font-size: 0.85rem;
+    color: #6C757D;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.meta-dot {
+    color: #E9ECEF;
+}
+
+/* Poem Card Body */
+.poem-card-body {
+    margin-bottom: 20px;
+}
+
+.community-poem-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2C3E50;
+    margin-bottom: 12px;
+}
+
+.theme-badge {
+    display: inline-block;
+    background: rgba(255, 215, 0, 0.15);
+    color: #F57F17;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.community-poem-text {
+    font-family: 'Georgia', serif;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #2C3E50;
+    font-style: italic;
+    white-space: pre-line;
+    padding: 15px;
+    background: rgba(255, 249, 230, 0.3);
+    border-radius: 10px;
+    border-left: 3px solid #FFD700;
+    margin: 0;
+}
+
+/* Poem Card Footer */
+.poem-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.poem-action-btn {
+    background: transparent;
+    border: 2px solid #FFD700;
+    color: #F57F17;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.poem-action-btn:hover {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.poem-action-btn.liked {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+}
+
+.poem-action-btn.liked i {
+    animation: heartbeat 0.6s ease-in-out;
+}
+
+.like-count {
+    font-weight: 700;
+}
+
+.poem-views {
+    color: #6C757D;
+    font-size: 0.9rem;
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+    .submission-card {
+        padding: 25px;
+    }
+    
+    .submission-title {
+        font-size: 2rem;
+    }
+    
+    .form-steps {
+        flex-wrap: wrap;
+    }
+    
+    .step-connector {
+        display: none;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-navigation {
+        flex-direction: column;
+    }
+    
+    .featured-poems-grid,
+    .community-poems-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .guest-actions {
+        flex-direction: column;
+    }
+    
+    .btn-guest-action {
+        width: 100%;
+    }
+}
+
+/* ============================================
+   🎨 END OF PHASE 3 STYLES
+   ============================================ */
+
+/* ============================================
+   PHASE 4: VERSES ALONG THE WAY STYLES
+   ============================================ */
+
+.route-poetry-section {
+    padding: 60px 0;
+}
+
+.route-filters {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+}
+
+.route-filter-btn {
+    background: white;
+    border: 2px solid #FFD700;
+    border-radius: 25px;
+    padding: 12px 25px;
+    font-weight: 600;
+    color: #2C3E50;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.route-filter-btn:hover,
+.route-filter-btn.active {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+}
+
+.route-poems-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 35px;
+    margin-bottom: 50px;
+}
+
+.route-poem-card {
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    border: 2px solid transparent;
+    position: relative;
+}
+
+.route-poem-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(255, 215, 0, 0.3);
+    border-color: #FFD700;
+}
+
+.route-poem-card.kavlin-favorite {
+    border: 3px solid #FFD700;
+    background: linear-gradient(135deg, #FFFFFF, #FFF9E6);
+}
+
+.route-poem-card.kavlin-favorite::after {
+    content: '⭐';
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 2rem;
+    animation: starTwinkle 2s ease-in-out infinite;
+}
+
+@keyframes starTwinkle {
+    0%, 100% { opacity: 1; transform: rotate(0deg) scale(1); }
+    50% { opacity: 0.7; transform: rotate(180deg) scale(1.1); }
+}
+
+.route-image-wrapper {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+}
+
+.route-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.route-poem-card:hover .route-image {
+    transform: scale(1.15);
+}
+
+.route-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+    padding: 20px;
+}
+
+.route-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 215, 0, 0.95);
+    color: #2C3E50;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.route-name {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.8rem;
+    color: white;
+    margin: 0;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.route-details {
+    display: flex;
+    gap: 15px;
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #FFE4B5;
+}
+
+.route-poem-content {
+    padding: 25px;
+}
+
+.route-poem-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.8rem;
+    color: #F57F17;
+    margin-bottom: 15px;
+}
+
+.route-poem-excerpt {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #2C3E50;
+    font-style: italic;
+    padding: 15px;
+    background: rgba(255, 249, 230, 0.4);
+    border-radius: 10px;
+    border-left: 3px solid #FFD700;
+    margin-bottom: 15px;
+}
+
+.route-poem-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.season-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(52, 152, 219, 0.1);
+    color: #3498db;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.route-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.route-action-btn {
+    background: transparent;
+    border: 2px solid #FFD700;
+    color: #F57F17;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.route-action-btn:hover {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.route-action-btn.primary {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    border: none;
+}
+
+.route-action-btn.primary:hover {
+    transform: translateY(-2px) scale(1.05);
+}
+
+/* Route Map Section */
+.route-map-section {
+    margin: 60px 0;
+    background: white;
+    border-radius: 25px;
+    padding: 40px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+.map-container {
+    height: 500px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+#routeMap {
+    height: 100%;
+    width: 100%;
+}
+
+.map-legend {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: rgba(255, 249, 230, 0.5);
+    border-radius: 20px;
+}
+
+.legend-icon {
+    font-size: 1.5rem;
+}
+
+/* Kavlin's Favorites Section */
+.kavlin-favorites-banner {
+    background: linear-gradient(135deg, #FFF9E6, #FFE4B5);
+    border-radius: 25px;
+    padding: 40px;
+    margin: 50px 0;
+    border: 3px solid #FFD700;
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.2);
+}
+
+.favorites-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: #F57F17;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.favorites-subtitle {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #6C757D;
+    margin-bottom: 35px;
+    font-style: italic;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .poetry-hero-title {
+        font-size: 3rem;
+    }
+    
+    .section-title {
+        font-size: 2.5rem;
+    }
+    
+    .poetry-grid,
+    .route-poems-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .quote-text-main {
+        font-size: 1.6rem;
+        padding: 0 20px;
+    }
+    
+    .map-container {
+        height: 400px;
+    }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.load-more-btn {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    border: none;
+    color: white;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+}
+
+.load-more-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+}
+
+.load-more-wrapper {
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: white;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 12px 35px rgba(255, 215, 0, 0.5);
+}
