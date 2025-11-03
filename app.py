@@ -597,7 +597,6 @@ def poetry_corner():
     ]
     
     # Quote of the Day data - Phase 2
-    # In production, this would rotate daily from database
     from datetime import date
     
     quotes_collection = [
@@ -640,22 +639,153 @@ def poetry_corner():
         }
     ]
     
-    # Select quote based on day of year (rotates daily)
     day_of_year = date.today().timetuple().tm_yday
     today_quote = quotes_collection[day_of_year % len(quotes_collection)]
-    
-    # Recent quotes for carousel
     recent_quotes = quotes_collection[:4]
+    
+    # User-Submitted Poems data - Phase 3
+    # In production, fetch from database with pagination
+    community_poems = [
+        {
+            'id': 1,
+            'title': 'Mountain Whispers',
+            'author': 'Sarah Chen',
+            'author_avatar': 'https://i.pravatar.cc/150?img=1',
+            'poem_text': 'Through winding roads, the mountains call,\nWhispers of adventure, standing tall.\nEach curve reveals a story new,\nIn every vista, dreams come true.',
+            'theme': 'Mountains',
+            'location': 'Himachal Pradesh',
+            'submitted_date': '2025-10-28',
+            'likes': 127,
+            'views': 543,
+            'is_featured': True
+        },
+        {
+            'id': 2,
+            'title': 'Bus Window Dreams',
+            'author': 'Raj Patel',
+            'author_avatar': 'https://i.pravatar.cc/150?img=12',
+            'poem_text': 'Frame by frame, the world goes by,\nClouds dancing in an endless sky.\nA traveler\'s heart beats with the road,\nCarrying memories as its load.',
+            'theme': 'Journey',
+            'location': 'Rajasthan',
+            'submitted_date': '2025-10-27',
+            'likes': 89,
+            'views': 421
+        },
+        {
+            'id': 3,
+            'title': 'Sunset Serendipity',
+            'author': 'Maya Krishnan',
+            'author_avatar': 'https://i.pravatar.cc/150?img=5',
+            'poem_text': 'Golden hours paint the sky,\nAs we watch the day say goodbye.\nStrangers become friends so fast,\nIn moments beautiful and vast.',
+            'theme': 'Friendship',
+            'location': 'Kerala',
+            'submitted_date': '2025-10-26',
+            'likes': 156,
+            'views': 678,
+            'is_featured': True
+        },
+        {
+            'id': 4,
+            'title': 'Station Soliloquy',
+            'author': 'Arjun Mehta',
+            'author_avatar': 'https://i.pravatar.cc/150?img=8',
+            'poem_text': 'In the chaos of arrivals and goodbyes,\nI found peace beneath open skies.\nEvery station holds a tale untold,\nOf brave hearts and spirits bold.',
+            'theme': 'Reflection',
+            'location': 'Delhi',
+            'submitted_date': '2025-10-25',
+            'likes': 92,
+            'views': 389
+        },
+        {
+            'id': 5,
+            'title': 'Monsoon Magic',
+            'author': 'Priya Sharma',
+            'author_avatar': 'https://i.pravatar.cc/150?img=9',
+            'poem_text': 'Raindrops race on window panes,\nWashing away life\'s mundane chains.\nThe bus sways through misty green,\nThe most beautiful ride I\'ve seen.',
+            'theme': 'Nature',
+            'location': 'Maharashtra',
+            'submitted_date': '2025-10-24',
+            'likes': 134,
+            'views': 567
+        },
+        {
+            'id': 6,
+            'title': 'Night Journey',
+            'author': 'Aditya Kumar',
+            'author_avatar': 'https://i.pravatar.cc/150?img=13',
+            'poem_text': 'Stars guide us through the night,\nHeadlights pierce the dark so bright.\nIn silence, thoughts begin to roam,\nEvery journey leads us home.',
+            'theme': 'Night',
+            'location': 'Punjab',
+            'submitted_date': '2025-10-23',
+            'likes': 78,
+            'views': 312
+        }
+    ]
+    
+    # Submission themes for dropdown
+    submission_themes = [
+        'Journey & Adventure',
+        'Mountains & Hills',
+        'Coastal & Beaches',
+        'Friendship & Connection',
+        'Solitude & Reflection',
+        'Nature & Seasons',
+        'City & Urban',
+        'Night Travel',
+        'First Journey',
+        'Coming Home'
+    ]
     
     return render_template('features/poetry_corner.html', 
                           travel_poems=travel_poems,
                           today_quote=today_quote,
                           recent_quotes=recent_quotes,
-                          current_date=date.today())
+                          current_date=date.today(),
+                          community_poems=community_poems,
+                          submission_themes=submission_themes,
+                          user_is_logged_in=current_user.is_authenticated)
 
-# Initialize the database and add sample data
-# Replace the @app.before_first_request decorator with this code
-# This is because newer Flask versions don't support before_first_request with application factories
+
+@app.route('/poetry-corner/submit', methods=['POST'])
+@login_required
+def submit_poem():
+    """Handle poem submission - Phase 3"""
+    try:
+        title = request.form.get('title', '').strip()
+        poem_text = request.form.get('poem_text', '').strip()
+        theme = request.form.get('theme', '').strip()
+        location = request.form.get('location', '').strip()
+        
+        # Validation
+        if not all([title, poem_text, theme]):
+            return jsonify({'success': False, 'message': 'Please fill all required fields'}), 400
+        
+        if len(poem_text) < 50:
+            return jsonify({'success': False, 'message': 'Poem must be at least 50 characters'}), 400
+        
+        if len(poem_text) > 500:
+            return jsonify({'success': False, 'message': 'Poem must not exceed 500 characters'}), 400
+        
+        # In production, save to database
+        # new_poem = CommunityPoem(
+        #     user_id=current_user.id,
+        #     title=title,
+        #     poem_text=poem_text,
+        #     theme=theme,
+        #     location=location,
+        #     status='pending'  # Pending moderation
+        # )
+        # db.session.add(new_poem)
+        # db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Your poem has been submitted! It will appear after review.',
+            'poem_id': 'temp_' + str(hash(title))
+        })
+        
+    except Exception as e:
+        return jsonify({'success': False, 'message': 'An error occurred. Please try again.'}), 500
 
 # Run the application
 if __name__ == '__main__':
