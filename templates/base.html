@@ -1,186 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Happy Trails - Crafted with Love by Kavlin{% endblock %}</title>
-    
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}Happy Trails - Crafted with Love by Kavlin{% endblock %}
+    </title>
+
     <!-- Enhanced Meta Tags -->
-    <meta name="description" content="Happy Trails - Beautiful bus booking system designed with love by Kavlin">
-    <meta name="keywords" content="bus booking, travel, Kavlin, poetry, beautiful design">
-    <meta name="author" content="Kavlin - Developer & Poet">
-    
+    <meta
+      name="description"
+      content="Happy Trails - Beautiful bus booking system designed with love by Kavlin"
+    />
+    <meta
+      name="keywords"
+      content="bus booking, travel, Kavlin, poetry, beautiful design"
+    />
+    <meta name="author" content="Kavlin - Developer & Poet" />
+
     <!-- Preload Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <!-- Bootstrap & Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
+
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
-    
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/logo.png') }}"
+    />
+
     {% block extra_css %}{% endblock %}
-</head>
-<body>
+  </head>
+  <body>
     <!-- Beautiful Navigation -->
     <nav class="navbar navbar-expand-lg pb-40">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Happy Trails Logo" class="logo me-2">
-                <span class="script-font">Happy Trails</span>
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}">
-                            <i class="fas fa-home me-1"></i> Home
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('index') }}#features">
-                            <i class="fas fa-star me-1"></i> Features
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('index') }}#kavlin-tribute">
-                            <i class="fas fa-heart me-1"></i> About Kavlin
-                        </a>
-                    </li>
-                    {% if current_user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('my_bookings') }}">
-                                <i class="fas fa-ticket-alt me-1"></i> My Bookings
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('logout') }}">
-                                <i class="fas fa-sign-out-alt me-1"></i> Logout
-                            </a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('login') }}">
-                                <i class="fas fa-sign-in-alt me-1"></i> Login
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-primary ms-2" href="{{ url_for('signup') }}">
-                                <i class="fas fa-user-plus me-1"></i> Sign Up
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
+      <div class="container">
+        <a
+          class="navbar-brand d-flex align-items-center"
+          href="{{ url_for('index') }}"
+        >
+          <img
+            src="{{ url_for('static', filename='images/logo.png') }}"
+            alt="Happy Trails Logo"
+            class="logo me-2"
+          />
+          <span class="script-font">Happy Trails</span>
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.endpoint == 'index' %}active{% endif %}"
+                href="{{ url_for('index') }}"
+              >
+                <i class="fas fa-home me-1"></i> Home
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('index') }}#features">
+                <i class="fas fa-star me-1"></i> Features
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('index') }}#kavlin-tribute">
+                <i class="fas fa-heart me-1"></i> About Kavlin
+              </a>
+            </li>
+            {% if current_user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('my_bookings') }}">
+                <i class="fas fa-ticket-alt me-1"></i> My Bookings
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('logout') }}">
+                <i class="fas fa-sign-out-alt me-1"></i> Logout
+              </a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('login') }}">
+                <i class="fas fa-sign-in-alt me-1"></i> Login
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link btn btn-primary ms-2"
+                href="{{ url_for('signup') }}"
+              >
+                <i class="fas fa-user-plus me-1"></i> Sign Up
+              </a>
+            </li>
+            {% endif %}
+          </ul>
         </div>
+      </div>
     </nav>
 
     <!-- Flash Messages with Beautiful Styling -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="container mt-3" style="padding-top: 80px;">
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ 'success' if category == 'success' else 'error' }} alert-dismissible fade show" role="alert">
-                        <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-triangle' }} me-2"></i>
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <div class="container mt-3" style="padding-top: 80px">
+      {% for category, message in messages %}
+      <div
+        class="alert alert-{{ 'success' if category == 'success' else 'error' }} alert-dismissible fade show"
+        role="alert"
+      >
+        <i
+          class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-triangle' }} me-2"
+        ></i>
+        {{ message }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+        ></button>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %} {% endwith %}
 
     <!-- Main Content -->
-    <main>
-        {% block content %}{% endblock %}
-    </main>
+    <main>{% block content %}{% endblock %}</main>
 
     <!-- Beautiful Footer with Kavlin Tribute -->
     <footer class="footer">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <div class="footer-about">
-                        <h5 class="footer-logo script-font">Happy Trails</h5>
-                        <p class="mb-3">A beautiful travel companion crafted with love, poetry, and code.</p>
-                        <div class="kavlin-credit">
-                            <p class="script-font" style="color: var(--primary-yellow); font-size: 1.1rem;">
-                                "Where code meets poetry, beauty is born" 
-                                <br>
-                                <small>- Designed with 💖 by Kavlin</small>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-2 col-md-4">
-                    <h6 class="text-warning mb-3">Quick Links</h6>
-                    <ul class="list-unstyled footer-links">
-                        <li><a href="{{ url_for('index') }}">Home</a></li>
-                        <li><a href="{{ url_for('index') }}#features">Features</a></li>
-                        <li><a href="{{ url_for('index') }}#kavlin-tribute">About Kavlin</a></li>
-                    </ul>
-                </div>
-                
-                <div class="col-lg-2 col-md-4">
-                    <h6 class="text-warning mb-3">Services</h6>
-                    <ul class="list-unstyled footer-links">
-                        <li><a href="#">Bus Booking</a></li>
-                        <li><a href="#">Live Tracking</a></li>
-                        <li><a href="#">Travel Planning</a></li>
-                        <li><a href="#">Poetry Corner</a></li>
-                    </ul>
-                </div>
-                
-                <div class="col-lg-4 col-md-4">
-                    <h6 class="text-warning mb-3">Connect With Us</h6>
-                    <p class="mb-3">
-                        <i class="fas fa-envelope me-2"></i> hello@happytrails.com<br>
-                        <i class="fas fa-phone me-2"></i> +91 98765 43210<br>
-                        <i class="fas fa-map-marker-alt me-2"></i> Solan, Himachal Pradesh
-                    </p>
-                    
-                    <div class="social-links">
-                        <a href="https://linkedin.com/in/kavlin-kaur" class="social-link" title="LinkedIn">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="https://github.com/Kavlin-Kaur" class="social-link" title="GitHub">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="https://kavlin-kaur.github.io/conveys/" class="social-link" title="Poetry Blog">
-                            <i class="fas fa-feather-alt"></i>
-                        </a>
-                    </div>
-                </div>
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-4">
+            <div class="footer-about">
+              <h5 class="footer-logo script-font">Happy Trails</h5>
+              <p class="mb-3">
+                A beautiful travel companion crafted with love, poetry, and
+                code.
+              </p>
+              <div class="kavlin-credit">
+                <p
+                  class="script-font"
+                  style="color: var(--primary-yellow); font-size: 1.1rem"
+                >
+                  "Where code meets poetry, beauty is born"
+                  <br />
+                  <small>- Designed with 💖 by Kavlin</small>
+                </p>
+              </div>
             </div>
-            
-            <hr class="my-4" style="border-color: var(--primary-yellow);">
-            
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <p class="mb-0">&copy; 2025 Happy Trails. Crafted with love by Kavlin 💖</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <small class="script-font text-warning">
-                        "Code is poetry, and poetry is life" ✨
-                    </small>
-                </div>
+          </div>
+
+          <div class="col-lg-2 col-md-4">
+            <h6 class="text-warning mb-3">Quick Links</h6>
+            <ul class="list-unstyled footer-links">
+              <li><a href="{{ url_for('index') }}">Home</a></li>
+              <li><a href="{{ url_for('index') }}#features">Features</a></li>
+              <li>
+                <a href="{{ url_for('index') }}#kavlin-tribute">About Kavlin</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-2 col-md-4">
+            <h6 class="text-warning mb-3">Services</h6>
+            <ul class="list-unstyled footer-links">
+              <li><a href="#">Bus Booking</a></li>
+              <li><a href="#">Live Tracking</a></li>
+              <li><a href="#">Travel Planning</a></li>
+              <li><a href="#">Poetry Corner</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-4">
+            <h6 class="text-warning mb-3">Connect With Us</h6>
+            <p class="mb-3">
+              <i class="fas fa-envelope me-2"></i> hello@happytrails.com<br />
+              <i class="fas fa-phone me-2"></i> +91 98765 43210<br />
+              <i class="fas fa-map-marker-alt me-2"></i> Solan, Himachal Pradesh
+            </p>
+
+            <div class="social-links">
+              <a
+                href="https://linkedin.com/in/kavlin-kaur"
+                class="social-link"
+                title="LinkedIn"
+              >
+                <i class="fab fa-linkedin"></i>
+              </a>
+              <a
+                href="https://github.com/Kavlin-Kaur"
+                class="social-link"
+                title="GitHub"
+              >
+                <i class="fab fa-github"></i>
+              </a>
+              <a
+                href="https://kavlin-kaur.github.io/conveys/"
+                class="social-link"
+                title="Poetry Blog"
+              >
+                <i class="fas fa-feather-alt"></i>
+              </a>
             </div>
+          </div>
         </div>
+
+        <hr class="my-4" style="border-color: var(--primary-yellow)" />
+
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <p class="mb-0">
+              &copy; 2025 Happy Trails. Crafted with love by Kavlin 💖
+            </p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <small class="script-font text-warning">
+              "Code is poetry, and poetry is life" ✨
+            </small>
+          </div>
+        </div>
+      </div>
     </footer>
+
+    <!-- Back to Top Button -->
+    <button
+      id="back-to-top"
+      title="Return to the stars"
+      aria-label="Back to top"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="40"
+        height="40"
+        viewBox="0 0 512 512"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <!-- Rocket Body -->
+        <path
+          d="M0 0 C0.73702148 0.35819824 1.47404297 0.71639648 2.23339844 1.08544922 C33.35162599 16.419984 62.70235759 39.55204832 84 67 C85.01789143 68.2776129 86.03614582 69.55493668 87.0546875 70.83203125 C94.88964276 80.75335513 101.76009426 91.00835742 108 102 C108.68425049 103.19786133 108.68425049 103.19786133 109.38232422 104.41992188 C121.36670012 125.64531286 129.75201368 148.21558686 135 172 C135.19819336 172.8854248 135.39638672 173.77084961 135.60058594 174.68310547 C147.64828953 229.95423133 139.65829391 288.33630949 115 339 C114.64180176 339.73702148 114.28360352 340.47404297 113.91455078 341.23339844 C98.56736823 372.37729199 75.43013874 401.64615782 48 423 C46.7212575 424.01941 45.4426186 425.03894997 44.1640625 426.05859375 C34.24339679 433.89131218 23.99002327 440.76101354 13 447 C11.80213867 447.68425049 11.80213867 447.68425049 10.58007812 448.38232422 C-10.65105422 460.36994183 -33.21482673 468.7350638 -57 474 C-57.87479004 474.19819336 -58.74958008 474.39638672 -59.65087891 474.60058594 C-122.6636629 488.53554059 -191.35813559 476.13091599 -246 442 C-255.38075944 435.86603579 -264.41710488 429.20803011 -273 422 C-273.78189697 421.3512793 -273.78189697 421.3512793 -274.57958984 420.68945312 C-286.91186479 410.44125884 -298.12409883 399.68611695 -308 387 C-309.01941 385.7212575 -310.03894997 384.4426186 -311.05859375 383.1640625 C-318.89131218 373.24339679 -325.76101354 362.99002327 -332 352 C-332.68425049 350.80213867 -332.68425049 350.80213867 -333.38232422 349.58007812 C-366.59606453 290.75560281 -372.93698357 220.71986901 -355 156 C-344.96738462 120.56899371 -326.59254364 87.37728755 -302 60 C-301.53464844 59.47970215 -301.06929687 58.9594043 -300.58984375 58.42333984 C-291.65057931 48.45191919 -282.4754331 39.37145644 -272 31 C-271.24332031 30.36449219 -270.48664063 29.72898438 -269.70703125 29.07421875 C-195.12377265 -32.92873117 -86.066548 -41.88905733 0 0 Z"
+          fill="currentColor"
+          transform="translate(368,29)"
+        />
+        <!-- Rocket Window (White) -->
+        <path
+          d="M0 0 C5.53045696 5.31043878 10.23083204 11.42805942 14.97265625 17.4375 C18.58806903 22.00727029 22.30403201 26.49534158 26 31 C27.50028317 32.83310162 29.00028408 34.66643427 30.5 36.5 C31.2425 37.4075 31.985 38.315 32.75 39.25 C129.5 157.5 129.5 157.5 131.73046875 160.23046875 C133.28995437 162.13352435 134.85539621 164.03170976 136.42578125 165.92578125 C138.63778176 168.60117958 140.82084826 171.29785184 143 174 C143.845625 175.010625 144.69125 176.02125 145.5625 177.0625 C148.18362648 182.41871498 147.69325891 187.70357986 146 193.3125 C143.18662939 197.09296676 140.38913442 199.23095096 136 201 C131.1454562 201.67199194 126.32592657 201.58457729 121.4375 201.48828125 C120.03647125 201.47893984 118.63542601 201.47183001 117.234375 201.46684265 C113.57120582 201.44787645 109.90904957 201.39886935 106.24627686 201.34332275 C102.49895932 201.29190316 98.75147591 201.26928055 95.00390625 201.24414062 C87.66881222 201.190737 80.33454877 201.10555477 73 201 C73.00368717 201.82845208 73.00737434 202.65690416 73.01117325 203.51046085 C73.0995369 223.67488279 73.16571578 243.83927132 73.20724869 264.00384617 C73.22786791 273.75532042 73.2559763 283.50666538 73.30175781 293.25805664 C73.34164514 301.75805258 73.36743747 310.25795487 73.37635398 318.7580418 C73.38156551 323.25819584 73.39380117 327.75808198 73.42292023 332.2581501 C73.45011931 336.49593708 73.45843596 340.73334641 73.45243073 344.97121239 C73.45352896 346.52441079 73.46145625 348.07762215 73.4768219 349.63074493 C73.61970204 364.82093128 73.61970204 364.82093128 69 370 C62.65628697 375.19538109 54.96649264 374.56024593 47.16772461 374.50170898 C45.77889968 374.50549759 44.39007853 374.51100207 43.00126648 374.51808167 C39.24916136 374.53198198 35.49751759 374.52090573 31.74543834 374.50437045 C27.80893182 374.49046521 23.8724506 374.49698614 19.93592834 374.50050354 C13.32789726 374.50320104 6.72004829 374.48976875 0.11206055 374.46655273 C-7.51679833 374.43993481 -15.14535304 374.43820108 -22.77424246 374.4499411 C-30.12870854 374.46073657 -37.4830651 374.45451867 -44.83752251 374.44038582 C-47.96057171 374.43464244 -51.08354032 374.43469564 -54.20659065 374.43945122 C-57.88638793 374.44423908 -61.56585397 374.43404505 -65.2455883 374.41249657 C-67.23251643 374.40431863 -69.21948804 374.41076077 -71.2064209 374.41769409 C-78.26498703 374.3590855 -84.16624223 374.30081387 -89.7421875 369.5 C-93.42665649 364.62125486 -94.12494915 361.55965578 -94.12025452 355.52705383 C-94.12110894 354.86703863 -94.12196337 354.20702342 -94.12284368 353.52700776 C-94.12449321 351.31135337 -94.11898573 349.09577439 -94.11352539 346.88012695 C-94.11324338 345.29349774 -94.11340153 343.7068684 -94.1139679 342.12023926 C-94.11425533 337.80855956 -94.10836735 333.49690756 -94.10139394 329.18523431 C-94.09515138 324.68087927 -94.09455588 320.17652362 -94.09336853 315.67216492 C-94.09025788 307.14055216 -94.08204807 298.60895219 -94.07201904 290.07734507 C-94.06084965 280.36524922 -94.05534537 270.65315276 -94.05032361 260.94105208 C-94.03986525 240.96069425 -94.02227094 220.98034793 -94 201 C-95.15725586 201.01665459 -95.15725586 201.01665459 -96.33789062 201.03364563 C-103.63454987 201.1341344 -110.93087018 201.21010904 -118.2280426 201.25906086 C-121.97899063 201.28507447 -125.72936343 201.32031849 -129.47998047 201.37719727 C-133.10454908 201.43181593 -136.72856701 201.46148238 -140.35351562 201.47438622 C-141.73137065 201.48357311 -143.10919801 201.50151288 -144.48681641 201.52865028 C-151.7343177 201.66564462 -157.53049171 201.72498781 -163.56665039 197.40007019 C-167.17248812 193.87795257 -167.86335378 189.94134064 -168.5625 185.125 C-168.11816217 176.18697358 -159.29145302 168.65469576 -153.734375 162.19921875 C-150.71786146 158.68934044 -147.83291909 155.08264138 -144.95703125 151.45703125 C-141.35295349 146.93215119 -137.6692291 142.47206897 -134 138 C-132.49971683 136.16689838 -130.99971592 134.33356573 -129.5 132.5 C-102.5 99.5 -75.5 66.5 -48.5 33.5 C-47.75234375 32.58605469 -47.0046875 31.67210937 -46.234375 30.73046875 C-44.78702949 28.96177205 -43.33914699 27.19351457 -41.890625 25.42578125 C-41.18421875 24.56339844 -40.4778125 23.70101562 -39.75 22.8125 C-39.01910156 21.92175781 -38.28820312 21.03101562 -37.53515625 20.11328125 C-35.56806394 17.70709868 -33.62394825 15.2832553 -31.68359375 12.85546875 C-30.81686035 11.77591919 -30.81686035 11.77591919 -29.93261719 10.67456055 C-28.79001579 9.25078458 -27.65118902 7.82396919 -26.51660156 6.39379883 C-19.64957515 -2.14384045 -10.45452891 -7.19428081 0 0 Z "
+          fill="#FEFEFD"
+          transform="translate(266,71)"
+        />
+
+        <!-- Rocket Flame -->
+        <path
+          d="M0 0 C4.08025373 1.55257915 6.37737059 4.4631393 9.0625 7.75 C9.54146729 8.32564697 10.02043457 8.90129395 10.51391602 9.49438477 C14.36927102 14.15622031 18.09342532 18.91824128 21.80297852 23.69628906 C25.56247098 28.51216235 29.51446863 33.13742515 33.51928711 37.74975586 C37.45251429 42.30284897 41.17182889 46.99417678 44.85546875 51.75 C48.11981246 55.94033232 51.51772465 59.98956463 55 64 C59.4537707 69.12927834 63.69625218 74.38017572 67.85546875 79.75 C71.11981246 83.94033232 74.51772465 87.98956463 78 92 C82.44721926 97.12173323 86.68784458 102.36182854 90.83569336 107.72802734 C94.75487846 112.76667539 98.88855199 117.60169195 103.1171875 122.3828125 C105.53033182 125.14069172 107.45206782 127.68663178 109 131 C107.70376709 131.0093457 106.40753418 131.01869141 105.07202148 131.02832031 C100.24290144 131.06832288 95.41441158 131.1341106 90.58569336 131.20751953 C88.49951296 131.23566962 86.41322708 131.2569137 84.3269043 131.27099609 C81.32025385 131.29250802 78.31486359 131.33920124 75.30859375 131.390625 C73.91911781 131.39246796 73.91911781 131.39246796 72.50157166 131.39434814 C66.49661038 131.52884576 62.84375667 132.35528348 58 136 C54.49339549 140.4029106 53.49827342 143.31027524 53.48101807 148.90963745 C53.47351681 149.58038303 53.46601556 150.25112862 53.458287 150.94219983 C53.43808256 153.17646707 53.44609747 155.40971243 53.45410156 157.64404297 C53.44536254 159.25082905 53.4348756 160.85760644 53.42277527 162.46437073 C53.39493478 166.81725176 53.39151015 171.16984855 53.39249516 175.52280569 C53.38936437 180.0752558 53.36374272 184.62757822 53.34051514 189.17996216 C53.29996427 197.7964655 53.27961657 206.41289318 53.26654124 215.02947724 C53.24769929 226.67592948 53.19762036 238.32224478 53.14929771 249.96860504 C53.07400929 268.31239625 53.04043195 286.65602216 53 305 C18.68 305 -15.64 305 -51 305 C-51.01417969 293.31464844 -51.02835938 281.62929688 -51.04296875 269.58984375 C-51.06302216 262.19333719 -51.0843315 254.79686971 -51.11132812 247.40039062 C-51.15395774 235.65663709 -51.19141373 223.91302806 -51.19555664 212.16918945 C-51.19859746 203.61634113 -51.21910374 195.06374289 -51.26052457 186.51099116 C-51.28184562 181.98290777 -51.29445981 177.45517984 -51.28615379 172.92704582 C-51.27860794 168.66280965 -51.29445768 164.39929336 -51.32806015 160.13518906 C-51.33628704 158.57235777 -51.3360508 157.00945482 -51.32659721 155.44663048 C-51.00700567 146.10588928 -51.00700567 146.10588928 -54.34234619 137.63424683 C-60.19759201 131.83057042 -66.290792 131.54338181 -74.08984375 131.48828125 C-75.03436905 131.47033005 -75.97889435 131.45237885 -76.95204163 131.43388367 C-79.94715 131.38001844 -82.94210119 131.34596142 -85.9375 131.3125 C-87.9772353 131.27930593 -90.01694992 131.24481435 -92.05664062 131.20898438 C-97.03764657 131.12430565 -102.01860783 131.05738128 -107 131 C-104.15695216 126.66838234 -101.13992879 122.66236966 -97.75 118.75 C-93.7212536 114.04599979 -89.78799967 109.28553386 -85.9375 104.43359375 C-79.45259861 96.28824382 -72.77469411 88.29441521 -66.15380859 80.25952148 C-62.92898012 76.34527392 -59.70890886 72.42732129 -56.5 68.5 C-52.0660312 63.07335162 -47.60886462 57.66593719 -43.15234375 52.2578125 C-39.92805276 48.34409428 -36.70843416 44.42674032 -33.5 40.5 C-29.07196647 35.08061568 -24.62124321 29.68004079 -20.16992188 24.27978516 C-16.76952717 20.15324523 -13.37911344 16.01898034 -10 11.875 C-6.72427714 7.86453556 -3.39134706 3.91309276 0 0 Z"
+          fill="currentColor"
+          transform="translate(255,109)"
+        />
+      </svg>
+      <span class="sr-only">Back to Top</span>
+    </button>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% block extra_js %}{% endblock %}
-</body>
+  </body>
 </html>
