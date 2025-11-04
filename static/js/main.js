@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
     initializeTooltips();
     initializeScrollEffects();
     initializeKavlinMagic();
-    
+    backtotopfunction();
     console.log("💖 All systems ready! Welcome to Happy Trails! 🚌");
 });
 
@@ -702,3 +702,19 @@ window.addEventListener('load', function() {
 });
 
 console.log("✨ Happy Trails JavaScript loaded successfully! Made with love by Kavlin 💖");
+
+
+// Back to Top Button
+
+function backtotopfunction() {
+  const btn = document.getElementById('back-to-top');
+
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('show', window.scrollY > 300);
+  });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+  });
+}
