@@ -514,9 +514,412 @@ def traffic_update(bus_id):
         "delay_minutes": delay_minutes
     })
 
-# Initialize the database and add sample data
-# Replace the @app.before_first_request decorator with this code
-# This is because newer Flask versions don't support before_first_request with application factories
+@app.route('/poetry-corner')
+def poetry_corner():
+    from datetime import date
+    
+    # Phase 1: Travel Poetry
+    travel_poems = [
+        {
+            'title': 'The Road Not Taken',
+            'author': 'Robert Frost',
+            'lines': [
+                'Two roads diverged in a yellow wood,',
+                'And sorry I could not travel both',
+                'And be one traveler, long I stood',
+                'And looked down one as far as I could',
+                'To where it bent in the undergrowth;'
+            ],
+            'theme': 'choices',
+            'image': 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800'
+        },
+        {
+            'title': 'Where the Road Meets the Sky',
+            'author': 'Kavlin',
+            'lines': [
+                'In every journey, a story unfolds,',
+                'Where asphalt meets dreams, and hearts grow bold.',
+                'The bus hums a tune of places unknown,',
+                'And every mile whispers, "You\'re not alone."'
+            ],
+            'theme': 'journey',
+            'image': 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800',
+            'is_kavlin': True
+        },
+        {
+            'title': 'Windows to Wanderlust',
+            'author': 'Kavlin',
+            'lines': [
+                'Through windows wide, the world parades,',
+                'Mountains bow and valleys fade.',
+                'Each turn a verse, each stop a line,',
+                'Poetry in motion, beautifully divine.'
+            ],
+            'theme': 'wanderlust',
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+            'is_kavlin': True
+        },
+        {
+            'title': 'Song of the Open Road',
+            'author': 'Walt Whitman',
+            'lines': [
+                'Afoot and light-hearted I take to the open road,',
+                'Healthy, free, the world before me,',
+                'The long brown path before me leading wherever I choose.',
+            ],
+            'theme': 'freedom',
+            'image': 'https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=800'
+        },
+        {
+            'title': 'Ticket to Tomorrow',
+            'author': 'Kavlin',
+            'lines': [
+                'A ticket is more than paper and ink,',
+                'It\'s a promise, a dream, a hopeful link.',
+                'To sunrise views and evening gold,',
+                'To stories yet to be told.'
+            ],
+            'theme': 'hope',
+            'image': 'https://images.unsplash.com/photo-1527838832700-5059252407fa?w=800',
+            'is_kavlin': True
+        },
+        {
+            'title': 'The Bus Stop Philosopher',
+            'author': 'Kavlin',
+            'lines': [
+                'At the crossroads where strangers meet,',
+                'Time slows down, hearts skip a beat.',
+                'Stories shared in whispered tone,',
+                'In that moment, we\'re never alone.'
+            ],
+            'theme': 'connection',
+            'image': 'https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?w=800',
+            'is_kavlin': True
+        }
+    ]
+    
+    # Phase 2: Quote of the Day
+    quotes_collection = [
+        {
+            'quote': 'The journey of a thousand miles begins with a single step.',
+            'author': 'Lao Tzu',
+            'category': 'Journey',
+            'bg_image': 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200',
+            'color_scheme': 'sunset'
+        },
+        {
+            'quote': 'Not all those who wander are lost.',
+            'author': 'J.R.R. Tolkien',
+            'category': 'Wanderlust',
+            'bg_image': 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1200',
+            'color_scheme': 'forest'
+        },
+        {
+            'quote': 'Travel is the only thing you buy that makes you richer.',
+            'author': 'Unknown',
+            'category': 'Wisdom',
+            'bg_image': 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200',
+            'color_scheme': 'ocean'
+        },
+        {
+            'quote': 'Every ticket holds a sunrise, every departure a promise, every arrival a celebration.',
+            'author': 'Kavlin',
+            'category': 'Hope',
+            'bg_image': 'https://images.unsplash.com/photo-1495954484750-af469f2f9be5?w=1200',
+            'color_scheme': 'sunrise',
+            'is_kavlin': True
+        },
+        {
+            'quote': 'Adventures fill your soul with colors no palette can capture.',
+            'author': 'Kavlin',
+            'category': 'Adventure',
+            'bg_image': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200',
+            'color_scheme': 'vibrant',
+            'is_kavlin': True
+        }
+    ]
+    
+    day_of_year = date.today().timetuple().tm_yday
+    today_quote = quotes_collection[day_of_year % len(quotes_collection)]
+    recent_quotes = quotes_collection[:4]
+    
+    # Phase 3: Community Poems
+    community_poems = [
+        {
+            'id': 1,
+            'title': 'Mountain Whispers',
+            'author': 'Sarah Chen',
+            'author_avatar': 'https://i.pravatar.cc/150?img=1',
+            'poem_text': 'Through winding roads, the mountains call,\nWhispers of adventure, standing tall.\nEach curve reveals a story new,\nIn every vista, dreams come true.',
+            'theme': 'Mountains',
+            'location': 'Himachal Pradesh',
+            'submitted_date': '2025-10-28',
+            'likes': 127,
+            'views': 543,
+            'is_featured': True
+        },
+        {
+            'id': 2,
+            'title': 'Bus Window Dreams',
+            'author': 'Raj Patel',
+            'author_avatar': 'https://i.pravatar.cc/150?img=12',
+            'poem_text': 'Frame by frame, the world goes by,\nClouds dancing in an endless sky.\nA traveler\'s heart beats with the road,\nCarrying memories as its load.',
+            'theme': 'Journey',
+            'location': 'Rajasthan',
+            'submitted_date': '2025-10-27',
+            'likes': 89,
+            'views': 421
+        },
+        {
+            'id': 3,
+            'title': 'Sunset Serendipity',
+            'author': 'Maya Krishnan',
+            'author_avatar': 'https://i.pravatar.cc/150?img=5',
+            'poem_text': 'Golden hours paint the sky,\nAs we watch the day say goodbye.\nStrangers become friends so fast,\nIn moments beautiful and vast.',
+            'theme': 'Friendship',
+            'location': 'Kerala',
+            'submitted_date': '2025-10-26',
+            'likes': 156,
+            'views': 678,
+            'is_featured': True
+        },
+        {
+            'id': 4,
+            'title': 'Station Soliloquy',
+            'author': 'Arjun Mehta',
+            'author_avatar': 'https://i.pravatar.cc/150?img=8',
+            'poem_text': 'In the chaos of arrivals and goodbyes,\nI found peace beneath open skies.\nEvery station holds a tale untold,\nOf brave hearts and spirits bold.',
+            'theme': 'Reflection',
+            'location': 'Delhi',
+            'submitted_date': '2025-10-25',
+            'likes': 92,
+            'views': 389
+        },
+        {
+            'id': 5,
+            'title': 'Monsoon Magic',
+            'author': 'Priya Sharma',
+            'author_avatar': 'https://i.pravatar.cc/150?img=9',
+            'poem_text': 'Raindrops race on window panes,\nWashing away life\'s mundane chains.\nThe bus sways through misty green,\nThe most beautiful ride I\'ve seen.',
+            'theme': 'Nature',
+            'location': 'Maharashtra',
+            'submitted_date': '2025-10-24',
+            'likes': 134,
+            'views': 567
+        },
+        {
+            'id': 6,
+            'title': 'Night Journey',
+            'author': 'Aditya Kumar',
+            'author_avatar': 'https://i.pravatar.cc/150?img=13',
+            'poem_text': 'Stars guide us through the night,\nHeadlights pierce the dark so bright.\nIn silence, thoughts begin to roam,\nEvery journey leads us home.',
+            'theme': 'Night',
+            'location': 'Punjab',
+            'submitted_date': '2025-10-23',
+            'likes': 78,
+            'views': 312
+        }
+    ]
+    
+    submission_themes = [
+        'Journey & Adventure',
+        'Mountains & Hills',
+        'Coastal & Beaches',
+        'Friendship & Connection',
+        'Solitude & Reflection',
+        'Nature & Seasons',
+        'City & Urban',
+        'Night Travel',
+        'First Journey',
+        'Coming Home'
+    ]
+    
+    # Phase 4: Route Poems
+    route_poems = [
+        {
+            'route_number': 'HT-101',
+            'route_name': 'Dharampur → Solan',
+            'from_location': 'Dharampur',
+            'to_location': 'Solan',
+            'poem_title': 'Where Pine Forests Whisper',
+            'poem_excerpt': 'Through pine-scented paths we glide,\nWhere mountains and memories collide.\nEach kilometer a verse unspoken,\nEach moment a promise unbroken.',
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+            'best_season': 'Spring',
+            'season_icon': 'fas fa-seedling',
+            'route_type': 'mountain',
+            'is_kavlin_favorite': True
+        },
+        {
+            'route_number': 'HT-102',
+            'route_name': 'Solan → Barog',
+            'from_location': 'Solan',
+            'to_location': 'Barog',
+            'poem_title': 'Through the Tunnel of Time',
+            'poem_excerpt': 'Darkness embraces, then light returns,\nThrough tunnels where history yearns.\nBarog calls with stories old,\nIn every arch, legends told.',
+            'image': 'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=800',
+            'best_season': 'Monsoon',
+            'season_icon': 'fas fa-cloud-rain',
+            'route_type': 'heritage',
+            'is_kavlin_favorite': True
+        },
+        {
+            'route_number': 'HT-103',
+            'route_name': 'Barog → Dagshai',
+            'from_location': 'Barog',
+            'to_location': 'Dagshai',
+            'poem_title': 'Cantonment Dreams',
+            'poem_excerpt': 'Colonial echoes in mountain air,\nDagshai stands with timeless care.\nBarracks whisper tales of yore,\nOn this route, history we explore.',
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+            'best_season': 'Winter',
+            'season_icon': 'fas fa-snowflake',
+            'route_type': 'historical',
+            'is_kavlin_favorite': False
+        },
+        {
+            'route_number': 'HT-104',
+            'route_name': 'Dagshai → Dharampur',
+            'from_location': 'Dagshai',
+            'to_location': 'Dharampur',
+            'poem_title': 'Coming Full Circle',
+            'poem_excerpt': 'The journey ends where it began,\nFull circle, as life\'s perfect plan.\nFrom Dagshai back to Dharampur\'s grace,\nEvery return, a warm embrace.',
+            'image': 'https://images.unsplash.com/photo-1527838832700-5059252407fa?w=800',
+            'best_season': 'Autumn',
+            'season_icon': 'fas fa-leaf',
+            'route_type': 'scenic',
+            'is_kavlin_favorite': True
+        },
+        {
+            'route_number': 'HT-105',
+            'route_name': 'Dharampur → Barog (Express)',
+            'from_location': 'Dharampur',
+            'to_location': 'Barog',
+            'poem_title': 'The Swift Sojourn',
+            'poem_excerpt': 'Express lanes through emerald hills,\nRapid hearts and adventure thrills.\nFrom Dharampur to Barog we fly,\nBeneath the ever-changing sky.',
+            'image': 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800',
+            'best_season': 'Summer',
+            'season_icon': 'fas fa-sun',
+            'route_type': 'express',
+            'is_kavlin_favorite': False
+        },
+        {
+            'route_number': 'HT-106',
+            'route_name': 'Solan → Dagshai (Scenic)',
+            'from_location': 'Solan',
+            'to_location': 'Dagshai',
+            'poem_title': 'Valley of Verses',
+            'poem_excerpt': 'Scenic detours through valleys deep,\nWhere nature\'s secrets softly sleep.\nFrom Solan\'s charm to Dagshai\'s pride,\nPoetry flows with every ride.',
+            'image': 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800',
+            'best_season': 'All Seasons',
+            'season_icon': 'fas fa-infinity',
+            'route_type': 'scenic',
+            'is_kavlin_favorite': True
+        }
+    ]
+    
+    # Phase 5: Blog Posts
+    blog_posts = [
+        {
+            'id': 1,
+            'title': 'How Mountains Taught Me Poetry',
+            'author': 'Kavlin',
+            'author_avatar': './static/images/Kavlin Bitmoji.png',
+            'date': '2025-10-28',
+            'read_time': 8,
+            'category': 'poetry-process',
+            'category_label': 'Poetry Process',
+            'excerpt': 'The first time I saw the Himalayas, I didn\'t write a single word. I just stood there, humbled by their magnitude, realizing that sometimes silence is the loudest poetry. This is the story of how mountains taught me to listen before I learned to write.',
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+            'tags': ['Mountains', 'Writing', 'Inspiration', 'Himalayas'],
+            'likes': 234,
+            'comments': 45
+        },
+        {
+            'id': 2,
+            'title': 'The Bus Window Philosophy',
+            'author': 'Kavlin',
+            'author_avatar': './static/images/Kavlin Bitmoji.png',
+            'date': '2025-10-25',
+            'read_time': 6,
+            'category': 'travel-tales',
+            'category_label': 'Travel Tales',
+            'excerpt': 'Every bus window is a movie screen showing life\'s greatest film. Frame by frame, the world passes by, and in those fleeting moments, we find stories worth telling. Here\'s what I\'ve learned from thousands of hours gazing out windows.',
+            'image': 'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=800',
+            'tags': ['Travel', 'Philosophy', 'Observations'],
+            'likes': 189,
+            'comments': 32
+        },
+        {
+            'id': 3,
+            'title': 'Writing Between Stops: A Poet\'s Journey',
+            'author': 'Kavlin',
+            'author_avatar': './static/images/Kavlin Bitmoji.png',
+            'date': '2025-10-22',
+            'read_time': 10,
+            'category': 'poetry-process',
+            'category_label': 'Poetry Process',
+            'excerpt': 'They say the best poetry comes in quiet moments, but I\'ve found mine in the chaos of bus stations, the hum of engines, and the chatter of fellow travelers. This is my creative process, unconventional and beautiful.',
+            'image': 'https://images.unsplash.com/photo-1455849318743-b2233052fcff?w=800',
+            'tags': ['Writing Process', 'Creativity', 'Bus Travel'],
+            'likes': 267,
+            'comments': 58
+        },
+        {
+            'id': 4,
+            'title': 'A Traveler\'s Ode to Himachal',
+            'author': 'Priya Sharma',
+            'author_avatar': 'https://i.pravatar.cc/150?img=9',
+            'date': '2025-10-20',
+            'read_time': 7,
+            'category': 'guest-posts',
+            'category_label': 'Guest Post',
+            'excerpt': 'As a guest writer on Kavlin\'s blog, I wanted to share my love letter to Himachal Pradesh - the land that changed how I see travel, poetry, and life itself. Through Happy Trails, I found more than transportation; I found inspiration.',
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+            'tags': ['Himachal', 'Guest Post', 'Travel'],
+            'likes': 178,
+            'comments': 41
+        },
+        {
+            'id': 5,
+            'title': 'Why Every Route Needs a Poem',
+            'author': 'Kavlin',
+            'author_avatar': './static/images/Kavlin Bitmoji.png',
+            'date': '2025-10-18',
+            'read_time': 5,
+            'category': 'route-inspiration',
+            'category_label': 'Route Inspiration',
+            'excerpt': 'When I started Happy Trails, people thought pairing bus routes with poetry was quirky. Now they understand - every path has a story, every journey deserves to be honored with words that match its beauty.',
+            'image': 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800',
+            'tags': ['Routes', 'Poetry', 'Happy Trails'],
+            'likes': 312,
+            'comments': 67
+        },
+        {
+            'id': 6,
+            'title': 'From Engineer to Poet: My Journey',
+            'author': 'Kavlin',
+            'author_avatar': './static/images/Kavlin Bitmoji.png',
+            'date': '2025-10-15',
+            'read_time': 12,
+            'category': 'travel-tales',
+            'category_label': 'Travel Tales',
+            'excerpt': 'Everyone asks how an engineer ends up running a bus service that prioritizes poetry. The answer is simple: I followed my heart on a journey that started with a single bus ride and ended with a dream called Happy Trails.',
+            'image': 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800',
+            'tags': ['Personal', 'Story', 'Career Change'],
+            'likes': 445,
+            'comments': 89
+        }
+    ]
+    
+    return render_template('features/poetry_corner.html', 
+                          travel_poems=travel_poems,
+                          today_quote=today_quote,
+                          recent_quotes=recent_quotes,
+                          current_date=date.today(),
+                          community_poems=community_poems,
+                          submission_themes=submission_themes,
+                          route_poems=route_poems,
+                          blog_posts=blog_posts,  # Added Phase 5
+                          user_is_logged_in=current_user.is_authenticated)
 
 # Run the application
 if __name__ == '__main__':
