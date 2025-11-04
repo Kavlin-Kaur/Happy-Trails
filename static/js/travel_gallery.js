@@ -702,3 +702,587 @@ function initializeBackToTop() {
 }
 
 console.log('✨ Kavlin\'s Enchanted Gallery loaded successfully! 💖');
+
+/* ============================================
+   📤 PHASE 2: USER PHOTO UPLOAD SYSTEM
+   Magical Upload Experience
+   ============================================ */
+
+// Global upload variables
+let selectedFiles = [];
+let uploadQueue = [];
+
+// ============================================
+// TAB NAVIGATION
+// ============================================
+
+function initializeTabs() {
+    const tabButtons = document.querySelectorAll('.gallery-tab');
+    const tabContents = document.querySelectorAll('.gallery-tab-content');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const tabId = this.getAttribute('data-tab');
+            
+            // Remove active class from all tabs
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            this.classList.add('active');
+            const targetContent = document.getElementById(tabId);
+            if (targetContent) {
+                targetContent.classList.add('active');
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            
+            showGalleryToast(`Switched to: ${this.textContent.trim()} ✨`);
+        });
+    });
+    
+    console.log('📑 Tab navigation initialized');
+}
+
+// ============================================
+// UPLOAD FUNCTIONALITY
+// ============================================
+
+function initializeUpload() {
+    const dropzone = document.getElementById('uploadDropzone');
+    const fileInput = document.getElementById('fileInput');
+    const browseBtn = document.getElementById('browseBtn');
+    const uploadForm = document.getElementById('uploadForm');
+    
+    if (!dropzone || !fileInput) return;
+    
+    // Browse button click
+    if (browseBtn) {
+        browseBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+    }
+    
+    // Dropzone click
+    dropzone.addEventListener('click', (e) => {
+        if (e.target === dropzone || e.target.closest('.dropzone-icon, .dropzone-text')) {
+            fileInput.click();
+        }
+    });
+    
+    // File input change
+    fileInput.addEventListener('change', (e) => {
+        handleFiles(e.target.files);
+    });
+    
+    // Drag and drop events
+    dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.classList.add('drag-over');
+    });
+    
+    dropzone.addEventListener('dragleave', () => {
+        dropzone.classList.remove('drag-over');
+    });
+    
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('drag-over');
+        handleFiles(e.dataTransfer.files);
+    });
+    
+    // Form submission
+    if (uploadForm) {
+        uploadForm.addEventListener('submit', handleUploadSubmit);
+    }
+    
+    // Icon selection
+    setupIconSelection();
+    
+    console.log('📤 Upload functionality initialized');
+}
+
+function handleFiles(files) {
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/heic'];
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    const maxFiles = 5;
+    
+    // Filter valid files
+    const newFiles = Array.from(files).filter(file => {
+        if (!validTypes.includes(file.type)) {
+            showGalleryToast(`❌ ${file.name}: Invalid file type. Use JPG, PNG, or HEIC.`, 4000);
+            return false;
+        }
+        
+        if (file.size > maxSize) {
+            showGalleryToast(`❌ ${file.name}: File too large. Max 10MB.`, 4000);
+            return false;
+        }
+        
+        return true;
+    });
+    
+    // Check total files
+    if (selectedFiles.length + newFiles.length > maxFiles) {
+        showGalleryToast(`⚠️ Maximum ${maxFiles} photos at once!`, 4000);
+        return;
+    }
+    
+    // Add files
+    newFiles.forEach(file => {
+        selectedFiles.push(file);
+        createPreviewCard(file);
+    });
+    
+    // Show form if files selected
+    if (selectedFiles.length > 0) {
+        document.getElementById('uploadFormSection').style.display = 'block';
+    }
+    
+    showGalleryToast(`✨ ${newFiles.length} photo${newFiles.length !== 1 ? 's' : ''} added!`, 2000);
+}
+
+function createPreviewCard(file) {
+    const previewGrid = document.getElementById('previewGrid');
+    
+    const card = document.createElement('div');
+    card.className = 'preview-card';
+    card.dataset.filename = file.name;
+    
+    // Read file for preview
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        card.innerHTML = `
+            <div class="preview-image-wrapper">
+                <img src="${e.target.result}" alt="${file.name}" class="preview-image">
+                <button class="remove-preview" onclick="removePreview('${file.name}')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="preview-filename">${file.name}</div>
+        `;
+    };
+    reader.readAsDataURL(file);
+    
+    previewGrid.appendChild(card);
+}
+
+function removePreview(filename) {
+    // Remove from selectedFiles array
+    selectedFiles = selectedFiles.filter(file => file.name !== filename);
+    
+    // Remove card
+    const card = document.querySelector(`.preview-card[data-filename="${filename}"]`);
+    if (card) {
+        card.style.animation = 'cardSlideOut 0.3s ease-out';
+        setTimeout(() => card.remove(), 300);
+    }
+    
+    // Hide form if no files
+    if (selectedFiles.length === 0) {
+        document.getElementById('uploadFormSection').style.display = 'none';
+        document.getElementById('previewGrid').innerHTML = '';
+    }
+    
+    showGalleryToast(`🗑️ Removed ${filename}`, 2000);
+}
+
+function setupIconSelection() {
+    // Destination icons
+    const destIcons = document.querySelectorAll('.icon-option[data-type="destination"]');
+    destIcons.forEach(icon => {
+        icon.addEventListener('click', function() {
+            destIcons.forEach(i => i.classList.remove('selected'));
+            this.classList.add('selected');
+        });
+    });
+    
+    // Type icons
+    const typeIcons = document.querySelectorAll('.icon-option[data-type="photo-type"]');
+    typeIcons.forEach(icon => {
+        icon.addEventListener('click', function() {
+            typeIcons.forEach(i => i.classList.remove('selected'));
+            this.classList.add('selected');
+        });
+    });
+    
+    // Season icons
+    const seasonIcons = document.querySelectorAll('.icon-option[data-type="season"]');
+    seasonIcons.forEach(icon => {
+        icon.addEventListener('click', function() {
+            seasonIcons.forEach(i => i.classList.remove('selected'));
+            this.classList.add('selected');
+        });
+    });
+}
+
+function handleUploadSubmit(e) {
+    e.preventDefault();
+    
+    if (selectedFiles.length === 0) {
+        showGalleryToast('⚠️ Please select at least one photo!', 3000);
+        return;
+    }
+    
+    // Get form data
+    const destination = document.querySelector('.icon-option[data-type="destination"].selected')?.dataset.value;
+    const photoType = document.querySelector('.icon-option[data-type="photo-type"].selected')?.dataset.value;
+    const season = document.querySelector('.icon-option[data-type="season"].selected')?.dataset.value;
+    const caption = document.getElementById('photoCaption')?.value.trim();
+    const location = document.getElementById('photoLocation')?.value.trim();
+    
+    // Validation
+    if (!destination || !photoType || !season) {
+        showGalleryToast('⚠️ Please select destination, type, and season!', 3000);
+        return;
+    }
+    
+    if (!caption) {
+        showGalleryToast('⚠️ Please add a caption!', 3000);
+        return;
+    }
+    
+    // Show progress
+    const progressSection = document.getElementById('uploadProgress');
+    progressSection.classList.add('active');
+    progressSection.innerHTML = '';
+    
+    // Disable submit button
+    const submitBtn = document.getElementById('submitUploadBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Uploading...';
+    
+    // Upload each file
+    selectedFiles.forEach((file, index) => {
+        uploadFile(file, {
+            destination,
+            photoType,
+            season,
+            caption,
+            location
+        }, index);
+    });
+}
+
+function uploadFile(file, metadata, index) {
+    const progressSection = document.getElementById('uploadProgress');
+    
+    // Create progress item
+    const progressItem = document.createElement('div');
+    progressItem.className = 'progress-item';
+    progressItem.id = `progress-${index}`;
+    progressItem.innerHTML = `
+        <div class="progress-header">
+            <span class="progress-filename">${file.name}</span>
+            <span class="progress-percentage">0%</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" style="width: 0%"></div>
+        </div>
+    `;
+    progressSection.appendChild(progressItem);
+    
+    // Simulate upload with FormData
+    const formData = new FormData();
+    formData.append('photo', file);
+    formData.append('destination', metadata.destination);
+    formData.append('photoType', metadata.photoType);
+    formData.append('season', metadata.season);
+    formData.append('caption', metadata.caption);
+    formData.append('location', metadata.location);
+    
+    // Simulate progress (in real app, use xhr.upload.onprogress)
+    let progress = 0;
+    const progressInterval = setInterval(() => {
+        progress += Math.random() * 15;
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(progressInterval);
+            
+            // Mark as complete
+            setTimeout(() => {
+                progressItem.style.background = 'linear-gradient(135deg, #d4edda, #c3e6cb)';
+                progressItem.querySelector('.progress-percentage').innerHTML = '✓ Done';
+                
+                // Check if all done
+                checkAllUploadsComplete();
+            }, 500);
+        }
+        
+        const progressBar = progressItem.querySelector('.progress-bar');
+        const progressPercentage = progressItem.querySelector('.progress-percentage');
+        
+        progressBar.style.width = `${progress}%`;
+        progressPercentage.textContent = `${Math.floor(progress)}%`;
+    }, 200);
+    
+    // In production, use actual fetch/axios:
+    /*
+    fetch('/travel-gallery/upload', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Handle success
+        }
+    })
+    .catch(error => {
+        console.error('Upload error:', error);
+        showGalleryToast('❌ Upload failed. Please try again.', 4000);
+    });
+    */
+}
+
+function checkAllUploadsComplete() {
+    const allProgressItems = document.querySelectorAll('.progress-item');
+    const completedItems = Array.from(allProgressItems).filter(item => 
+        item.querySelector('.progress-percentage').textContent.includes('Done')
+    );
+    
+    if (completedItems.length === allProgressItems.length) {
+        setTimeout(() => {
+            showUploadSuccess();
+        }, 1000);
+    }
+}
+
+function showUploadSuccess() {
+    // Create confetti
+    createUploadConfetti();
+    
+    // Show success modal
+    const modal = document.createElement('div');
+    modal.className = 'upload-success-modal active';
+    modal.innerHTML = `
+        <div class="success-modal-content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 class="success-title">Photos Uploaded! 🎉</h3>
+            <p class="success-message">
+                Thank you for sharing your beautiful memories with the Happy Trails community!
+                Your photos will be reviewed and published soon.
+            </p>
+            <button class="success-btn" onclick="closeUploadSuccess()">
+                <i class="fas fa-heart me-2"></i>View Gallery
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Reset form
+    setTimeout(() => {
+        resetUploadForm();
+    }, 500);
+}
+
+function closeUploadSuccess() {
+    const modal = document.querySelector('.upload-success-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        setTimeout(() => modal.remove(), 300);
+    }
+    
+    // Switch to gallery tab
+    const galleryTab = document.querySelector('[data-tab="gallery-view"]');
+    if (galleryTab) {
+        galleryTab.click();
+    }
+}
+
+function resetUploadForm() {
+    selectedFiles = [];
+    document.getElementById('previewGrid').innerHTML = '';
+    document.getElementById('uploadFormSection').style.display = 'none';
+    document.getElementById('uploadForm').reset();
+    document.getElementById('uploadProgress').classList.remove('active');
+    document.getElementById('uploadProgress').innerHTML = '';
+    
+    // Reset submit button
+    const submitBtn = document.getElementById('submitUploadBtn');
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<i class="fas fa-cloud-upload me-2"></i>Upload Photos';
+    
+    // Reset icon selections
+    document.querySelectorAll('.icon-option.selected').forEach(icon => {
+        icon.classList.remove('selected');
+    });
+}
+
+function createUploadConfetti() {
+    const colors = ['#FFD700', '#FF8C00', '#FF6347', '#FFE4B5', '#FFC0CB'];
+    const confettiCount = 100;
+    
+    for (let i = 0; i < confettiCount; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.style.cssText = `
+                position: fixed;
+                width: ${Math.random() * 10 + 5}px;
+                height: ${Math.random() * 10 + 5}px;
+                top: -10px;
+                left: ${Math.random() * 100}vw;
+                background: ${colors[Math.floor(Math.random() * colors.length)]};
+                animation: confettiFall ${Math.random() * 3 + 2}s linear forwards;
+                z-index: 10001;
+                border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
+                transform: rotate(${Math.random() * 360}deg);
+            `;
+            
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 5000);
+        }, i * 15);
+    }
+}
+
+// Add confetti animation CSS
+const confettiStyle = document.createElement('style');
+confettiStyle.textContent = `
+    @keyframes confettiFall {
+        to {
+            transform: translateY(100vh) rotate(720deg);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(confettiStyle);
+
+// ============================================
+// EMOJI PICKER
+// ============================================
+
+function toggleEmojiPicker() {
+    const emojis = ['😊', '🌄', '🚌', '❤️', '✨', '🌟', '🎉', '📸', '🗺️', '🌈', '☀️', '🌙', '⭐', '💫', '🌸', '🌺'];
+    
+    const picker = document.createElement('div');
+    picker.className = 'emoji-picker-popup';
+    picker.style.cssText = `
+        position: absolute;
+        top: 50px;
+        right: 0;
+        background: white;
+        border: 2px solid #FFD700;
+        border-radius: 15px;
+        padding: 15px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        z-index: 100;
+    `;
+    
+    emojis.forEach(emoji => {
+        const btn = document.createElement('button');
+        btn.textContent = emoji;
+        btn.style.cssText = `
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            transition: transform 0.2s;
+        `;
+        btn.onmouseover = () => btn.style.transform = 'scale(1.3)';
+        btn.onmouseout = () => btn.style.transform = 'scale(1)';
+        btn.onclick = () => {
+            const textarea = document.getElementById('photoCaption');
+            textarea.value += emoji;
+            picker.remove();
+        };
+        picker.appendChild(btn);
+    });
+    
+    // Remove existing picker
+    document.querySelectorAll('.emoji-picker-popup').forEach(p => p.remove());
+    
+    // Add new picker
+    document.querySelector('.caption-group').appendChild(picker);
+    
+    // Close on outside click
+    setTimeout(() => {
+        document.addEventListener('click', function closeEmojiPicker(e) {
+            if (!e.target.closest('.emoji-picker-popup') && !e.target.closest('.emoji-picker-btn')) {
+                picker.remove();
+                document.removeEventListener('click', closeEmojiPicker);
+            }
+        });
+    }, 100);
+}
+
+// ============================================
+// MY UPLOADS FUNCTIONALITY
+// ============================================
+
+function loadMyUploads() {
+    // In production, fetch from backend
+    // For now, show sample data
+    
+    const sampleUploads = [
+        {
+            id: 1,
+            image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
+            location: 'Mountain Sunrise',
+            status: 'approved',
+            uploadDate: '2024-01-20',
+            likes: 45,
+            views: 234
+        },
+        {
+            id: 2,
+            image: 'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=400',
+            location: 'Valley Views',
+            status: 'pending',
+            uploadDate: '2024-01-22',
+            likes: 0,
+            views: 0
+        }
+    ];
+    
+    const grid = document.getElementById('myUploadsGrid');
+    if (!grid) return;
+    
+    grid.innerHTML = sampleUploads.map(upload => `
+        <div class="upload-card">
+            <span class="upload-status ${upload.status}">${upload.status}</span>
+            <div class="photo-image-wrapper">
+                <img src="${upload.image}" alt="${upload.location}" class="photo-image">
+            </div>
+            <div class="photo-info">
+                <div class="photo-location">${upload.location}</div>
+                <div class="photo-date">
+                    <i class="fas fa-calendar me-1"></i>${upload.uploadDate}
+                </div>
+                ${upload.status === 'approved' ? `
+                    <div class="photo-stats">
+                        <span><i class="fas fa-heart"></i> ${upload.likes}</span>
+                        <span><i class="fas fa-eye"></i> ${upload.views}</span>
+                    </div>
+                ` : ''}
+            </div>
+        </div>
+    `).join('');
+}
+
+// ============================================
+// UPDATE INITIALIZATION
+// ============================================
+
+// Update the main initialization function
+const originalInit = initializeEnchantedGallery;
+initializeEnchantedGallery = function() {
+    originalInit();
+    initializeTabs();
+    initializeUpload();
+    
+    // Load my uploads if on that tab
+    const myUploadsTab = document.querySelector('[data-tab="my-uploads"]');
+    if (myUploadsTab) {
+        myUploadsTab.addEventListener('click', loadMyUploads);
+    }
+};
+
+console.log('📤 Phase 2: Upload System loaded successfully! 💖');

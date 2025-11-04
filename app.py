@@ -921,6 +921,205 @@ def poetry_corner():
                           blog_posts=blog_posts,  # Added Phase 5
                           user_is_logged_in=current_user.is_authenticated)
 
+@app.route('/travel-gallery')
+def travel_gallery():
+    """✨ Kavlin's Enchanted 3D Memory Gallery - Phase 1 & 2"""
+    
+    # Sample photo data with enhanced details
+    photos = [
+        {
+            'id': 1,
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+            'location': 'Dharampur Valley View',
+            'destination': 'Dharampur',
+            'type': 'landscape',
+            'season': 'spring',
+            'photographer': 'Kavlin',
+            'date': '2024-03-15',
+            'likes': 234,
+            'views': 1456
+        },
+        {
+            'id': 2,
+            'image': 'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=800',
+            'location': 'Solan Market Street',
+            'destination': 'Solan',
+            'type': 'people',
+            'season': 'summer',
+            'photographer': 'Priya Sharma',
+            'date': '2024-06-20',
+            'likes': 189,
+            'views': 1123
+        },
+        {
+            'id': 3,
+            'image': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800',
+            'location': 'Happy Trails Bus at Sunrise',
+            'destination': 'Dharampur',
+            'type': 'bus',
+            'season': 'winter',
+            'photographer': 'Raj Kumar',
+            'date': '2024-01-10',
+            'likes': 312,
+            'views': 1890
+        },
+        {
+            'id': 4,
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+            'location': 'Barog Tunnel Heritage',
+            'destination': 'Barog',
+            'type': 'heritage',
+            'season': 'monsoon',
+            'photographer': 'Sarah Chen',
+            'date': '2024-07-25',
+            'likes': 267,
+            'views': 1678
+        },
+        {
+            'id': 5,
+            'image': 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800',
+            'location': 'Dagshai Cantonment',
+            'destination': 'Dagshai',
+            'type': 'heritage',
+            'season': 'autumn',
+            'photographer': 'Arjun Mehta',
+            'date': '2024-10-05',
+            'likes': 198,
+            'views': 1234
+        },
+        {
+            'id': 6,
+            'image': 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800',
+            'location': 'Mountain Trails - Solan',
+            'destination': 'Solan',
+            'type': 'landscape',
+            'season': 'spring',
+            'photographer': 'Maya Krishnan',
+            'date': '2024-04-12',
+            'likes': 345,
+            'views': 2134
+        },
+        {
+            'id': 7,
+            'image': 'https://images.unsplash.com/photo-1527838832700-5059252407fa?w=800',
+            'location': 'Travelers at Barog Station',
+            'destination': 'Barog',
+            'type': 'people',
+            'season': 'summer',
+            'photographer': 'Kavlin',
+            'date': '2024-05-18',
+            'likes': 276,
+            'views': 1567
+        },
+        {
+            'id': 8,
+            'image': 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800',
+            'location': 'Monsoon Magic - Dharampur',
+            'destination': 'Dharampur',
+            'type': 'landscape',
+            'season': 'monsoon',
+            'photographer': 'Aditya Kumar',
+            'date': '2024-08-22',
+            'likes': 412,
+            'views': 2456
+        },
+        {
+            'id': 9,
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+            'location': 'Winter Wonderland - Dagshai',
+            'destination': 'Dagshai',
+            'type': 'landscape',
+            'season': 'winter',
+            'photographer': 'Neha Singh',
+            'date': '2024-12-05',
+            'likes': 389,
+            'views': 2234
+        },
+        {
+            'id': 10,
+            'image': 'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=800',
+            'location': 'Happy Trails Fleet - Solan',
+            'destination': 'Solan',
+            'type': 'bus',
+            'season': 'autumn',
+            'photographer': 'Vikram Patel',
+            'date': '2024-09-15',
+            'likes': 298,
+            'views': 1789
+        },
+        {
+            'id': 11,
+            'image': 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800',
+            'location': 'Colonial Architecture - Barog',
+            'destination': 'Barog',
+            'type': 'heritage',
+            'season': 'spring',
+            'photographer': 'Kavlin',
+            'date': '2024-03-28',
+            'likes': 223,
+            'views': 1456
+        },
+        {
+            'id': 12,
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+            'location': 'Sunset at Dharampur Hills',
+            'destination': 'Dharampur',
+            'type': 'landscape',
+            'season': 'summer',
+            'photographer': 'Priya Sharma',
+            'date': '2024-06-30',
+            'likes': 456,
+            'views': 2890
+        }
+    ]
+    
+    # Unique destinations
+    destinations = ['Dharampur', 'Solan', 'Barog', 'Dagshai']
+    
+    # Calculate totals
+    total_views = sum(photo['views'] for photo in photos)
+    total_likes = sum(photo['likes'] for photo in photos)
+    
+    return render_template('features/travel_gallery.html',
+                          photos=photos,
+                          destinations=destinations,
+                          total_views=total_views,
+                          total_likes=total_likes)
+
+# PHASE 2: Upload endpoint (for future backend integration)
+@app.route('/travel-gallery/upload', methods=['POST'])
+@login_required
+def upload_gallery_photo():
+    """Handle photo upload submission"""
+    try:
+        # Get form data
+        photo = request.files.get('photo')
+        destination = request.form.get('destination')
+        photo_type = request.form.get('photoType')
+        season = request.form.get('season')
+        caption = request.form.get('caption')
+        location = request.form.get('location')
+        
+        # Validate
+        if not photo or not destination or not photo_type or not season or not caption:
+            return jsonify({'success': False, 'error': 'Missing required fields'}), 400
+        
+        # In production:
+        # 1. Save photo to cloud storage (AWS S3, Cloudinary, etc.)
+        # 2. Create database record with status='pending'
+        # 3. Send notification to moderators
+        # 4. Return success response
+        
+        # For now, simulate success
+        return jsonify({
+            'success': True,
+            'message': 'Photo uploaded successfully!',
+            'photo_id': 999  # Would be actual DB ID
+        })
+        
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 # Run the application
 if __name__ == '__main__':
     # Use SQLite for local development
