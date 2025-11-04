@@ -59,8 +59,8 @@
     </section>
 
     <!-- ============================================
-         📑 PHASE 2: TAB NAVIGATION SYSTEM
-         ============================================ -->
+     📑 PHASE 2 & 3: TAB NAVIGATION SYSTEM
+     ============================================ -->
     <section class="gallery-tabs-wrapper">
         <div class="container">
             <div class="gallery-tabs">
@@ -84,7 +84,13 @@
                 </button>
                 {% endif %}
                 
-                <!-- Tab 4: Pending Review (Phase 2) -->
+                <!-- Tab 4: My Diaries (Phase 3) - NEW! -->
+                <button class="gallery-tab" data-tab="my-diaries">
+                    <i class="fas fa-book-open"></i>
+                    <span>My Diaries</span>
+                </button>
+                
+                <!-- Tab 5: Pending Review (Phase 2) -->
                 <button class="gallery-tab" data-tab="pending-review">
                     <i class="fas fa-clock"></i>
                     <span>Pending Review</span>
@@ -546,6 +552,273 @@
                 </div>
             </div>
         </section>
+    </div>
+
+    <!-- ============================================
+         📖 TAB 5: MY DIARIES (PHASE 3)
+         ============================================ -->
+    <div id="my-diaries" class="gallery-tab-content">
+        <section class="diary-section">
+            <div class="container">
+                
+                <!-- Diary Header -->
+                <div class="upload-header">
+                    <h2 class="upload-title">My Travel Diaries 📖</h2>
+                    <p class="upload-subtitle">
+                        Create beautiful travel stories by combining your photos into immersive diaries.
+                        Share your adventures chapter by chapter!
+                    </p>
+                </div>
+
+                <!-- Create Diary Action -->
+                <div class="diary-actions">
+                    <button class="create-diary-btn" id="createDiaryBtn">
+                        <i class="fas fa-plus-circle"></i>
+                        Create New Diary
+                    </button>
+                </div>
+
+                <!-- Diaries Grid -->
+                <div class="diary-grid" id="diaryGrid">
+                    <!-- Dynamically populated via JavaScript -->
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         📝 DIARY CREATION MODAL
+         ============================================ -->
+    <div class="diary-modal" id="diaryModal">
+        <div class="diary-modal-content">
+            
+            <!-- Modal Header -->
+            <div class="diary-modal-header">
+                <h2 class="diary-modal-title">Create Your Travel Diary ✨</h2>
+                <button class="diary-modal-close" onclick="closeDiaryModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="diary-modal-body">
+                
+                <!-- Progress Steps -->
+                <div class="diary-steps">
+                    <div class="diary-step active">
+                        <div class="diary-step-circle">1</div>
+                        <div class="diary-step-label">Template</div>
+                    </div>
+                    <div class="diary-step">
+                        <div class="diary-step-circle">2</div>
+                        <div class="diary-step-label">Basic Info</div>
+                    </div>
+                    <div class="diary-step">
+                        <div class="diary-step-circle">3</div>
+                        <div class="diary-step-label">Photos & Chapters</div>
+                    </div>
+                    <div class="diary-step">
+                        <div class="diary-step-circle">4</div>
+                        <div class="diary-step-label">Finalize</div>
+                    </div>
+                </div>
+
+                <!-- Step 1: Template Selection -->
+                <div class="diary-step-content" id="step1" style="display: block;">
+                    <h3 class="form-section-title">
+                        <i class="fas fa-palette"></i>
+                        Choose Your Diary Style
+                    </h3>
+                    <p style="color: #6C757D; margin-bottom: 20px;">
+                        Select a template that matches your journey's vibe
+                    </p>
+                    
+                    <div class="template-grid">
+                        <div class="template-card" onclick="selectTemplate('Scrapbook')">
+                            <span class="template-icon">📔</span>
+                            <div class="template-name">Scrapbook</div>
+                            <div class="template-description">Vintage & Handcrafted</div>
+                        </div>
+                        <div class="template-card" onclick="selectTemplate('Minimal')">
+                            <span class="template-icon">📄</span>
+                            <div class="template-name">Minimal</div>
+                            <div class="template-description">Clean & Modern</div>
+                        </div>
+                        <div class="template-card" onclick="selectTemplate('Vintage')">
+                            <span class="template-icon">📜</span>
+                            <div class="template-name">Vintage</div>
+                            <div class="template-description">Classic & Timeless</div>
+                        </div>
+                        <div class="template-card" onclick="selectTemplate('Polaroid')">
+                            <span class="template-icon">📸</span>
+                            <div class="template-name">Polaroid</div>
+                            <div class="template-description">Fun & Nostalgic</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Basic Information -->
+                <div class="diary-step-content" id="step2" style="display: none;">
+                    <h3 class="form-section-title">
+                        <i class="fas fa-pencil-alt"></i>
+                        Tell Us About Your Journey
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            Diary Title <span class="required">*</span>
+                        </label>
+                        <input type="text" 
+                               id="diaryTitle" 
+                               class="form-input" 
+                               placeholder="e.g., Mountain Adventures 2024"
+                               maxlength="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Description <span class="required">*</span>
+                        </label>
+                        <textarea id="diaryDescription" 
+                                  class="form-textarea" 
+                                  placeholder="Write a brief overview of your journey..."
+                                  maxlength="500"
+                                  style="min-height: 150px;"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Route Information</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <input type="text" 
+                                   id="routeStart" 
+                                   class="form-input" 
+                                   placeholder="Starting point">
+                            <input type="text" 
+                                   id="routeEnd" 
+                                   class="form-input" 
+                                   placeholder="Destination">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Photos & Chapters -->
+                <div class="diary-step-content" id="step3" style="display: none;">
+                    <h3 class="form-section-title">
+                        <i class="fas fa-images"></i>
+                        Select Photos
+                    </h3>
+                    <p style="color: #6C757D; margin-bottom: 20px;">
+                        Choose up to 20 photos from your gallery (<span id="selectedPhotoCount">0</span> selected)
+                    </p>
+                    
+                    <div class="photo-selection-grid">
+                        {% for photo in photos[:12] %}
+                        <div class="selectable-photo" onclick="togglePhotoSelection({{ photo.id }})">
+                            <img src="{{ photo.image }}" alt="{{ photo.location }}">
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <h3 class="form-section-title" style="margin-top: 40px;">
+                        <i class="fas fa-book"></i>
+                        Create Chapters
+                    </h3>
+                    <p style="color: #6C757D; margin-bottom: 20px;">
+                        Organize your story into chapters (minimum 1, maximum 10)
+                    </p>
+                    
+                    <div id="chapterList" class="chapter-list">
+                        <!-- Chapters will be added dynamically -->
+                    </div>
+
+                    <button class="add-chapter-btn" onclick="addChapter()">
+                        <i class="fas fa-plus-circle"></i>
+                        Add Chapter
+                    </button>
+                </div>
+
+                <!-- Step 4: Finalize -->
+                <div class="diary-step-content" id="step4" style="display: none;">
+                    <h3 class="form-section-title">
+                        <i class="fas fa-heart"></i>
+                        Add Finishing Touches
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            Journey Mood <span class="required">*</span>
+                        </label>
+                        <p style="color: #6C757D; margin-bottom: 15px; font-size: 0.9rem;">
+                            Select moods that describe your journey (up to 5)
+                        </p>
+                        <div class="mood-selector">
+                            <div class="mood-option" onclick="toggleMood('adventurous')">
+                                <span class="mood-emoji">🏔️</span>
+                                <span>Adventurous</span>
+                            </div>
+                            <div class="mood-option" onclick="toggleMood('peaceful')">
+                                <span class="mood-emoji">🧘</span>
+                                <span>Peaceful</span>
+                            </div>
+                            <div class="mood-option" onclick="toggleMood('exciting')">
+                                <span class="mood-emoji">🎉</span>
+                                <span>Exciting</span>
+                            </div>
+                            <div class="mood-option" onclick="toggleMood('romantic')">
+                                <span class="mood-emoji">💕</span>
+                                <span>Romantic</span>
+                            </div>
+                            <div class="mood-option" onclick="toggleMood('spiritual')">
+                                <span class="mood-emoji">🙏</span>
+                                <span>Spiritual</span>
+                            </div>
+                            <div class="mood-option" onclick="toggleMood('fun')">
+                                <span class="mood-emoji">😄</span>
+                                <span>Fun</span>
+                            </div>
+                            <div class="mood-option" onclick="toggleMood('challenging')">
+                                <span class="mood-emoji">💪</span>
+                                <span>Challenging</span>
+                            </div>
+                            <div class="mood-option" onclick="toggleMood('relaxing')">
+                                <span class="mood-emoji">😌</span>
+                                <span>Relaxing</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Privacy Settings</label>
+                        <select class="form-select">
+                            <option value="public">🌍 Public - Everyone can view</option>
+                            <option value="friends">👥 Friends Only</option>
+                            <option value="private">🔒 Private - Only me</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="allowComments" checked>
+                            <span>💬 Allow comments on this diary</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="diary-nav-buttons">
+                    <button class="diary-btn diary-btn-secondary" id="diaryBackBtn" onclick="previousDiaryStep()">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Back
+                    </button>
+                    <button class="diary-btn diary-btn-primary" id="diaryNextBtn" onclick="nextDiaryStep()">
+                        <i class="fas fa-arrow-right me-2"></i>
+                        Next Step
+                    </button>
+                </div>
+
+            </div>
+        </div>
     </div>
 
     <!-- === LIGHTBOX WITH 3D FLIP === -->
