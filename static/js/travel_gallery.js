@@ -2397,3 +2397,1023 @@ initializeEnchantedGallery = function() {
 };
 
 console.log('📅 Phase 4: Timeline & Collections loaded successfully! 💖');
+
+/* ============================================
+   💬 PHASE 5: SOCIAL FEATURES (ANONYMOUS)
+   Community Engagement Without Auth
+   ============================================ */
+
+// Global social variables
+let anonymousUser = null;
+let commentsData = {};
+let reactionsData = {};
+let activityFeed = [];
+
+// ============================================
+// ANONYMOUS USER SYSTEM
+// ============================================
+
+function initializeAnonymousUser() {
+    // Check if user exists in localStorage
+    const storedUser = localStorage.getItem('happytrails_anonymous_user');
+    
+    if (storedUser) {
+        anonymousUser = JSON.parse(storedUser);
+    } else {
+        // Generate new anonymous user
+        anonymousUser = {
+            id: generateUserId(),
+            nickname: generateNickname(),
+            avatar: generateAvatarColor(),
+            joinedAt: new Date().toISOString()
+        };
+        
+        localStorage.setItem('happytrails_anonymous_user', JSON.stringify(anonymousUser));
+    }
+    
+    // Load stored data
+    loadStoredComments();
+    loadStoredReactions();
+    
+    console.log('👤 Anonymous user initialized:', anonymousUser.nickname);
+}
+
+function generateUserId() {
+    return 'anon_' + Math.random().toString(36).substr(2, 9);
+}
+
+function generateNickname() {
+    const adjectives = [
+        'Wandering', 'Traveling', 'Adventurous', 'Dreaming', 'Exploring',
+        'Happy', 'Curious', 'Bold', 'Free', 'Wild', 'Brave', 'Mystic',
+        'Golden', 'Silver', 'Azure', 'Crimson', 'Emerald', 'Amber'
+    ];
+    
+    const nouns = [
+        'Traveler', 'Explorer', 'Wanderer', 'Nomad', 'Voyager',
+        'Phoenix', 'Dragon', 'Eagle', 'Wolf', 'Bear', 'Lion',
+        'Mountain', 'River', 'Ocean', 'Star', 'Moon', 'Sun'
+    ];
+    
+    const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+    const noun = nouns[Math.floor(Math.random() * nouns.length)];
+    const number = Math.floor(Math.random() * 999);
+    
+    return `${adjective}${noun}${number}`;
+}
+
+function generateAvatarColor() {
+    const colors = [
+        '#FFD700', '#FF8C00', '#FF6347', '#32CD32', '#1E90FF',
+        '#9370DB', '#FF69B4', '#20B2AA', '#FF4500', '#8B4513'
+    ];
+    
+    return colors[Math.floor(Math.random() * colors.length)];
+}
+
+function getAvatarInitials(nickname) {
+    const words = nickname.match(/[A-Z][a-z]+/g) || [nickname];
+    if (words.length >= 2) {
+        return words[0][0] + words[1][0];
+    }
+    return nickname.substring(0, 2).toUpperCase();
+}
+
+// ============================================
+// COMMENTS SYSTEM
+// ============================================
+
+function initializeComments() {
+    // Add comment buttons to photos
+    document.querySelectorAll('.photo-action-btns').forEach(actionBtns => {
+        if (!actionBtns.querySelector('.comment-toggle-btn')) {
+            const commentBtn = document.createElement('button');
+            commentBtn.className = 'photo-action-btn comment-toggle-btn';
+            commentBtn.innerHTML = '<i class="fas fa-comment"></i>';
+            commentBtn.title = 'Comments';
+            commentBtn.onclick = function(e) {
+                e.stopPropagation();
+                const photoCard = this.closest('.photo-card');
+                const photoId = photoCard.getAttribute('data-photo-id');
+                toggleComments(photoId, photoCard);
+            };
+            
+            actionBtns.appendChild(commentBtn);
+        }
+    });
+    
+    console.log('💬 Comments system initialized');
+}
+
+function toggleComments(photoId, photoCard) {
+    // Check if comments section already exists
+    let commentsSection = photoCard.querySelector('.photo-comments-section');
+    
+    if (commentsSection) {
+        // Toggle visibility
+        if (commentsSection.style.display === 'none') {
+            commentsSection.style.display = 'block';
+            commentsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+            commentsSection.style.display = 'none';
+        }
+        return;
+    }
+    
+    // Create comments section
+    commentsSection = document.createElement('div');
+    commentsSection.className = 'photo-comments-section';
+    commentsSection.innerHTML = `
+        <div class="comments-header">
+            <div class="comments-title">
+                <i class="fas fa-comments"></i>
+                Comments
+                <span class="comment-count">${getCommentCount(photoId)}</span>
+            </div>
+            <div class="comments-sort">
+                <button class="sort-btn active" data-sort="newest" onclick="sortComments('${photoId}', 'newest')">Newest</button>
+                <button class="sort-btn" data-sort="oldest" onclick="sortComments('${photoId}', 'oldest')">Oldest</button>
+                <button class="sort-btn" data-sort="popular" onclick="sortComments('${photoId}', 'popular')">Popular</button>
+            </div>
+        </div>
+        
+        <div class="comment-input-wrapper">
+            <div class="anonymous-user-info">
+                <div class="anonymous-avatar" style="background: ${anonymousUser.avatar}">
+                    ${getAvatarInitials(anonymousUser.nickname)}
+                </div>
+                <div class="anonymous-user-details">
+                    <div class="anonymous-nickname">${anonymousUser.nickname}</div>
+                    <div class="anonymous-note">Anonymous user • Comments saved locally</div>
+                </div>
+            </div>
+            
+            <div class="comment-input-box">
+                <textarea class="comment-textarea" 
+                          id="comment-input-${photoId}" 
+                          placeholder="Share your thoughts about this photo..."></textarea>
+                <button class="comment-submit-btn" onclick="submitComment('${photoId}')">
+                    <i class="fas fa-paper-plane"></i>
+                    Post
+                </button>
+            </div>
+        </div>
+        
+        <div class="comments-list" id="comments-list-${photoId}">
+            ${renderComments(photoId)}
+        </div>
+    `;
+    
+    photoCard.appendChild(commentsSection);
+    commentsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function submitComment(photoId, parentId = null) {
+    const inputId = parentId ? `reply-input-${parentId}` : `comment-input-${photoId}`;
+    const textarea = document.getElementById(inputId);
+    const text = textarea.value.trim();
+    
+    if (!text) {
+        showGalleryToast('⚠️ Please write a comment!', 3000);
+        return;
+    }
+    
+    // Create comment object
+    const comment = {
+        id: generateCommentId(),
+        photoId: photoId,
+        parentId: parentId,
+        userId: anonymousUser.id,
+        username: anonymousUser.nickname,
+        avatar: anonymousUser.avatar,
+        text: text,
+        timestamp: new Date().toISOString(),
+        likes: 0,
+        likedBy: [],
+        replies: []
+    };
+    
+    // Store comment
+    if (!commentsData[photoId]) {
+        commentsData[photoId] = [];
+    }
+    
+    if (parentId) {
+        // Add as reply
+        const parentComment = findComment(photoId, parentId);
+        if (parentComment) {
+            if (!parentComment.replies) parentComment.replies = [];
+            parentComment.replies.push(comment);
+        }
+    } else {
+        // Add as top-level comment
+        commentsData[photoId].push(comment);
+    }
+    
+    saveComments();
+    
+    // Update UI
+    const commentsList = document.getElementById(`comments-list-${photoId}`);
+    if (commentsList) {
+        commentsList.innerHTML = renderComments(photoId);
+    }
+    
+    // Update count
+    updateCommentCount(photoId);
+    
+    // Clear textarea
+    textarea.value = '';
+    
+    // Add to activity feed
+    addToActivityFeed({
+        type: 'comment',
+        userId: anonymousUser.id,
+        username: anonymousUser.nickname,
+        avatar: anonymousUser.avatar,
+        text: text,
+        photoId: photoId,
+        timestamp: new Date().toISOString()
+    });
+    
+    showGalleryToast('Comment posted! 💬', 2000);
+}
+
+function generateCommentId() {
+    return 'comment_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+}
+
+function findComment(photoId, commentId) {
+    const comments = commentsData[photoId] || [];
+    
+    for (let comment of comments) {
+        if (comment.id === commentId) return comment;
+        
+        if (comment.replies) {
+            for (let reply of comment.replies) {
+                if (reply.id === commentId) return reply;
+            }
+        }
+    }
+    
+    return null;
+}
+
+function renderComments(photoId, sortBy = 'newest') {
+    const comments = commentsData[photoId] || [];
+    
+    if (comments.length === 0) {
+        return `
+            <div class="empty-state">
+                <div class="empty-state-icon">💬</div>
+                <div class="empty-state-text">No comments yet</div>
+                <div class="empty-state-subtext">Be the first to share your thoughts!</div>
+            </div>
+        `;
+    }
+    
+    // Sort comments
+    let sortedComments = [...comments];
+    
+    if (sortBy === 'newest') {
+        sortedComments.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    } else if (sortBy === 'oldest') {
+        sortedComments.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    } else if (sortBy === 'popular') {
+        sortedComments.sort((a, b) => b.likes - a.likes);
+    }
+    
+    return sortedComments.map(comment => renderCommentItem(comment, photoId)).join('');
+}
+
+function renderCommentItem(comment, photoId) {
+    const timeAgo = getTimeAgo(comment.timestamp);
+    const isLiked = comment.likedBy && comment.likedBy.includes(anonymousUser.id);
+    const canEdit = comment.userId === anonymousUser.id && isRecentComment(comment.timestamp);
+    
+    return `
+        <div class="comment-item" data-comment-id="${comment.id}">
+            <div class="comment-header">
+                <div class="comment-avatar" style="background: ${comment.avatar}">
+                    ${getAvatarInitials(comment.username)}
+                </div>
+                <div class="comment-author-info">
+                    <div class="comment-author">
+                        ${comment.username}
+                        ${comment.userId === anonymousUser.id ? '<span style="color: #FFD700; margin-left: 5px;">(You)</span>' : ''}
+                    </div>
+                    <div class="comment-time">${timeAgo}</div>
+                </div>
+            </div>
+            
+            <div class="comment-text">${escapeHtml(comment.text)}</div>
+            
+            <div class="comment-actions">
+                <button class="comment-action-btn ${isLiked ? 'liked' : ''}" 
+                        onclick="likeComment('${photoId}', '${comment.id}')">
+                    <i class="fas fa-heart"></i>
+                    <span>${comment.likes > 0 ? comment.likes : 'Like'}</span>
+                </button>
+                
+                <button class="comment-action-btn" onclick="showReplyBox('${photoId}', '${comment.id}')">
+                    <i class="fas fa-reply"></i>
+                    Reply
+                </button>
+                
+                ${canEdit ? `
+                    <button class="comment-action-btn" onclick="editComment('${photoId}', '${comment.id}')">
+                        <i class="fas fa-edit"></i>
+                        Edit
+                    </button>
+                ` : ''}
+                
+                ${comment.userId === anonymousUser.id ? `
+                    <button class="comment-action-btn" onclick="deleteComment('${photoId}', '${comment.id}')">
+                        <i class="fas fa-trash"></i>
+                        Delete
+                    </button>
+                ` : ''}
+            </div>
+            
+            <div class="reply-box" id="reply-box-${comment.id}" style="display: none; margin-top: 15px;">
+                <textarea class="comment-textarea" 
+                          id="reply-input-${comment.id}" 
+                          placeholder="Write a reply..."
+                          style="min-height: 60px;"></textarea>
+                <div style="margin-top: 10px; display: flex; gap: 10px;">
+                    <button class="comment-submit-btn" onclick="submitComment('${photoId}', '${comment.id}')">
+                        Reply
+                    </button>
+                    <button class="comment-action-btn" onclick="hideReplyBox('${comment.id}')">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+            
+            ${comment.replies && comment.replies.length > 0 ? `
+                <div class="comment-replies">
+                    ${comment.replies.map(reply => renderCommentItem(reply, photoId)).join('')}
+                </div>
+            ` : ''}
+        </div>
+    `;
+}
+
+function showReplyBox(photoId, commentId) {
+    const replyBox = document.getElementById(`reply-box-${commentId}`);
+    if (replyBox) {
+        replyBox.style.display = 'block';
+        document.getElementById(`reply-input-${commentId}`).focus();
+    }
+}
+
+function hideReplyBox(commentId) {
+    const replyBox = document.getElementById(`reply-box-${commentId}`);
+    if (replyBox) {
+        replyBox.style.display = 'none';
+        document.getElementById(`reply-input-${commentId}`).value = '';
+    }
+}
+
+function likeComment(photoId, commentId) {
+    const comment = findComment(photoId, commentId);
+    if (!comment) return;
+    
+    if (!comment.likedBy) comment.likedBy = [];
+    
+    const likeIndex = comment.likedBy.indexOf(anonymousUser.id);
+    
+    if (likeIndex > -1) {
+        // Unlike
+        comment.likedBy.splice(likeIndex, 1);
+        comment.likes--;
+    } else {
+        // Like
+        comment.likedBy.push(anonymousUser.id);
+        comment.likes++;
+    }
+    
+    saveComments();
+    
+    // Update UI
+    const commentsList = document.getElementById(`comments-list-${photoId}`);
+    if (commentsList) {
+        commentsList.innerHTML = renderComments(photoId);
+    }
+}
+
+function editComment(photoId, commentId) {
+    const comment = findComment(photoId, commentId);
+    if (!comment) return;
+    
+    const newText = prompt('Edit your comment:', comment.text);
+    if (newText && newText.trim()) {
+        comment.text = newText.trim();
+        comment.edited = true;
+        comment.editedAt = new Date().toISOString();
+        
+        saveComments();
+        
+        // Update UI
+        const commentsList = document.getElementById(`comments-list-${photoId}`);
+        if (commentsList) {
+            commentsList.innerHTML = renderComments(photoId);
+        }
+        
+        showGalleryToast('Comment updated! ✏️', 2000);
+    }
+}
+
+function deleteComment(photoId, commentId) {
+    if (!confirm('Are you sure you want to delete this comment?')) return;
+    
+    // Remove comment
+    if (commentsData[photoId]) {
+        commentsData[photoId] = commentsData[photoId].filter(c => {
+            if (c.id === commentId) return false;
+            if (c.replies) {
+                c.replies = c.replies.filter(r => r.id !== commentId);
+            }
+            return true;
+        });
+    }
+    
+    saveComments();
+    
+    // Update UI
+    const commentsList = document.getElementById(`comments-list-${photoId}`);
+    if (commentsList) {
+        commentsList.innerHTML = renderComments(photoId);
+    }
+    
+    updateCommentCount(photoId);
+    
+    showGalleryToast('Comment deleted! 🗑️', 2000);
+}
+
+function sortComments(photoId, sortBy) {
+    // Update active button
+    const photoCard = document.querySelector(`[data-photo-id="${photoId}"]`);
+    const sortButtons = photoCard.querySelectorAll('.sort-btn');
+    sortButtons.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-sort') === sortBy) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Re-render comments
+    const commentsList = document.getElementById(`comments-list-${photoId}`);
+    if (commentsList) {
+        commentsList.innerHTML = renderComments(photoId, sortBy);
+    }
+}
+
+function getCommentCount(photoId) {
+    const comments = commentsData[photoId] || [];
+    let count = comments.length;
+    
+    comments.forEach(comment => {
+        if (comment.replies) {
+            count += comment.replies.length;
+        }
+    });
+    
+    return count;
+}
+
+function updateCommentCount(photoId) {
+    const photoCard = document.querySelector(`[data-photo-id="${photoId}"]`);
+    const countElement = photoCard?.querySelector('.comment-count');
+    
+    if (countElement) {
+        countElement.textContent = getCommentCount(photoId);
+    }
+}
+
+function isRecentComment(timestamp) {
+    const commentTime = new Date(timestamp);
+    const now = new Date();
+    const diffMinutes = (now - commentTime) / 1000 / 60;
+    
+    return diffMinutes <= 5; // Can edit within 5 minutes
+}
+
+// ============================================
+// REACTIONS SYSTEM
+// ============================================
+
+function initializeReactions() {
+    // Add reaction bars to photos
+    document.querySelectorAll('.photo-actions').forEach(actions => {
+        const photoCard = actions.closest('.photo-card');
+        const photoId = photoCard.getAttribute('data-photo-id');
+        
+        if (!actions.querySelector('.reaction-bar')) {
+            const reactionBar = document.createElement('div');
+            reactionBar.className = 'reaction-bar';
+            reactionBar.innerHTML = `
+                <button class="reaction-btn" data-reaction="love" onclick="toggleReaction('${photoId}', 'love')" title="Love">
+                    ❤️
+                    <span class="reaction-count" style="display: none;">0</span>
+                </button>
+                <button class="reaction-btn" data-reaction="wow" onclick="toggleReaction('${photoId}', 'wow')" title="Wow">
+                    😮
+                    <span class="reaction-count" style="display: none;">0</span>
+                </button>
+                <button class="reaction-btn" data-reaction="happy" onclick="toggleReaction('${photoId}', 'happy')" title="Happy">
+                    😍
+                    <span class="reaction-count" style="display: none;">0</span>
+                </button>
+                <button class="reaction-btn" data-reaction="sad" onclick="toggleReaction('${photoId}', 'sad')" title="Sad">
+                    😢
+                    <span class="reaction-count" style="display: none;">0</span>
+                </button>
+                <button class="reaction-btn" data-reaction="laugh" onclick="toggleReaction('${photoId}', 'laugh')" title="Laugh">
+                    😂
+                    <span class="reaction-count" style="display: none;">0</span>
+                </button>
+            `;
+            
+            actions.appendChild(reactionBar);
+            updateReactionDisplay(photoId);
+        }
+    });
+    
+    console.log('💖 Reactions system initialized');
+}
+
+function toggleReaction(photoId, reactionType) {
+    if (!reactionsData[photoId]) {
+        reactionsData[photoId] = {};
+    }
+    
+    const photoReactions = reactionsData[photoId];
+    const currentReaction = photoReactions[anonymousUser.id];
+    
+    if (currentReaction === reactionType) {
+        // Remove reaction
+        delete photoReactions[anonymousUser.id];
+    } else {
+        // Add or change reaction
+        photoReactions[anonymousUser.id] = reactionType;
+    }
+    
+    saveReactions();
+    updateReactionDisplay(photoId);
+    
+    // Add to activity feed
+    if (photoReactions[anonymousUser.id]) {
+        addToActivityFeed({
+            type: 'reaction',
+            userId: anonymousUser.id,
+            username: anonymousUser.nickname,
+            avatar: anonymousUser.avatar,
+            reaction: reactionType,
+            photoId: photoId,
+            timestamp: new Date().toISOString()
+        });
+    }
+}
+
+function updateReactionDisplay(photoId) {
+    const photoCard = document.querySelector(`[data-photo-id="${photoId}"]`);
+    if (!photoCard) return;
+    
+    const photoReactions = reactionsData[photoId] || {};
+    const reactionCounts = {};
+    
+    // Count reactions
+    Object.values(photoReactions).forEach(reaction => {
+        reactionCounts[reaction] = (reactionCounts[reaction] || 0) + 1;
+    });
+    
+    // Update buttons
+    const reactionBar = photoCard.querySelector('.reaction-bar');
+    if (!reactionBar) return;
+    
+    reactionBar.querySelectorAll('.reaction-btn').forEach(btn => {
+        const reactionType = btn.getAttribute('data-reaction');
+        const count = reactionCounts[reactionType] || 0;
+        const countElement = btn.querySelector('.reaction-count');
+        const userReaction = photoReactions[anonymousUser.id];
+        
+        if (count > 0) {
+            countElement.textContent = count;
+            countElement.style.display = 'block';
+        } else {
+            countElement.style.display = 'none';
+        }
+        
+        if (userReaction === reactionType) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+}
+
+// ============================================
+// ACTIVITY FEED
+// ============================================
+
+function initializeActivityFeed() {
+    const activityTab = document.querySelector('[data-tab="activity-feed"]');
+    if (activityTab) {
+        activityTab.addEventListener('click', loadActivityFeed);
+    }
+    
+    console.log('📰 Activity feed initialized');
+}
+
+function addToActivityFeed(activity) {
+    activityFeed.unshift(activity);
+    
+    // Keep only last 100 activities
+    if (activityFeed.length > 100) {
+        activityFeed = activityFeed.slice(0, 100);
+    }
+    
+    saveActivityFeed();
+}
+
+function loadActivityFeed() {
+    const feedContainer = document.getElementById('activityFeedContainer');
+    if (!feedContainer) return;
+    
+    if (activityFeed.length === 0) {
+        feedContainer.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon">📰</div>
+                <div class="empty-state-text">No activity yet</div>
+                <div class="empty-state-subtext">Start engaging with photos and diaries!</div>
+            </div>
+        `;
+        return;
+    }
+    
+    feedContainer.innerHTML = activityFeed.slice(0, 50).map(activity => {
+        const timeAgo = getTimeAgo(activity.timestamp);
+        
+        if (activity.type === 'comment') {
+            return `
+                <div class="activity-item">
+                    <div class="activity-avatar" style="background: ${activity.avatar}">
+                        ${getAvatarInitials(activity.username)}
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-header">
+                            <div>
+                                <span class="activity-user">${activity.username}</span>
+                                <span class="activity-action">commented on a photo</span>
+                            </div>
+                            <div class="activity-time">${timeAgo}</div>
+                        </div>
+                        <div class="activity-text">"${activity.text}"</div>
+                    </div>
+                </div>
+            `;
+        } else if (activity.type === 'reaction') {
+            const reactionEmoji = {
+                love: '❤️',
+                wow: '😮',
+                happy: '😍',
+                sad: '😢',
+                laugh: '😂'
+            }[activity.reaction];
+            
+            return `
+                <div class="activity-item">
+                    <div class="activity-avatar" style="background: ${activity.avatar}">
+                        ${getAvatarInitials(activity.username)}
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-header">
+                            <div>
+                                <span class="activity-user">${activity.username}</span>
+                                <span class="activity-action">reacted ${reactionEmoji} to a photo</span>
+                            </div>
+                            <div class="activity-time">${timeAgo}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        return '';
+    }).join('');
+}
+
+// ============================================
+// STORAGE FUNCTIONS
+// ============================================
+
+function loadStoredComments() {
+    const stored = localStorage.getItem('happytrails_comments');
+    if (stored) {
+        try {
+            commentsData = JSON.parse(stored);
+        } catch (e) {
+            console.error('Error loading comments:', e);
+            commentsData = {};
+        }
+    }
+}
+
+function saveComments() {
+    localStorage.setItem('happytrails_comments', JSON.stringify(commentsData));
+}
+
+function loadStoredReactions() {
+    const stored = localStorage.getItem('happytrails_reactions');
+    if (stored) {
+        try {
+            reactionsData = JSON.parse(stored);
+        } catch (e) {
+            console.error('Error loading reactions:', e);
+            reactionsData = {};
+        }
+    }
+}
+
+function saveReactions() {
+    localStorage.setItem('happytrails_reactions', JSON.stringify(reactionsData));
+}
+
+function saveActivityFeed() {
+    localStorage.setItem('happytrails_activity', JSON.stringify(activityFeed));
+}
+
+function loadActivityFeed() {
+    const stored = localStorage.getItem('happytrails_activity');
+    if (stored) {
+        try {
+            activityFeed = JSON.parse(stored);
+        } catch (e) {
+            console.error('Error loading activity:', e);
+            activityFeed = [];
+        }
+    }
+}
+
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
+
+function getTimeAgo(timestamp) {
+    const now = new Date();
+    const then = new Date(timestamp);
+    const seconds = Math.floor((now - then) / 1000);
+    
+    if (seconds < 60) return 'just now';
+    if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+    if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
+    
+    return then.toLocaleDateString();
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// ============================================
+// ENHANCED SHARING
+// ============================================
+
+function sharePhoto(photoId, location) {
+    const modal = document.createElement('div');
+    modal.className = 'share-modal active';
+    modal.innerHTML = `
+        <div class="share-modal-content">
+            <h3 class="share-modal-title">Share Photo 📸</h3>
+            <p style="color: #6C757D; margin-bottom: 25px;">${location}</p>
+            
+            <div class="share-options">
+                <div class="share-option-btn" onclick="shareViaMethod('facebook', '${photoId}')">
+                    <div class="share-icon">📘</div>
+                    <div class="share-label">Facebook</div>
+                </div>
+                <div class="share-option-btn" onclick="shareViaMethod('twitter', '${photoId}')">
+                    <div class="share-icon">🐦</div>
+                    <div class="share-label">Twitter</div>
+                </div>
+                <div class="share-option-btn" onclick="shareViaMethod('whatsapp', '${photoId}')">
+                    <div class="share-icon">💬</div>
+                    <div class="share-label">WhatsApp</div>
+                </div>
+                <div class="share-option-btn" onclick="shareViaMethod('email', '${photoId}')">
+                    <div class="share-icon">📧</div>
+                    <div class="share-label">Email</div>
+                </div>
+            </div>
+            
+            <div class="share-link-section">
+                <input type="text" class="share-link-input" 
+                       value="${window.location.origin}/travel-gallery?photo=${photoId}" 
+                       readonly 
+                       id="share-link-input">
+                <button class="copy-link-btn" onclick="copyShareLink()">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+            </div>
+            
+            <button class="diary-btn diary-btn-secondary" 
+                    style="width: 100%; margin-top: 20px;" 
+                    onclick="closeShareModal()">
+                Close
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Close on background click
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeShareModal();
+        }
+    });
+}
+
+function shareViaMethod(method, photoId) {
+    const url = `${window.location.origin}/travel-gallery?photo=${photoId}`;
+    const text = 'Check out this beautiful travel photo from Happy Trails!';
+    
+    let shareUrl = '';
+    
+    switch(method) {
+        case 'facebook':
+            shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+            break;
+        case 'twitter':
+            shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+            break;
+        case 'whatsapp':
+            shareUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`;
+            break;
+        case 'email':
+            shareUrl = `mailto:?subject=${encodeURIComponent(text)}&body=${encodeURIComponent(url)}`;
+            break;
+    }
+    
+    if (shareUrl) {
+        window.open(shareUrl, '_blank', 'width=600,height=400');
+        showGalleryToast(`Sharing via ${method}... 🚀`, 2000);
+    }
+}
+
+function copyShareLink() {
+    const input = document.getElementById('share-link-input');
+    input.select();
+    document.execCommand('copy');
+    showGalleryToast('Link copied! 📋', 2000);
+}
+
+function closeShareModal() {
+    const modal = document.querySelector('.share-modal');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+// ============================================
+// UPDATE INITIALIZATION
+// ============================================
+
+// Update the main initialization
+const originalInit4 = initializeEnchantedGallery;
+initializeEnchantedGallery = function() {
+    originalInit4();
+    initializeAnonymousUser();
+    initializeComments();
+    initializeReactions();
+    initializeActivityFeed();
+    loadActivityFeed(); // Load stored activity
+};
+
+console.log('💬 Phase 5: Anonymous Social Features loaded successfully! 💖');
+
+/* ============================================
+   🔧 PHASE 5: ADDITIONAL HELPER FUNCTIONS
+   ============================================ */
+
+// Reset anonymous identity
+function resetAnonymousIdentity() {
+    if (confirm('Generate a new anonymous nickname? Your previous comments will remain but appear under the old nickname.')) {
+        localStorage.removeItem('happytrails_anonymous_user');
+        
+        // Regenerate user
+        anonymousUser = {
+            id: generateUserId(),
+            nickname: generateNickname(),
+            avatar: generateAvatarColor(),
+            joinedAt: new Date().toISOString()
+        };
+        
+        localStorage.setItem('happytrails_anonymous_user', JSON.stringify(anonymousUser));
+        
+        // Update display
+        updateAnonymousUserDisplay();
+        
+        showGalleryToast(`New identity: ${anonymousUser.nickname} 🎭`, 3000);
+    }
+}
+
+function updateAnonymousUserDisplay() {
+    const nicknameElement = document.getElementById('currentUserNickname');
+    if (nicknameElement) {
+        nicknameElement.textContent = anonymousUser.nickname;
+    }
+    
+    // Update all anonymous user info sections
+    document.querySelectorAll('.anonymous-nickname').forEach(el => {
+        el.textContent = anonymousUser.nickname;
+    });
+    
+    document.querySelectorAll('.anonymous-avatar').forEach(el => {
+        el.style.background = anonymousUser.avatar;
+        el.textContent = getAvatarInitials(anonymousUser.nickname);
+    });
+}
+
+// Load more activity (placeholder)
+function loadMoreActivity() {
+    showGalleryToast('Loading more activity... 📰', 2000);
+    
+    setTimeout(() => {
+        showGalleryToast('All activity loaded! ✅', 2000);
+    }, 1000);
+}
+
+// Calculate and update activity stats
+function updateActivityStats() {
+    // Total comments
+    let totalComments = 0;
+    Object.values(commentsData).forEach(photoComments => {
+        totalComments += photoComments.length;
+        photoComments.forEach(comment => {
+            if (comment.replies) {
+                totalComments += comment.replies.length;
+            }
+        });
+    });
+    
+    // Total reactions
+    let totalReactions = 0;
+    Object.values(reactionsData).forEach(photoReactions => {
+        totalReactions += Object.keys(photoReactions).length;
+    });
+    
+    // Active users (unique commenters and reactors)
+    const activeUsers = new Set();
+    
+    Object.values(commentsData).forEach(photoComments => {
+        photoComments.forEach(comment => {
+            activeUsers.add(comment.userId);
+            if (comment.replies) {
+                comment.replies.forEach(reply => activeUsers.add(reply.userId));
+            }
+        });
+    });
+    
+    Object.values(reactionsData).forEach(photoReactions => {
+        Object.keys(photoReactions).forEach(userId => activeUsers.add(userId));
+    });
+    
+    // Update display
+    const totalCommentsEl = document.getElementById('totalCommentsCount');
+    const totalReactionsEl = document.getElementById('totalReactionsCount');
+    const activeUsersEl = document.getElementById('activeUsersCount');
+    const trendingEl = document.getElementById('trendingCount');
+    
+    if (totalCommentsEl) totalCommentsEl.textContent = totalComments;
+    if (totalReactionsEl) totalReactionsEl.textContent = totalReactions;
+    if (activeUsersEl) activeUsersEl.textContent = activeUsers.size;
+    if (trendingEl) trendingEl.textContent = Math.min(totalComments + totalReactions, 999);
+}
+
+// Update stats when activity feed tab is opened
+const originalLoadActivityFeed = loadActivityFeed;
+loadActivityFeed = function() {
+    originalLoadActivityFeed();
+    updateActivityStats();
+};
+
+// Auto-update nickname display on page load
+window.addEventListener('load', function() {
+    setTimeout(() => {
+        updateAnonymousUserDisplay();
+        
+        // Initialize reaction displays for all photos
+        document.querySelectorAll('.photo-card').forEach(card => {
+            const photoId = card.getAttribute('data-photo-id');
+            if (photoId) {
+                updateReactionDisplay(photoId);
+            }
+        });
+    }, 500);
+});
+
+console.log('🔧 Phase 5: Helper functions loaded! 💖');

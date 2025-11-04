@@ -59,7 +59,7 @@
     </section>
 
     <!-- ============================================
-        📑 PHASE 2, 3 & 4: TAB NAVIGATION SYSTEM
+        📑 PHASE 2, 3, 4 & 5: TAB NAVIGATION SYSTEM
         ============================================ -->
     <section class="gallery-tabs-wrapper">
         <div class="container">
@@ -90,19 +90,25 @@
                     <span>My Diaries</span>
                 </button>
                 
-                <!-- Tab 5: Timeline (Phase 4) - NEW! -->
+                <!-- Tab 5: Timeline (Phase 4) -->
                 <button class="gallery-tab" data-tab="timeline">
                     <i class="fas fa-timeline"></i>
                     <span>Timeline</span>
                 </button>
                 
-                <!-- Tab 6: Collections (Phase 4) - NEW! -->
+                <!-- Tab 6: Collections (Phase 4) -->
                 <button class="gallery-tab" data-tab="collections">
                     <i class="fas fa-layer-group"></i>
                     <span>Collections</span>
                 </button>
                 
-                <!-- Tab 7: Pending Review (Phase 2) -->
+                <!-- Tab 7: Activity Feed (Phase 5) - NEW! -->
+                <button class="gallery-tab" data-tab="activity-feed">
+                    <i class="fas fa-rss"></i>
+                    <span>Activity Feed</span>
+                </button>
+                
+                <!-- Tab 8: Pending Review (Phase 2) -->
                 <button class="gallery-tab" data-tab="pending-review">
                     <i class="fas fa-clock"></i>
                     <span>Pending Review</span>
@@ -723,6 +729,130 @@
 
             </div>
         </section>
+    </div>
+
+    <!-- ============================================
+         📰 TAB 8: ACTIVITY FEED (PHASE 5)
+         ============================================ -->
+    <div id="activity-feed" class="gallery-tab-content">
+        <section class="activity-feed-section">
+            <div class="container">
+                
+                <!-- Activity Feed Header -->
+                <div class="upload-header">
+                    <h2 class="upload-title">Community Activity 📰</h2>
+                    <p class="upload-subtitle">
+                        See what the Happy Trails community has been up to! Comments, reactions, and new memories shared.
+                    </p>
+                </div>
+
+                <!-- Activity Stats Dashboard -->
+                <div class="timeline-stats" style="margin-bottom: 40px;">
+                    <div class="timeline-stat-card">
+                        <span class="timeline-stat-icon">💬</span>
+                        <span class="timeline-stat-number" id="totalCommentsCount">0</span>
+                        <span class="timeline-stat-label">Total Comments</span>
+                    </div>
+                    <div class="timeline-stat-card">
+                        <span class="timeline-stat-icon">❤️</span>
+                        <span class="timeline-stat-number" id="totalReactionsCount">0</span>
+                        <span class="timeline-stat-label">Total Reactions</span>
+                    </div>
+                    <div class="timeline-stat-card">
+                        <span class="timeline-stat-icon">👥</span>
+                        <span class="timeline-stat-number" id="activeUsersCount">0</span>
+                        <span class="timeline-stat-label">Active Users</span>
+                    </div>
+                    <div class="timeline-stat-card">
+                        <span class="timeline-stat-icon">🔥</span>
+                        <span class="timeline-stat-number" id="trendingCount">0</span>
+                        <span class="timeline-stat-label">Trending</span>
+                    </div>
+                </div>
+
+                <!-- Trending Content Section -->
+                <div class="auto-collections" style="margin-bottom: 50px;">
+                    <h3 class="auto-collections-title">
+                        <i class="fas fa-fire me-2"></i>
+                        Trending Now
+                    </h3>
+                    <p style="color: #6C757D; margin-bottom: 25px;">
+                        Most popular photos and diaries in the community
+                    </p>
+                    <div class="auto-collections-grid" id="trendingContentGrid">
+                        <div class="auto-collection-card">
+                            <span class="auto-collection-icon">🔥</span>
+                            <div class="auto-collection-name">Most Liked Photo</div>
+                            <div class="auto-collection-count">234 reactions</div>
+                        </div>
+                        <div class="auto-collection-card">
+                            <span class="auto-collection-icon">💬</span>
+                            <div class="auto-collection-name">Most Discussed</div>
+                            <div class="auto-collection-count">89 comments</div>
+                        </div>
+                        <div class="auto-collection-card">
+                            <span class="auto-collection-icon">⭐</span>
+                            <div class="auto-collection-name">Rising Star</div>
+                            <div class="auto-collection-count">New & Popular</div>
+                        </div>
+                        <div class="auto-collection-card">
+                            <span class="auto-collection-icon">📖</span>
+                            <div class="auto-collection-name">Top Diary</div>
+                            <div class="auto-collection-count">156 views</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Stream -->
+                <div class="activity-feed-container" id="activityFeedContainer">
+                    <!-- Dynamically populated via JavaScript -->
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📰</div>
+                        <div class="empty-state-text">No activity yet</div>
+                        <div class="empty-state-subtext">Start engaging with photos and diaries!</div>
+                    </div>
+                </div>
+
+                <!-- Load More Activity -->
+                <div class="load-more-wrapper" style="margin-top: 40px;">
+                    <button class="load-more-btn" onclick="loadMoreActivity()">
+                        <i class="fas fa-sync-alt me-2"></i>
+                        Load More Activity
+                    </button>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         💡 ANONYMOUS USER INFO BANNER
+         ============================================ -->
+    <div class="anonymous-info-banner" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 140, 0, 0.1)); 
+                                              border: 2px solid rgba(255, 215, 0, 0.3); 
+                                              border-radius: 20px; 
+                                              padding: 25px; 
+                                              margin: 40px auto; 
+                                              max-width: 800px;
+                                              text-align: center;">
+        <h3 style="font-family: 'Dancing Script', cursive; font-size: 1.8rem; color: #F57F17; margin-bottom: 15px;">
+            <i class="fas fa-info-circle me-2"></i>
+            Anonymous Mode Active
+        </h3>
+        <p style="color: #6C757D; line-height: 1.7; margin-bottom: 15px;">
+            You're currently browsing as <strong id="currentUserNickname" style="color: #F57F17;">Guest</strong>. 
+            Your comments and reactions are saved locally in your browser. 
+            <br>
+            <small style="font-size: 0.85rem; color: #ADB5BD;">
+                Clear browser data to reset your identity or wait for full authentication in future updates!
+            </small>
+        </p>
+        <button class="diary-btn diary-btn-secondary" 
+                onclick="resetAnonymousIdentity()"
+                style="padding: 12px 25px; font-size: 0.9rem;">
+            <i class="fas fa-sync-alt me-2"></i>
+            Generate New Nickname
+        </button>
     </div>
 
     <!-- ============================================
