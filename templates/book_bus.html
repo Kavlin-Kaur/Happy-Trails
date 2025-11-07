@@ -1,93 +1,144 @@
 {% extends 'base.html' %}
+{% block title %}Legacy Booking - Happy Trails{% endblock %}
 
-{% block title %}Book Bus - Happy Trails{% endblock %}
+{% block extra_css %}
+<style>
+  /* Note: This template appears legacy / unused in current flow.
+     You may safely remove it if not referenced, or adapt for
+     a special quick-book feature. */
+  .legacy-wrapper {
+      min-height: 100vh;
+      padding: 140px 0 70px;
+      background: var(--gradient-soft);
+  }
+  .legacy-card {
+      background: rgba(255,255,255,0.95);
+      border-radius: 30px;
+      padding: 45px 40px;
+      box-shadow: var(--shadow-strong);
+      border:2px solid rgba(255,215,0,0.25);
+  }
+  .legacy-badge {
+      background: rgba(255,215,0,0.15);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size:.75rem;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      font-weight:600;
+      color: var(--deep-yellow);
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      margin-bottom:15px;
+  }
+  .calc-box {
+      background:#fff9e6;
+      border:2px dashed var(--primary-yellow);
+      padding:15px 20px;
+      border-radius:18px;
+      font-size:.9rem;
+      font-weight:500;
+  }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card shadow">
-                <div class="card-header bg-dark text-white">
-                    <h3 class="mb-0">Book Your Ticket</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <h5>Bus Details</h5>
-                            <p><strong>Bus Number:</strong> {{ bus.bus_number }}</p>
-                            <p><strong>Route:</strong> {{ bus.from_location }} to {{ bus.to_location }}</p>
-                            <p><strong>Departure:</strong> {{ bus.departure_time }}</p>
-                            <p><strong>Arrival:</strong> {{ bus.arrival_time }}</p>
-                            <p><strong>Status:</strong> 
-                                {% if bus.status == 'On Time' %}
-                                    <span class="badge bg-success">On Time</span>
-                                {% elif bus.status == 'Delayed' %}
-                                    <span class="badge bg-warning text-dark">Delayed</span>
-                                {% else %}
-                                    <span class="badge bg-secondary">{{ bus.status }}</span>
-                                {% endif %}
-                            </p>
-                        </div>
-                        <div class="col-md-6">
-                            <h5>Booking Information</h5>
-                            <p><strong>Travel Date:</strong> {{ travel_date }}</p>
-                            <p><strong>Available Seats:</strong> {{ bus.available_seats() }}</p>
-                            <p><strong>Price per Seat:</strong> ₹{{ bus.price }}</p>
-                        </div>
-                    </div>
-                    
-                    <hr>
-                    
-                    <form method="post" action="{{ url_for('book_bus', bus_id=bus.id) }}">
-                        <div class="mb-3">
-                            <label for="seats" class="form-label">Number of Seats</label>
-                            <input type="number" class="form-control" id="seats" name="seats" min="1" max="{{ bus.available_seats() }}" value="1" required>
-                            <div class="form-text">Maximum {{ bus.available_seats() }} seats available</div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="totalPrice" class="form-label">Total Price</label>
-                            <div class="input-group">
-                                <span class="input-group-text">₹</span>
-                                <input type="text" class="form-control" id="totalPrice" value="{{ bus.price }}" readonly>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="paymentMethod" class="form-label">Payment Method</label>
-                            <select class="form-select" id="paymentMethod" name="paymentMethod" required>
-                                <option value="" selected disabled>Select payment method</option>
-                                <option value="creditCard">Credit Card</option>
-                                <option value="debitCard">Debit Card</option>
-                                <option value="upi">UPI</option>
-                                <option value="netBanking">Net Banking</option>
-                            </select>
-                        </div>
-                        
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-warning btn-lg">Confirm Booking</button>
-                            <a href="{{ url_for('bus_results') }}" class="btn btn-outline-secondary">Cancel</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<section class="legacy-wrapper">
+  <div class="container">
+    <div class="legacy-card mx-auto" style="max-width:780px;">
+      <div class="legacy-badge"><i class="fas fa-exclamation-triangle"></i> Legacy Template</div>
+      <h2 class="script-font mb-1">Direct Ticket Booking</h2>
+      <p class="text-muted mb-4">This flow has largely been replaced by the enhanced multi-step experience. Keep only if needed.</p>
+
+      {% if bus %}
+      <div class="row g-4 mb-4">
+          <div class="col-md-6">
+              <div class="detail-label">Bus</div>
+              <div class="fw-semibold mb-2">{{ bus.bus_number }} <span class="badge {% if bus.bus_type == 'Premium' %}bg-danger{% elif bus.bus_type == 'Deluxe' %}bg-primary{% else %}bg-success{% endif %}">{{ bus.bus_type }}</span></div>
+              <div class="small text-muted">Route</div>
+              <div class="fw-medium mb-2">{{ bus.from_location }} → {{ bus.to_location }}</div>
+              <div class="small text-muted">Status</div>
+              <div>
+                {% if bus.status == 'On Time' %}
+                  <span class="badge bg-success"><i class="fas fa-check me-1"></i>On Time</span>
+                {% elif bus.status == 'Delayed' %}
+                  <span class="badge bg-warning text-dark"><i class="fas fa-clock me-1"></i>Delayed</span>
+                {% else %}
+                  <span class="badge bg-secondary">{{ bus.status }}</span>
+                {% endif %}
+              </div>
+          </div>
+          <div class="col-md-6">
+              <div class="small text-muted">Departure / Arrival</div>
+              <div class="fw-semibold mb-2">{{ bus.departure_time }} — {{ bus.arrival_time }}</div>
+              <div class="small text-muted">Available Seats</div>
+              <div class="fw-semibold mb-2">{{ bus.available_seats() }}</div>
+              <div class="small text-muted">Base Fare (per seat)</div>
+              <div class="fw-semibold">₹{{ bus.price }}</div>
+          </div>
+      </div>
+
+      <form method="post" action="{{ url_for('book_bus', bus_id=bus.id) }}">
+          <div class="row g-4 mb-3">
+              <div class="col-md-6">
+                  <label class="form-label fw-semibold"><i class="fas fa-chair text-warning me-1"></i>Seats</label>
+                  <input type="number" class="form-control search-input" id="seats" name="seats"
+                         min="1" max="{{ bus.available_seats() }}" value="1" required>
+                  <div class="form-text">Max {{ bus.available_seats() }} seats</div>
+              </div>
+              <div class="col-md-6">
+                  <label class="form-label fw-semibold"><i class="fas fa-rupee-sign text-warning me-1"></i>Total Price</label>
+                  <div class="calc-box">
+                      <span>₹</span><span id="totalPrice">{{ bus.price }}</span>
+                  </div>
+              </div>
+              <div class="col-12">
+                  <label class="form-label fw-semibold"><i class="fas fa-wallet text-warning me-1"></i>Payment Method</label>
+                  <select class="form-select search-input" name="paymentMethod" required>
+                      <option value="" disabled selected>Select method</option>
+                      <option value="creditCard">Credit Card</option>
+                      <option value="debitCard">Debit Card</option>
+                      <option value="upi">UPI</option>
+                      <option value="netBanking">Net Banking</option>
+                  </select>
+              </div>
+          </div>
+          <div class="d-flex flex-wrap gap-3 mt-4">
+              <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-check me-2"></i>Confirm Booking
+              </button>
+              <a href="{{ url_for('bus_results') }}" class="btn btn-outline-secondary">
+                  <i class="fas fa-arrow-left me-2"></i>Back
+              </a>
+          </div>
+      </form>
+      {% else %}
+        <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle me-2"></i> No bus context provided.
         </div>
+      {% endif %}
+
+      <div class="mt-5 script-font text-center text-warning">
+        "Legacy paths remind us how far the journey has evolved." – Kavlin ✨
+      </div>
     </div>
-</div>
+  </div>
+</section>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const seatsInput = document.getElementById('seats');
-        const totalPriceInput = document.getElementById('totalPrice');
-        const pricePerSeat = {{ bus.price }};
-        
-        seatsInput.addEventListener('input', function() {
-            const seats = parseInt(this.value) || 0;
-            const totalPrice = seats * pricePerSeat;
-            totalPriceInput.value = totalPrice.toFixed(2);
+  document.addEventListener('DOMContentLoaded', () => {
+    const seats = document.getElementById('seats');
+    const total = document.getElementById('totalPrice');
+    const pricePerSeat = {{ bus.price if bus else 0 }};
+    if (seats) {
+        seats.addEventListener('input', () => {
+            const v = parseInt(seats.value) || 0;
+            total.textContent = (v * pricePerSeat).toFixed(2);
         });
-    });
+    }
+  });
 </script>
 {% endblock %}
