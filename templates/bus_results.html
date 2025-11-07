@@ -1,203 +1,513 @@
 {% extends 'base.html' %}
 
-{% block title %}Bus Results - Happy Trails{% endblock %}
+{% block title %}Available Buses - Happy Trails{% endblock %}
 
 {% block extra_css %}
 <style>
-    .bus-details {
-        display: none;
+    .results-hero {
+        background: var(--gradient-soft);
+        padding: 140px 0 80px;
+        position: relative;
+        overflow: hidden;
     }
     
-    tbody tr:not(.bus-details-row) {
-        cursor: pointer;
+    .results-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+            radial-gradient(circle at 25% 75%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
     }
     
-    tbody tr:not(.bus-details-row):hover {
-        background-color: #fff9e6;
+    .search-summary {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: var(--shadow-medium);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 215, 0, 0.2);
+        margin-bottom: 2rem;
+    }
+    
+    .bus-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--shadow-soft);
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+        transition: var(--transition-bounce);
+        border: 2px solid transparent;
+        position: relative;
+    }
+    
+    .bus-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-sunrise);
+        transform: scaleX(0);
+        transition: var(--transition-smooth);
+    }
+    
+    .bus-card:hover::before {
+        transform: scaleX(1);
+    }
+    
+    .bus-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-strong);
+        border-color: rgba(255, 215, 0, 0.3);
+    }
+    
+    .bus-header {
+        padding: 25px 30px;
+        background: linear-gradient(135deg, #fff 0%, #fff9e6 100%);
+        border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    }
+    
+    .bus-number {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--deep-yellow);
+        margin-bottom: 0.5rem;
     }
     
     .bus-type-badge {
-        font-size: 0.8rem;
-        padding: 5px 10px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-left: 15px;
     }
     
-    .bus-amenities {
+    .bus-info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 20px;
+        padding: 25px 30px;
+    }
+    
+    .info-item {
+        text-align: center;
+    }
+    
+    .info-label {
+        color: var(--medium-gray);
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 0.25rem;
+    }
+    
+    .info-value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--charcoal);
+    }
+    
+    .bus-actions {
+        padding: 20px 30px;
+        background: rgba(255, 249, 230, 0.5);
+        border-top: 1px solid rgba(255, 215, 0, 0.2);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .price-display {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--deep-yellow);
+    }
+    
+    .btn-select {
+        background: var(--gradient-sunrise);
+        border: none;
+        border-radius: 25px;
+        padding: 12px 30px;
+        color: white;
+        font-weight: 600;
+        transition: var(--transition-bounce);
+    }
+    
+    .btn-select:hover {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-medium);
+        color: white;
+    }
+    
+    .btn-track {
+        background: transparent;
+        border: 2px solid var(--primary-yellow);
+        border-radius: 25px;
+        padding: 10px 25px;
+        color: var(--deep-yellow);
+        font-weight: 600;
+        transition: var(--transition-smooth);
+        margin-right: 10px;
+    }
+    
+    .btn-track:hover {
+        background: var(--primary-yellow);
+        color: var(--charcoal);
+    }
+    
+    .bus-details {
+        background: rgba(255, 249, 230, 0.3);
+        padding: 25px 30px;
+        border-top: 1px solid rgba(255, 215, 0, 0.2);
+        display: none;
+    }
+    
+    .amenities-list {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-        margin-top: 10px;
+        margin-top: 15px;
     }
     
-    .amenity-badge {
-        background-color: #f8f9fa;
-        border: 1px solid #dee2e6;
+    .amenity-tag {
+        background: rgba(255, 215, 0, 0.2);
+        color: var(--deep-yellow);
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+    
+    .no-results {
+        text-align: center;
+        padding: 80px 20px;
+        background: white;
         border-radius: 20px;
-        padding: 5px 10px;
-        font-size: 0.8rem;
+        box-shadow: var(--shadow-soft);
+    }
+    
+    .no-results-icon {
+        font-size: 4rem;
+        color: var(--primary-yellow);
+        margin-bottom: 1rem;
+    }
+    
+    .filter-bar {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: var(--shadow-soft);
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .filter-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .route-indicator {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .route-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--primary-yellow);
+    }
+    
+    .route-line {
+        flex: 1;
+        height: 2px;
+        background: linear-gradient(to right, var(--primary-yellow), var(--deep-yellow));
+        margin: 0 15px;
+        position: relative;
+    }
+    
+    .route-line::after {
+        content: '🚌';
+        position: absolute;
+        right: -10px;
+        top: -8px;
+        font-size: 1rem;
+        animation: busMove 2s ease-in-out infinite;
+    }
+    
+    @keyframes busMove {
+        0%, 100% { transform: translateX(0); }
+        50% { transform: translateX(10px); }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="row">
-        <div class="col-12">
-            <h2 class="mb-4">Available Buses</h2>
-            <div class="alert alert-info">
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-info-circle me-3 fs-4"></i>
-                    <div>
-                        <strong>Search Results:</strong> {{ from_location }} to {{ to_location }} on {{ travel_date }}
+<!-- Results Hero Section -->
+<section class="results-hero">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h1 class="script-font display-4 text-warning">Available Buses</h1>
+            <p class="lead">Your perfect journey awaits</p>
+        </div>
+        
+        <div class="search-summary">
+            <div class="route-indicator">
+                <div class="route-dot"></div>
+                <div class="route-line"></div>
+                <div class="route-dot"></div>
+            </div>
+            <div class="d-flex align-items-center justify-content-center flex-wrap gap-3">
+                <div class="text-center">
+                    <div class="info-label">From</div>
+                    <div class="info-value">{{ from_location }}</div>
+                </div>
+                <i class="fas fa-arrow-right text-warning mx-3"></i>
+                <div class="text-center">
+                    <div class="info-label">To</div>
+                    <div class="info-value">{{ to_location }}</div>
+                </div>
+                <i class="fas fa-calendar-alt text-warning mx-3"></i>
+                <div class="text-center">
+                    <div class="info-label">Date</div>
+                    <div class="info-value">{{ travel_date }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Bus Results Section -->
+<section class="py-5">
+    <div class="container">
+        {% if buses %}
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <strong>Sort by:</strong>
+                <div class="filter-item">
+                    <input type="radio" name="sortBy" id="sortPrice" value="price" class="form-check-input">
+                    <label for="sortPrice">Price</label>
+                </div>
+                <div class="filter-item">
+                    <input type="radio" name="sortBy" id="sortTime" value="time" class="form-check-input">
+                    <label for="sortTime">Departure Time</label>
+                </div>
+                <div class="filter-item">
+                    <input type="radio" name="sortBy" id="sortDuration" value="duration" class="form-check-input">
+                    <label for="sortDuration">Duration</label>
+                </div>
+                <div class="ms-auto">
+                    <span class="text-muted">{{ buses|length }} buses found</span>
+                </div>
+            </div>
+
+            <!-- Bus Cards -->
+            {% for bus in buses %}
+            <div class="bus-card" data-bus-id="{{ loop.index }}">
+                <div class="bus-header">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="bus-number">{{ bus.bus_number }}</div>
+                            <span class="badge {% if bus.bus_type == 'Premium' %}bg-danger{% elif bus.bus_type == 'Deluxe' %}bg-primary{% else %}bg-success{% endif %} bus-type-badge">
+                                {{ bus.bus_type }}
+                            </span>
+                        </div>
+                        <div class="text-end">
+                            {% if bus.status == 'On Time' %}
+                                <span class="badge bg-success fs-6">
+                                    <i class="fas fa-check me-1"></i>On Time
+                                </span>
+                            {% elif bus.status == 'Delayed' %}
+                                <span class="badge bg-warning text-dark fs-6">
+                                    <i class="fas fa-clock me-1"></i>Delayed
+                                </span>
+                            {% else %}
+                                <span class="badge bg-secondary fs-6">{{ bus.status }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bus-info-grid">
+                    <div class="info-item">
+                        <div class="info-label">
+                            <i class="fas fa-clock text-warning me-1"></i>Departure
+                        </div>
+                        <div class="info-value">{{ bus.departure_time }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">
+                            <i class="fas fa-clock text-warning me-1"></i>Arrival
+                        </div>
+                        <div class="info-value">{{ bus.arrival_time }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">
+                            <i class="fas fa-hourglass-half text-warning me-1"></i>Duration
+                        </div>
+                        <div class="info-value">
+                            {% set departure = bus.departure_time.split(':')[0]|int %}
+                            {% set arrival = bus.arrival_time.split(':')[0]|int %}
+                            {% if 'PM' in bus.departure_time and 'AM' not in bus.departure_time %}
+                                {% set departure = departure + 12 if departure < 12 else departure %}
+                            {% endif %}
+                            {% if 'PM' in bus.arrival_time and 'AM' not in bus.arrival_time %}
+                                {% set arrival = arrival + 12 if arrival < 12 else arrival %}
+                            {% endif %}
+                            {% set duration = arrival - departure %}
+                            {% if duration < 0 %}
+                                {% set duration = duration + 24 %}
+                            {% endif %}
+                            {{ duration }} hr
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">
+                            <i class="fas fa-users text-warning me-1"></i>Available Seats
+                        </div>
+                        <div class="info-value">{{ bus.available_seats() }}</div>
+                    </div>
+                </div>
+                
+                <div class="bus-actions">
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-track btn-sm me-2" onclick="toggleDetails({{ loop.index }})">
+                            <i class="fas fa-info-circle me-1"></i>Details
+                        </button>
+                        <a href="{{ url_for('track_bus', bus_id=bus.id) }}" class="btn btn-track btn-sm">
+                            <i class="fas fa-map-marker-alt me-1"></i>Track
+                        </a>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="price-display me-3">₹{{ bus.price }}</div>
+                        {% if bus.available_seats() > 0 %}
+                            <a href="{{ url_for('select_bus', bus_id=bus.id) }}" class="btn btn-select">
+                                <i class="fas fa-ticket-alt me-2"></i>Select Bus
+                            </a>
+                        {% else %}
+                            <button class="btn btn-secondary" disabled>
+                                <i class="fas fa-times me-2"></i>Sold Out
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Bus Details (Hidden by default) -->
+                <div class="bus-details" id="bus-details-{{ loop.index }}">
+                    <h5 class="script-font text-warning mb-3">
+                        <i class="fas fa-star me-2"></i>Bus Features & Amenities
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Route:</strong> {{ bus.from_location }} to {{ bus.to_location }}</p>
+                            <p><strong>Capacity:</strong> {{ bus.capacity }} passengers</p>
+                            <div class="amenities-list">
+                                {% for amenity in bus.amenities.split(',') %}
+                                    <span class="amenity-tag">
+                                        <i class="fas fa-check me-1"></i>{{ amenity.strip() }}
+                                    </span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <div class="script-font text-muted mb-3">
+                                "Travel in comfort, arrive with joy" - Kavlin ✨
+                            </div>
+                            {% if bus.available_seats() > 0 %}
+                                <a href="{{ url_for('select_bus', bus_id=bus.id) }}" class="btn btn-primary">
+                                    <i class="fas fa-heart me-2"></i>Book This Bus
+                                </a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
+            {% endfor %}
             
-            {% if buses %}
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Bus No.</th>
-                                <th>Type</th>
-                                <th>Departure</th>
-                                <th>Arrival</th>
-                                <th>Duration</th>
-                                <th>Status</th>
-                                <th>Available Seats</th>
-                                <th>Price</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for bus in buses %}
-                            <tr class="bus-row" data-bus-id="{{ loop.index }}">
-                                <td>{{ bus.bus_number }}</td>
-                                <td>
-                                    <span class="badge {% if bus.bus_type == 'Premium' %}bg-danger{% elif bus.bus_type == 'Deluxe' %}bg-primary{% else %}bg-success{% endif %} bus-type-badge">
-                                        {{ bus.bus_type }}
-                                    </span>
-                                </td>
-                                <td>{{ bus.departure_time }}</td>
-                                <td>{{ bus.arrival_time }}</td>
-                                <td>
-                                    {% set departure = bus.departure_time.split(':')[0]|int %}
-                                    {% set arrival = bus.arrival_time.split(':')[0]|int %}
-                                    {% if 'PM' in bus.departure_time and 'AM' not in bus.departure_time %}
-                                        {% set departure = departure + 12 if departure < 12 else departure %}
-                                    {% endif %}
-                                    {% if 'PM' in bus.arrival_time and 'AM' not in bus.arrival_time %}
-                                        {% set arrival = arrival + 12 if arrival < 12 else arrival %}
-                                    {% endif %}
-                                    {% set duration = arrival - departure %}
-                                    {% if duration < 0 %}
-                                        {% set duration = duration + 24 %}
-                                    {% endif %}
-                                    {{ duration }} hr
-                                </td>
-                                <td>
-                                    {% if bus.status == 'On Time' %}
-                                        <span class="badge bg-success">On Time</span>
-                                    {% elif bus.status == 'Delayed' %}
-                                        <span class="badge bg-warning text-dark">Delayed</span>
-                                    {% else %}
-                                        <span class="badge bg-secondary">{{ bus.status }}</span>
-                                    {% endif %}
-                                </td>
-                                <td>{{ bus.available_seats() }}</td>
-                                <td>₹{{ bus.price }}</td>
-                                <td>
-                                    {% if bus.available_seats() > 0 %}
-                                        <a href="{{ url_for('select_bus', bus_id=bus.id) }}" class="btn btn-warning btn-sm">Select Bus</a>
-                                    {% else %}
-                                        <button class="btn btn-secondary btn-sm" disabled>Sold Out</button>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            <tr class="bus-details-row" id="bus-details-{{ loop.index }}">
-                                <td colspan="9" class="p-0">
-                                    <div class="bus-details p-3 bg-light">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <h5>Bus Details</h5>
-                                                <p><strong>Route:</strong> {{ bus.from_location }} to {{ bus.to_location }}</p>
-                                                <div class="bus-amenities">
-                                                    {% for amenity in bus.amenities.split(',') %}
-                                                        <span class="amenity-badge">
-                                                            <i class="fas fa-check-circle text-success me-1"></i> {{ amenity.strip() }}
-                                                        </span>
-                                                    {% endfor %}
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 text-md-end">
-                                                <a href="{{ url_for('track_bus', bus_id=bus.id) }}" class="btn btn-outline-primary btn-sm me-2">
-                                                    <i class="fas fa-map-marker-alt me-1"></i> Track Bus
-                                                </a>
-                                                {% if bus.available_seats() > 0 %}
-                                                    <a href="{{ url_for('select_bus', bus_id=bus.id) }}" class="btn btn-warning btn-sm">
-                                                        <i class="fas fa-ticket-alt me-1"></i> Book Now
-                                                    </a>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+            <div class="text-center mt-5">
+                <a href="{{ url_for('index') }}#booking" class="btn btn-outline-warning btn-lg">
+                    <i class="fas fa-search me-2"></i>Modify Search
+                </a>
+            </div>
+            
+        {% else %}
+            <div class="no-results">
+                <div class="no-results-icon">
+                    <i class="fas fa-sad-tear"></i>
                 </div>
-                
-                <div class="mt-4">
-                    <a href="{{ url_for('index') }}#booking" class="btn btn-outline-dark">
-                        <i class="fas fa-arrow-left me-2"></i> Modify Search
-                    </a>
+                <h3 class="script-font text-warning mb-3">No Buses Found</h3>
+                <p class="lead mb-4">
+                    We couldn't find any buses for this route on the selected date. 
+                    <br>Perhaps try a different date or route?
+                </p>
+                <div class="script-font text-muted mb-4">
+                    "Every path leads somewhere beautiful" - Kavlin ✨
                 </div>
-            {% else %}
-                <div class="alert alert-warning">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    No buses found for this route on the selected date. Please try a different route or date.
-                </div>
-                
-                <div class="mt-4">
-                    <a href="{{ url_for('index') }}#booking" class="btn btn-warning">
-                        <i class="fas fa-search me-2"></i> Search Again
-                    </a>
-                </div>
-            {% endif %}
-        </div>
+                <a href="{{ url_for('index') }}#booking" class="btn btn-primary btn-lg">
+                    <i class="fas fa-search me-2"></i>Search Again
+                </a>
+            </div>
+        {% endif %}
     </div>
-</div>
+</section>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Hide all bus details rows initially
-        const detailsRows = document.querySelectorAll('.bus-details-row');
-        detailsRows.forEach(row => {
-            row.style.display = 'none';
+function toggleDetails(busId) {
+    const details = document.getElementById(`bus-details-${busId}`);
+    const allDetails = document.querySelectorAll('.bus-details');
+    
+    // Hide all other details
+    allDetails.forEach(detail => {
+        if (detail.id !== `bus-details-${busId}`) {
+            detail.style.display = 'none';
+        }
+    });
+    
+    // Toggle current details
+    if (details.style.display === 'none' || !details.style.display) {
+        details.style.display = 'block';
+        details.style.animation = 'slideInFromTop 0.5s ease-out';
+    } else {
+        details.style.display = 'none';
+    }
+}
+
+// Sort functionality
+document.querySelectorAll('input[name="sortBy"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const busCards = Array.from(document.querySelectorAll('.bus-card'));
+        const container = busCards[0].parentNode;
+        
+        busCards.sort((a, b) => {
+            if (this.value === 'price') {
+                const priceA = parseInt(a.querySelector('.price-display').textContent.replace('₹', ''));
+                const priceB = parseInt(b.querySelector('.price-display').textContent.replace('₹', ''));
+                return priceA - priceB;
+            } else if (this.value === 'time') {
+                const timeA = a.querySelector('.info-value').textContent;
+                const timeB = b.querySelector('.info-value').textContent;
+                return timeA.localeCompare(timeB);
+            }
+            return 0;
         });
         
-        // Add click event to each bus row
-        const busRows = document.querySelectorAll('.bus-row');
-        busRows.forEach(row => {
-            row.addEventListener('click', function() {
-                const busId = this.getAttribute('data-bus-id');
-                const detailsRow = document.getElementById('bus-details-' + busId);
-                
-                if (detailsRow.style.display === 'none' || !detailsRow.style.display) {
-                    // Hide all other details rows
-                    detailsRows.forEach(r => {
-                        r.style.display = 'none';
-                    });
-                    
-                    // Show this details row
-                    detailsRow.style.display = 'table-row';
-                } else {
-                    detailsRow.style.display = 'none';
-                }
-            });
+        // Re-append sorted cards
+        busCards.forEach(card => container.appendChild(card));
+        
+        // Add animation
+        busCards.forEach((card, index) => {
+            card.style.animation = `slideInFromLeft 0.5s ease-out ${index * 0.1}s both`;
         });
     });
+});
 </script>
 {% endblock %}

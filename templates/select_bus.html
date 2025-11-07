@@ -1,142 +1,272 @@
 {% extends 'base.html' %}
-
 {% block title %}Select Bus - Happy Trails{% endblock %}
 
 {% block extra_css %}
 <style>
-    .bus-details-card {
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        margin-bottom: 30px;
-    }
-    
-    .bus-details-header {
-        background-color: #343a40;
-        color: white;
-        padding: 15px 20px;
-    }
-    
-    .bus-type-badge {
-        font-size: 0.8rem;
-        padding: 5px 10px;
-        margin-left: 10px;
-    }
-    
-    .amenity-item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 8px;
-    }
-    
-    .amenity-item i {
-        color: var(--primary-color);
-        margin-right: 10px;
-    }
-    
-    .pickup-dropoff-section {
-        background-color: #f8f9fa;
-        border-radius: 10px;
-        padding: 20px;
-        margin-top: 20px;
-    }
+  .select-hero {
+      background: var(--gradient-soft);
+      padding: 130px 0 50px;
+      position:relative;
+      overflow:hidden;
+  }
+  .select-hero::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background-image:
+        radial-gradient(circle at 20% 70%, rgba(255,215,0,0.1) 0%, transparent 55%),
+        radial-gradient(circle at 75% 25%, rgba(255,182,193,0.12) 0%, transparent 55%);
+      animation: sparkle 9s ease-in-out infinite;
+  }
+  .bus-info-shell {
+      background:#fff;
+      border-radius:30px;
+      padding:45px 40px;
+      border:2px solid rgba(255,215,0,0.3);
+      box-shadow: var(--shadow-strong);
+      position:relative;
+      overflow:hidden;
+  }
+  .bus-info-shell::after {
+      content:'🚌';
+      position:absolute;
+      top:15px;
+      right:20px;
+      font-size:2.2rem;
+      opacity:.35;
+      animation: float 4.5s ease-in-out infinite;
+  }
+  .mini-badge {
+      display:inline-block;
+      padding:6px 14px;
+      font-size:.7rem;
+      letter-spacing:1px;
+      border-radius:20px;
+      text-transform:uppercase;
+      font-weight:600;
+      background: var(--gradient-sunrise);
+      color:#fff;
+      margin-left:8px;
+  }
+  .amenities-box {
+      background: rgba(255,249,230,0.6);
+      border:2px solid rgba(255,215,0,0.35);
+      border-radius:18px;
+      padding:18px 22px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+  }
+  .amenity-chip {
+      background:#fff;
+      padding:6px 14px;
+      border-radius:16px;
+      font-size:.75rem;
+      font-weight:600;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      border:1px solid rgba(255,215,0,0.4);
+  }
+  .sub-section {
+      background:#ffffff;
+      border:2px solid rgba(255,215,0,0.25);
+      padding:24px 26px;
+      border-radius:22px;
+      margin-top:35px;
+      box-shadow: var(--shadow-soft);
+      position:relative;
+      overflow:hidden;
+  }
+  .sub-section::before {
+      content:'';
+      position:absolute;
+      top:0; left:0; right:0;
+      height:4px;
+      background: var(--gradient-sunrise);
+  }
+  .point-select label {
+      font-size:.8rem;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      font-weight:600;
+      color: var(--medium-gray);
+      margin-bottom:6px;
+  }
+  .point-select select {
+      border:2px solid var(--secondary-yellow);
+      border-radius:15px;
+      padding:12px 15px;
+      transition: var(--transition-smooth);
+      background: #fff;
+  }
+  .point-select select:focus {
+      border-color: var(--primary-yellow);
+      box-shadow: var(--glow-yellow);
+      outline:none;
+  }
+  .progress-flow {
+      display:flex;
+      justify-content:center;
+      gap:18px;
+      margin-bottom:35px;
+      flex-wrap:wrap;
+  }
+  .flow-step {
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      background: var(--light-gray);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      position:relative;
+      font-size:.9rem;
+      color: var(--charcoal);
+  }
+  .flow-step.active {
+      background: var(--gradient-sunrise);
+      color:#fff;
+      animation: heartbeat 2.8s ease-in-out infinite;
+  }
+  .flow-step.completed {
+      background: #28a745;
+      color:#fff;
+  }
+  .flow-step:not(:last-child)::after {
+      content:'';
+      position:absolute;
+      top:50%; left:100%;
+      transform:translateY(-50%);
+      width:55px;
+      height:3px;
+      background: linear-gradient(90deg,var(--light-gray), var(--light-gray));
+  }
+  .flow-step.completed:not(:last-child)::after {
+      background: linear-gradient(90deg,#28a745, #28a745);
+  }
+  .flow-step.active:not(:last-child)::after {
+      background: linear-gradient(90deg,var(--primary-yellow), var(--deep-yellow));
+  }
+  .price-panel {
+      background: linear-gradient(135deg,#fff9e6,#ffeec2);
+      border:2px solid rgba(255,215,0,0.35);
+      border-radius:18px;
+      padding:18px 20px;
+      text-align:center;
+      margin-top:25px;
+  }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="row">
-        <div class="col-lg-8 mx-auto">
-            <div class="card shadow">
-                <div class="card-header bg-dark text-white">
-                    <h3 class="mb-0">Bus Details</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <h5>
-                                {{ bus.bus_number }}
-                                <span class="badge {% if bus.bus_type == 'Premium' %}bg-danger{% elif bus.bus_type == 'Deluxe' %}bg-primary{% else %}bg-success{% endif %} bus-type-badge">
-                                    {{ bus.bus_type }}
-                                </span>
-                            </h5>
-                            <p><strong>Route:</strong> {{ bus.from_location }} to {{ bus.to_location }}</p>
-                            <p><strong>Departure:</strong> {{ bus.departure_time }}</p>
-                            <p><strong>Arrival:</strong> {{ bus.arrival_time }}</p>
-                            <p><strong>Status:</strong> 
-                                {% if bus.status == 'On Time' %}
-                                    <span class="badge bg-success">On Time</span>
-                                {% elif bus.status == 'Delayed' %}
-                                    <span class="badge bg-warning text-dark">Delayed</span>
-                                {% else %}
-                                    <span class="badge bg-secondary">{{ bus.status }}</span>
-                                {% endif %}
-                            </p>
-                        </div>
-                        <div class="col-md-6">
-                            <h5>Amenities</h5>
-                            <ul class="list-unstyled">
-                                {% for amenity in bus.amenities.split(',') %}
-                                    <li class="amenity-item">
-                                        <i class="fas fa-check-circle"></i> {{ amenity.strip() }}
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                            <p><strong>Available Seats:</strong> {{ bus.available_seats() }}</p>
-                            <p><strong>Price per Seat:</strong> ₹{{ bus.price }}</p>
-                        </div>
+<section class="select-hero">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 class="script-font display-5">Select This Bus</h2>
+      <p class="text-muted lead mb-2">Confirm route & boarding preferences</p>
+    </div>
+
+    <!-- Progress Flow -->
+    <div class="progress-flow mb-5">
+        <div class="flow-step completed">1</div>
+        <div class="flow-step active">2</div>
+        <div class="flow-step">3</div>
+        <div class="flow-step">4</div>
+    </div>
+
+    <div class="bus-info-shell mx-auto" style="max-width:900px;">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <h4 class="mb-1 fw-bold">
+                    {{ bus.bus_number }}
+                    <span class="mini-badge">{{ bus.bus_type }}</span>
+                </h4>
+                <p class="text-muted mb-3">{{ bus.from_location }} → {{ bus.to_location }}</p>
+                <div class="d-flex flex-wrap gap-3 small">
+                    <div>
+                        <span class="fw-semibold"><i class="fas fa-clock text-warning me-1"></i>Departure:</span>
+                        {{ bus.departure_time }}
                     </div>
-                    
-                    <hr>
-                    
-                    <form action="{{ url_for('select_seats', bus_id=bus.id) }}" method="post">
-                        <div class="pickup-dropoff-section">
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="pickup_point" class="form-label">Select Pickup Point</label>
-                                    <select class="form-select" id="pickup_point" name="pickup_point" required>
-                                        <option value="" selected disabled>Choose pickup point</option>
-                                        {% if pickup_points %}
-                                            {% for point in pickup_points %}
-                                                <option value="{{ point.name }}">{{ point.name }} - {{ point.location }}</option>
-                                            {% endfor %}
-                                        {% else %}
-                                            <option value="{{ bus.from_location }} Bus Stand">{{ bus.from_location }} Bus Stand</option>
-                                        {% endif %}
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="dropoff_point" class="form-label">Select Drop-off Point</label>
-                                    <select class="form-select" id="dropoff_point" name="dropoff_point" required>
-                                        <option value="" selected disabled>Choose drop-off point</option>
-                                        {% if dropoff_points %}
-                                            {% for point in dropoff_points %}
-                                                <option value="{{ point.name }}">{{ point.name }} - {{ point.location }}</option>
-                                            {% endfor %}
-                                        {% else %}
-                                            <option value="{{ bus.to_location }} Bus Stand">{{ bus.to_location }} Bus Stand</option>
-                                        {% endif %}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="d-grid gap-2 mt-4">
-                            <button type="submit" class="btn btn-warning">Continue to Seat Selection</button>
-                            <a href="{{ url_for('bus_results') }}" class="btn btn-outline-secondary">Back to Bus List</a>
-                        </div>
-                    </form>
+                    <div>
+                        <span class="fw-semibold"><i class="fas fa-clock text-warning me-1"></i>Arrival:</span>
+                        {{ bus.arrival_time }}
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <span class="fw-semibold me-2">Status:</span>
+                    {% if bus.status == 'On Time' %}
+                      <span class="badge bg-success"><i class="fas fa-check me-1"></i>On Time</span>
+                    {% elif bus.status == 'Delayed' %}
+                      <span class="badge bg-warning text-dark"><i class="fas fa-clock me-1"></i>Delayed</span>
+                    {% else %}
+                      <span class="badge bg-secondary">{{ bus.status }}</span>
+                    {% endif %}
+                </div>
+                <div class="price-panel">
+                    <div class="small text-muted text-uppercase fw-semibold">Price per seat</div>
+                    <div class="fs-3 fw-bold text-warning">₹{{ bus.price }}</div>
+                    <div class="small text-muted">{{ bus.available_seats() }} seats left</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h6 class="text-uppercase small fw-bold text-muted mb-2">Amenities</h6>
+                <div class="amenities-box">
+                    {% for amenity in bus.amenities.split(',') %}
+                    <span class="amenity-chip">
+                        <i class="fas fa-check text-success"></i> {{ amenity.strip() }}
+                    </span>
+                    {% endfor %}
+                </div>
+                <div class="mt-4">
+                    <div class="script-font text-warning">
+                        "Preparation turns routes into experiences." – Kavlin ✨
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-{% endblock %}
 
-{% block extra_js %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Add any JavaScript needed for this page
-    });
-</script>
+        <form class="sub-section" action="{{ url_for('select_seats', bus_id=bus.id) }}" method="post">
+            <h5 class="script-font text-warning mb-4"><i class="fas fa-map-marker-alt me-2"></i>Pickup & Drop</h5>
+            <div class="row g-4 point-select">
+                <div class="col-md-6">
+                    <label>Select Pickup Point</label>
+                    <select name="pickup_point" required>
+                        <option value="" disabled selected>Choose...</option>
+                        {% if pickup_points %}
+                            {% for point in pickup_points %}
+                                <option value="{{ point.name }}">{{ point.name }} – {{ point.location }}</option>
+                            {% endfor %}
+                        {% else %}
+                            <option value="{{ bus.from_location }} Main Stand">{{ bus.from_location }} Main Stand</option>
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label>Select Drop-off Point</label>
+                    <select name="dropoff_point" required>
+                        <option value="" disabled selected>Choose...</option>
+                        {% if dropoff_points %}
+                            {% for point in dropoff_points %}
+                                <option value="{{ point.name }}">{{ point.name }} – {{ point.location }}</option>
+                            {% endfor %}
+                        {% else %}
+                            <option value="{{ bus.to_location }} Main Stand">{{ bus.to_location }} Main Stand</option>
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-chair me-2"></i>Continue to Seats
+                </button>
+                <a href="{{ url_for('bus_results') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Results
+                </a>
+            </div>
+        </form>
+    </div>
+  </div>
+</section>
 {% endblock %}
