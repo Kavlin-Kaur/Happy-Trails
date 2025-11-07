@@ -4,308 +4,653 @@
 
 {% block extra_css %}
 <style>
-    .bus-layout {
-        background-color: #f8f9fa;
-        border-radius: 10px;
+    .seat-hero {
+        background: var(--gradient-soft);
+        padding: 140px 0 60px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .seat-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+            radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(52, 152, 219, 0.08) 0%, transparent 50%);
+    }
+    
+    .bus-layout-container {
+        background: white;
+        border-radius: 25px;
+        padding: 40px;
+        box-shadow: var(--shadow-strong);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .bus-layout-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-sunrise);
+    }
+    
+    .bus-header {
+        text-align: center;
+        margin-bottom: 30px;
         padding: 20px;
-        margin-bottom: 20px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        background: var(--gradient-soft);
+        border-radius: 15px;
+        position: relative;
+    }
+    
+    .bus-steering {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 2rem;
+        color: var(--primary-yellow);
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    .seat-legend {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+    }
+    
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 10px 15px;
+        border-radius: 20px;
+        box-shadow: var(--shadow-soft);
+    }
+    
+    .legend-seat {
+        width: 25px;
+        height: 25px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: bold;
+    }
+    
+    .seat-layout {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 20px;
+        padding: 30px 20px;
+        margin: 30px 0;
+        position: relative;
+    }
+    
+    .seat-layout::before {
+        content: 'FRONT';
+        position: absolute;
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--charcoal);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 15px;
+        font-weight: 600;
+        font-size: 0.875rem;
+    }
+    
+    .seat-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 12px;
+        gap: 8px;
     }
     
     .seat {
-        width: 40px;
-        height: 40px;
-        margin: 5px;
-        display: inline-flex;
+        width: 45px;
+        height: 45px;
+        border-radius: 8px;
+        display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 5px;
+        font-weight: 700;
+        font-size: 0.875rem;
         cursor: pointer;
-        font-weight: bold;
-        transition: all 0.2s;
+        transition: var(--transition-bounce);
+        position: relative;
+        border: 2px solid transparent;
+    }
+    
+    .seat::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        border-radius: 10px;
+        background: transparent;
+        transition: var(--transition-smooth);
+        z-index: -1;
     }
     
     .seat-available {
-        background-color: #ffffff;
-        border: 2px solid #28a745;
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        border-color: #28a745;
         color: #28a745;
+        box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
     }
     
     .seat-available:hover {
-        background-color: #f0f9f2;
-        transform: scale(1.05);
+        transform: translateY(-3px) scale(1.1);
+        box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+        background: linear-gradient(135deg, #f0f9f2 0%, #e8f5e8 100%);
+    }
+    
+    .seat-available:hover::before {
+        background: linear-gradient(45deg, transparent 30%, rgba(40, 167, 69, 0.1) 50%, transparent 70%);
+        animation: shimmer 1s ease-in-out;
+    }
+    
+    @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
     }
     
     .seat-booked {
-        background-color: #dc3545;
-        border: 2px solid #dc3545;
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        border-color: #dc3545;
         color: white;
         cursor: not-allowed;
+        opacity: 0.7;
     }
     
     .seat-selected {
-        background-color: var(--primary-color);
-        border: 2px solid var(--primary-color);
-        color: #212529;
-    }
-    
-    .bus-front {
-        background-color: #343a40;
+        background: var(--gradient-sunrise);
+        border-color: var(--deep-yellow);
         color: white;
-        padding: 10px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        text-align: center;
+        transform: translateY(-3px) scale(1.1);
+        box-shadow: var(--glow-yellow);
+        animation: selectedPulse 2s ease-in-out infinite;
     }
     
-    .seat-info {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 20px;
+    @keyframes selectedPulse {
+        0%, 100% { box-shadow: var(--glow-yellow); }
+        50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.8); }
     }
     
-    .seat-info-item {
+    .seat-aisle {
+        width: 30px;
         display: flex;
         align-items: center;
-        margin: 0 10px;
+        justify-content: center;
+        color: var(--medium-gray);
+        font-size: 0.75rem;
     }
     
-    .seat-info-box {
-        width: 20px;
-        height: 20px;
-        border-radius: 3px;
-        margin-right: 5px;
-    }
-    
-    .booking-summary-card {
+    .booking-summary-sticky {
         position: sticky;
-        top: 20px;
+        top: 100px;
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: var(--shadow-medium);
+        border: 2px solid rgba(255, 215, 0, 0.2);
+    }
+    
+    .summary-header {
+        background: var(--gradient-sunrise);
+        color: white;
+        padding: 20px;
+        border-radius: 15px;
+        text-align: center;
+        margin-bottom: 25px;
+        position: relative;
+    }
+    
+    .summary-header::after {
+        content: '🎫';
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 1.5rem;
+    }
+    
+    .price-breakdown {
+        background: rgba(255, 249, 230, 0.7);
+        border-radius: 15px;
+        padding: 20px;
+        margin: 20px 0;
+    }
+    
+    .price-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    }
+    
+    .price-item:last-child {
+        border-bottom: none;
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: var(--deep-yellow);
+        margin-top: 10px;
+        padding-top: 15px;
+        border-top: 2px solid var(--primary-yellow);
+    }
+    
+    .selected-seats-display {
+        background: white;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 15px 0;
+        border: 2px solid var(--primary-yellow);
+    }
+    
+    .seat-chip {
+        display: inline-block;
+        background: var(--gradient-sunrise);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin: 3px;
+        animation: fadeInScale 0.5s ease-out;
+    }
+    
+    @keyframes fadeInScale {
+        0% { opacity: 0; transform: scale(0.5); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+    
+    .continue-btn {
+        background: var(--gradient-sunrise);
+        border: none;
+        border-radius: 25px;
+        padding: 15px 30px;
+        color: white;
+        font-weight: 600;
+        width: 100%;
+        transition: var(--transition-bounce);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .continue-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: left 0.6s;
+    }
+    
+    .continue-btn:hover::before {
+        left: 100%;
+    }
+    
+    .continue-btn:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: var(--shadow-medium);
+        color: white;
+    }
+    
+    .continue-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    .seat-alert {
+        background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+        border: 2px solid #ffc107;
+        border-radius: 15px;
+        padding: 15px;
+        margin: 20px 0;
+        display: none;
+        animation: slideInFromTop 0.5s ease-out;
+    }
+    
+    .journey-info {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 25px;
+        border: 2px solid rgba(255, 215, 0, 0.3);
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="card shadow">
-                <div class="card-header bg-dark text-white">
-                    <h3 class="mb-0">Select Your Seats</h3>
-                </div>
-                <div class="card-body">
-                    <div class="alert alert-info">
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-info-circle me-3 fs-4"></i>
-                            <div>
-                                <p class="mb-0">Bus: {{ bus.bus_number }} ({{ bus.bus_type }})</p>
-                                <p class="mb-0">Route: {{ bus.from_location }} to {{ bus.to_location }}</p>
-                                <p class="mb-0">Date: {{ travel_date }}</p>
-                                <p class="mb-0">Pickup: {{ pickup_point }}</p>
-                                <p class="mb-0">Drop-off: {{ dropoff_point }}</p>
+<!-- Seat Selection Hero -->
+<section class="seat-hero">
+    <div class="container">
+        <div class="text-center">
+            <h1 class="script-font display-4 text-warning">Choose Your Perfect Seat</h1>
+            <p class="lead">Select your preferred seats for a comfortable journey</p>
+        </div>
+    </div>
+</section>
+
+<!-- Seat Selection Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Bus Layout -->
+            <div class="col-lg-8">
+                <div class="bus-layout-container">
+                    <!-- Journey Information -->
+                    <div class="journey-info">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="script-font text-warning">
+                                    <i class="fas fa-bus me-2"></i>{{ bus.bus_number }} - {{ bus.bus_type }}
+                                </h6>
+                                <p class="mb-1"><strong>Route:</strong> {{ bus.from_location }} → {{ bus.to_location }}</p>
+                                <p class="mb-1"><strong>Date:</strong> {{ travel_date }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="mb-1"><strong>Pickup:</strong> {{ pickup_point }}</p>
+                                <p class="mb-1"><strong>Drop-off:</strong> {{ dropoff_point }}</p>
+                                <p class="mb-0"><strong>Price per seat:</strong> ₹{{ bus.price }}</p>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="seat-info">
-                        <div class="seat-info-item">
-                            <div class="seat-info-box seat-available"></div>
+                    <!-- Seat Legend -->
+                    <div class="seat-legend">
+                        <div class="legend-item">
+                            <div class="legend-seat seat-available">A1</div>
                             <span>Available</span>
                         </div>
-                        <div class="seat-info-item">
-                            <div class="seat-info-box seat-booked"></div>
-                            <span>Booked</span>
-                        </div>
-                        <div class="seat-info-item">
-                            <div class="seat-info-box seat-selected"></div>
+                        <div class="legend-item">
+                            <div class="legend-seat seat-selected">B2</div>
                             <span>Selected</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-seat seat-booked">C3</div>
+                            <span>Booked</span>
                         </div>
                     </div>
                     
-                    <div class="bus-layout">
-                        <div class="bus-front">
-                            <i class="fas fa-bus me-2"></i> FRONT
-                        </div>
-                        
+                    <!-- Bus Header -->
+                    <div class="bus-header">
+                        <div class="bus-steering">🚗</div>
+                        <h5 class="script-font text-warning mb-2">{{ bus.bus_number }}</h5>
+                        <small class="text-muted">Driver's Cabin</small>
+                    </div>
+                    
+                    <!-- Seat Layout -->
+                    <div class="seat-layout">
                         <form id="seatSelectionForm" action="{{ url_for('payment', bus_id=bus.id) }}" method="post">
-                            <div class="text-center">
-                                {% for row in range(1, 11) %}
-                                    <div class="mb-2">
-                                        {% for col in ['A', 'B', '', 'C', 'D'] %}
-                                            {% if col == '' %}
-                                                <span style="display: inline-block; width: 40px;"></span>
-                                            {% else %}
-                                                {% set seat_number = row|string + col %}
-                                                {% if seat_number in booked_seats %}
-                                                    <div class="seat seat-booked" title="Seat {{ seat_number }} - Already booked">{{ seat_number }}</div>
-                                                {% else %}
-                                                    <div class="seat seat-available" data-seat="{{ seat_number }}" title="Seat {{ seat_number }}">{{ seat_number }}</div>
-                                                    <input type="checkbox" name="selected_seats" value="{{ seat_number }}" style="display: none;">
-                                                {% endif %}
-                                            {% endif %}
-                                        {% endfor %}
+                            {% for row in range(1, 11) %}
+                                <div class="seat-row">
+                                    {% for col in ['A', 'B'] %}
+                                        {% set seat_number = row|string + col %}
+                                        {% if seat_number in booked_seats %}
+                                            <div class="seat seat-booked" title="Seat {{ seat_number }} - Already booked">
+                                                {{ seat_number }}
+                                            </div>
+                                        {% else %}
+                                            <div class="seat seat-available" data-seat="{{ seat_number }}" title="Seat {{ seat_number }} - ₹{{ bus.price }}">
+                                                {{ seat_number }}
+                                            </div>
+                                            <input type="checkbox" name="selected_seats" value="{{ seat_number }}" style="display: none;">
+                                        {% endif %}
+                                    {% endfor %}
+                                    
+                                    <div class="seat-aisle">
+                                        <i class="fas fa-arrows-alt-h"></i>
                                     </div>
-                                {% endfor %}
-                            </div>
-                            
-                            <div class="mt-4">
-                                <div class="alert alert-warning" id="seatAlert" style="display: none;">
-                                    <i class="fas fa-exclamation-triangle me-2"></i>
-                                    Please select at least one seat to continue.
+                                    
+                                    {% for col in ['C', 'D'] %}
+                                        {% set seat_number = row|string + col %}
+                                        {% if seat_number in booked_seats %}
+                                            <div class="seat seat-booked" title="Seat {{ seat_number }} - Already booked">
+                                                {{ seat_number }}
+                                            </div>
+                                        {% else %}
+                                            <div class="seat seat-available" data-seat="{{ seat_number }}" title="Seat {{ seat_number }} - ₹{{ bus.price }}">
+                                                {{ seat_number }}
+                                            </div>
+                                            <input type="checkbox" name="selected_seats" value="{{ seat_number }}" style="display: none;">
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
-                                
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <p class="mb-0">Selected Seats: <span id="selectedSeatsText">None</span></p>
-                                        <p class="mb-0">Total Price: ₹<span id="totalPrice">0</span></p>
-                                    </div>
-                                    <div>
-                                        <button type="button" id="continueBtn" class="btn btn-warning">Continue to Payment</button>
-                                        <a href="{{ url_for('select_bus', bus_id=bus.id) }}" class="btn btn-outline-secondary ms-2">Back</a>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </form>
+                    </div>
+                    
+                    <!-- Alert for seat selection -->
+                    <div class="seat-alert" id="seatAlert">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-exclamation-triangle text-warning me-3 fs-4"></i>
+                            <div>
+                                <strong>Please select at least one seat</strong>
+                                <p class="mb-0">Choose your preferred seats to continue with the booking.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Kavlin Quote -->
+                    <div class="text-center mt-4">
+                        <div class="script-font text-warning">
+                            "Every seat is a window to new adventures" - Kavlin ✨
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="col-lg-4">
-            <div class="card shadow booking-summary-card">
-                <div class="card-header bg-dark text-white">
-                    <h3 class="mb-0">Booking Summary</h3>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <h5>{{ bus.bus_number }} - {{ bus.bus_type }}</h5>
-                        <p class="mb-1"><strong>From:</strong> {{ bus.from_location }}</p>
-                        <p class="mb-1"><strong>To:</strong> {{ bus.to_location }}</p>
-                        <p class="mb-1"><strong>Date:</strong> {{ travel_date }}</p>
-                        <p class="mb-1"><strong>Departure:</strong> {{ bus.departure_time }}</p>
-                        <p class="mb-1"><strong>Arrival:</strong> {{ bus.arrival_time }}</p>
+            
+            <!-- Booking Summary Sidebar -->
+            <div class="col-lg-4">
+                <div class="booking-summary-sticky">
+                    <div class="summary-header">
+                        <h5 class="mb-0">Booking Summary</h5>
                     </div>
                     
-                    <hr>
-                    
-                    <div class="mb-3">
-                        <h5>Pickup & Drop-off</h5>
-                        <p class="mb-1"><strong>Pickup:</strong> {{ pickup_point }}</p>
-                        <p class="mb-1"><strong>Drop-off:</strong> {{ dropoff_point }}</p>
-                    </div>
-                    
-                    <hr>
-                    
-                    <div>
-                        <h5>Price Details</h5>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>Base Fare:</span>
-                            <span>₹{{ bus.price }} per seat</span>
+                    <!-- Bus Details -->
+                    <div class="mb-4">
+                        <h6 class="script-font text-warning mb-3">Journey Details</h6>
+                        <div class="small">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Bus:</span>
+                                <span>{{ bus.bus_number }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Type:</span>
+                                <span>{{ bus.bus_type }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Route:</span>
+                                <span>{{ bus.from_location }} → {{ bus.to_location }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Date:</span>
+                                <span>{{ travel_date }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Departure:</span>
+                                <span>{{ bus.departure_time }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span>Arrival:</span>
+                                <span>{{ bus.arrival_time }}</span>
+                            </div>
                         </div>
-                        <div class="d-flex justify-content-between mb-2">
+                    </div>
+                    
+                    <!-- Selected Seats -->
+                    <div class="selected-seats-display">
+                        <h6 class="script-font text-warning mb-2">Selected Seats</h6>
+                        <div id="selectedSeatsContainer">
+                            <span class="text-muted">No seats selected</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Price Breakdown -->
+                    <div class="price-breakdown">
+                        <h6 class="script-font text-warning mb-3">Price Breakdown</h6>
+                        <div class="price-item">
+                            <span>Base Fare (per seat):</span>
+                            <span>₹{{ bus.price }}</span>
+                        </div>
+                        <div class="price-item">
                             <span>Selected Seats:</span>
-                            <span id="summarySelectedSeats">0</span>
+                            <span id="seatCount">0</span>
                         </div>
-                        <div class="d-flex justify-content-between mb-2">
+                        <div class="price-item">
                             <span>Subtotal:</span>
-                            <span id="summarySubtotal">₹0</span>
+                            <span id="subtotal">₹0</span>
                         </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>Tax (5%):</span>
-                            <span id="summaryTax">₹0</span>
+                        <div class="price-item">
+                            <span>Taxes & Fees (5%):</span>
+                            <span id="taxes">₹0</span>
                         </div>
-                        <hr>
-                        <div class="d-flex justify-content-between fw-bold">
-                            <span>Total:</span>
-                            <span id="summaryTotal">₹0</span>
+                        <div class="price-item">
+                            <span>Total Amount:</span>
+                            <span id="totalAmount">₹0</span>
                         </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2">
+                        <button type="button" id="continueBtn" class="continue-btn" disabled>
+                            <i class="fas fa-credit-card me-2"></i>
+                            Continue to Payment
+                        </button>
+                        <a href="{{ url_for('select_bus', bus_id=bus.id) }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Bus Details
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const availableSeats = document.querySelectorAll('.seat-available');
-        const checkboxes = document.querySelectorAll('input[name="selected_seats"]');
-        const selectedSeatsText = document.getElementById('selectedSeatsText');
-        const totalPriceElement = document.getElementById('totalPrice');
-        const continueBtn = document.getElementById('continueBtn');
-        const seatAlert = document.getElementById('seatAlert');
-        const seatSelectionForm = document.getElementById('seatSelectionForm');
-        
-        // Summary elements
-        const summarySelectedSeats = document.getElementById('summarySelectedSeats');
-        const summarySubtotal = document.getElementById('summarySubtotal');
-        const summaryTax = document.getElementById('summaryTax');
-        const summaryTotal = document.getElementById('summaryTotal');
-        
-        const pricePerSeat = {{ bus.price }};
-        const taxRate = 0.05; // 5% tax
-        
-        let selectedSeats = [];
-        
-        // Add click event to each available seat
-        availableSeats.forEach((seat, index) => {
-            seat.addEventListener('click', function() {
-                const seatNumber = this.dataset.seat;
+document.addEventListener('DOMContentLoaded', function() {
+    const availableSeats = document.querySelectorAll('.seat-available');
+    const checkboxes = document.querySelectorAll('input[name="selected_seats"]');
+    const continueBtn = document.getElementById('continueBtn');
+    const seatAlert = document.getElementById('seatAlert');
+    const seatForm = document.getElementById('seatSelectionForm');
+    
+    // Summary elements
+    const selectedSeatsContainer = document.getElementById('selectedSeatsContainer');
+    const seatCount = document.getElementById('seatCount');
+    const subtotal = document.getElementById('subtotal');
+    const taxes = document.getElementById('taxes');
+    const totalAmount = document.getElementById('totalAmount');
+    
+    const pricePerSeat = {{ bus.price }};
+    const taxRate = 0.05;
+    let selectedSeats = [];
+    
+    // Add click event to available seats
+    availableSeats.forEach((seat, index) => {
+        seat.addEventListener('click', function() {
+            const seatNumber = this.dataset.seat;
+            const checkbox = document.querySelector(`input[value="${seatNumber}"]`);
+            
+            if (this.classList.contains('seat-selected')) {
+                // Deselect seat
+                this.classList.remove('seat-selected');
+                this.classList.add('seat-available');
+                checkbox.checked = false;
                 
-                if (this.classList.contains('seat-selected')) {
-                    // Deselect seat
-                    this.classList.remove('seat-selected');
-                    this.classList.add('seat-available');
-                    checkboxes[index].checked = false;
-                    
-                    // Remove from selected seats array
-                    const seatIndex = selectedSeats.indexOf(seatNumber);
-                    if (seatIndex > -1) {
-                        selectedSeats.splice(seatIndex, 1);
-                    }
-                } else {
-                    // Select seat
+                const seatIndex = selectedSeats.indexOf(seatNumber);
+                if (seatIndex > -1) {
+                    selectedSeats.splice(seatIndex, 1);
+                }
+            } else {
+                // Select seat (limit to 6 seats)
+                if (selectedSeats.length < 6) {
                     this.classList.remove('seat-available');
                     this.classList.add('seat-selected');
-                    checkboxes[index].checked = true;
-                    
-                    // Add to selected seats array
+                    checkbox.checked = true;
                     selectedSeats.push(seatNumber);
-                }
-                
-                // Update selected seats text
-                if (selectedSeats.length > 0) {
-                    selectedSeatsText.textContent = selectedSeats.join(', ');
                 } else {
-                    selectedSeatsText.textContent = 'None';
+                    showToast('You can select maximum 6 seats at a time', 'warning');
+                    return;
                 }
-                
-                // Update price
-                const subtotal = selectedSeats.length * pricePerSeat;
-                const tax = subtotal * taxRate;
-                const total = subtotal + tax;
-                
-                totalPriceElement.textContent = total.toFixed(2);
-                
-                // Update summary
-                summarySelectedSeats.textContent = selectedSeats.length;
-                summarySubtotal.textContent = '₹' + subtotal.toFixed(2);
-                summaryTax.textContent = '₹' + tax.toFixed(2);
-                summaryTotal.textContent = '₹' + total.toFixed(2);
-            });
-        });
-        
-        // Continue button click event
-        continueBtn.addEventListener('click', function() {
-            if (selectedSeats.length === 0) {
-                seatAlert.style.display = 'block';
-                return;
             }
             
-            seatAlert.style.display = 'none';
-            seatSelectionForm.submit();
+            updateSummary();
         });
     });
+    
+    function updateSummary() {
+        // Update selected seats display
+        if (selectedSeats.length > 0) {
+            selectedSeatsContainer.innerHTML = selectedSeats.map(seat => 
+                `<span class="seat-chip">${seat}</span>`
+            ).join('');
+            
+            continueBtn.disabled = false;
+            seatAlert.style.display = 'none';
+        } else {
+            selectedSeatsContainer.innerHTML = '<span class="text-muted">No seats selected</span>';
+            continueBtn.disabled = true;
+        }
+        
+        // Update price breakdown
+        const seatCountValue = selectedSeats.length;
+        const subtotalValue = seatCountValue * pricePerSeat;
+        const taxesValue = subtotalValue * taxRate;
+        const totalValue = subtotalValue + taxesValue;
+        
+        seatCount.textContent = seatCountValue;
+        subtotal.textContent = `₹${subtotalValue}`;
+        taxes.textContent = `₹${taxesValue.toFixed(2)}`;
+        totalAmount.textContent = `₹${totalValue.toFixed(2)}`;
+    }
+    
+    // Continue button click
+    continueBtn.addEventListener('click', function() {
+        if (selectedSeats.length === 0) {
+            seatAlert.style.display = 'block';
+            seatAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+        
+        seatForm.submit();
+    });
+    
+    // Add hover effects
+    availableSeats.forEach(seat => {
+        seat.addEventListener('mouseenter', function() {
+            if (!this.classList.contains('seat-selected')) {
+                this.style.transform = 'translateY(-3px) scale(1.1)';
+            }
+        });
+        
+        seat.addEventListener('mouseleave', function() {
+            if (!this.classList.contains('seat-selected')) {
+                this.style.transform = '';
+            }
+        });
+    });
+});
 </script>
 {% endblock %}

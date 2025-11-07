@@ -2,92 +2,260 @@
 
 {% block title %}My Bookings - Happy Trails{% endblock %}
 
+{% block extra_css %}
+<style>
+  .bookings-hero {
+      background: var(--gradient-sunset);
+      padding: 130px 0 60px;
+      position:relative;
+      overflow:hidden;
+  }
+  .bookings-hero::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background-image:
+        radial-gradient(circle at 30% 70%, rgba(255,215,0,0.1) 0%, transparent 55%),
+        radial-gradient(circle at 70% 30%, rgba(255,182,193,0.1) 0%, transparent 55%);
+      animation: sparkle 10s ease-in-out infinite;
+  }
+  .booking-card {
+      background:#ffffff;
+      border-radius:24px;
+      border:2px solid rgba(255,215,0,0.25);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+      position:relative;
+      transition: var(--transition-bounce);
+  }
+  .booking-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-strong);
+  }
+  .booking-card::before {
+      content:'';
+      position:absolute;
+      top:0; left:0; right:0;
+      height:4px;
+      background: var(--gradient-sunrise);
+  }
+  .booking-header {
+      padding:18px 24px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      background:linear-gradient(135deg,#fff,#fff8ea);
+  }
+  .booking-header h5 {
+      margin:0;
+      font-weight:700;
+      font-size:1.05rem;
+      letter-spacing:.5px;
+  }
+  .status-chip {
+      padding:6px 14px;
+      border-radius:20px;
+      font-size:.7rem;
+      font-weight:600;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+  }
+  .status-confirmed {background:#d4edda; color:#1d7432;}
+  .status-cancelled {background:#f8d7da; color:#892026;}
+  .status-other {background:#e2e3e5; color:#343a40;}
+  .booking-body {
+      padding:24px;
+  }
+  .info-grid {
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(190px,1fr));
+      gap:18px 22px;
+      font-size:.9rem;
+  }
+  .info-item .label {
+      text-transform:uppercase;
+      font-size:.65rem;
+      letter-spacing:1px;
+      font-weight:600;
+      color: var(--medium-gray);
+      margin-bottom:4px;
+  }
+  .info-item .value {
+      font-weight:600;
+      color: var(--charcoal);
+  }
+  .price-ribbon {
+      position:absolute;
+      top:12px;
+      right:-40px;
+      background: var(--gradient-sunrise);
+      color:#fff;
+      padding:6px 55px;
+      transform:rotate(35deg);
+      font-size:.75rem;
+      font-weight:600;
+      letter-spacing:.5px;
+      box-shadow: var(--shadow-soft);
+  }
+  .actions {
+      margin-top:22px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+  }
+  .actions .btn {
+      border-radius:25px;
+      font-weight:600;
+      letter-spacing:.5px;
+      padding:8px 18px;
+  }
+  .empty-state {
+      background:#ffffff;
+      border-radius:30px;
+      padding:70px 40px;
+      text-align:center;
+      border:2px dashed rgba(255,215,0,0.4);
+      box-shadow: var(--shadow-soft);
+  }
+  .empty-icon {
+      font-size:4rem;
+      color: var(--primary-yellow);
+      margin-bottom:20px;
+      animation: float 4s ease-in-out infinite;
+  }
+  .modal-content {
+      border-radius:24px;
+      border:2px solid rgba(255,215,0,0.3);
+  }
+  .modal-header {
+      border-bottom:none;
+      background: var(--gradient-soft);
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container py-5">
-    <h2 class="mb-4">My Bookings</h2>
-    
+<section class="bookings-hero">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h1 class="script-font display-5">My Bookings</h1>
+      <p class="text-muted lead mb-2">Track, manage & revisit your journeys</p>
+      <small class="script-font text-warning">"Memories are tickets stamped by time" – Kavlin ✨</small>
+    </div>
+
     {% if bookings %}
-        <div class="row">
-            {% for booking in bookings %}
-                <div class="col-lg-6 mb-4">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-header d-flex justify-content-between align-items-center
-                            {% if booking.status == 'Confirmed' %}bg-success text-white
-                            {% elif booking.status == 'Cancelled' %}bg-danger text-white
-                            {% else %}bg-warning{% endif %}">
-                            <h5 class="mb-0">Booking #{{ booking.id }}</h5>
-                            <span class="badge bg-light text-dark">{{ booking.status }}</span>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <p><strong>Bus Number:</strong> {{ booking.bus.bus_number }}</p>
-                                    <p><strong>Route:</strong> {{ booking.bus.from_location }} to {{ booking.bus.to_location }}</p>
-                                    <p><strong>Travel Date:</strong> {{ booking.travel_date.strftime('%d %b, %Y') }}</p>
-                                    <p><strong>Pickup:</strong> {{ booking.pickup_point or booking.bus.from_location + ' Bus Stand' }}</p>
-                                </div>
-                                <div class="col-md-6">
-                                    <p><strong>Departure:</strong> {{ booking.bus.departure_time }}</p>
-                                    <p><strong>Arrival:</strong> {{ booking.bus.arrival_time }}</p>
-                                    <p><strong>Seats:</strong> {{ booking.seats }}</p>
-                                    <p><strong>Seat Numbers:</strong> {{ booking.seat_numbers or 'Not specified' }}</p>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <h5 class="mb-0">Total: ₹{{ booking.total_price }}</h5>
-                                <div>
-                                    {% if booking.status == 'Confirmed' %}
-                                        <a href="{{ url_for('track_bus', bus_id=booking.bus.id) }}" class="btn btn-outline-primary btn-sm">
-                                            <i class="fas fa-map-marker-alt me-1"></i> Track
-                                        </a>
-                                        <button type="button" class="btn btn-outline-danger btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#cancelModal{{ booking.id }}">
-                                            <i class="fas fa-times me-1"></i> Cancel
-                                        </button>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer text-muted">
-                            <small>Booked on: {{ booking.booking_date.strftime('%d %b, %Y at %H:%M') }}</small>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Cancel Booking Modal -->
-                <div class="modal fade" id="cancelModal{{ booking.id }}" tabindex="-1" aria-labelledby="cancelModalLabel{{ booking.id }}" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="cancelModalLabel{{ booking.id }}">Cancel Booking</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Are you sure you want to cancel your booking for bus {{ booking.bus.bus_number }} from {{ booking.bus.from_location }} to {{ booking.bus.to_location }} on {{ booking.travel_date.strftime('%d %b, %Y') }}?</p>
-                                <p class="text-danger"><strong>Note:</strong> This action cannot be undone.</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <form action="{{ url_for('cancel_booking', booking_id=booking.id) }}" method="post">
-                                    <button type="submit" class="btn btn-danger">Cancel Booking</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="alert alert-info">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-info-circle me-3 fs-4"></i>
-                <div>
-                    <p class="mb-0">You don't have any bookings yet.</p>
-                </div>
+      <div class="row g-4">
+        {% for booking in bookings %}
+        <div class="col-lg-6">
+          <div class="booking-card h-100">
+            <div class="price-ribbon">₹{{ booking.total_price }}</div>
+            <div class="booking-header">
+              <h5>Booking #{{ booking.id }}</h5>
+              {% if booking.status == 'Confirmed' %}
+                <div class="status-chip status-confirmed"><i class="fas fa-check"></i> Confirmed</div>
+              {% elif booking.status == 'Cancelled' %}
+                <div class="status-chip status-cancelled"><i class="fas fa-times"></i> Cancelled</div>
+              {% else %}
+                <div class="status-chip status-other">{{ booking.status }}</div>
+              {% endif %}
             </div>
+            <div class="booking-body">
+              <div class="info-grid">
+                <div class="info-item">
+                  <div class="label">Route</div>
+                  <div class="value">{{ booking.bus.from_location }} → {{ booking.bus.to_location }}</div>
+                </div>
+                <div class="info-item">
+                  <div class="label">Travel Date</div>
+                  <div class="value">{{ booking.travel_date.strftime('%d %b, %Y') }}</div>
+                </div>
+                <div class="info-item">
+                  <div class="label">Departure</div>
+                  <div class="value">{{ booking.bus.departure_time }}</div>
+                </div>
+                <div class="info-item">
+                  <div class="label">Arrival</div>
+                  <div class="value">{{ booking.bus.arrival_time }}</div>
+                </div>
+                <div class="info-item">
+                  <div class="label">Seats</div>
+                  <div class="value">{{ booking.seat_numbers or booking.seats }}</div>
+                </div>
+                <div class="info-item">
+                  <div class="label">Pickup</div>
+                  <div class="value">{{ booking.pickup_point or booking.bus.from_location ~ ' Stand' }}</div>
+                </div>
+                <div class="info-item">
+                  <div class="label">Payment</div>
+                  <div class="value">{{ booking.payment_method|replace('_',' ')|title }}</div>
+                </div>
+                <div class="info-item">
+                  <div class="label">Booked On</div>
+                  <div class="value">{{ booking.booking_date.strftime('%d %b, %Y') }}</div>
+                </div>
+              </div>
+
+              <div class="actions">
+                <a href="{{ url_for('track_bus', bus_id=booking.bus.id) }}" class="btn btn-outline-primary btn-sm">
+                  <i class="fas fa-map-marker-alt me-1"></i> Track
+                </a>
+                {% if booking.status == 'Confirmed' %}
+                <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#cancelModal{{ booking.id }}">
+                  <i class="fas fa-times me-1"></i> Cancel
+                </button>
+                {% endif %}
+              </div>
+            </div>
+          </div>
         </div>
-        <a href="{{ url_for('index') }}#booking" class="btn btn-warning mt-3">
-            <i class="fas fa-ticket-alt me-2"></i> Book a Bus
+
+        <!-- Cancel Modal -->
+        <div class="modal fade" id="cancelModal{{ booking.id }}" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title script-font text-warning">Cancel Booking #{{ booking.id }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                <p class="mb-2">Are you sure you want to cancel this journey?</p>
+                <ul class="mb-3 small text-muted">
+                  <li>Route: {{ booking.bus.from_location }} → {{ booking.bus.to_location }}</li>
+                  <li>Travel Date: {{ booking.travel_date.strftime('%d %b, %Y') }}</li>
+                  <li>Seats: {{ booking.seat_numbers or booking.seats }}</li>
+                </ul>
+                <div class="alert alert-warning mb-0">
+                  <i class="fas fa-exclamation-triangle me-2"></i>
+                  This action cannot be undone. Refund policy may apply.
+                </div>
+              </div>
+              <div class="modal-footer border-0">
+                <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <form action="{{ url_for('cancel_booking', booking_id=booking.id) }}" method="post">
+                  <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-times me-1"></i> Cancel Booking
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <div class="empty-icon">🚌</div>
+        <h3 class="script-font text-warning mb-3">No Bookings Yet</h3>
+        <p class="lead text-muted">Your adventure journal is waiting for its first story.</p>
+        <a href="{{ url_for('index') }}#booking" class="btn btn-primary btn-lg mt-3">
+          <i class="fas fa-ticket-alt me-2"></i>Book a Journey
         </a>
+      </div>
     {% endif %}
-</div>
+  </div>
+</section>
 {% endblock %}
