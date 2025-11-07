@@ -1,16 +1,33 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime, date
 import os
+import re
+import os
+import re
 import random
+from datetime import datetime, date
+from flask import (
+    Flask, render_template, request, redirect,
+    url_for, flash, jsonify, session
+)
+# Add these two lines to load the .env file
+from dotenv import load_dotenv
+load_dotenv()
+
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import (
+    LoginManager, UserMixin, login_user, login_required,
+    logout_user, current_user
+)
+from werkzeug.security import generate_password_hash, check_password_hash
 import requests
 
-# Create Flask application
+# -------------------------------------------------------------------
+# Configuration
+# -------------------------------------------------------------------
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'happytrailssecretkey'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///happytrails.db'
+
+# Now the os.getenv calls below will find the variables from your .env file
+app.config['SECRET_KEY'] = os.getenv('HAPPYTRAILS_SECRET_KEY', 'happytrailssecretkey')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///happytrails.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize database
@@ -1416,8 +1433,9 @@ def copyright_notice():
 
 # Run the application
 if __name__ == '__main__':
+    # Use SQLite for local development
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///happytrails.db'
     app.run(debug=True)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///happytrails.db'
 
 # Make sure it points to the correct location
 # If you want the database in a specific folder, use absolute paths:
