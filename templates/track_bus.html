@@ -1,346 +1,355 @@
 {% extends 'base.html' %}
-
 {% block title %}Track Bus - Happy Trails{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
 <style>
-    #map {
-        height: 500px;
-        width: 100%;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        z-index: 1;
-    }
-    .bus-info-card {
-        background-color: white;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-    }
-    .weather-card {
-        background-color: white;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        margin-top: 20px;
-    }
-    .weather-icon {
-        font-size: 2.5rem;
-        margin-right: 15px;
-    }
-    .custom-popup .leaflet-popup-content-wrapper {
-        background: #2c3e50;
-        color: #fff;
-        border-radius: 10px;
-    }
-    .custom-popup .leaflet-popup-content {
-        margin: 12px;
-    }
-    .custom-popup .leaflet-popup-tip {
-        background: #2c3e50;
-    }
-    .custom-popup a.btn-warning {
-        color: #000;
-        background-color: #ffc107;
-        border-color: #ffc107;
-        display: inline-block;
-        padding: 0.25rem 0.5rem;
-        font-size: 0.875rem;
-        border-radius: 0.25rem;
-        text-decoration: none;
-        margin-top: 8px;
-    }
-    .custom-popup a.btn-warning:hover {
-        background-color: #e0a800;
-        border-color: #d39e00;
-    }
+  .track-hero {
+      background: var(--gradient-soft);
+      padding: 130px 0 40px;
+      position:relative;
+      overflow:hidden;
+  }
+  .track-hero::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background-image:
+        radial-gradient(circle at 25% 70%, rgba(255,215,0,0.1) 0%, transparent 55%),
+        radial-gradient(circle at 75% 30%, rgba(173,216,230,0.15) 0%, transparent 55%);
+      animation: sparkle 9s ease-in-out infinite;
+  }
+  #map {
+      height: 520px;
+      width:100%;
+      border-radius:25px;
+      box-shadow: var(--shadow-strong);
+      border:3px solid rgba(255,215,0,0.35);
+      z-index:1;
+      overflow:hidden;
+  }
+  .tracking-shell {
+      background:#ffffff;
+      border-radius:30px;
+      padding:40px 35px;
+      border:2px solid rgba(255,215,0,0.3);
+      box-shadow: var(--shadow-strong);
+      position:relative;
+      overflow:hidden;
+  }
+  .tracking-shell::after {
+      content:'🛰️';
+      position:absolute;
+      top:14px;
+      right:18px;
+      font-size:2.3rem;
+      opacity:.35;
+      animation: float 5s ease-in-out infinite;
+  }
+  .section-label {
+      text-transform:uppercase;
+      letter-spacing:1px;
+      font-size:.65rem;
+      font-weight:600;
+      color: var(--medium-gray);
+      margin-bottom:6px;
+  }
+  .info-block {
+      background:#fff;
+      border:2px solid rgba(255,215,0,0.3);
+      border-radius:18px;
+      padding:18px 20px;
+      margin-bottom:18px;
+      position:relative;
+      overflow:hidden;
+  }
+  .info-block::before {
+      content:'';
+      position:absolute;
+      top:0;left:0;right:0;
+      height:4px;
+      background: var(--gradient-sunrise);
+  }
+  .weather-block {
+      background: linear-gradient(135deg, #f0f9ff, #e8f3ff);
+      border:2px solid rgba(0,123,255,0.3);
+      border-radius:20px;
+      padding:20px 22px;
+      margin-bottom:22px;
+      position:relative;
+      overflow:hidden;
+  }
+  .weather-block::after {
+      content:'☁️';
+      position:absolute;
+      bottom:-6px;
+      right:12px;
+      font-size:3.2rem;
+      opacity:.15;
+      animation: float 6s ease-in-out infinite;
+  }
+  .traffic-block {
+      background: linear-gradient(135deg,#fff9e6,#fff4cc);
+      border:2px solid rgba(255,215,0,0.4);
+      border-radius:20px;
+      padding:20px 22px;
+      position:relative;
+  }
+  .live-dot {
+      width:12px;
+      height:12px;
+      background:#dc3545;
+      border-radius:50%;
+      box-shadow:0 0 10px rgba(220,53,69,.7);
+      animation: heartbeat 1.6s ease-in-out infinite;
+      display:inline-block;
+      margin-right:6px;
+  }
+  .badge-status {
+      padding:6px 14px;
+      border-radius:18px;
+      font-size:.7rem;
+      font-weight:600;
+      letter-spacing:.5px;
+  }
+  .small-grid {
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(130px,1fr));
+      gap:12px 18px;
+      font-size:.8rem;
+      margin-top:10px;
+  }
+  .small-grid .item span {
+      display:block;
+      font-weight:600;
+      color: var(--charcoal);
+      margin-top:2px;
+  }
+  .kavlin-panel {
+      background: rgba(255,215,0,0.12);
+      border-left:4px solid var(--primary-yellow);
+      padding:18px 20px;
+      border-radius:16px;
+      font-style:italic;
+      margin-top:25px;
+  }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="row">
-        <div class="col-lg-4">
-            <div class="bus-info-card">
-                <h3>Bus Details</h3>
-                <hr>
-                <p><strong>Bus Number:</strong> {{ bus.bus_number }}</p>
-                <p><strong>Route:</strong> {{ bus.from_location }} to {{ bus.to_location }}</p>
-                <p><strong>Departure:</strong> {{ bus.departure_time }}</p>
-                <p><strong>Arrival:</strong> {{ bus.arrival_time }}</p>
-                <p><strong>Status:</strong> 
-                    {% if bus.status == 'On Time' %}
-                        <span class="badge bg-success">On Time</span>
-                    {% elif bus.status == 'Delayed' %}
-                        <span class="badge bg-warning text-dark">Delayed</span>
-                    {% else %}
-                        <span class="badge bg-secondary">{{ bus.status }}</span>
-                    {% endif %}
-                </p>
+<section class="track-hero">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h1 class="script-font display-5">Live Bus Tracking</h1>
+      <p class="text-muted lead">Follow your journey in real time</p>
+    </div>
+    <div class="row g-5">
+      <div class="col-lg-4">
+        <div class="tracking-shell">
+            <div class="info-block">
+                <div class="section-label">Bus Details</div>
+                <h5 class="mb-1 fw-bold">{{ bus.bus_number }}
+                  <small class="badge {% if bus.bus_type == 'Premium' %}bg-danger{% elif bus.bus_type == 'Deluxe' %}bg-primary{% else %}bg-success{% endif %} ms-1">{{ bus.bus_type }}</small>
+                </h5>
+                <p class="text-muted mb-2">{{ bus.from_location }} → {{ bus.to_location }}</p>
+                <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+                  {% if bus.status == 'On Time' %}
+                    <span class="badge-status bg-success text-white"><i class="fas fa-check me-1"></i>On Time</span>
+                  {% elif bus.status == 'Delayed' %}
+                    <span class="badge-status bg-warning text-dark"><i class="fas fa-clock me-1"></i>Delayed</span>
+                  {% else %}
+                    <span class="badge-status bg-secondary text-white">{{ bus.status }}</span>
+                  {% endif %}
+                  <span class="live-dot"></span><small class="fw-semibold text-danger">LIVE</small>
+                </div>
+                <div class="small-grid mt-3">
+                  <div class="item">
+                    <div class="text-muted text-uppercase" style="font-size:.6rem;">Departure</div>
+                    <span>{{ bus.departure_time }}</span>
+                  </div>
+                  <div class="item">
+                    <div class="text-muted text-uppercase" style="font-size:.6rem;">Arrival</div>
+                    <span>{{ bus.arrival_time }}</span>
+                  </div>
+                  <div class="item">
+                    <div class="text-muted text-uppercase" style="font-size:.6rem;">Route</div>
+                    <span>{{ bus.from_location[:3] | upper }} → {{ bus.to_location[:3] | upper }}</span>
+                  </div>
+                  <div class="item">
+                    <div class="text-muted text-uppercase" style="font-size:.6rem;">Type</div>
+                    <span>{{ bus.bus_type }}</span>
+                  </div>
+                </div>
             </div>
-            
-            <div class="weather-card">
-                <h3>Weather Information</h3>
-                <hr>
-                <div id="weather-info">
-                    <div class="d-flex align-items-center">
-                        <div id="weather-icon" class="weather-icon">
-                            {% if weather %}
-                                <img src="https://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="Weather icon">
-                            {% else %}
-                                <i class="fas fa-cloud-sun"></i>
-                            {% endif %}
+
+            <div class="weather-block">
+                <div class="d-flex align-items-center gap-3">
+                    <div>
+                        {% if weather %}
+                          <img src="https://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="Weather" style="width:70px;height:70px;">
+                        {% else %}
+                          <i class="fas fa-cloud-sun fa-3x text-warning"></i>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h6 class="mb-1 text-primary fw-semibold">Destination Weather</h6>
+                        <div class="fs-3 fw-bold text-warning">
+                          {% if weather %}{{ weather.temperature }}°C{% else %}--°C{% endif %}
                         </div>
-                        <div>
-                            <h4 id="weather-location">{{ bus.to_location }}</h4>
-                            <h2 id="weather-temp">
-                                {% if weather %}
-                                    {{ weather.temperature }}°C
-                                {% else %}
-                                    --°C
-                                {% endif %}
-                            </h2>
+                        <div class="small text-muted">
+                          {% if weather %}{{ weather.description|title }}{% else %}Loading...{% endif %}
                         </div>
                     </div>
-                    <p id="weather-desc">
-                        {% if weather %}
-                            {{ weather.description|title }}
-                        {% else %}
-                            Loading weather information...
-                        {% endif %}
-                    </p>
-                    {% if weather %}
-                        <p><strong>Humidity:</strong> {{ weather.humidity }}%</p>
-                        <p><strong>Wind Speed:</strong> {{ weather.wind_speed }} m/s</p>
-                    {% endif %}
                 </div>
+                {% if weather %}
+                <div class="small-grid mt-3">
+                    <div class="item">
+                        <div class="text-muted" style="font-size:.65rem;">Humidity</div>
+                        <span>{{ weather.humidity }}%</span>
+                    </div>
+                    <div class="item">
+                        <div class="text-muted" style="font-size:.65rem;">Wind</div>
+                        <span>{{ weather.wind_speed }} m/s</span>
+                    </div>
+                </div>
+                {% endif %}
             </div>
-            
-            <div class="weather-card">
-                <h3>Traffic Updates</h3>
-                <hr>
-                <div id="traffic-info">
-                    <p><i class="fas fa-road me-2"></i> <span id="traffic-status">Checking traffic conditions...</span></p>
-                    <p><i class="fas fa-clock me-2"></i> Estimated arrival: <span id="estimated-arrival">{{ bus.arrival_time }}</span></p>
-                </div>
+
+            <div class="traffic-block">
+                <h6 class="mb-3 text-warning fw-semibold"><i class="fas fa-road me-2"></i>Traffic & ETA</h6>
+                <p class="mb-2 small"><i class="fas fa-traffic-light text-danger me-2"></i><span id="traffic-status">Fetching traffic data...</span></p>
+                <p class="mb-0 small"><i class="fas fa-clock text-warning me-2"></i>Estimated Arrival: <span id="estimated-arrival">{{ bus.arrival_time }}</span></p>
+            </div>
+
+            <div class="kavlin-panel script-font">
+                "The map is alive, and every blinking position is a heartbeat of the journey." – Kavlin ✨
             </div>
         </div>
-        
-        <div class="col-lg-8">
-            <h2 class="mb-4">Live Bus Tracking</h2>
-            <div id="map"></div>
-            <div class="mt-3">
-                <p class="text-muted"><i class="fas fa-info-circle me-2"></i> The bus location is updated every 30 seconds.</p>
-            </div>
+      </div>
+      <div class="col-lg-8">
+        <div id="map"></div>
+        <p class="text-muted small mt-3"><i class="fas fa-info-circle me-2"></i>Location updates every 30 seconds (simulated).</p>
+        <div class="d-flex flex-wrap gap-3 mt-3">
+            <a href="{{ url_for('my_bookings') }}" class="btn btn-outline-primary btn-sm">
+              <i class="fas fa-ticket-alt me-1"></i> My Bookings
+            </a>
+            <a href="{{ url_for('index') }}#booking" class="btn btn-warning btn-sm">
+              <i class="fas fa-search me-1"></i> New Search
+            </a>
         </div>
+      </div>
     </div>
-</div>
+  </div>
+</section>
 {% endblock %}
 
 {% block extra_js %}
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script>
-    let map;
-    let busMarker;
-    let routePolyline;
-    
-    function initMap() {
-        // Default location (will be updated with actual bus location)
-        const defaultLocation = [30.7333, 76.7794]; // [lat, lng] for Leaflet
-        
-        // Initialize the map
-        map = L.map('map').setView(defaultLocation, 12);
-        
-        // Add OpenStreetMap tile layer
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            maxZoom: 19
-        }).addTo(map);
-        
-        // Create custom bus icon
-        const busIcon = L.icon({
-            iconUrl: "{{ url_for('static', filename='images/bus-marker.png') }}",
-            iconSize: [40, 40],
-            iconAnchor: [20, 20],
-            popupAnchor: [0, -20]
-        });
-        
-        // Create bus marker with custom icon
-        busMarker = L.marker(defaultLocation, {
-            icon: busIcon,
-            title: "Bus {{ bus.bus_number }}"
-        }).addTo(map);
-        
-        // Add popup to bus marker
-        busMarker.bindPopup(`
-            <div>
-                <h5>Bus {{ bus.bus_number }}</h5>
-                <p>Route: {{ bus.from_location }} to {{ bus.to_location }}</p>
-                <p>Status: {{ bus.status }}</p>
-            </div>
-        `, { className: 'custom-popup' });
-        
-        // Create markers for from and to locations
-        const fromLocation = getLocationCoordinates("{{ bus.from_location }}");
-        const toLocation = getLocationCoordinates("{{ bus.to_location }}");
-        
-        // Add from location marker
-        L.marker(fromLocation).addTo(map)
-            .bindPopup(`<b>{{ bus.from_location }}</b><br>Departure: {{ bus.departure_time }}`, { className: 'custom-popup' });
-        
-        // Add to location marker
-        L.marker(toLocation).addTo(map)
-            .bindPopup(`<b>{{ bus.to_location }}</b><br>Arrival: {{ bus.arrival_time }}`, { className: 'custom-popup' });
-        
-        // Draw route between from and to locations
-        routePolyline = L.polyline([fromLocation, toLocation], {
-            color: '#FFC107',
-            weight: 5,
-            opacity: 0.7,
-            dashArray: '10, 10',
-            lineJoin: 'round'
-        }).addTo(map);
-        
-        // Fit map to show the entire route
-        map.fitBounds(routePolyline.getBounds(), { padding: [50, 50] });
-        
-        // Update bus location periodically
-        updateBusLocation();
-        setInterval(updateBusLocation, 30000); // Update every 30 seconds
-        
-        // Get traffic updates
-        getTrafficUpdates();
-    }
-    
-    // Helper function to get coordinates for locations (mock data)
-    function getLocationCoordinates(location) {
-        const coordinates = {
-            "Dharampur": [30.8984, 77.0239],
-            "Solan": [30.9045, 77.0967],
-            "Barog": [30.8861, 77.1178],
-            "Dagshai": [30.8854, 77.0527]
-        };
-        
-        return coordinates[location] || [30.9045, 77.0967]; // Default to Solan if not found
-    }
-    
-    function updateBusLocation() {
-        fetch(`/api/bus_location/{{ bus.id }}`)
-            .then(response => response.json())
-            .then(data => {
-                const newPosition = [data.lat, data.lng]; // [lat, lng] for Leaflet
-                
-                // Update marker position
-                busMarker.setLatLng(newPosition);
-                
-                // Update route polyline to show bus progress
-                const fromLocation = getLocationCoordinates("{{ bus.from_location }}");
-                const toLocation = getLocationCoordinates("{{ bus.to_location }}");
-                
-                // Calculate progress along the route (simplified)
-                const progress = calculateProgress(fromLocation, toLocation, newPosition);
-                
-                // Update polyline with intermediate point
-                const updatedRoute = [
-                    fromLocation,
-                    newPosition,
-                    toLocation
-                ];
-                
-                routePolyline.setLatLngs(updatedRoute);
-                
-                // Update status if changed
-                if (data.status !== "{{ bus.status }}") {
-                    document.querySelector(".badge").textContent = data.status;
-                    if (data.status === "On Time") {
-                        document.querySelector(".badge").className = "badge bg-success";
-                    } else if (data.status === "Delayed") {
-                        document.querySelector(".badge").className = "badge bg-warning text-dark";
-                    } else {
-                        document.querySelector(".badge").className = "badge bg-secondary";
-                    }
-                }
-            })
-            .catch(error => console.error("Error fetching bus location:", error));
-    }
-    
-    // Helper function to calculate progress along the route (simplified)
-    function calculateProgress(from, to, current) {
-        // This is a simplified calculation - in a real app, you'd use more sophisticated methods
-        const totalDistance = distance(from[0], from[1], to[0], to[1]);
-        const distanceTraveled = distance(from[0], from[1], current[0], current[1]);
-        return Math.min(distanceTraveled / totalDistance, 1);
-    }
-    
-    // Helper function to calculate distance between two points
-    function distance(lat1, lon1, lat2, lon2) {
-        const R = 6371; // Radius of the earth in km
-        const dLat = deg2rad(lat2 - lat1);
-        const dLon = deg2rad(lon2 - lon1);
-        const a = 
-            Math.sin(dLat/2) * Math.sin(dLat/2) +
-            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-            Math.sin(dLon/2) * Math.sin(dLon/2); 
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-        const d = R * c; // Distance in km
-        return d;
-    }
-    
-    function deg2rad(deg) {
-        return deg * (Math.PI/180);
-    }
-    
-    function getTrafficUpdates() {
-        fetch(`/api/traffic_update/{{ bus.id }}`)
-            .then(response => response.json())
-            .then(data => {
-                const trafficStatus = document.getElementById("traffic-status");
-                const estimatedArrival = document.getElementById("estimated-arrival");
-                
-                // Update traffic status
-                if (data.traffic_status === "Light") {
-                    trafficStatus.innerHTML = `${data.traffic_status} traffic on the route <span class="badge bg-success">No Delay</span>`;
-                } else if (data.traffic_status === "Moderate") {
-                    trafficStatus.innerHTML = `${data.traffic_status} traffic on the route <span class="badge bg-warning text-dark">Slight Delay (${data.delay_minutes} mins)</span>`;
-                } else {
-                    trafficStatus.innerHTML = `${data.traffic_status} traffic on the route <span class="badge bg-danger">Significant Delay (${data.delay_minutes} mins)</span>`;
-                }
-                
-                // Update estimated arrival if there's a delay
-                if (data.delay_minutes > 0) {
-                    // Parse arrival time
-                    let arrivalTime = "{{ bus.arrival_time }}";
-                    let [time, period] = arrivalTime.split(' ');
-                    let [hours, minutes] = time.split(':').map(Number);
-                    
-                    // Convert to 24-hour format
-                    if (period === 'PM' && hours < 12) hours += 12;
-                    if (period === 'AM' && hours === 12) hours = 0;
-                    
-                    // Add delay minutes
-                    minutes += data.delay_minutes;
-                    if (minutes >= 60) {
-                        hours += Math.floor(minutes / 60);
-                        minutes %= 60;
-                    }
-                    hours %= 24;
-                    
-                    // Convert back to 12-hour format
-                    let newPeriod = hours >= 12 ? 'PM' : 'AM';
-                    hours = hours % 12 || 12;
-                    
-                    // Format the new time
-                    let newArrivalTime = `${hours}:${minutes.toString().padStart(2, '0')} ${newPeriod}`;
-                    estimatedArrival.textContent = newArrivalTime;
-                    estimatedArrival.innerHTML += ` <span class="badge bg-warning text-dark">Delayed</span>`;
-                }
-            })
-            .catch(error => console.error("Error fetching traffic updates:", error));
-    }
-    
-    // Initialize map when the page loads
-    document.addEventListener('DOMContentLoaded', initMap);
+ let map, busMarker, routePolyline;
+ function initMap() {
+    const defaultLocation = [30.9045, 77.0967];
+    map = L.map('map').setView(defaultLocation, 9);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+       maxZoom: 19,
+       attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const busIcon = L.icon({
+       iconUrl: "{{ url_for('static', filename='images/bus-marker.png') }}",
+       iconSize: [46,46],
+       iconAnchor: [23,23],
+       popupAnchor: [0,-15]
+    });
+
+    busMarker = L.marker(defaultLocation, { icon: busIcon }).addTo(map)
+       .bindPopup(`<strong>Bus {{ bus.bus_number }}</strong><br>{{ bus.from_location }} → {{ bus.to_location }}`);
+
+    const fromLoc = getCoords("{{ bus.from_location }}");
+    const toLoc   = getCoords("{{ bus.to_location }}");
+
+    L.marker(fromLoc,{title:'Origin'}).addTo(map).bindPopup('<b>{{ bus.from_location }}</b><br>Departure: {{ bus.departure_time }}');
+    L.marker(toLoc,{title:'Destination'}).addTo(map).bindPopup('<b>{{ bus.to_location }}</b><br>Arrival: {{ bus.arrival_time }}');
+
+    routePolyline = L.polyline([fromLoc,toLoc], {
+       color:'#FFD700',
+       weight:6,
+       opacity:.65,
+       dashArray:'12,10'
+    }).addTo(map);
+    map.fitBounds(routePolyline.getBounds(), { padding:[50,50] });
+
+    updateBus();
+    setInterval(updateBus, 30000);
+    fetchTraffic();
+    setInterval(fetchTraffic, 45000);
+ }
+
+ function getCoords(city) {
+    const c = {
+      "Dharampur":[30.8984,77.0239],
+      "Solan":[30.9045,77.0967],
+      "Barog":[30.8861,77.1178],
+      "Dagshai":[30.8854,77.0527]
+    };
+    return c[city] || [30.9045,77.0967];
+ }
+
+ function updateBus() {
+    fetch(`/api/bus_location/{{ bus.id }}`)
+      .then(r=>r.json())
+      .then(data=>{
+        const pos=[data.lat,data.lng];
+        busMarker.setLatLng(pos);
+        const fromLoc = getCoords("{{ bus.from_location }}");
+        const toLoc   = getCoords("{{ bus.to_location }}");
+        routePolyline.setLatLngs([fromLoc,pos,toLoc]);
+      })
+      .catch(err=>console.error(err));
+ }
+
+ function fetchTraffic() {
+    fetch(`/api/traffic_update/{{ bus.id }}`)
+      .then(r=>r.json())
+      .then(data=>{
+        const trafficStatusEl = document.getElementById('traffic-status');
+        const etaEl = document.getElementById('estimated-arrival');
+
+        const baseArrival = "{{ bus.arrival_time }}";
+        let badgeClass = 'bg-success';
+        let statusText = data.traffic_status;
+
+        if (data.traffic_status === 'Moderate') badgeClass = 'bg-warning text-dark';
+        if (data.traffic_status === 'Heavy') badgeClass = 'bg-danger';
+
+        trafficStatusEl.innerHTML = `<span class="badge ${badgeClass} me-2">${data.traffic_status}</span>` +
+            (data.delay_minutes > 0 ? `${data.delay_minutes} min delay` : 'Smooth flow');
+
+        if (data.delay_minutes > 0) {
+           etaEl.innerHTML = computeDelayedTime(baseArrival, data.delay_minutes) +
+              ' <span class="badge bg-warning text-dark ms-1">Delayed</span>';
+        } else {
+           etaEl.textContent = baseArrival;
+        }
+      })
+      .catch(err=>console.error(err));
+ }
+
+ function computeDelayedTime(timeStr, delayMins) {
+    // timeStr like '08:30 AM'
+    let [t, period] = timeStr.split(' ');
+    let [h,m] = t.split(':').map(n=>parseInt(n));
+    if (period === 'PM' && h < 12) h+=12;
+    if (period === 'AM' && h === 12) h=0;
+    let total = h*60 + m + delayMins;
+    total %= 1440;
+    let nh = Math.floor(total/60);
+    let nm = total%60;
+    let newPeriod = nh >= 12 ? 'PM':'AM';
+    nh = nh%12 || 12;
+    return `${nh}:${nm.toString().padStart(2,'0')} ${newPeriod}`;
+ }
+
+ document.addEventListener('DOMContentLoaded', initMap);
 </script>
 {% endblock %}
