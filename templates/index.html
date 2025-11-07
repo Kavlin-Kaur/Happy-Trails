@@ -4,50 +4,42 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 <style>
     #map-home {
-        height: 300px;
+        height: 350px;
         width: 100%;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        box-shadow: var(--shadow-medium);
         z-index: 1;
     }
+    
     .weather-widget {
-        background-color: #f8f9fa;
-        border-radius: 10px;
-        padding: 15px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        margin-bottom: 20px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: var(--shadow-soft);
+        margin-top: 20px;
+        backdrop-filter: blur(10px);
     }
-    .weather-icon {
-        font-size: 2.5rem;
-        margin-right: 15px;
+    
+    .weather-icon img {
+        width: 60px;
+        height: 60px;
+        filter: drop-shadow(var(--shadow-soft));
     }
-    .hero-image img {
-        max-width: 100%;
-        height: auto;
-        animation: float 3s ease-in-out infinite;
-    }
-    .feature-image {
-        width: 100%;
-        max-width: 150px;
-        margin-bottom: 15px;
-    }
-    .bus-stop-image {
-        max-width: 100%;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
+    
     .custom-popup .leaflet-popup-content-wrapper {
         background: #2c3e50;
         color: #fff;
         border-radius: 10px;
     }
+    
     .custom-popup .leaflet-popup-content {
         margin: 12px;
     }
+    
     .custom-popup .leaflet-popup-tip {
         background: #2c3e50;
     }
+    
     .custom-popup a.btn-warning {
         color: #000;
         background-color: #ffc107;
@@ -59,80 +51,327 @@
         text-decoration: none;
         margin-top: 8px;
     }
+    
     .custom-popup a.btn-warning:hover {
         background-color: #e0a800;
         border-color: #d39e00;
+    }
+
+    /* Beautiful Carousel Styling */
+    .destinations-carousel {
+        background: var(--gradient-soft);
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .destinations-carousel::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+            radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(255, 182, 193, 0.05) 0%, transparent 50%);
+    }
+    
+    .carousel-inner {
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: var(--shadow-strong);
+    }
+    
+    .carousel-item img {
+        height: 500px;
+        object-fit: cover;
+        filter: brightness(0.8);
+        transition: var(--transition-smooth);
+    }
+    
+    .carousel-item.active img {
+        filter: brightness(1);
+    }
+    
+    .carousel-caption {
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 30px;
+        bottom: 50px;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        max-width: 500px;
+    }
+    
+    .carousel-caption h3 {
+        font-family: 'Dancing Script', cursive;
+        font-size: 3rem;
+        color: var(--primary-yellow);
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+    .carousel-caption p {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+    
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 60px;
+        height: 60px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--gradient-sunrise);
+        border-radius: 50%;
+        border: none;
+        opacity: 0.8;
+        transition: var(--transition-bounce);
+    }
+    
+    .carousel-control-prev {
+        left: 20px;
+    }
+    
+    .carousel-control-next {
+        right: 20px;
+    }
+    
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        opacity: 1;
+        transform: translateY(-50%) scale(1.1);
+    }
+    
+    .carousel-indicators {
+        bottom: 20px;
+    }
+    
+    .carousel-indicators [data-bs-target] {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: var(--primary-yellow);
+        border: 2px solid white;
+        opacity: 0.6;
+        transition: var(--transition-smooth);
+    }
+    
+    .carousel-indicators .active {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+
+    /* Bus Stop Image Styling */
+    .bus-stop-image {
+        max-width: 100%;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        box-shadow: var(--shadow-medium);
+        transition: var(--transition-smooth);
+    }
+    
+    .bus-stop-image:hover {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-strong);
+    }
+
+    /* Enhanced Schedule Table */
+    .schedule-table {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: var(--shadow-medium);
+    }
+    
+    .table {
+        margin-bottom: 0;
+    }
+    
+    .table thead th {
+        background: var(--gradient-sunrise);
+        color: white;
+        border: none;
+        padding: 15px;
+        font-weight: 600;
+    }
+    
+    .table tbody tr {
+        transition: var(--transition-smooth);
+    }
+    
+    .table tbody tr:hover {
+        background-color: var(--secondary-yellow);
+        transform: scale(1.01);
+    }
+    
+    .table tbody td {
+        padding: 15px;
+        vertical-align: middle;
+    }
+
+    /* Section Dividers */
+    .section-divider {
+        height: 4px;
+        background: var(--gradient-sunrise);
+        border: none;
+        border-radius: 2px;
+        margin: 80px auto;
+        max-width: 200px;
     }
 </style>
 {% endblock %}
 
 {% block content %}
     <!-- Hero Section -->
-    <header class="hero-section">
-        <div class="container h-100">
-            <div class="row h-100 align-items-center">
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
                 <div class="col-lg-6">
-                    <div class="hero-text">
-                        <h1>Welcome to <span class="text-warning">Happy Trails</span></h1>
-                        <p class="lead">Your reliable partner for bus tracking, scheduling, and booking services.</p>
-                        <div class="d-flex gap-3 mt-4">
+                    <div class="hero-content">
+                        <h1 class="hero-title">
+                            Welcome to <br>
+                            <span class="script-font">Happy Trails</span>
+                        </h1>
+                        <p class="hero-subtitle">
+                            Where every journey begins with a smile and ends with beautiful memories. 
+                            Crafted with love, code, and poetry by Kavlin.
+                        </p>
+                        <div class="d-flex gap-3 mt-4 flex-wrap">
                             {% if current_user.is_authenticated %}
-                                <a href="#booking" class="btn btn-warning btn-lg">Book Now</a>
+                                <a href="#quick-search" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-search me-2"></i>Book Your Journey
+                                </a>
                             {% else %}
-                                <a href="{{ url_for('signup') }}" class="btn btn-warning btn-lg">Get Started</a>
+                                <a href="{{ url_for('signup') }}" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-heart me-2"></i>Join Our Family
+                                </a>
                             {% endif %}
-                            <a href="#features" class="btn btn-outline-light btn-lg">Learn More</a>
+                            <a href="#kavlin-tribute" class="btn btn-outline-primary btn-lg">
+                                <i class="fas fa-feather-alt me-2"></i>Meet Me
+                            </a>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 d-none d-lg-block">
+                <div class="col-lg-6">
                     <div class="hero-image text-center">
-                        <img src="{{ url_for('static', filename='images/bus-marker.png') }}" alt="Happy Trails" class="img-fluid">
+                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Happy Trails" class="img-fluid">
                     </div>
                 </div>
             </div>
         </div>
-    </header>
+    </section>
+
+    <!-- Beautiful Destinations Carousel -->
+    <section class="destinations-carousel">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="script-font display-4">Discover Beautiful Destinations</h2>
+                <p class="lead">Journey through the scenic beauty of Himachal Pradesh</p>
+            </div>
+            
+            <div id="destinationsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#destinationsCarousel" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#destinationsCarousel" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#destinationsCarousel" data-bs-slide-to="2"></button>
+                    <button type="button" data-bs-target="#destinationsCarousel" data-bs-slide-to="3"></button>
+                </div>
+                
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="{{ url_for('static', filename='images/Solan.jpg') }}" class="d-block w-100" alt="Solan">
+                        <div class="carousel-caption">
+                            <h3>Solan</h3>
+                            <p>The Mushroom City of India, nestled in the foothills of the Himalayas. Experience the perfect blend of nature and urban life in this charming hill station.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item">
+                        <img src="{{ url_for('static', filename='images/Barog.avif') }}" class="d-block w-100" alt="Barog">
+                        <div class="carousel-caption">
+                            <h3>Barog</h3>
+                            <p>A serene hill station famous for its railway tunnel and breathtaking views. Walk through the historic tunnel and immerse yourself in colonial-era charm.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item">
+                        <img src="{{ url_for('static', filename='images/Dagshai.jpg') }}" class="d-block w-100" alt="Dagshai">
+                        <div class="carousel-caption">
+                            <h3>Dagshai</h3>
+                            <p>The highest cantonment in Asia, offering panoramic views of the surrounding valleys. Rich in history and natural beauty, perfect for peaceful retreats.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item">
+                        <img src="{{ url_for('static', filename='images/Dharampur.webp') }}" class="d-block w-100" alt="Dharampur">
+                        <div class="carousel-caption">
+                            <h3>Dharampur</h3>
+                            <p>A hidden gem surrounded by lush green forests and tea gardens. Experience tranquility and connect with nature in this pristine paradise.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="carousel-control-prev" type="button" data-bs-target="#destinationsCarousel" data-bs-slide="prev">
+                    <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                
+                <button class="carousel-control-next" type="button" data-bs-target="#destinationsCarousel" data-bs-slide="next">
+                    <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </section>
 
     <!-- Quick Search Section -->
-    <section class="quick-search-section py-5">
+    <section id="quick-search" class="py-5">
         <div class="container">
-            <div class="quick-search-card">
-                <h3 class="text-center mb-4">Book <span class="text-warning">Happy Trails</span> Bus Tickets</h3>
+            <div class="quick-search">
+                <h3 class="text-center mb-4 script-font">
+                    Find Your Perfect Journey ✨
+                </h3>
                 <form action="{{ url_for('search_buses') }}" method="post">
-                    <div class="row g-3 align-items-center">
+                    <div class="row g-3 align-items-end">
                         <div class="col-md-3">
-                            <div class="input-group">
-                                <span class="input-group-text bg-warning"><i class="fas fa-map-marker-alt"></i></span>
-                                <select class="form-select" id="quickFrom" name="from" required>
-                                    <option value="" selected disabled>FROM</option>
-                                    <option value="Dharampur">Dharampur</option>
-                                    <option value="Solan">Solan</option>
-                                    <option value="Barog">Barog</option>
-                                    <option value="Dagshai">Dagshai</option>
-                                </select>
-                            </div>
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-map-marker-alt text-warning me-1"></i>From
+                            </label>
+                            <select class="form-select search-input" name="from" required>
+                                <option value="" disabled selected>Choose departure</option>
+                                <option value="Dharampur">Dharampur</option>
+                                <option value="Solan">Solan</option>
+                                <option value="Barog">Barog</option>
+                                <option value="Dagshai">Dagshai</option>
+                            </select>
                         </div>
                         <div class="col-md-3">
-                            <div class="input-group">
-                                <span class="input-group-text bg-warning"><i class="fas fa-map-marker-alt"></i></span>
-                                <select class="form-select" id="quickTo" name="to" required>
-                                    <option value="" selected disabled>TO</option>
-                                    <option value="Dharampur">Dharampur</option>
-                                    <option value="Solan">Solan</option>
-                                    <option value="Barog">Barog</option>
-                                    <option value="Dagshai">Dagshai</option>
-                                </select>
-                            </div>
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-map-marker-alt text-warning me-1"></i>To
+                            </label>
+                            <select class="form-select search-input" name="to" required>
+                                <option value="" disabled selected>Choose destination</option>
+                                <option value="Dharampur">Dharampur</option>
+                                <option value="Solan">Solan</option>
+                                <option value="Barog">Barog</option>
+                                <option value="Dagshai">Dagshai</option>
+                            </select>
                         </div>
                         <div class="col-md-3">
-                            <div class="input-group">
-                                <span class="input-group-text bg-warning"><i class="fas fa-calendar-alt"></i></span>
-                                <input type="date" class="form-control" id="quickDate" name="date" min="{{ now_date }}" required>
-                            </div>
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-calendar-heart text-warning me-1"></i>Journey Date
+                            </label>
+                            <input type="date" class="form-control search-input" name="date" min="{{ now_date }}" required>
                         </div>
                         <div class="col-md-3">
-                            <button type="submit" class="btn btn-warning w-100 fw-bold">SEARCH BUSES</button>
+                            <button type="submit" class="btn search-btn w-100">
+                                <i class="fas fa-magic me-2"></i>Find Buses
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -143,68 +382,77 @@
     <!-- Features Section -->
     <section id="features" class="py-5">
         <div class="container">
-            <div class="section-title text-center mb-5">
-                <h2>Our <span class="text-warning">Features</span></h2>
-                <p class="lead">Everything you need for a smooth journey</p>
+            <div class="text-center mb-5">
+                <h2 class="script-font display-4">Our Magical Features</h2>
+                <p class="lead">Designed with love, built with care, perfected with poetry</p>
             </div>
+            
             <div class="row g-4">
                 <div class="col-md-6 col-lg-3">
                     <div class="feature-card">
-                        <div class="icon-box">
-                            <i class="fas fa-calendar-alt"></i>
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-heart"></i>
                         </div>
-                        <h3>Bus Schedules</h3>
-                        <p>Access real-time bus schedules and plan your journey accordingly.</p>
+                        <h5>Smart Scheduling</h5>
+                        <p>Real-time schedules that adapt to your needs, like verses that flow with emotion.</p>
                     </div>
                 </div>
+                
                 <div class="col-md-6 col-lg-3">
                     <div class="feature-card">
-                        <div class="icon-box">
-                            <i class="fas fa-map-marker-alt"></i>
+                        <div class="feature-icon">
+                            <i class="fas fa-map-marked-alt"></i>
                         </div>
-                        <h3>Live Tracking</h3>
-                        <p>Track your bus in real-time and know exactly when it will arrive.</p>
+                        <h5>Live Tracking</h5>
+                        <p>Follow your journey's story in real-time, every mile a new chapter.</p>
                     </div>
                 </div>
+                
                 <div class="col-md-6 col-lg-3">
                     <div class="feature-card">
-                        <div class="icon-box">
+                        <div class="feature-icon">
                             <i class="fas fa-ticket-alt"></i>
                         </div>
-                        <h3>Online Booking</h3>
-                        <p>Book your tickets online and avoid standing in long queues.</p>
+                        <h5>Easy Booking</h5>
+                        <p>Book tickets as easily as writing a haiku - simple, elegant, perfect.</p>
                     </div>
                 </div>
+                
                 <div class="col-md-6 col-lg-3">
                     <div class="feature-card">
-                        <div class="icon-box">
-                            <i class="fas fa-bell"></i>
+                        <div class="feature-icon">
+                            <i class="fas fa-heart"></i>
                         </div>
-                        <h3>Notifications</h3>
-                        <p>Get timely notifications about your bus status and bookings.</p>
+                        <h5>Made with Love</h5>
+                        <p>Every feature crafted with the same care Kavlin puts into her poetry.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Bus Tracking Section -->
+    <!-- Section Divider -->
+    <hr class="section-divider">
+
+    <!-- Real-Time Bus Tracking Section -->
     <section id="tracking" class="py-5 bg-light">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-4 mb-lg-0">
                     <div class="section-title mb-4">
-                        <h2>Real-Time <span class="text-warning">Bus Tracking</span></h2>
+                        <h2 class="script-font display-5">Real-Time <span class="text-warning">Bus Tracking</span></h2>
                         <p class="lead">Know exactly where your bus is and when it will arrive</p>
                     </div>
-                    <p>Our advanced tracking system allows you to:</p>
-                    <ul class="feature-list">
-                        <li><i class="fas fa-check-circle text-warning"></i> Track your bus in real-time on the map</li>
-                        <li><i class="fas fa-check-circle text-warning"></i> Get accurate arrival time predictions</li>
-                        <li><i class="fas fa-check-circle text-warning"></i> Receive notifications about delays</li>
-                        <li><i class="fas fa-check-circle text-warning"></i> View alternative routes if available</li>
+                    <p class="fs-5 mb-4">Our advanced tracking system allows you to:</p>
+                    <ul class="feature-list fs-5">
+                        <li><i class="fas fa-check-circle text-warning me-2"></i> Track your bus in real-time on the map</li>
+                        <li><i class="fas fa-check-circle text-warning me-2"></i> Get accurate arrival time predictions</li>
+                        <li><i class="fas fa-check-circle text-warning me-2"></i> Receive notifications about delays</li>
+                        <li><i class="fas fa-check-circle text-warning me-2"></i> View alternative routes if available</li>
                     </ul>
-                    <a href="{{ url_for('track_bus', bus_id=1) }}" class="btn btn-warning mt-3">Track Your Bus</a>
+                    <a href="{{ url_for('track_bus', bus_id=1) }}" class="btn btn-primary btn-lg mt-3">
+                        <i class="fas fa-map-marker-alt me-2"></i>Track Your Bus
+                    </a>
                 </div>
                 <div class="col-lg-6">
                     <div class="tracking-map-container">
@@ -213,15 +461,15 @@
                     
                     <!-- Weather Widget -->
                     {% if weather %}
-                    <div class="weather-widget mt-3">
+                    <div class="weather-widget">
                         <div class="d-flex align-items-center">
-                            <div class="weather-icon">
+                            <div class="weather-icon me-3">
                                 <img src="https://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="Weather icon">
                             </div>
                             <div>
-                                <h5>Weather in Solan</h5>
-                                <h3>{{ weather.temperature }}°C</h3>
-                                <p>{{ weather.description|title }}</p>
+                                <h5 class="mb-1">Weather in Solan</h5>
+                                <h3 class="text-warning mb-1">{{ weather.temperature }}°C</h3>
+                                <p class="mb-0 script-font">{{ weather.description|title }}</p>
                             </div>
                         </div>
                     </div>
@@ -231,23 +479,28 @@
         </div>
     </section>
 
-    <!-- Schedules Section -->
+    <!-- Section Divider -->
+    <hr class="section-divider">
+
+    <!-- Bus Schedules Section -->
     <section id="schedules" class="py-5">
         <div class="container">
-            <div class="section-title text-center mb-5">
-                <h2>Bus <span class="text-warning">Schedules</span></h2>
+            <div class="text-center mb-5">
+                <h2 class="script-font display-4">Bus <span class="text-warning">Schedules</span></h2>
                 <p class="lead">Plan your journey with our comprehensive bus schedules</p>
             </div>
+            
             <div class="row mb-4">
-                <div class="col-lg-4 mb-4">
+                <div class="col-lg-2 mb-4">
                     <img src="{{ url_for('static', filename='images/bus-stop.png') }}" alt="Bus Stop" class="bus-stop-image">
                 </div>
                 <div class="col-lg-8">
                     <div class="schedule-search mb-4">
+                        <h4 class="script-font text-center mb-3">Quick Schedule Search</h4>
                         <form action="{{ url_for('search_buses') }}" method="post">
                             <div class="row g-3">
                                 <div class="col-md-4">
-                                    <select class="form-select" id="fromLocation" name="from" required>
+                                    <select class="form-select search-input" name="from" required>
                                         <option value="" selected disabled>From</option>
                                         <option value="Dharampur">Dharampur</option>
                                         <option value="Solan">Solan</option>
@@ -256,7 +509,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <select class="form-select" id="toLocation" name="to" required>
+                                    <select class="form-select search-input" name="to" required>
                                         <option value="" selected disabled>To</option>
                                         <option value="Dharampur">Dharampur</option>
                                         <option value="Solan">Solan</option>
@@ -265,40 +518,47 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <button type="submit" class="btn btn-warning w-100">Search</button>
+                                    <button type="submit" class="btn search-btn w-100">
+                                        <i class="fas fa-search me-2"></i>Search
+                                    </button>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
+            
             <div class="schedule-table">
                 <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead class="table-dark">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <th>Bus No.</th>
-                                <th>From</th>
-                                <th>To</th>
-                                <th>Departure</th>
-                                <th>Arrival</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <th><i class="fas fa-bus me-2"></i>Bus No.</th>
+                                <th><i class="fas fa-map-marker-alt me-2"></i>From</th>
+                                <th><i class="fas fa-map-marker-alt me-2"></i>To</th>
+                                <th><i class="fas fa-clock me-2"></i>Departure</th>
+                                <th><i class="fas fa-clock me-2"></i>Arrival</th>
+                                <th><i class="fas fa-info-circle me-2"></i>Status</th>
+                                <th><i class="fas fa-ticket-alt me-2"></i>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for bus in buses %}
                             <tr>
-                                <td>{{ bus.bus_number }}</td>
+                                <td><strong>{{ bus.bus_number }}</strong></td>
                                 <td>{{ bus.from_location }}</td>
                                 <td>{{ bus.to_location }}</td>
                                 <td>{{ bus.departure_time }}</td>
                                 <td>{{ bus.arrival_time }}</td>
                                 <td>
                                     {% if bus.status == 'On Time' %}
-                                        <span class="badge bg-success">On Time</span>
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check me-1"></i>On Time
+                                        </span>
                                     {% elif bus.status == 'Delayed' %}
-                                        <span class="badge bg-warning text-dark">Delayed</span>
+                                        <span class="badge bg-warning text-dark">
+                                            <i class="fas fa-clock me-1"></i>Delayed
+                                        </span>
                                     {% else %}
                                         <span class="badge bg-secondary">{{ bus.status }}</span>
                                     {% endif %}
@@ -308,7 +568,9 @@
                                         <input type="hidden" name="from" value="{{ bus.from_location }}">
                                         <input type="hidden" name="to" value="{{ bus.to_location }}">
                                         <input type="hidden" name="date" value="{{ now_date }}">
-                                        <button type="submit" class="btn btn-sm btn-warning">Book</button>
+                                        <button type="submit" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-ticket-alt me-1"></i>Book
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
@@ -320,21 +582,27 @@
         </div>
     </section>
 
-    <!-- Booking Section -->
+    <!-- Section Divider -->
+    <hr class="section-divider">
+
+    <!-- Quick Booking Section -->
     <section id="booking" class="py-5 bg-light">
         <div class="container">
-            <div class="section-title text-center mb-5">
-                <h2>Quick <span class="text-warning">Booking</span></h2>
+            <div class="text-center mb-5">
+                <h2 class="script-font display-4">Quick <span class="text-warning">Booking</span></h2>
                 <p class="lead">Book your tickets in just a few clicks</p>
             </div>
+            
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <div class="booking-form">
+                    <div class="booking-form" style="background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 40px; box-shadow: var(--shadow-medium);">
                         <form action="{{ url_for('search_buses') }}" method="post">
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label for="fromCity" class="form-label">From</label>
-                                    <select class="form-select" id="fromCity" name="from" required>
+                                    <label for="fromCity" class="form-label fw-semibold">
+                                        <i class="fas fa-map-marker-alt text-warning me-2"></i>From
+                                    </label>
+                                    <select class="form-select search-input" id="fromCity" name="from" required>
                                         <option value="" selected disabled>Select departure city</option>
                                         <option value="Dharampur">Dharampur</option>
                                         <option value="Solan">Solan</option>
@@ -343,8 +611,10 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="toCity" class="form-label">To</label>
-                                    <select class="form-select" id="toCity" name="to" required>
+                                    <label for="toCity" class="form-label fw-semibold">
+                                        <i class="fas fa-map-marker-alt text-warning me-2"></i>To
+                                    </label>
+                                    <select class="form-select search-input" id="toCity" name="to" required>
                                         <option value="" selected disabled>Select destination city</option>
                                         <option value="Dharampur">Dharampur</option>
                                         <option value="Solan">Solan</option>
@@ -353,15 +623,21 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="travelDate" class="form-label">Date of Journey</label>
-                                    <input type="date" class="form-control" id="travelDate" name="date" min="{{ now_date }}" required>
+                                    <label for="travelDate" class="form-label fw-semibold">
+                                        <i class="fas fa-calendar-heart text-warning me-2"></i>Date of Journey
+                                    </label>
+                                    <input type="date" class="form-control search-input" id="travelDate" name="date" min="{{ now_date }}" required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="passengers" class="form-label">Passengers</label>
-                                    <input type="number" class="form-control" id="passengers" name="passengers" min="1" max="10" value="1" required>
+                                    <label for="passengers" class="form-label fw-semibold">
+                                        <i class="fas fa-users text-warning me-2"></i>Passengers
+                                    </label>
+                                    <input type="number" class="form-control search-input" id="passengers" name="passengers" min="1" max="10" value="1" required>
                                 </div>
                                 <div class="col-12 mt-4">
-                                    <button type="submit" class="btn btn-warning btn-lg w-100">Search Buses</button>
+                                    <button type="submit" class="btn search-btn btn-lg w-100">
+                                        <i class="fas fa-search me-2"></i>Search Buses
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -370,6 +646,65 @@
             </div>
         </div>
     </section>
+
+    <!-- Section Divider -->
+    <hr class="section-divider">
+
+    <!-- Kavlin Tribute Section -->
+    <section id="kavlin-tribute" class="kavlin-tribute">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="tribute-card">
+                        <div class="tribute-content">
+                            <h2 class="kavlin-name">Kavlin</h2>
+                            <h4 class="text-warning mb-4">Developer • Poet • Dreamer</h4>
+                            
+                            <p class="tribute-text">
+                                Behind every line of code in Happy Trails lies the heart and soul of <strong>Kavlin</strong>
+                            </p>
+                            
+                            <div class="poetry-quote">
+                                <i class="fas fa-quote-left me-2"></i>
+                                "Is it wrong? Is it right? <br>
+                                To strike the dark and praise the light? <br>
+                                If justice hunts the parasite, <br>
+                                Then punishment shouldn't it be just, not spite?"
+                                <i class="fas fa-quote-right ms-2"></i>
+                                <br>
+                                <small class="script-font mt-2 d-block">- Kavlin</small>
+                            </div>
+                            
+                            <div class="row mt-4">
+                                <div class="col-md-4 text-center mb-3">
+                                    <div class="feature-icon mx-auto">
+                                        <i class="fas fa-code"></i>
+                                    </div>
+                                    <h6>Clean Code</h6>
+                                    <small>Every function tells a story</small>
+                                </div>
+                                <div class="col-md-4 text-center mb-3">
+                                    <div class="feature-icon mx-auto">
+                                        <i class="fas fa-feather-alt"></i>
+                                    </div>
+                                    <h6>Poetic Touch</h6>
+                                    <small>Beauty in every detail</small>
+                                </div>
+                                <div class="col-md-4 text-center mb-3">
+                                    <div class="feature-icon mx-auto">
+                                        <i class="fas fa-heart"></i>
+                                    </div>
+                                    <h6>Passion Driven</h6>
+                                    <small>Love in every creation</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 {% endblock %}
 
 {% block extra_js %}
@@ -378,14 +713,24 @@
     document.addEventListener('DOMContentLoaded', function() {
         // Set minimum date for date inputs to today
         const today = new Date().toISOString().split('T')[0];
-        document.getElementById('quickDate').min = today;
-        const travelDateInput = document.getElementById('travelDate');
-        if (travelDateInput) {
-            travelDateInput.min = today;
-        }
+        document.querySelectorAll('input[type="date"]').forEach(input => {
+            input.min = today;
+        });
         
         // Initialize map
         initHomeMap();
+        
+        // Initialize carousel auto-play with pause on hover
+        const carousel = document.querySelector('#destinationsCarousel');
+        if (carousel) {
+            carousel.addEventListener('mouseenter', function() {
+                bootstrap.Carousel.getInstance(this).pause();
+            });
+            
+            carousel.addEventListener('mouseleave', function() {
+                bootstrap.Carousel.getInstance(this).cycle();
+            });
+        }
     });
     
     let homeMap;
