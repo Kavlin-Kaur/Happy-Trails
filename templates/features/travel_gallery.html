@@ -1,0 +1,1115 @@
+{% extends 'base.html' %}
+
+{% block title %}Travel Gallery - Happy Trails{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/travel_gallery.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<!-- ============================================
+     ✨ KAVLIN'S ENCHANTED 3D MEMORY GALLERY
+     Phase 1: Gallery View | Phase 2: Upload System
+     ============================================ -->
+<div class="gallery-wrapper">
+    
+    <!-- === HERO SECTION === -->
+    <section class="gallery-hero">
+        <div class="container">
+            <h1 class="gallery-hero-title">✨ Kavlin's Memory Gallery</h1>
+            <p class="gallery-hero-subtitle">
+                Step into an enchanted world where every photo floats like a cherished Polaroid,
+                wrapped in golden memories and painted with watercolor dreams.
+            </p>
+            <div class="gallery-hero-quote">
+                "Share your journey, inspire the world" - Kavlin 💖
+            </div>
+            
+            <!-- Gallery Stats -->
+            <div class="gallery-stats">
+                <div class="stat-box">
+                    <span class="stat-number">{{ photos|length }}+</span>
+                    <span class="stat-label">Photos</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">{{ destinations|length }}</span>
+                    <span class="stat-label">Destinations</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">{{ total_views }}</span>
+                    <span class="stat-label">Views</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">{{ total_likes }}</span>
+                    <span class="stat-label">Likes</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- === THEATER CURTAIN REVEAL === -->
+    <section class="curtain-container">
+        <div class="curtain curtain-left"></div>
+        <div class="curtain curtain-right"></div>
+        <div class="curtain-message">
+            <i class="fas fa-sparkles me-2"></i>
+            Opening the gallery...
+        </div>
+    </section>
+
+    <!-- ============================================
+        📑 PHASE 2, 3, 4 & 5: TAB NAVIGATION SYSTEM
+        ============================================ -->
+    <section class="gallery-tabs-wrapper">
+        <div class="container">
+            <div class="gallery-tabs">
+                <!-- Tab 1: Gallery View (Phase 1) -->
+                <button class="gallery-tab active" data-tab="gallery-view">
+                    <i class="fas fa-images"></i>
+                    <span>Gallery View</span>
+                </button>
+                
+                <!-- Tab 2: Upload Photos (Phase 2) -->
+                <button class="gallery-tab" data-tab="upload-photos">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Upload Photos</span>
+                </button>
+                
+                <!-- Tab 3: My Uploads (Phase 2) -->
+                {% if current_user.is_authenticated %}
+                <button class="gallery-tab" data-tab="my-uploads">
+                    <i class="fas fa-user-images"></i>
+                    <span>My Uploads</span>
+                </button>
+                {% endif %}
+                
+                <!-- Tab 4: My Diaries (Phase 3) -->
+                <button class="gallery-tab" data-tab="my-diaries">
+                    <i class="fas fa-book-open"></i>
+                    <span>My Diaries</span>
+                </button>
+                
+                <!-- Tab 5: Timeline (Phase 4) -->
+                <button class="gallery-tab" data-tab="timeline">
+                    <i class="fas fa-timeline"></i>
+                    <span>Timeline</span>
+                </button>
+                
+                <!-- Tab 6: Collections (Phase 4) -->
+                <button class="gallery-tab" data-tab="collections">
+                    <i class="fas fa-layer-group"></i>
+                    <span>Collections</span>
+                </button>
+                
+                <!-- Tab 7: Activity Feed (Phase 5) - NEW! -->
+                <button class="gallery-tab" data-tab="activity-feed">
+                    <i class="fas fa-rss"></i>
+                    <span>Activity Feed</span>
+                </button>
+                
+                <!-- Tab 8: Pending Review (Phase 2) -->
+                <button class="gallery-tab" data-tab="pending-review">
+                    <i class="fas fa-clock"></i>
+                    <span>Pending Review</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         📸 TAB 1: GALLERY VIEW (PHASE 1)
+         ============================================ -->
+    <div id="gallery-view" class="gallery-tab-content active">
+        
+        <!-- === SEARCH & FILTER CONTROLS === -->
+        <section class="gallery-controls">
+            <div class="container">
+                
+                <!-- Search Bar -->
+                <div class="search-bar-wrapper">
+                    <form class="search-bar" id="gallerySearchForm">
+                        <input type="text" 
+                               class="search-input" 
+                               placeholder="🔍 Search memories by location, photographer..."
+                               name="search">
+                        <button type="submit" class="search-btn">
+                            <i class="fas fa-search me-2"></i>Search
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Destination Filter -->
+                <div class="filter-section">
+                    <label class="filter-label">
+                        📍 Filter by Destination
+                    </label>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter-type="destination" data-filter="all">
+                            <i class="fas fa-globe me-1"></i>All Places
+                        </button>
+                        {% for destination in destinations %}
+                        <button class="filter-btn" data-filter-type="destination" data-filter="{{ destination }}">
+                            <i class="fas fa-location-dot me-1"></i>{{ destination }}
+                        </button>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Photo Type Filter -->
+                <div class="filter-section">
+                    <label class="filter-label">
+                        📸 Filter by Type
+                    </label>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter-type="type" data-filter="all">
+                            All Types
+                        </button>
+                        <button class="filter-btn" data-filter-type="type" data-filter="landscape">
+                            <i class="fas fa-mountain me-1"></i>Landscapes
+                        </button>
+                        <button class="filter-btn" data-filter-type="type" data-filter="people">
+                            <i class="fas fa-users me-1"></i>People
+                        </button>
+                        <button class="filter-btn" data-filter-type="type" data-filter="bus">
+                            <i class="fas fa-bus me-1"></i>Buses
+                        </button>
+                        <button class="filter-btn" data-filter-type="type" data-filter="heritage">
+                            <i class="fas fa-landmark me-1"></i>Heritage
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Season Filter -->
+                <div class="filter-section">
+                    <label class="filter-label">
+                        🌸 Filter by Season
+                    </label>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter-type="season" data-filter="all">
+                            All Seasons
+                        </button>
+                        <button class="filter-btn" data-filter-type="season" data-filter="spring">
+                            <i class="fas fa-seedling me-1"></i>Spring
+                        </button>
+                        <button class="filter-btn" data-filter-type="season" data-filter="summer">
+                            <i class="fas fa-sun me-1"></i>Summer
+                        </button>
+                        <button class="filter-btn" data-filter-type="season" data-filter="monsoon">
+                            <i class="fas fa-cloud-rain me-1"></i>Monsoon
+                        </button>
+                        <button class="filter-btn" data-filter-type="season" data-filter="autumn">
+                            <i class="fas fa-leaf me-1"></i>Autumn
+                        </button>
+                        <button class="filter-btn" data-filter-type="season" data-filter="winter">
+                            <i class="fas fa-snowflake me-1"></i>Winter
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sort Controls -->
+                <div class="sort-controls">
+                    <span class="sort-label">
+                        <i class="fas fa-sort me-2"></i>Sort by:
+                    </span>
+                    <select class="sort-select" id="sortSelect">
+                        <option value="latest">Latest First</option>
+                        <option value="popular">Most Popular</option>
+                        <option value="views">Most Viewed</option>
+                    </select>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- === ENCHANTED POLAROID GALLERY === -->
+        <section class="gallery-section">
+            <div class="container">
+                
+                <div class="gallery-grid">
+                    {% for photo in photos %}
+                    <div class="photo-card" 
+                         data-destination="{{ photo.destination }}"
+                         data-type="{{ photo.type }}"
+                         data-season="{{ photo.season }}"
+                         data-date="{{ photo.date }}"
+                         data-likes="{{ photo.likes }}"
+                         data-views="{{ photo.views }}"
+                         data-photo-id="{{ photo.id }}">
+                        
+                        <!-- Decorative Elements -->
+                        {% set flowers = ['🌸', '🌺', '🌼', '🌻', '🌷'] %}
+                        {% set stamps = ['VISITED', 'MEMORIES', 'JOURNEY', 'ADVENTURE'] %}
+                        
+                        <span class="pressed-flower">{{ flowers[loop.index0 % 5] }}</span>
+                        <span class="travel-stamp">{{ stamps[loop.index0 % 4] }}</span>
+                        <span class="coffee-stain"></span>
+                        
+                        <!-- Photo Image -->
+                        <div class="photo-image-wrapper">
+                            <img src="{{ photo.image }}" alt="{{ photo.location }}" class="photo-image">
+                            <div class="watercolor-overlay"></div>
+                        </div>
+
+                        <!-- Photo Info -->
+                        <div class="photo-info">
+                            <div class="photo-location">{{ photo.location }}</div>
+                            <div class="photo-photographer">
+                                <i class="fas fa-camera me-1"></i>{{ photo.photographer }}
+                            </div>
+                            
+                            <div class="photo-tags">
+                                <span class="photo-tag">📍 {{ photo.destination }}</span>
+                                <span class="photo-tag">{{ photo.type|capitalize }}</span>
+                                <span class="photo-tag">{{ photo.season|capitalize }}</span>
+                            </div>
+                            
+                            <div class="photo-actions">
+                                <!-- Stats -->
+                                <div class="photo-stats">
+                                    <span class="stat likes">
+                                        <i class="fas fa-heart"></i>
+                                        <span>{{ photo.likes }}</span>
+                                    </span>
+                                    <span class="stat">
+                                        <i class="fas fa-eye"></i>
+                                        <span>{{ photo.views }}</span>
+                                    </span>
+                                </div>
+                                
+                                <!-- Action Buttons -->
+                                <div class="photo-action-btns">
+                                    <button class="photo-action-btn" 
+                                            onclick="likePhoto(this, '{{ photo.id }}')"
+                                            title="Like this photo">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                    <button class="photo-action-btn" 
+                                            onclick="sharePhoto('{{ photo.id }}', '{{ photo.location }}')"
+                                            title="Share">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="photo-action-btn" 
+                                            onclick="viewOnMap('{{ photo.location }}')"
+                                            title="View on map">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Handwritten Note -->
+                        <span class="handwritten-note">{{ photo.date }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Load More Button -->
+                <div class="load-more-wrapper">
+                    <button class="load-more-btn" onclick="loadMorePhotos()">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        Load More Memories
+                    </button>
+                </div>
+
+            </div>
+        </section>
+        
+    </div>
+
+    <!-- ============================================
+         📤 TAB 2: UPLOAD PHOTOS (PHASE 2)
+         ============================================ -->
+    <div id="upload-photos" class="gallery-tab-content">
+        <section class="upload-section">
+            <div class="container">
+                
+                <!-- Upload Header -->
+                <div class="upload-header">
+                    <h2 class="upload-title">Share Your Journey 📸</h2>
+                    <p class="upload-subtitle">
+                        Your memories inspire others! Upload your beautiful travel photos and
+                        become part of Kavlin's Enchanted Gallery community.
+                    </p>
+                </div>
+
+                <!-- Upload Container -->
+                <div class="upload-container">
+                    
+                    <!-- Drag & Drop Zone -->
+                    <div class="upload-dropzone" id="uploadDropzone">
+                        <div class="dropzone-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="dropzone-text">Drag & Drop Your Photos Here</div>
+                        <div class="dropzone-subtext">or click to browse your files</div>
+                        <button type="button" class="browse-btn" id="browseBtn">
+                            <i class="fas fa-folder-open me-2"></i>
+                            Browse Files
+                        </button>
+                        <input type="file" id="fileInput" accept="image/jpeg,image/jpg,image/png,image/heic" multiple hidden>
+                    </div>
+
+                    <!-- Upload Guidelines -->
+                    <div class="upload-guidelines">
+                        <h3 class="guidelines-title">
+                            <i class="fas fa-info-circle"></i>
+                            Upload Guidelines
+                        </h3>
+                        <ul class="guidelines-list">
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Maximum 5 photos per upload session</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Each photo should be under 10MB</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Supported formats: JPG, PNG, HEIC</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Photos will be reviewed before appearing in gallery</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Please upload your own original photos only</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Add meaningful captions to help others discover your memories</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Preview Grid -->
+                    <div class="preview-grid" id="previewGrid"></div>
+
+                    <!-- Upload Form -->
+                    <div id="uploadFormSection" style="display: none;">
+                        <form class="upload-form" id="uploadForm">
+                            
+                            <!-- Photo Details Section -->
+                            <div class="form-section">
+                                <h3 class="form-section-title">
+                                    <i class="fas fa-info-circle"></i>
+                                    Photo Details
+                                </h3>
+                                
+                                <!-- Destination Selection -->
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Destination <span class="required">*</span>
+                                    </label>
+                                    <div class="icon-grid">
+                                        {% for destination in destinations %}
+                                        <div class="icon-option" data-type="destination" data-value="{{ destination|lower }}">
+                                            <i class="fas fa-map-pin"></i>
+                                            <span>{{ destination }}</span>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <!-- Photo Type Selection -->
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Photo Type <span class="required">*</span>
+                                    </label>
+                                    <div class="icon-grid">
+                                        <div class="icon-option" data-type="photo-type" data-value="landscape">
+                                            <i class="fas fa-mountain"></i>
+                                            <span>Landscape</span>
+                                        </div>
+                                        <div class="icon-option" data-type="photo-type" data-value="people">
+                                            <i class="fas fa-users"></i>
+                                            <span>People</span>
+                                        </div>
+                                        <div class="icon-option" data-type="photo-type" data-value="bus">
+                                            <i class="fas fa-bus"></i>
+                                            <span>Bus</span>
+                                        </div>
+                                        <div class="icon-option" data-type="photo-type" data-value="heritage">
+                                            <i class="fas fa-landmark"></i>
+                                            <span>Heritage</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Season Selection -->
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        Season <span class="required">*</span>
+                                    </label>
+                                    <div class="icon-grid">
+                                        <div class="icon-option" data-type="season" data-value="spring">
+                                            <i class="fas fa-seedling"></i>
+                                            <span>Spring</span>
+                                        </div>
+                                        <div class="icon-option" data-type="season" data-value="summer">
+                                            <i class="fas fa-sun"></i>
+                                            <span>Summer</span>
+                                        </div>
+                                        <div class="icon-option" data-type="season" data-value="monsoon">
+                                            <i class="fas fa-cloud-rain"></i>
+                                            <span>Monsoon</span>
+                                        </div>
+                                        <div class="icon-option" data-type="season" data-value="autumn">
+                                            <i class="fas fa-leaf"></i>
+                                            <span>Autumn</span>
+                                        </div>
+                                        <div class="icon-option" data-type="season" data-value="winter">
+                                            <i class="fas fa-snowflake"></i>
+                                            <span>Winter</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Location Name -->
+                                <div class="form-group">
+                                    <label class="form-label" for="photoLocation">
+                                        Location Name
+                                    </label>
+                                    <input type="text" 
+                                           id="photoLocation" 
+                                           class="form-input" 
+                                           placeholder="e.g., Mountain Peak, Valley View..."
+                                           maxlength="100">
+                                </div>
+
+                                <!-- Caption -->
+                                <div class="form-group caption-group">
+                                    <label class="form-label" for="photoCaption">
+                                        Caption <span class="required">*</span>
+                                    </label>
+                                    <textarea id="photoCaption" 
+                                              class="form-textarea" 
+                                              placeholder="Share your story behind this photo..."
+                                              maxlength="500"
+                                              required></textarea>
+                                    <button type="button" 
+                                            class="emoji-picker-btn" 
+                                            onclick="toggleEmojiPicker()"
+                                            title="Add emoji">
+                                        😊
+                                    </button>
+                                </div>
+
+                            </div>
+
+                            <!-- Upload Progress -->
+                            <div id="uploadProgress" class="upload-progress"></div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="submit-upload-btn" id="submitUploadBtn">
+                                <i class="fas fa-cloud-upload-alt me-2"></i>
+                                Upload Photos
+                            </button>
+
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         📊 TAB 3: MY UPLOADS (PHASE 2)
+         ============================================ -->
+    <div id="my-uploads" class="gallery-tab-content">
+        <section class="my-uploads-section">
+            <div class="container">
+                <div class="upload-header">
+                    <h2 class="upload-title">My Uploaded Photos 📷</h2>
+                    <p class="upload-subtitle">
+                        Track the status of your uploaded photos and see their performance.
+                    </p>
+                </div>
+
+                <div class="uploads-grid" id="myUploadsGrid">
+                    <!-- Dynamically populated via JavaScript -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         ⏳ TAB 4: PENDING REVIEW (PHASE 2)
+         ============================================ -->
+    <div id="pending-review" class="gallery-tab-content">
+        <section class="my-uploads-section">
+            <div class="container">
+                <div class="upload-header">
+                    <h2 class="upload-title">Photos Pending Review ⏳</h2>
+                    <p class="upload-subtitle">
+                        These beautiful photos are waiting to be approved by our moderation team.
+                    </p>
+                </div>
+
+                <div class="uploads-grid">
+                    <div class="upload-card">
+                        <span class="upload-status pending">Pending</span>
+                        <div class="photo-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400" alt="Sample" class="photo-image">
+                        </div>
+                        <div class="photo-info">
+                            <div class="photo-location">Beautiful Mountain View</div>
+                            <div class="photo-photographer">
+                                <i class="fas fa-camera me-1"></i>Community Upload
+                            </div>
+                            <div class="photo-date">
+                                <i class="fas fa-calendar me-1"></i>2024-01-24
+                            </div>
+                        </div>
+                    </div>
+                    <!-- More pending cards would be loaded dynamically -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         📖 TAB 5: MY DIARIES (PHASE 3)
+         ============================================ -->
+    <div id="my-diaries" class="gallery-tab-content">
+        <section class="diary-section">
+            <div class="container">
+                
+                <!-- Diary Header -->
+                <div class="upload-header">
+                    <h2 class="upload-title">My Travel Diaries 📖</h2>
+                    <p class="upload-subtitle">
+                        Create beautiful travel stories by combining your photos into immersive diaries.
+                        Share your adventures chapter by chapter!
+                    </p>
+                </div>
+
+                <!-- Create Diary Action -->
+                <div class="diary-actions">
+                    <button class="create-diary-btn" id="createDiaryBtn">
+                        <i class="fas fa-plus-circle"></i>
+                        Create New Diary
+                    </button>
+                </div>
+
+                <!-- Diaries Grid -->
+                <div class="diary-grid" id="diaryGrid">
+                    <!-- Dynamically populated via JavaScript -->
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         📅 TAB 6: TIMELINE (PHASE 4)
+         ============================================ -->
+    <div id="timeline" class="gallery-tab-content">
+        <section class="timeline-section">
+            <div class="container">
+                
+                <!-- Timeline Header -->
+                <div class="timeline-header">
+                    <h2 class="upload-title">Your Journey Timeline 📅</h2>
+                    <p class="upload-subtitle">
+                        A visual story of your travels through time. Every memory, every moment, beautifully organized.
+                    </p>
+                </div>
+
+                <!-- Timeline Stats -->
+                <div class="timeline-stats" id="timelineStats">
+                    <!-- Dynamically populated via JavaScript -->
+                </div>
+
+                <!-- Heat Map Calendar -->
+                <div class="heatmap-container">
+                    <h3 class="heatmap-title">Your Travel Activity 🔥</h3>
+                    <div class="heatmap-grid" id="heatmapGrid">
+                        <!-- Dynamically populated via JavaScript -->
+                    </div>
+                    <div style="text-align: center; margin-top: 15px; color: #6C757D; font-size: 0.85rem;">
+                        <span style="margin-right: 20px;">Less <span style="display: inline-block; width: 12px; height: 12px; background: #E9ECEF; border-radius: 2px; margin: 0 5px;"></span></span>
+                        <span style="display: inline-block; width: 12px; height: 12px; background: rgba(255, 215, 0, 0.3); border-radius: 2px; margin: 0 5px;"></span>
+                        <span style="display: inline-block; width: 12px; height: 12px; background: rgba(255, 215, 0, 0.5); border-radius: 2px; margin: 0 5px;"></span>
+                        <span style="display: inline-block; width: 12px; height: 12px; background: rgba(255, 215, 0, 0.7); border-radius: 2px; margin: 0 5px;"></span>
+                        <span style="display: inline-block; width: 12px; height: 12px; background: #FFD700; border-radius: 2px; margin: 0 5px;"></span>
+                        <span style="margin-left: 5px;">More</span>
+                    </div>
+                </div>
+
+                <!-- Milestones -->
+                <div class="milestones-container">
+                    <h3 class="milestones-title">Your Achievements 🏆</h3>
+                    <div class="milestones-grid" id="milestonesGrid">
+                        <!-- Dynamically populated via JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Year Navigator -->
+                <div class="year-navigator" id="yearNavigator">
+                    <!-- Dynamically populated via JavaScript -->
+                </div>
+
+                <!-- Timeline Container -->
+                <div class="timeline-container" id="timelineContainer">
+                    <!-- Dynamically populated via JavaScript -->
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         📦 TAB 7: COLLECTIONS (PHASE 4)
+         ============================================ -->
+    <div id="collections" class="gallery-tab-content">
+        <section class="collections-section">
+            <div class="container">
+                
+                <!-- Collections Header -->
+                <div class="collections-header">
+                    <div class="upload-header" style="margin-bottom: 0;">
+                        <h2 class="upload-title">Photo Collections 📦</h2>
+                        <p class="upload-subtitle">
+                            Organize your photos into beautiful collections. Auto-generated smart albums and your custom creations.
+                        </p>
+                    </div>
+                    <button class="create-collection-btn" id="createCollectionBtn">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        Create Collection
+                    </button>
+                </div>
+
+                <!-- Auto Collections -->
+                <div class="auto-collections">
+                    <h3 class="auto-collections-title">
+                        <i class="fas fa-magic me-2"></i>
+                        Smart Collections
+                    </h3>
+                    <p style="color: #6C757D; margin-bottom: 25px;">
+                        Automatically organized collections based on your photos
+                    </p>
+                    <div class="auto-collections-grid" id="autoCollectionsGrid">
+                        <!-- Dynamically populated via JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Manual Collections -->
+                <div class="manual-collections">
+                    <h3 class="manual-collections-title">
+                        <i class="fas fa-folder me-2"></i>
+                        My Collections
+                    </h3>
+                    <p style="color: #6C757D; margin-bottom: 25px;">
+                        Your custom photo collections
+                    </p>
+                    <div class="collections-grid" id="manualCollectionsGrid">
+                        <!-- Dynamically populated via JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Empty State (if no collections) -->
+                <div id="emptyCollectionsState" style="display: none; text-align: center; padding: 80px 20px;">
+                    <i class="fas fa-folder-open" style="font-size: 5rem; color: #E9ECEF; margin-bottom: 25px; display: block;"></i>
+                    <h3 style="font-family: 'Dancing Script', cursive; font-size: 2rem; color: #2C3E50; margin-bottom: 15px;">
+                        No Collections Yet
+                    </h3>
+                    <p style="color: #6C757D; font-size: 1.1rem; margin-bottom: 30px;">
+                        Create your first collection to organize your travel memories!
+                    </p>
+                    <button class="create-collection-btn" onclick="openCollectionModal()">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        Create Your First Collection
+                    </button>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         📰 TAB 8: ACTIVITY FEED (PHASE 5)
+         ============================================ -->
+    <div id="activity-feed" class="gallery-tab-content">
+        <section class="activity-feed-section">
+            <div class="container">
+                
+                <!-- Activity Feed Header -->
+                <div class="upload-header">
+                    <h2 class="upload-title">Community Activity 📰</h2>
+                    <p class="upload-subtitle">
+                        See what the Happy Trails community has been up to! Comments, reactions, and new memories shared.
+                    </p>
+                </div>
+
+                <!-- Activity Stats Dashboard -->
+                <div class="timeline-stats" style="margin-bottom: 40px;">
+                    <div class="timeline-stat-card">
+                        <span class="timeline-stat-icon">💬</span>
+                        <span class="timeline-stat-number" id="totalCommentsCount">0</span>
+                        <span class="timeline-stat-label">Total Comments</span>
+                    </div>
+                    <div class="timeline-stat-card">
+                        <span class="timeline-stat-icon">❤️</span>
+                        <span class="timeline-stat-number" id="totalReactionsCount">0</span>
+                        <span class="timeline-stat-label">Total Reactions</span>
+                    </div>
+                    <div class="timeline-stat-card">
+                        <span class="timeline-stat-icon">👥</span>
+                        <span class="timeline-stat-number" id="activeUsersCount">0</span>
+                        <span class="timeline-stat-label">Active Users</span>
+                    </div>
+                    <div class="timeline-stat-card">
+                        <span class="timeline-stat-icon">🔥</span>
+                        <span class="timeline-stat-number" id="trendingCount">0</span>
+                        <span class="timeline-stat-label">Trending</span>
+                    </div>
+                </div>
+
+                <!-- Trending Content Section -->
+                <div class="auto-collections" style="margin-bottom: 50px;">
+                    <h3 class="auto-collections-title">
+                        <i class="fas fa-fire me-2"></i>
+                        Trending Now
+                    </h3>
+                    <p style="color: #6C757D; margin-bottom: 25px;">
+                        Most popular photos and diaries in the community
+                    </p>
+                    <div class="auto-collections-grid" id="trendingContentGrid">
+                        <div class="auto-collection-card">
+                            <span class="auto-collection-icon">🔥</span>
+                            <div class="auto-collection-name">Most Liked Photo</div>
+                            <div class="auto-collection-count">234 reactions</div>
+                        </div>
+                        <div class="auto-collection-card">
+                            <span class="auto-collection-icon">💬</span>
+                            <div class="auto-collection-name">Most Discussed</div>
+                            <div class="auto-collection-count">89 comments</div>
+                        </div>
+                        <div class="auto-collection-card">
+                            <span class="auto-collection-icon">⭐</span>
+                            <div class="auto-collection-name">Rising Star</div>
+                            <div class="auto-collection-count">New & Popular</div>
+                        </div>
+                        <div class="auto-collection-card">
+                            <span class="auto-collection-icon">📖</span>
+                            <div class="auto-collection-name">Top Diary</div>
+                            <div class="auto-collection-count">156 views</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Stream -->
+                <div class="activity-feed-container" id="activityFeedContainer">
+                    <!-- Dynamically populated via JavaScript -->
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📰</div>
+                        <div class="empty-state-text">No activity yet</div>
+                        <div class="empty-state-subtext">Start engaging with photos and diaries!</div>
+                    </div>
+                </div>
+
+                <!-- Load More Activity -->
+                <div class="load-more-wrapper" style="margin-top: 40px;">
+                    <button class="load-more-btn" onclick="loadMoreActivity()">
+                        <i class="fas fa-sync-alt me-2"></i>
+                        Load More Activity
+                    </button>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         💡 ANONYMOUS USER INFO BANNER
+         ============================================ -->
+    <div class="anonymous-info-banner" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 140, 0, 0.1)); 
+                                              border: 2px solid rgba(255, 215, 0, 0.3); 
+                                              border-radius: 20px; 
+                                              padding: 25px; 
+                                              margin: 40px auto; 
+                                              max-width: 800px;
+                                              text-align: center;">
+        <h3 style="font-family: 'Dancing Script', cursive; font-size: 1.8rem; color: #F57F17; margin-bottom: 15px;">
+            <i class="fas fa-info-circle me-2"></i>
+            Anonymous Mode Active
+        </h3>
+        <p style="color: #6C757D; line-height: 1.7; margin-bottom: 15px;">
+            You're currently browsing as <strong id="currentUserNickname" style="color: #F57F17;">Guest</strong>. 
+            Your comments and reactions are saved locally in your browser. 
+            <br>
+            <small style="font-size: 0.85rem; color: #ADB5BD;">
+                Clear browser data to reset your identity or wait for full authentication in future updates!
+            </small>
+        </p>
+        <button class="diary-btn diary-btn-secondary" 
+                onclick="resetAnonymousIdentity()"
+                style="padding: 12px 25px; font-size: 0.9rem;">
+            <i class="fas fa-sync-alt me-2"></i>
+            Generate New Nickname
+        </button>
+    </div>
+
+    <!-- ============================================
+         📝 DIARY CREATION MODAL
+         ============================================ -->
+    <div class="diary-modal" id="diaryModal">
+        <div class="diary-modal-content">
+            
+            <!-- Modal Header -->
+            <div class="diary-modal-header">
+                <h2 class="diary-modal-title">Create Your Travel Diary ✨</h2>
+                <button class="diary-modal-close" onclick="closeDiaryModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="diary-modal-body">
+                
+                <!-- Progress Steps -->
+                <div class="diary-steps">
+                    <div class="diary-step active">
+                        <div class="diary-step-circle">1</div>
+                        <div class="diary-step-label">Template</div>
+                    </div>
+                    <div class="diary-step">
+                        <div class="diary-step-circle">2</div>
+                        <div class="diary-step-label">Basic Info</div>
+                    </div>
+                    <div class="diary-step">
+                        <div class="diary-step-circle">3</div>
+                        <div class="diary-step-label">Photos & Chapters</div>
+                    </div>
+                    <div class="diary-step">
+                        <div class="diary-step-circle">4</div>
+                        <div class="diary-step-label">Finalize</div>
+                    </div>
+                </div>
+
+                <!-- Step 1: Template Selection -->
+                <div class="diary-step-content" id="step1" style="display: block;">
+                    <h3 class="form-section-title">
+                        <i class="fas fa-palette"></i>
+                        Choose Your Diary Style
+                    </h3>
+                    <p style="color: #6C757D; margin-bottom: 20px;">
+                        Select a template that matches your journey's vibe
+                    </p>
+                    
+                    <div class="template-grid">
+                        <div class="template-card" onclick="selectTemplate('Scrapbook')">
+                            <span class="template-icon">📔</span>
+                            <div class="template-name">Scrapbook</div>
+                            <div class="template-description">Vintage & Handcrafted</div>
+                        </div>
+                        <div class="template-card" onclick="selectTemplate('Minimal')">
+                            <span class="template-icon">📄</span>
+                            <div class="template-name">Minimal</div>
+                            <div class="template-description">Clean & Modern</div>
+                        </div>
+                        <div class="template-card" onclick="selectTemplate('Vintage')">
+                            <span class="template-icon">📜</span>
+                            <div class="template-name">Vintage</div>
+                            <div class="template-description">Classic & Timeless</div>
+                        </div>
+                        <div class="template-card" onclick="selectTemplate('Polaroid')">
+                            <span class="template-icon">📸</span>
+                            <div class="template-name">Polaroid</div>
+                            <div class="template-description">Fun & Nostalgic</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Basic Information -->
+                <div class="diary-step-content" id="step2" style="display: none;">
+                    <h3 class="form-section-title">
+                        <i class="fas fa-pencil-alt"></i>
+                        Tell Us About Your Journey
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            Diary Title <span class="required">*</span>
+                        </label>
+                        <input type="text" 
+                               id="diaryTitle" 
+                               class="form-input" 
+                               placeholder="e.g., Mountain Adventures 2024"
+                               maxlength="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            Description <span class="required">*</span>
+                        </label>
+                        <textarea id="diaryDescription" 
+                                  class="form-textarea" 
+                                  placeholder="Write a brief overview of your journey..."
+                                  maxlength="500"
+                                  style="min-height: 150px;"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Route Information</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <input type="text" 
+                                   id="routeStart" 
+                                   class="form-input" 
+                                   placeholder="Starting point">
+                            <input type="text" 
+                                   id="routeEnd" 
+                                   class="form-input" 
+                                   placeholder="Destination">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Photos & Chapters -->
+                <div class="diary-step-content" id="step3" style="display: none;">
+                    <h3 class="form-section-title">
+                        <i class="fas fa-images"></i>
+                        Select Photos
+                    </h3>
+                    <p style="color: #6C757D; margin-bottom: 20px;">
+                        Choose up to 20 photos from your gallery (<span id="selectedPhotoCount">0</span> selected)
+                    </p>
+                    
+                    <div class="photo-selection-grid">
+                        {% for photo in photos[:12] %}
+                        <div class="selectable-photo" onclick="togglePhotoSelection({{ photo.id }})">
+                            <img src="{{ photo.image }}" alt="{{ photo.location }}">
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <h3 class="form-section-title" style="margin-top: 40px;">
+                        <i class="fas fa-book"></i>
+                        Create Chapters
+                    </h3>
+                    <p style="color: #6C757D; margin-bottom: 20px;">
+                        Organize your story into chapters (minimum 1, maximum 10)
+                    </p>
+                    
+                    <div id="chapterList" class="chapter-list">
+                        <!-- Chapters will be added dynamically -->
+                    </div>
+
+                    <button class="add-chapter-btn" onclick="addChapter()">
+                        <i class="fas fa-plus-circle"></i>
+                        Add Chapter
+                    </button>
+                </div>
+
+                <!-- Step 4: Finalize -->
+                <div class="diary-step-content" id="step4" style="display: none;">
+                    <h3 class="form-section-title">
+                        <i class="fas fa-heart"></i>
+                        Add Finishing Touches
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            Journey Mood <span class="required">*</span>
+                        </label>
+                        <p style="color: #6C757D; margin-bottom: 15px; font-size: 0.9rem;">
+                            Select moods that describe your journey (up to 5)
+                        </p>
+                        <div class="mood-selector">
+                            <div class="mood-option" onclick="toggleMood('adventurous')">
+                                <span class="mood-emoji">🏔️</span>
+                                <span>Adventurous</span>
+                            </div>
+                            <div class="mood-option" onclick="toggleMood('peaceful')">
+                                <span class="mood-emoji">🧘</span>
+                                <span>Peaceful</span>
+                            </div>
+                            <div class="mood-option" onclick="toggleMood('exciting')">
+                                <span class="mood-emoji">🎉</span>
+                                <span>Exciting</span>
+                            </div>
+                            <div class="mood-option" onclick="toggleMood('romantic')">
+                                <span class="mood-emoji">💕</span>
+                                <span>Romantic</span>
+                            </div>
+                            <div class="mood-option" onclick="toggleMood('spiritual')">
+                                <span class="mood-emoji">🙏</span>
+                                <span>Spiritual</span>
+                            </div>
+                            <div class="mood-option" onclick="toggleMood('fun')">
+                                <span class="mood-emoji">😄</span>
+                                <span>Fun</span>
+                            </div>
+                            <div class="mood-option" onclick="toggleMood('challenging')">
+                                <span class="mood-emoji">💪</span>
+                                <span>Challenging</span>
+                            </div>
+                            <div class="mood-option" onclick="toggleMood('relaxing')">
+                                <span class="mood-emoji">😌</span>
+                                <span>Relaxing</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Privacy Settings</label>
+                        <select class="form-select">
+                            <option value="public">🌍 Public - Everyone can view</option>
+                            <option value="friends">👥 Friends Only</option>
+                            <option value="private">🔒 Private - Only me</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="allowComments" checked>
+                            <span>💬 Allow comments on this diary</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="diary-nav-buttons">
+                    <button class="diary-btn diary-btn-secondary" id="diaryBackBtn" onclick="previousDiaryStep()">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Back
+                    </button>
+                    <button class="diary-btn diary-btn-primary" id="diaryNextBtn" onclick="nextDiaryStep()">
+                        <i class="fas fa-arrow-right me-2"></i>
+                        Next Step
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- === LIGHTBOX WITH 3D FLIP === -->
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-content">
+            <span class="lightbox-close">&times;</span>
+            <button class="lightbox-nav lightbox-prev">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <img src="" alt="Lightbox Photo" class="lightbox-image">
+            <button class="lightbox-nav lightbox-next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <div class="lightbox-info">
+                <div class="lightbox-location">Location Name</div>
+                <div class="lightbox-photographer">Photographer Name</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/travel_gallery.js') }}"></script>
+{% endblock %}
