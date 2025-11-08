@@ -10,8 +10,8 @@
 
 {% block content %}
 <!-- ============================================
-     🗺️ ROUTE EXPLORER - PHASES 1 & 2
-     Interactive Map & Route Comparison
+     🗺️ ROUTE EXPLORER - PHASES 1, 2 & 3
+     Interactive Map, Comparison & Weather
      ============================================ -->
 <div class="route-explorer-wrapper">
     
@@ -51,6 +51,12 @@
                 <button class="explorer-tab" data-tab="route-details">
                     <i class="fas fa-info-circle"></i>
                     <span>Route Details</span>
+                </button>
+                
+                <!-- Tab 4: Weather & Conditions (Phase 3) - NEW! -->
+                <button class="explorer-tab" data-tab="weather-conditions">
+                    <i class="fas fa-cloud-sun"></i>
+                    <span>Weather & Conditions</span>
                 </button>
             </div>
         </div>
@@ -343,6 +349,78 @@
         </section>
     </div>
 
+    <!-- ============================================
+         🌤️ TAB 4: WEATHER & CONDITIONS (PHASE 3)
+         ============================================ -->
+    <div id="weather-conditions" class="explorer-tab-content">
+        <section class="weather-section">
+            <div class="container">
+                
+                <!-- Weather Header -->
+                <div class="weather-header">
+                    <h2 class="weather-title">
+                        <i class="fas fa-cloud-sun"></i>
+                        Weather & Travel Conditions
+                    </h2>
+                    <p class="weather-subtitle">
+                        Real-time weather information for all destinations. Plan your journey with live weather updates!
+                    </p>
+                    <div class="weather-last-update">
+                        <i class="fas fa-sync-alt"></i>
+                        Last Updated: <span id="weatherLastUpdate">Loading...</span>
+                    </div>
+                </div>
+
+                <!-- Weather Loading State -->
+                <div class="weather-loading" id="weatherLoading">
+                    <div class="loading-spinner"></div>
+                    <p>Fetching latest weather data...</p>
+                </div>
+
+                <!-- Weather Cards Grid -->
+                <div class="weather-cards-grid" id="weatherCardsGrid" style="display: none;">
+                    <!-- Dynamically populated -->
+                </div>
+
+                <!-- Travel Recommendations -->
+                <div class="travel-recommendations" id="travelRecommendations" style="display: none;">
+                    <h3 class="recommendations-title">
+                        <i class="fas fa-lightbulb"></i>
+                        Travel Recommendations
+                    </h3>
+                    <div class="recommendations-grid" id="recommendationsGrid">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- 7-Day Forecast -->
+                <div class="forecast-section" id="forecastSection" style="display: none;">
+                    <h3 class="forecast-title">
+                        <i class="fas fa-calendar-week"></i>
+                        7-Day Weather Forecast
+                    </h3>
+                    <div class="forecast-carousel" id="forecastCarousel">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Weather Alerts -->
+                <div class="weather-alerts" id="weatherAlerts" style="display: none;">
+                    <!-- Dynamically populated -->
+                </div>
+
+                <!-- Refresh Button -->
+                <div style="text-align: center; margin-top: 40px;">
+                    <button class="refresh-weather-btn" onclick="refreshWeatherData()">
+                        <i class="fas fa-sync-alt me-2"></i>
+                        Refresh Weather Data
+                    </button>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
     <!-- === QUICK STATS SECTION === -->
     <section class="quick-stats-section">
         <div class="container">
@@ -378,9 +456,10 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Pass route data from Flask to JavaScript
+    // Pass route data and API key from Flask to JavaScript
     const ROUTES_DATA = {{ routes_json|safe }};
     const DESTINATIONS = {{ destinations|tojson }};
+    const WEATHER_API_KEY = "{{ weather_api_key }}";
 </script>
 <script src="{{ url_for('static', filename='js/route_explorer.js') }}"></script>
 {% endblock %}

@@ -1122,16 +1122,17 @@ def upload_gallery_photo():
 
 @app.route('/route-explorer')
 def route_explorer():
-    """🗺️ Interactive Route Explorer - Phases 1 & 2
+    """🗺️ Interactive Route Explorer - Phases 1, 2 & 3
     
     Phase 1: Interactive map with Leaflet.js and route filtering
     Phase 2: Route comparison tool and detailed route information
+    Phase 3: Live weather integration with OpenWeatherMap API
     
     Displays all bus routes on an interactive map with comprehensive
-    comparison and analysis tools.
+    comparison, analysis tools, and real-time weather conditions.
     """
     
-    # Sample route data with enhanced details for Phase 2
+    # Sample route data (same as Phase 2)
     routes = [
         {
             'id': 1,
@@ -1284,13 +1285,13 @@ def route_explorer():
             'departure_time': '10:00 AM',
             'arrival_time': '11:15 AM',
             'coordinates': [
-                [30.8750, 77.0500],  # Dharampur
+                [30.8750, 77.0500],
                 [30.8850, 77.0750],
                 [30.8950, 77.1000],
                 [30.9050, 77.1250],
                 [30.9100, 77.1450],
                 [30.9120, 77.1600],
-                [30.9100, 77.1734]   # Solan
+                [30.9100, 77.1734]
             ],
             'stops_data': [
                 {'name': 'Dharampur Main Stand', 'location': 'Central', 'coordinates': [30.8750, 77.0500]},
@@ -1317,11 +1318,11 @@ def route_explorer():
             'departure_time': '12:00 PM',
             'arrival_time': '01:00 PM',
             'coordinates': [
-                [30.8750, 77.0500],  # Dharampur
+                [30.8750, 77.0500],
                 [30.8900, 77.0850],
                 [30.9000, 77.1200],
                 [30.9080, 77.1500],
-                [30.9100, 77.1734]   # Solan
+                [30.9100, 77.1734]
             ],
             'stops_data': [
                 {'name': 'Dharampur Main Stand', 'location': 'Central', 'coordinates': [30.8750, 77.0500]},
@@ -1346,13 +1347,13 @@ def route_explorer():
             'departure_time': '11:30 AM',
             'arrival_time': '12:20 PM',
             'coordinates': [
-                [30.9100, 77.1734],  # Solan
+                [30.9100, 77.1734],
                 [30.9180, 77.1550],
                 [30.9260, 77.1350],
                 [30.9340, 77.1150],
                 [30.9420, 77.0950],
                 [30.9500, 77.0800],
-                [30.9600, 77.0700]   # Barog
+                [30.9600, 77.0700]
             ],
             'stops_data': [
                 {'name': 'Solan Bus Terminal', 'location': 'Central', 'coordinates': [30.9100, 77.1734]},
@@ -1379,12 +1380,12 @@ def route_explorer():
             'departure_time': '02:00 PM',
             'arrival_time': '02:55 PM',
             'coordinates': [
-                [30.9600, 77.0700],  # Barog
+                [30.9600, 77.0700],
                 [30.9680, 77.0520],
                 [30.9760, 77.0340],
                 [30.9840, 77.0160],
                 [30.9870, 76.9980],
-                [30.9900, 76.9800]   # Dagshai
+                [30.9900, 76.9800]
             ],
             'stops_data': [
                 {'name': 'Barog Station', 'location': 'Railway', 'coordinates': [30.9600, 77.0700]},
@@ -1404,10 +1405,14 @@ def route_explorer():
     import json
     routes_json = json.dumps(routes)
     
+    # Get Weather API key from environment
+    weather_api_key = os.getenv('WEATHER_API_KEY', '')
+    
     return render_template('features/route_explorer.html',
                           routes=routes,
                           routes_json=routes_json,
-                          destinations=destinations)
+                          destinations=destinations,
+                          weather_api_key=weather_api_key)
 
 # Run the application
 if __name__ == '__main__':
