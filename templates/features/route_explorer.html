@@ -58,6 +58,12 @@
                     <i class="fas fa-cloud-sun"></i>
                     <span>Weather & Conditions</span>
                 </button>
+
+                <!-- Tab 5: Scenic Highlights (Phase 4) - NEW! -->
+                <button class="explorer-tab" data-tab="scenic-highlights">
+                    <i class="fas fa-mountain"></i>
+                    <span>Scenic Highlights</span>
+                </button>
             </div>
         </div>
     </section>
@@ -419,6 +425,169 @@
 
             </div>
         </section>
+    </div>
+
+
+---
+
+## 📂 **File 1: Update `templates/features/route_explorer.html`**
+
+**Add the Scenic Highlights tab (after Weather tab, before Quick Stats):**
+
+```html
+    <!-- ============================================
+         🏔️ TAB 5: SCENIC HIGHLIGHTS (PHASE 4)
+         ============================================ -->
+    <div id="scenic-highlights" class="explorer-tab-content">
+        <section class="highlights-section">
+            <div class="container">
+                
+                <!-- Highlights Header -->
+                <div class="highlights-header">
+                    <h2 class="highlights-title">
+                        <i class="fas fa-mountain"></i>
+                        Scenic Highlights & Points of Interest
+                    </h2>
+                    <p class="highlights-subtitle">
+                        Discover amazing attractions, viewpoints, and hidden gems along your journey. 
+                        Every route has a story to tell!
+                    </p>
+                </div>
+
+                <!-- POI Statistics -->
+                <div class="poi-stats-grid">
+                    <div class="poi-stat-card">
+                        <div class="poi-stat-icon">🏔️</div>
+                        <div class="poi-stat-number" id="totalPOIsCount">0</div>
+                        <div class="poi-stat-label">Total Attractions</div>
+                    </div>
+                    <div class="poi-stat-card">
+                        <div class="poi-stat-icon">📸</div>
+                        <div class="poi-stat-number" id="photoSpotsCount">0</div>
+                        <div class="poi-stat-label">Photo Spots</div>
+                    </div>
+                    <div class="poi-stat-card">
+                        <div class="poi-stat-icon">🏛️</div>
+                        <div class="poi-stat-number" id="heritageCount">0</div>
+                        <div class="poi-stat-label">Heritage Sites</div>
+                    </div>
+                    <div class="poi-stat-card">
+                        <div class="poi-stat-icon">🍽️</div>
+                        <div class="poi-stat-number" id="foodSpotsCount">0</div>
+                        <div class="poi-stat-label">Food Spots</div>
+                    </div>
+                </div>
+
+                <!-- Category Filter -->
+                <div class="poi-filter-section">
+                    <h3 class="poi-filter-title">
+                        <i class="fas fa-filter"></i>
+                        Filter by Category
+                    </h3>
+                    <div class="poi-category-pills">
+                        <button class="poi-category-pill active" data-category="all">
+                            <i class="fas fa-th"></i>
+                            All Highlights
+                        </button>
+                        <button class="poi-category-pill" data-category="viewpoints">
+                            🏔️ Viewpoints
+                        </button>
+                        <button class="poi-category-pill" data-category="heritage">
+                            🏛️ Heritage
+                        </button>
+                        <button class="poi-category-pill" data-category="food">
+                            🍽️ Food & Dining
+                        </button>
+                        <button class="poi-category-pill" data-category="adventure">
+                            🎿 Adventure
+                        </button>
+                        <button class="poi-category-pill" data-category="nature">
+                            🌲 Nature
+                        </button>
+                        <button class="poi-category-pill" data-category="photography">
+                            📸 Photo Spots
+                        </button>
+                        <button class="poi-category-pill" data-category="religious">
+                            🕉️ Religious
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Route Filter -->
+                <div class="poi-route-filter">
+                    <label class="poi-route-filter-label">
+                        <i class="fas fa-route"></i>
+                        Filter by Route
+                    </label>
+                    <select class="poi-route-select" id="poiRouteFilter">
+                        <option value="all">All Routes</option>
+                        <!-- Dynamically populated -->
+                    </select>
+                </div>
+
+                <!-- POI Cards Grid -->
+                <div class="poi-cards-grid" id="poiCardsGrid">
+                    <!-- Dynamically populated -->
+                </div>
+
+                <!-- Interactive Map with POI Markers -->
+                <div class="poi-map-section">
+                    <h3 class="poi-map-title">
+                        <i class="fas fa-map-marked-alt"></i>
+                        Interactive POI Map
+                    </h3>
+                    <div class="poi-map-container">
+                        <div id="poiMap" class="poi-map"></div>
+                        <div class="poi-map-legend">
+                            <h4>Legend</h4>
+                            <div class="poi-legend-items">
+                                <div class="poi-legend-item">
+                                    <span class="poi-legend-icon">🏔️</span>
+                                    <span>Viewpoints</span>
+                                </div>
+                                <div class="poi-legend-item">
+                                    <span class="poi-legend-icon">🏛️</span>
+                                    <span>Heritage</span>
+                                </div>
+                                <div class="poi-legend-item">
+                                    <span class="poi-legend-icon">🍽️</span>
+                                    <span>Food</span>
+                                </div>
+                                <div class="poi-legend-item">
+                                    <span class="poi-legend-icon">🎿</span>
+                                    <span>Adventure</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Featured Highlights -->
+                <div class="featured-highlights">
+                    <h3 class="featured-title">
+                        <i class="fas fa-star"></i>
+                        Featured Highlights
+                    </h3>
+                    <div class="featured-grid" id="featuredGrid">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- POI Detail Modal -->
+    <div class="poi-modal" id="poiModal" style="display: none;">
+        <div class="poi-modal-overlay" onclick="closePOIModal()"></div>
+        <div class="poi-modal-content">
+            <button class="poi-modal-close" onclick="closePOIModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="poiModalBody">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
     </div>
 
     <!-- === QUICK STATS SECTION === -->
