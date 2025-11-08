@@ -1120,6 +1120,295 @@ def upload_gallery_photo():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+@app.route('/route-explorer')
+def route_explorer():
+    """🗺️ Interactive Route Explorer - Phases 1 & 2
+    
+    Phase 1: Interactive map with Leaflet.js and route filtering
+    Phase 2: Route comparison tool and detailed route information
+    
+    Displays all bus routes on an interactive map with comprehensive
+    comparison and analysis tools.
+    """
+    
+    # Sample route data with enhanced details for Phase 2
+    routes = [
+        {
+            'id': 1,
+            'name': 'Dharampur → Solan Express',
+            'busNumber': 'HT-101',
+            'from': 'Dharampur',
+            'to': 'Solan',
+            'type': 'Standard',
+            'distance': '25 km',
+            'duration': '1h 15m',
+            'stops': 8,
+            'color': '#FFD700',
+            'price': 150,
+            'departure_time': '08:00 AM',
+            'arrival_time': '09:15 AM',
+            'coordinates': [
+                [30.8750, 77.0500],  # Dharampur
+                [30.8800, 77.0700],
+                [30.8850, 77.0900],
+                [30.8900, 77.1100],
+                [30.8950, 77.1300],
+                [30.9000, 77.1500],
+                [30.9050, 77.1650],
+                [30.9100, 77.1734]   # Solan
+            ],
+            'stops_data': [
+                {'name': 'Dharampur Main Stand', 'location': 'Central Dharampur', 'coordinates': [30.8750, 77.0500]},
+                {'name': 'Dharampur Railway Station', 'location': 'Near Railway', 'coordinates': [30.8800, 77.0700]},
+                {'name': 'Dharampur Market', 'location': 'Market Area', 'coordinates': [30.8850, 77.0900]},
+                {'name': 'Highway Junction', 'location': 'NH-5', 'coordinates': [30.8900, 77.1100]},
+                {'name': 'Green Valley', 'location': 'Valley Point', 'coordinates': [30.8950, 77.1300]},
+                {'name': 'Pine Forest Stop', 'location': 'Forest Area', 'coordinates': [30.9000, 77.1500]},
+                {'name': 'Solan Outskirts', 'location': 'City Entry', 'coordinates': [30.9050, 77.1650]},
+                {'name': 'Solan Bus Terminal', 'location': 'Central Solan', 'coordinates': [30.9100, 77.1734]}
+            ]
+        },
+        {
+            'id': 2,
+            'name': 'Solan → Barog Scenic Route',
+            'busNumber': 'HT-102',
+            'from': 'Solan',
+            'to': 'Barog',
+            'type': 'Deluxe',
+            'distance': '18 km',
+            'duration': '45m',
+            'stops': 6,
+            'color': '#32CD32',
+            'price': 100,
+            'departure_time': '09:30 AM',
+            'arrival_time': '10:15 AM',
+            'coordinates': [
+                [30.9100, 77.1734],  # Solan
+                [30.9200, 77.1500],
+                [30.9300, 77.1300],
+                [30.9400, 77.1100],
+                [30.9500, 77.0900],
+                [30.9600, 77.0700]   # Barog
+            ],
+            'stops_data': [
+                {'name': 'Solan Bus Terminal', 'location': 'Central Solan', 'coordinates': [30.9100, 77.1734]},
+                {'name': 'Solan Mall Road', 'location': 'Mall Road', 'coordinates': [30.9200, 77.1500]},
+                {'name': 'University Junction', 'location': 'Near University', 'coordinates': [30.9300, 77.1300]},
+                {'name': 'Mountain View Point', 'location': 'Scenic Spot', 'coordinates': [30.9400, 77.1100]},
+                {'name': 'Tunnel Approach', 'location': 'Heritage Area', 'coordinates': [30.9500, 77.0900]},
+                {'name': 'Barog Station', 'location': 'Railway Station', 'coordinates': [30.9600, 77.0700]}
+            ]
+        },
+        {
+            'id': 3,
+            'name': 'Barog → Dagshai Heritage Trail',
+            'busNumber': 'HT-103',
+            'from': 'Barog',
+            'to': 'Dagshai',
+            'type': 'Premium',
+            'distance': '22 km',
+            'duration': '1h',
+            'stops': 7,
+            'color': '#FF6347',
+            'price': 120,
+            'departure_time': '11:00 AM',
+            'arrival_time': '12:00 PM',
+            'coordinates': [
+                [30.9600, 77.0700],  # Barog
+                [30.9650, 77.0550],
+                [30.9700, 77.0400],
+                [30.9750, 77.0250],
+                [30.9800, 77.0100],
+                [30.9850, 76.9950],
+                [30.9900, 76.9800]   # Dagshai
+            ],
+            'stops_data': [
+                {'name': 'Barog Station', 'location': 'Railway Station', 'coordinates': [30.9600, 77.0700]},
+                {'name': 'Barog Market', 'location': 'Market Area', 'coordinates': [30.9650, 77.0550]},
+                {'name': 'Heritage Point', 'location': 'Tourist Spot', 'coordinates': [30.9700, 77.0400]},
+                {'name': 'Pine Grove', 'location': 'Forest Area', 'coordinates': [30.9750, 77.0250]},
+                {'name': 'Military Road', 'location': 'Historical Route', 'coordinates': [30.9800, 77.0100]},
+                {'name': 'Dagshai Entry', 'location': 'Town Entry', 'coordinates': [30.9850, 76.9950]},
+                {'name': 'Dagshai Cantonment', 'location': 'Cantonment Area', 'coordinates': [30.9900, 76.9800]}
+            ]
+        },
+        {
+            'id': 4,
+            'name': 'Dagshai → Dharampur Circle Route',
+            'busNumber': 'HT-104',
+            'from': 'Dagshai',
+            'to': 'Dharampur',
+            'type': 'Standard',
+            'distance': '30 km',
+            'duration': '1h 30m',
+            'stops': 9,
+            'color': '#1E90FF',
+            'price': 150,
+            'departure_time': '01:30 PM',
+            'arrival_time': '03:00 PM',
+            'coordinates': [
+                [30.9900, 76.9800],  # Dagshai
+                [30.9800, 76.9900],
+                [30.9700, 77.0000],
+                [30.9600, 77.0100],
+                [30.9500, 77.0200],
+                [30.9400, 77.0300],
+                [30.9200, 77.0350],
+                [30.9000, 77.0400],
+                [30.8750, 77.0500]   # Dharampur
+            ],
+            'stops_data': [
+                {'name': 'Dagshai Cantonment', 'location': 'Cantonment', 'coordinates': [30.9900, 76.9800]},
+                {'name': 'Colonial Church', 'location': 'Heritage Site', 'coordinates': [30.9800, 76.9900]},
+                {'name': 'Valley Viewpoint', 'location': 'Scenic Point', 'coordinates': [30.9700, 77.0000]},
+                {'name': 'Tea Garden Stop', 'location': 'Plantation Area', 'coordinates': [30.9600, 77.0100]},
+                {'name': 'Village Junction', 'location': 'Rural Area', 'coordinates': [30.9500, 77.0200]},
+                {'name': 'Riverside Point', 'location': 'River Crossing', 'coordinates': [30.9400, 77.0300]},
+                {'name': 'Highway Junction', 'location': 'Main Road', 'coordinates': [30.9200, 77.0350]},
+                {'name': 'Dharampur Outskirts', 'location': 'Town Entry', 'coordinates': [30.9000, 77.0400]},
+                {'name': 'Dharampur Main Stand', 'location': 'Central', 'coordinates': [30.8750, 77.0500]}
+            ]
+        },
+        {
+            'id': 5,
+            'name': 'Dharampur → Solan Deluxe',
+            'busNumber': 'HT-105',
+            'from': 'Dharampur',
+            'to': 'Solan',
+            'type': 'Deluxe',
+            'distance': '25 km',
+            'duration': '1h 15m',
+            'stops': 7,
+            'color': '#9370DB',
+            'price': 160,
+            'departure_time': '10:00 AM',
+            'arrival_time': '11:15 AM',
+            'coordinates': [
+                [30.8750, 77.0500],  # Dharampur
+                [30.8850, 77.0750],
+                [30.8950, 77.1000],
+                [30.9050, 77.1250],
+                [30.9100, 77.1450],
+                [30.9120, 77.1600],
+                [30.9100, 77.1734]   # Solan
+            ],
+            'stops_data': [
+                {'name': 'Dharampur Main Stand', 'location': 'Central', 'coordinates': [30.8750, 77.0500]},
+                {'name': 'Garden Point', 'location': 'Park Area', 'coordinates': [30.8850, 77.0750]},
+                {'name': 'Shopping Complex', 'location': 'Commercial', 'coordinates': [30.8950, 77.1000]},
+                {'name': 'Hilltop View', 'location': 'Scenic', 'coordinates': [30.9050, 77.1250]},
+                {'name': 'Resort Area', 'location': 'Tourist Zone', 'coordinates': [30.9100, 77.1450]},
+                {'name': 'Solan University', 'location': 'Education Hub', 'coordinates': [30.9120, 77.1600]},
+                {'name': 'Solan Bus Terminal', 'location': 'Central', 'coordinates': [30.9100, 77.1734]}
+            ]
+        },
+        {
+            'id': 6,
+            'name': 'Dharampur → Solan Premium',
+            'busNumber': 'HT-106',
+            'from': 'Dharampur',
+            'to': 'Solan',
+            'type': 'Premium',
+            'distance': '25 km',
+            'duration': '1h',
+            'stops': 5,
+            'color': '#FF1493',
+            'price': 170,
+            'departure_time': '12:00 PM',
+            'arrival_time': '01:00 PM',
+            'coordinates': [
+                [30.8750, 77.0500],  # Dharampur
+                [30.8900, 77.0850],
+                [30.9000, 77.1200],
+                [30.9080, 77.1500],
+                [30.9100, 77.1734]   # Solan
+            ],
+            'stops_data': [
+                {'name': 'Dharampur Main Stand', 'location': 'Central', 'coordinates': [30.8750, 77.0500]},
+                {'name': 'Express Highway', 'location': 'Fast Route', 'coordinates': [30.8900, 77.0850]},
+                {'name': 'Premium Rest Stop', 'location': 'Facilities', 'coordinates': [30.9000, 77.1200]},
+                {'name': 'City Bypass', 'location': 'Direct Route', 'coordinates': [30.9080, 77.1500]},
+                {'name': 'Solan Bus Terminal', 'location': 'Central', 'coordinates': [30.9100, 77.1734]}
+            ]
+        },
+        {
+            'id': 7,
+            'name': 'Solan → Barog Standard',
+            'busNumber': 'HT-107',
+            'from': 'Solan',
+            'to': 'Barog',
+            'type': 'Standard',
+            'distance': '20 km',
+            'duration': '50m',
+            'stops': 7,
+            'color': '#20B2AA',
+            'price': 110,
+            'departure_time': '11:30 AM',
+            'arrival_time': '12:20 PM',
+            'coordinates': [
+                [30.9100, 77.1734],  # Solan
+                [30.9180, 77.1550],
+                [30.9260, 77.1350],
+                [30.9340, 77.1150],
+                [30.9420, 77.0950],
+                [30.9500, 77.0800],
+                [30.9600, 77.0700]   # Barog
+            ],
+            'stops_data': [
+                {'name': 'Solan Bus Terminal', 'location': 'Central', 'coordinates': [30.9100, 77.1734]},
+                {'name': 'Temple Road', 'location': 'Religious Site', 'coordinates': [30.9180, 77.1550]},
+                {'name': 'Market Square', 'location': 'Shopping', 'coordinates': [30.9260, 77.1350]},
+                {'name': 'School Junction', 'location': 'Education Zone', 'coordinates': [30.9340, 77.1150]},
+                {'name': 'Forest Entry', 'location': 'Nature Area', 'coordinates': [30.9420, 77.0950]},
+                {'name': 'Barog Approach', 'location': 'Town Entry', 'coordinates': [30.9500, 77.0800]},
+                {'name': 'Barog Station', 'location': 'Railway', 'coordinates': [30.9600, 77.0700]}
+            ]
+        },
+        {
+            'id': 8,
+            'name': 'Barog → Dagshai Deluxe',
+            'busNumber': 'HT-108',
+            'from': 'Barog',
+            'to': 'Dagshai',
+            'type': 'Deluxe',
+            'distance': '22 km',
+            'duration': '55m',
+            'stops': 6,
+            'color': '#FF8C00',
+            'price': 130,
+            'departure_time': '02:00 PM',
+            'arrival_time': '02:55 PM',
+            'coordinates': [
+                [30.9600, 77.0700],  # Barog
+                [30.9680, 77.0520],
+                [30.9760, 77.0340],
+                [30.9840, 77.0160],
+                [30.9870, 76.9980],
+                [30.9900, 76.9800]   # Dagshai
+            ],
+            'stops_data': [
+                {'name': 'Barog Station', 'location': 'Railway', 'coordinates': [30.9600, 77.0700]},
+                {'name': 'Tunnel Vista', 'location': 'Heritage View', 'coordinates': [30.9680, 77.0520]},
+                {'name': 'Mountain Pass', 'location': 'High Point', 'coordinates': [30.9760, 77.0340]},
+                {'name': 'Valley Bridge', 'location': 'Bridge Crossing', 'coordinates': [30.9840, 77.0160]},
+                {'name': 'Cantonment Gate', 'location': 'Entry Point', 'coordinates': [30.9870, 76.9980]},
+                {'name': 'Dagshai Cantonment', 'location': 'Central', 'coordinates': [30.9900, 76.9800]}
+            ]
+        }
+    ]
+    
+    # Destinations for filters
+    destinations = ['Dharampur', 'Solan', 'Barog', 'Dagshai']
+    
+    # Convert routes to JSON for JavaScript
+    import json
+    routes_json = json.dumps(routes)
+    
+    return render_template('features/route_explorer.html',
+                          routes=routes,
+                          routes_json=routes_json,
+                          destinations=destinations)
+
 # Run the application
 if __name__ == '__main__':
     # Use SQLite for local development
