@@ -2699,3 +2699,895 @@ window.sharePOI = sharePOI;
 window.planDetour = planDetour;
 
 console.log('🏔️ Phase 4: Scenic Highlights & POI loaded successfully! 💖');
+
+/* ============================================
+   ⭐ PHASE 5: KAVLIN'S FAVORITES & ADVANCED
+   Personal Recommendations & Advanced Features
+   ============================================ */
+
+// Global Phase 5 variables
+let userCollections = [];
+let routeHistory = [];
+let userPreferences = {};
+let currentMood = null;
+let currentSeason = 'spring';
+
+// Kavlin's curated route data with moods
+const KAVLINS_FAVORITES = {
+    romantic: [
+        {
+            id: 1,
+            busNumber: 'HT-101',
+            mood: 'romantic',
+            season: 'spring',
+            kavlinNote: 'This sunrise route is where I proposed to my wife. The morning light through pine trees creates pure magic. Book the front seats for the best view!',
+            reason: 'Perfect for couples seeking a romantic mountain escape',
+            bestTime: 'Early morning (6-8 AM)',
+            specialTip: 'Ask the driver to pause at the valley viewpoint - it\'s not an official stop but they always oblige for couples!'
+        }
+    ],
+    adventure: [
+        {
+            id: 8,
+            busNumber: 'HT-108',
+            mood: 'adventure',
+            season: 'summer',
+            kavlinNote: 'The most thrilling route in our network! The mountain passes and sharp curves will get your adrenaline pumping. Our best drivers handle this route.',
+            reason: 'For those who love excitement and mountain adventures',
+            bestTime: 'Late morning (10 AM - 12 PM)',
+            specialTip: 'Combine this with a paragliding session at Barog for the ultimate adventure day!'
+        }
+    ],
+    family: [
+        {
+            id: 5,
+            busNumber: 'HT-105',
+            mood: 'family',
+            season: 'autumn',
+            kavlinNote: 'My parents\' favorite! Smooth roads, comfortable seats, and plenty of interesting stops for kids. The driver keeps snacks for children!',
+            reason: 'Safe, comfortable, and entertaining for all ages',
+            bestTime: 'Mid-morning (9-11 AM)',
+            specialTip: 'Sit on the left side - kids love spotting mountain goats on that side!'
+        }
+    ],
+    solo: [
+        {
+            id: 3,
+            busNumber: 'HT-103',
+            mood: 'solo',
+            season: 'winter',
+            kavlinNote: 'This is my "thinking route". Perfect for solo travelers seeking introspection. The heritage sites along the way add depth to the journey.',
+            reason: 'Peaceful route ideal for self-discovery and reflection',
+            bestTime: 'Afternoon (2-4 PM)',
+            specialTip: 'Carry a journal - something about this route inspires writing!'
+        }
+    ],
+    photographer: [
+        {
+            id: 1,
+            busNumber: 'HT-101',
+            mood: 'photographer',
+            season: 'autumn',
+            kavlinNote: 'Photographers call this the "golden route". Every turn offers a postcard-perfect shot. I\'ve seen professionals book this route repeatedly!',
+            reason: 'Stunning vistas and perfect lighting throughout',
+            bestTime: 'Golden hour (5-7 PM)',
+            specialTip: 'Bring a polarizing filter for the valley shots and a wide-angle lens!'
+        }
+    ],
+    peaceful: [
+        {
+            id: 4,
+            busNumber: 'HT-104',
+            mood: 'peaceful',
+            season: 'monsoon',
+            kavlinNote: 'When I need to disconnect and recharge, this is my go-to. The sound of rain on the bus, misty mountains, and almost meditative journey.',
+            reason: 'Ultimate relaxation and stress relief',
+            bestTime: 'Early afternoon (1-3 PM)',
+            specialTip: 'Download some soft music or meditation tracks - perfect soundtrack!'
+        }
+    ]
+};
+
+// Seasonal route recommendations
+const SEASONAL_ROUTES = {
+    spring: {
+        title: '🌸 Spring Blossoms',
+        description: 'When the mountains wake up in colors',
+        routes: [
+            {
+                id: 1,
+                busNumber: 'HT-101',
+                name: 'Dharampur → Solan Express',
+                image: 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=800',
+                reason: 'Rhododendron blooms along the entire route create a pink paradise. The air smells of fresh flowers and pine.',
+                kavlinTip: 'March to April is peak bloom time. Carry a camera with good macro lens!'
+            },
+            {
+                id: 6,
+                busNumber: 'HT-106',
+                name: 'Dharampur → Solan Premium',
+                image: 'https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=800',
+                reason: 'Premium comfort meets spring beauty. Larger windows give you the best view of blooming valleys.',
+                kavlinTip: 'Worth the extra price in spring - the view is unobstructed!'
+            }
+        ]
+    },
+    summer: {
+        title: '☀️ Summer Adventures',
+        description: 'Clear skies and endless possibilities',
+        routes: [
+            {
+                id: 2,
+                busNumber: 'HT-102',
+                name: 'Solan → Barog Scenic',
+                image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+                reason: 'Perfect summer weather with cool mountain breeze. The tunnel approach is refreshingly cool!',
+                kavlinTip: 'Pack light clothes but bring a light jacket - temperature drops near Barog.'
+            }
+        ]
+    },
+    monsoon: {
+        title: '🌧️ Monsoon Magic',
+        description: 'When mountains wear mist like poetry',
+        routes: [
+            {
+                id: 4,
+                busNumber: 'HT-104',
+                name: 'Dagshai → Dharampur Circle',
+                image: 'https://images.unsplash.com/photo-1433863448220-78aaa064ff47?w=800',
+                reason: 'Monsoon transforms this route into a mystical journey through clouds. Rain on roof, mist everywhere.',
+                kavlinTip: 'Most romantic in light drizzle. Heavy rain may cause delays - check forecast!'
+            }
+        ]
+    },
+    autumn: {
+        title: '🍂 Autumn Gold',
+        description: 'Nature\'s finest color palette',
+        routes: [
+            {
+                id: 5,
+                busNumber: 'HT-105',
+                name: 'Dharampur → Solan Deluxe',
+                image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800',
+                reason: 'Golden leaves create a carpet along the road. The most photographed route in autumn!',
+                kavlinTip: 'October-November is peak foliage. Book window seats weeks in advance!'
+            }
+        ]
+    },
+    winter: {
+        title: '❄️ Winter Wonderland',
+        description: 'Snow-kissed serenity',
+        routes: [
+            {
+                id: 3,
+                busNumber: 'HT-103',
+                name: 'Barog → Dagshai Heritage',
+                image: 'https://images.unsplash.com/photo-1483921020237-2ff51e8e4b22?w=800',
+                reason: 'Colonial architecture looks stunning with snow. Hot chai at Dagshai cantonment is legendary!',
+                kavlinTip: 'Carry warm clothes and hand warmers. Roads are well-maintained even in snow.'
+            }
+        ]
+    }
+};
+
+// ============================================
+// KAVLIN'S FAVORITES TAB INITIALIZATION
+// ============================================
+
+function initializeKavlinsFavorites() {
+    const favoritesTab = document.querySelector('[data-tab="kavlins-favorites"]');
+    if (favoritesTab) {
+        favoritesTab.addEventListener('click', loadKavlinsFavoritesTab);
+    }
+    
+    // Load user data
+    loadUserCollections();
+    loadRouteHistory();
+    loadUserPreferences();
+    
+    console.log('⭐ Kavlin\'s Favorites initialized');
+}
+
+function loadKavlinsFavoritesTab() {
+    // Render seasonal routes (default: spring)
+    showSeasonRoutes('spring');
+    
+    // Render top picks
+    renderTopPicks();
+    
+    // Render collections
+    renderCollections();
+    
+    // Render history
+    renderRouteHistory();
+    
+    // Setup advanced search listeners
+    setupAdvancedSearchListeners();
+}
+
+// ============================================
+// TRAVEL MOOD FILTERING
+// ============================================
+
+function filterByMood(mood) {
+    currentMood = mood;
+    
+    // Update UI
+    document.querySelectorAll('.mood-pill').forEach(pill => {
+        pill.classList.remove('active');
+        if (pill.getAttribute('data-mood') === mood) {
+            pill.classList.add('active');
+        }
+    });
+    
+    // Get routes for this mood
+    const moodRoutes = KAVLINS_FAVORITES[mood] || [];
+    
+    // Display mood-specific routes
+    displayMoodRoutes(mood, moodRoutes);
+    
+    // Scroll to results
+    setTimeout(() => {
+        document.getElementById('topPicksGrid').scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+        });
+    }, 300);
+    
+    showToast(`Showing routes perfect for ${mood} travelers! 💖`, 2000);
+}
+
+function displayMoodRoutes(mood, moodRoutes) {
+    const container = document.getElementById('topPicksGrid');
+    if (!container) return;
+    
+    const moodIcons = {
+        romantic: '💑',
+        adventure: '🏔️',
+        family: '👨‍👩‍👧‍👦',
+        solo: '🎒',
+        photographer: '📸',
+        peaceful: '🧘'
+    };
+    
+    const moodLabels = {
+        romantic: 'Romantic Escape',
+        adventure: 'Adventure Seeker',
+        family: 'Family Friendly',
+        solo: 'Solo Explorer',
+        photographer: 'Photographer\'s Dream',
+        peaceful: 'Peaceful Retreat'
+    };
+    
+    // Get full route data
+    const routeCards = moodRoutes.map(fav => {
+        const route = allRoutes.find(r => r.id === fav.id);
+        if (!route) return '';
+        
+        return `
+            <div class="top-pick-card">
+                <div class="top-pick-badge">
+                    ${moodIcons[mood]} ${moodLabels[mood]}
+                </div>
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800" 
+                     alt="${route.name}" 
+                     class="top-pick-image">
+                <div class="top-pick-body">
+                    <div class="top-pick-name">${route.name}</div>
+                    <div class="top-pick-kavlin-note">
+                        ${fav.kavlinNote}
+                    </div>
+                    <div class="top-pick-meta">
+                        <div class="top-pick-meta-item">
+                            <i class="fas fa-bus"></i>
+                            <span>${route.busNumber}</span>
+                        </div>
+                        <div class="top-pick-meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>${fav.bestTime}</span>
+                        </div>
+                        <div class="top-pick-meta-item">
+                            <i class="fas fa-star"></i>
+                            <span>${route.type}</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; padding: 12px; background: rgba(255, 249, 230, 0.5); 
+                                border-radius: 10px; font-size: 0.9rem; color: #F57F17;">
+                        <strong>💡 Kavlin's Special Tip:</strong> ${fav.specialTip}
+                    </div>
+                    <button class="poi-modal-btn poi-modal-btn-primary" 
+                            onclick="showRouteDetails(${route.id})" 
+                            style="width: 100%; margin-top: 15px;">
+                        <i class="fas fa-info-circle"></i>
+                        View Full Details
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    container.innerHTML = routeCards || `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 60px; color: #6C757D;">
+            <i class="fas fa-heart" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5; display: block;"></i>
+            <p style="font-size: 1.1rem;">No routes available for this mood yet!</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">Try selecting a different mood or explore all routes.</p>
+        </div>
+    `;
+}
+
+// ============================================
+// SEASONAL ROUTES
+// ============================================
+
+function showSeasonRoutes(season) {
+    currentSeason = season;
+    
+    // Update tabs
+    document.querySelectorAll('.seasonal-tab').forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.getAttribute('data-season') === season) {
+            tab.classList.add('active');
+        }
+    });
+    
+    const seasonData = SEASONAL_ROUTES[season];
+    if (!seasonData) return;
+    
+    const container = document.getElementById('seasonalContent');
+    if (!container) return;
+    
+    container.innerHTML = `
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h4 style="font-size: 1.8rem; color: #F57F17; font-family: 'Caveat', cursive;">
+                ${seasonData.title}
+            </h4>
+            <p style="color: #6C757D; font-size: 1.1rem;">
+                ${seasonData.description}
+            </p>
+        </div>
+        ${seasonData.routes.map(route => `
+            <div class="seasonal-route-card">
+                <img src="${route.image}" alt="${route.name}" class="seasonal-route-image">
+                <div class="seasonal-route-info">
+                    <h4>${route.name}</h4>
+                    <div style="color: #6C757D; margin-bottom: 15px;">
+                        <i class="fas fa-bus"></i> ${route.busNumber}
+                    </div>
+                    <div class="seasonal-route-reason">
+                        <strong>Why This Season?</strong>
+                        ${route.reason}
+                    </div>
+                    <div style="background: rgba(255, 215, 0, 0.2); padding: 12px; border-radius: 10px; 
+                                border-left: 4px solid #FFD700; margin-top: 10px;">
+                        <strong style="color: #F57F17;">💡 Kavlin's Tip:</strong>
+                        <div style="color: #2C3E50; margin-top: 5px;">${route.kavlinTip}</div>
+                    </div>
+                </div>
+                <div class="seasonal-route-actions">
+                    <button class="poi-modal-btn poi-modal-btn-primary" onclick="showRouteDetails(${route.id})">
+                        <i class="fas fa-info-circle"></i>
+                        Details
+                    </button>
+                    <button class="poi-modal-btn poi-modal-btn-secondary" onclick="bookRoute(${route.id})">
+                        <i class="fas fa-ticket-alt"></i>
+                        Book Now
+                    </button>
+                </div>
+            </div>
+        `).join('')}
+    `;
+}
+
+// ============================================
+// TOP PICKS RENDERING
+// ============================================
+
+function renderTopPicks() {
+    const container = document.getElementById('topPicksGrid');
+    if (!container) return;
+    
+    // Get Kavlin's absolute favorites (one from each mood)
+    const topPicks = [
+        KAVLINS_FAVORITES.romantic[0],
+        KAVLINS_FAVORITES.adventure[0],
+        KAVLINS_FAVORITES.family[0]
+    ].filter(Boolean);
+    
+    const moodIcons = {
+        romantic: '💑',
+        adventure: '🏔️',
+        family: '👨‍👩‍👧‍👦',
+        solo: '🎒',
+        photographer: '📸',
+        peaceful: '🧘'
+    };
+    
+    container.innerHTML = topPicks.map(fav => {
+        const route = allRoutes.find(r => r.id === fav.id);
+        if (!route) return '';
+        
+        return `
+            <div class="top-pick-card">
+                <div class="top-pick-badge">
+                    <i class="fas fa-crown"></i>
+                    Kavlin's Pick
+                </div>
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800" 
+                     alt="${route.name}" 
+                     class="top-pick-image">
+                <div class="top-pick-body">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <span style="font-size: 2rem;">${moodIcons[fav.mood]}</span>
+                        <div class="top-pick-name">${route.name}</div>
+                    </div>
+                    <div class="top-pick-kavlin-note">
+                        ${fav.kavlinNote}
+                    </div>
+                    <div class="top-pick-meta">
+                        <div class="top-pick-meta-item">
+                            <i class="fas fa-bus"></i>
+                            <span>${route.busNumber}</span>
+                        </div>
+                        <div class="top-pick-meta-item">
+                            <i class="fas fa-route"></i>
+                            <span>${route.distance}</span>
+                        </div>
+                        <div class="top-pick-meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>${route.duration}</span>
+                        </div>
+                        <div class="top-pick-meta-item">
+                            <i class="fas fa-rupee-sign"></i>
+                            <span>₹${route.price || 150}</span>
+                        </div>
+                    </div>
+                    <button class="poi-modal-btn poi-modal-btn-primary" 
+                            onclick="showRouteDetails(${route.id})" 
+                            style="width: 100%; margin-top: 15px;">
+                        <i class="fas fa-heart"></i>
+                        Explore This Route
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// ============================================
+// ADVANCED SEARCH
+// ============================================
+
+function setupAdvancedSearchListeners() {
+    // Price range sliders
+    const minSlider = document.getElementById('priceRangeMin');
+    const maxSlider = document.getElementById('priceRangeMax');
+    const minLabel = document.getElementById('priceMinLabel');
+    const maxLabel = document.getElementById('priceMaxLabel');
+    
+    if (minSlider && maxSlider) {
+        minSlider.addEventListener('input', function() {
+            if (parseInt(this.value) >= parseInt(maxSlider.value)) {
+                this.value = parseInt(maxSlider.value) - 10;
+            }
+            minLabel.textContent = `₹${this.value}`;
+        });
+        
+        maxSlider.addEventListener('input', function() {
+            if (parseInt(this.value) <= parseInt(minSlider.value)) {
+                this.value = parseInt(minSlider.value) + 10;
+            }
+            maxLabel.textContent = `₹${this.value}`;
+        });
+    }
+}
+
+function performAdvancedSearch() {
+    const minPrice = parseInt(document.getElementById('priceRangeMin').value);
+    const maxPrice = parseInt(document.getElementById('priceRangeMax').value);
+    const maxDuration = document.getElementById('durationFilter').value;
+    const timePreference = document.getElementById('timeFilter').value;
+    
+    // Get selected amenities
+    const amenities = Array.from(document.querySelectorAll('.amenity-checkbox input:checked'))
+        .map(cb => cb.value);
+    
+    // Filter routes
+    let results = allRoutes.filter(route => {
+        const price = route.price || 150;
+        const duration = parseDuration(route.duration);
+        
+        // Price check
+        if (price < minPrice || price > maxPrice) return false;
+        
+        // Duration check
+        if (maxDuration !== 'all' && duration > parseInt(maxDuration)) return false;
+        
+        // Time preference check
+        if (timePreference !== 'all') {
+            const depTime = parseTimeToMinutes(route.departure_time || '08:00 AM');
+            if (timePreference === 'morning' && (depTime < 360 || depTime >= 720)) return false;
+            if (timePreference === 'afternoon' && (depTime < 720 || depTime >= 1080)) return false;
+            if (timePreference === 'evening' && (depTime < 1080 || depTime >= 1320)) return false;
+        }
+        
+        // Amenities check (simplified - check bus type)
+        if (amenities.length > 0) {
+            if (amenities.includes('wifi') && route.type === 'Standard') return false;
+            if (amenities.includes('meals') && route.type !== 'Premium') return false;
+        }
+        
+        return true;
+    });
+    
+    // Display results
+    displayAdvancedSearchResults(results);
+    
+    showToast(`Found ${results.length} routes matching your criteria! 🔍`, 2000);
+}
+
+function displayAdvancedSearchResults(results) {
+    const container = document.getElementById('advancedSearchResults');
+    if (!container) return;
+    
+    if (results.length === 0) {
+        container.innerHTML = `
+            <div style="text-align: center; padding: 60px; background: rgba(255, 249, 230, 0.5); 
+                        border-radius: 20px; border: 2px dashed rgba(255, 215, 0, 0.3);">
+                <i class="fas fa-search" style="font-size: 3rem; color: #FFD700; margin-bottom: 15px; display: block;"></i>
+                <h4 style="color: #2C3E50; margin-bottom: 10px;">No routes found</h4>
+                <p style="color: #6C757D;">Try adjusting your search criteria to find more routes.</p>
+            </div>
+        `;
+        container.style.display = 'block';
+        return;
+    }
+    
+    container.innerHTML = `
+        <div style="margin-bottom: 20px; padding: 15px; background: rgba(50, 205, 50, 0.1); 
+                    border-radius: 15px; border: 2px solid rgba(50, 205, 50, 0.3);">
+            <h4 style="color: #228B22; margin-bottom: 5px;">
+                <i class="fas fa-check-circle"></i>
+                Found ${results.length} Route${results.length !== 1 ? 's' : ''}
+            </h4>
+            <p style="color: #6C757D; font-size: 0.9rem;">
+                These routes match your search criteria perfectly!
+            </p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+            ${results.map(route => `
+                <div class="route-card" onclick="showRouteDetails(${route.id})" 
+                     style="--route-color: ${route.color}; cursor: pointer;">
+                    <div class="route-card-header">
+                        <div class="route-name">${route.name}</div>
+                        <span class="route-type-badge ${route.type.toLowerCase()}">${route.type}</span>
+                    </div>
+                    <div class="route-path">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>${route.from}</span>
+                        <i class="fas fa-arrow-right"></i>
+                        <span>${route.to}</span>
+                    </div>
+                    <div class="route-stats">
+                        <div class="route-stat">
+                            <i class="fas fa-bus"></i>
+                            <span>${route.busNumber}</span>
+                        </div>
+                        <div class="route-stat">
+                            <i class="fas fa-rupee-sign"></i>
+                            <span>₹${route.price || 150}</span>
+                        </div>
+                        <div class="route-stat">
+                            <i class="fas fa-clock"></i>
+                            <span>${route.duration}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.style.display = 'block';
+    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function resetAdvancedSearch() {
+    document.getElementById('priceRangeMin').value = 0;
+    document.getElementById('priceRangeMax').value = 200;
+    document.getElementById('priceMinLabel').textContent = '₹0';
+    document.getElementById('priceMaxLabel').textContent = '₹200';
+    document.getElementById('durationFilter').value = 'all';
+    document.getElementById('timeFilter').value = 'all';
+    
+    document.querySelectorAll('.amenity-checkbox input').forEach(cb => {
+        cb.checked = false;
+    });
+    
+    const resultsContainer = document.getElementById('advancedSearchResults');
+    if (resultsContainer) {
+        resultsContainer.style.display = 'none';
+    }
+    
+    showToast('Search filters reset! 🔄', 2000);
+}
+
+function parseTimeToMinutes(timeStr) {
+    const [time, period] = timeStr.split(' ');
+    let [hours, minutes] = time.split(':').map(Number);
+    
+    if (period === 'PM' && hours !== 12) hours += 12;
+    if (period === 'AM' && hours === 12) hours = 0;
+    
+    return hours * 60 + minutes;
+}
+
+// ============================================
+// ROUTE COLLECTIONS
+// ============================================
+
+function loadUserCollections() {
+    const stored = localStorage.getItem('happytrails_collections');
+    if (stored) {
+        try {
+            userCollections = JSON.parse(stored);
+        } catch (e) {
+            userCollections = [];
+        }
+    }
+}
+
+function saveUserCollections() {
+    localStorage.setItem('happytrails_collections', JSON.stringify(userCollections));
+}
+
+function renderCollections() {
+    const container = document.getElementById('collectionsGrid');
+    if (!container) return;
+    
+    if (userCollections.length === 0) {
+        container.innerHTML = `
+            <div class="collections-empty" style="grid-column: 1 / -1;">
+                <div class="collections-empty-icon">📁</div>
+                <div class="collections-empty-text">
+                    <p style="font-size: 1.2rem; margin-bottom: 10px;">No collections yet!</p>
+                    <p>Create your first collection to organize your favorite routes.</p>
+                </div>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = userCollections.map(collection => `
+        <div class="collection-card" onclick="viewCollection(${collection.id})">
+            <div class="collection-header">
+                <div class="collection-icon">📁</div>
+                <div class="collection-privacy">
+                    <i class="fas fa-${collection.privacy === 'public' ? 'globe' : 'lock'}"></i>
+                    ${collection.privacy}
+                </div>
+            </div>
+            <div class="collection-name">${collection.name}</div>
+            <div class="collection-description">${collection.description}</div>
+            <div class="collection-stats">
+                <div class="collection-stat">
+                    <i class="fas fa-route"></i>
+                    <span>${collection.routes.length} routes</span>
+                </div>
+                <div class="collection-stat">
+                    <i class="fas fa-calendar"></i>
+                    <span>${new Date(collection.created).toLocaleDateString()}</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function showCreateCollectionModal() {
+    const modal = document.getElementById('collectionModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        
+        // Clear form
+        document.getElementById('collectionName').value = '';
+        document.getElementById('collectionDescription').value = '';
+        document.getElementById('collectionPrivacy').value = 'private';
+    }
+}
+
+function closeCollectionModal() {
+    const modal = document.getElementById('collectionModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function createCollection() {
+    const name = document.getElementById('collectionName').value.trim();
+    const description = document.getElementById('collectionDescription').value.trim();
+    const privacy = document.getElementById('collectionPrivacy').value;
+    
+    if (!name) {
+        showToast('⚠️ Please enter a collection name!', 3000);
+        return;
+    }
+    
+    const newCollection = {
+        id: Date.now(),
+        name: name,
+        description: description || 'No description',
+        privacy: privacy,
+        routes: [],
+        created: new Date().toISOString(),
+        updated: new Date().toISOString()
+    };
+    
+    userCollections.push(newCollection);
+    saveUserCollections();
+    renderCollections();
+    closeCollectionModal();
+    
+    showToast(`Collection "${name}" created! 📁`, 2000);
+}
+
+function viewCollection(collectionId) {
+    const collection = userCollections.find(c => c.id === collectionId);
+    if (!collection) return;
+    
+    showToast(`Opening "${collection.name}"... 📁`, 2000);
+    // Could expand to show collection details in a modal
+}
+
+// ============================================
+// ROUTE HISTORY
+// ============================================
+
+function loadRouteHistory() {
+    const stored = localStorage.getItem('happytrails_route_history');
+    if (stored) {
+        try {
+            routeHistory = JSON.parse(stored);
+        } catch (e) {
+            routeHistory = [];
+        }
+    }
+}
+
+function saveRouteHistory() {
+    // Keep only last 20 items
+    if (routeHistory.length > 20) {
+        routeHistory = routeHistory.slice(0, 20);
+    }
+    localStorage.setItem('happytrails_route_history', JSON.stringify(routeHistory));
+}
+
+function addToHistory(routeId, action) {
+    const route = allRoutes.find(r => r.id === routeId);
+    if (!route) return;
+    
+    const historyItem = {
+        routeId: routeId,
+        routeName: route.name,
+        busNumber: route.busNumber,
+        action: action,
+        timestamp: new Date().toISOString()
+    };
+    
+    // Add to beginning of array
+    routeHistory.unshift(historyItem);
+    saveRouteHistory();
+}
+
+function renderRouteHistory() {
+    const container = document.getElementById('historyTimeline');
+    if (!container) return;
+    
+    if (routeHistory.length === 0) {
+        container.innerHTML = `
+            <div class="history-empty">
+                <i class="fas fa-history" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5; display: block;"></i>
+                <p style="font-size: 1.1rem;">No route history yet!</p>
+                <p style="font-size: 0.9rem; margin-top: 10px;">Start exploring routes to build your travel history.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = routeHistory.map(item => {
+        const timeAgo = getTimeAgo(new Date(item.timestamp));
+        const actionIcons = {
+            'viewed': 'fa-eye',
+            'booked': 'fa-ticket-alt',
+            'compared': 'fa-balance-scale',
+            'favorited': 'fa-heart'
+        };
+        
+        return `
+            <div class="history-item" onclick="showRouteDetails(${item.routeId})">
+                <div class="history-time">
+                    <i class="fas fa-clock"></i>
+                    ${timeAgo}
+                </div>
+                <div class="history-route-name">${item.routeName}</div>
+                <div class="history-action">
+                    <i class="fas ${actionIcons[item.action] || 'fa-info-circle'}"></i>
+                    ${item.action.charAt(0).toUpperCase() + item.action.slice(1)} • ${item.busNumber}
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function getTimeAgo(date) {
+    const seconds = Math.floor((new Date() - date) / 1000);
+    
+    let interval = seconds / 31536000;
+    if (interval > 1) return Math.floor(interval) + ' years ago';
+    
+    interval = seconds / 2592000;
+    if (interval > 1) return Math.floor(interval) + ' months ago';
+    
+    interval = seconds / 86400;
+    if (interval > 1) return Math.floor(interval) + ' days ago';
+    
+    interval = seconds / 3600;
+    if (interval > 1) return Math.floor(interval) + ' hours ago';
+    
+    interval = seconds / 60;
+    if (interval > 1) return Math.floor(interval) + ' minutes ago';
+    
+    return 'Just now';
+}
+
+// ============================================
+// USER PREFERENCES
+// ============================================
+
+function loadUserPreferences() {
+    const stored = localStorage.getItem('happytrails_preferences');
+    if (stored) {
+        try {
+            userPreferences = JSON.parse(stored);
+        } catch (e) {
+            userPreferences = {};
+        }
+    }
+}
+
+function saveUserPreferences() {
+    localStorage.setItem('happytrails_preferences', JSON.stringify(userPreferences));
+}
+
+// ============================================
+// OVERRIDE ROUTE DETAILS TO TRACK HISTORY
+// ============================================
+
+const originalShowRouteDetails = showRouteDetails;
+showRouteDetails = function(routeId) {
+    // Track in history
+    addToHistory(routeId, 'viewed');
+    
+    // Call original function
+    originalShowRouteDetails(routeId);
+};
+
+// ============================================
+// UPDATE INITIALIZATION
+// ============================================
+
+// Update the main initialization
+const originalInitRouteExplorer4 = initializeRouteExplorer;
+initializeRouteExplorer = function() {
+    originalInitRouteExplorer4();
+    initializeKavlinsFavorites();
+};
+
+// Make functions globally accessible
+window.filterByMood = filterByMood;
+window.showSeasonRoutes = showSeasonRoutes;
+window.performAdvancedSearch = performAdvancedSearch;
+window.resetAdvancedSearch = resetAdvancedSearch;
+window.showCreateCollectionModal = showCreateCollectionModal;
+window.closeCollectionModal = closeCollectionModal;
+window.createCollection = createCollection;
+window.viewCollection = viewCollection;
+
+console.log('⭐ Phase 5: Kavlin\'s Favorites & Advanced Features loaded successfully! 💖');
