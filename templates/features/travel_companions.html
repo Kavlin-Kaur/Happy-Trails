@@ -935,13 +935,265 @@
     <div id="community-forum" class="companions-tab-content">
         <section class="forum-section">
             <div class="container">
-                <div class="coming-soon-message">
-                    <div class="coming-soon-icon">💬</div>
-                    <h3>Community Forum</h3>
-                    <p>Coming in Phase 4! Join discussions, ask questions, and share tips with the community.</p>
+                
+                <!-- Forum Header -->
+                <div class="forum-header">
+                    <div class="forum-header-content">
+                        <h2 class="forum-title">
+                            <i class="fas fa-comments"></i>
+                            Community Forum
+                        </h2>
+                        <p class="forum-subtitle">
+                            Join the conversation! Ask questions, share tips, and connect with fellow 
+                            Happy Trails travelers. Our community is here to help!
+                        </p>
+                    </div>
+                    <button class="new-thread-btn" onclick="openThreadEditor()">
+                        <i class="fas fa-plus"></i>
+                        New Thread
+                    </button>
                 </div>
+
+                <!-- Forum Stats -->
+                <div class="forum-stats">
+                    <div class="forum-stat-card">
+                        <div class="forum-stat-icon">💬</div>
+                        <div class="forum-stat-value" id="totalThreads">156</div>
+                        <div class="forum-stat-label">Total Threads</div>
+                    </div>
+                    <div class="forum-stat-card">
+                        <div class="forum-stat-icon">💭</div>
+                        <div class="forum-stat-value" id="totalReplies">842</div>
+                        <div class="forum-stat-label">Total Replies</div>
+                    </div>
+                    <div class="forum-stat-card">
+                        <div class="forum-stat-icon">👥</div>
+                        <div class="forum-stat-value" id="activeMembers">89</div>
+                        <div class="forum-stat-label">Active Members</div>
+                    </div>
+                    <div class="forum-stat-card">
+                        <div class="forum-stat-icon">🔥</div>
+                        <div class="forum-stat-value" id="trendingThreads">12</div>
+                        <div class="forum-stat-label">Trending Now</div>
+                    </div>
+                </div>
+
+                <!-- Forum Layout: Categories + Threads -->
+                <div class="forum-layout">
+                    
+                    <!-- Left Sidebar: Categories -->
+                    <div class="forum-categories-sidebar">
+                        <h3 class="categories-title">
+                            <i class="fas fa-folder"></i>
+                            Categories
+                        </h3>
+                        <div class="category-list">
+                            <button class="category-item active" data-category="all" onclick="filterThreadsByCategory('all')">
+                                <span class="category-icon">🌐</span>
+                                <div class="category-details">
+                                    <div class="category-name">All Discussions</div>
+                                    <div class="category-count" id="allCount">156</div>
+                                </div>
+                            </button>
+                            <button class="category-item" data-category="route-planning" onclick="filterThreadsByCategory('route-planning')">
+                                <span class="category-icon">🗺️</span>
+                                <div class="category-details">
+                                    <div class="category-name">Route Planning</div>
+                                    <div class="category-count">32</div>
+                                </div>
+                            </button>
+                            <button class="category-item" data-category="travel-tips" onclick="filterThreadsByCategory('travel-tips')">
+                                <span class="category-icon">🎒</span>
+                                <div class="category-details">
+                                    <div class="category-name">Travel Tips</div>
+                                    <div class="category-count">45</div>
+                                </div>
+                            </button>
+                            <button class="category-item" data-category="accommodations" onclick="filterThreadsByCategory('accommodations')">
+                                <span class="category-icon">🏨</span>
+                                <div class="category-details">
+                                    <div class="category-name">Accommodations</div>
+                                    <div class="category-count">18</div>
+                                </div>
+                            </button>
+                            <button class="category-item" data-category="food-dining" onclick="filterThreadsByCategory('food-dining')">
+                                <span class="category-icon">🍜</span>
+                                <div class="category-details">
+                                    <div class="category-name">Food & Dining</div>
+                                    <div class="category-count">23</div>
+                                </div>
+                            </button>
+                            <button class="category-item" data-category="bus-experience" onclick="filterThreadsByCategory('bus-experience')">
+                                <span class="category-icon">🚌</span>
+                                <div class="category-details">
+                                    <div class="category-name">Bus Experience</div>
+                                    <div class="category-count">15</div>
+                                </div>
+                            </button>
+                            <button class="category-item" data-category="photo-sharing" onclick="filterThreadsByCategory('photo-sharing')">
+                                <span class="category-icon">📸</span>
+                                <div class="category-details">
+                                    <div class="category-name">Photo Sharing</div>
+                                    <div class="category-count">12</div>
+                                </div>
+                            </button>
+                            <button class="category-item" data-category="help-support" onclick="filterThreadsByCategory('help-support')">
+                                <span class="category-icon">🆘</span>
+                                <div class="category-details">
+                                    <div class="category-name">Help & Support</div>
+                                    <div class="category-count">8</div>
+                                </div>
+                            </button>
+                            <button class="category-item" data-category="general-chat" onclick="filterThreadsByCategory('general-chat')">
+                                <span class="category-icon">💬</span>
+                                <div class="category-details">
+                                    <div class="category-name">General Chat</div>
+                                    <div class="category-count">3</div>
+                                </div>
+                            </button>
+                        </div>
+
+                        <!-- Trending Topics Widget -->
+                        <div class="trending-widget">
+                            <h4 class="trending-title">
+                                <i class="fas fa-fire"></i>
+                                Trending Topics
+                            </h4>
+                            <div class="trending-list" id="trendingList">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Content: Threads -->
+                    <div class="forum-main-content">
+                        
+                        <!-- Search & Sort Bar -->
+                        <div class="forum-controls">
+                            <div class="forum-search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="forumSearchInput" placeholder="Search discussions..." 
+                                       onkeyup="searchThreads()">
+                            </div>
+                            <div class="forum-sort">
+                                <label>Sort:</label>
+                                <select class="forum-sort-select" id="forumSort" onchange="sortThreads()">
+                                    <option value="latest">Latest Activity</option>
+                                    <option value="popular">Most Popular</option>
+                                    <option value="trending">Trending</option>
+                                    <option value="unanswered">Unanswered</option>
+                                    <option value="oldest">Oldest First</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Threads List -->
+                        <div class="threads-list" id="threadsList">
+                            <!-- Dynamically populated -->
+                        </div>
+
+                        <!-- Load More -->
+                        <div class="load-more-forum" id="loadMoreForum">
+                            <button class="load-more-btn" onclick="loadMoreThreads()">
+                                <i class="fas fa-chevron-down"></i>
+                                Load More Threads
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
         </section>
+    </div>
+
+    <!-- Thread Editor Modal -->
+    <div class="thread-editor-modal" id="threadEditorModal" style="display: none;">
+        <div class="thread-editor-overlay" onclick="closeThreadEditor()"></div>
+        <div class="thread-editor-content">
+            <button class="thread-editor-close" onclick="closeThreadEditor()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="thread-editor-title">
+                <i class="fas fa-plus"></i>
+                Start New Discussion
+            </h3>
+            <form class="thread-editor-form" id="threadEditorForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select id="threadCategory" class="form-control">
+                            <option value="">Select a category</option>
+                            <option value="route-planning">🗺️ Route Planning</option>
+                            <option value="travel-tips">🎒 Travel Tips</option>
+                            <option value="accommodations">🏨 Accommodations</option>
+                            <option value="food-dining">🍜 Food & Dining</option>
+                            <option value="bus-experience">🚌 Bus Experience</option>
+                            <option value="photo-sharing">📸 Photo Sharing</option>
+                            <option value="help-support">🆘 Help & Support</option>
+                            <option value="general-chat">💬 General Chat</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Thread Type *</label>
+                        <select id="threadType" class="form-control">
+                            <option value="">Select type</option>
+                            <option value="question">❓ Question</option>
+                            <option value="discussion">💭 Discussion</option>
+                            <option value="guide">📚 Guide</option>
+                            <option value="review">⭐ Review</option>
+                            <option value="meetup">👥 Meetup</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Thread Title *</label>
+                    <input type="text" id="threadTitle" class="form-control" 
+                           placeholder="What would you like to discuss?" maxlength="150">
+                    <div class="char-count"><span id="threadTitleCount">0</span>/150</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea id="threadContent" class="form-control" rows="8"
+                              placeholder="Share details, ask questions, or start a conversation..."></textarea>
+                    <div class="char-count"><span id="threadContentCount">0</span> characters</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Tags (optional)</label>
+                    <input type="text" id="threadTags" class="form-control" 
+                           placeholder="Add tags separated by commas (e.g., HT-101, solo-travel, budget)">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-save-draft" onclick="saveThreadDraft()">
+                        <i class="fas fa-save"></i>
+                        Save Draft
+                    </button>
+                    <button type="button" class="btn-publish-story" onclick="publishThread()">
+                        <i class="fas fa-paper-plane"></i>
+                        Publish Thread
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Thread Detail Modal -->
+    <div class="thread-detail-modal" id="threadDetailModal" style="display: none;">
+        <div class="thread-detail-overlay" onclick="closeThreadDetail()"></div>
+        <div class="thread-detail-content">
+            <button class="thread-detail-close" onclick="closeThreadDetail()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="threadDetailBody">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
     </div>
 
     <!-- ============================================
