@@ -1,113 +1,262 @@
 {% extends 'base.html' %}
 
-{% block title %}Booking Confirmation - Happy Trails{% endblock %}
+{% block title %}Booking Confirmed - Happy Trails{% endblock %}
 
 {% block extra_css %}
 <style>
-    .confirmation-icon {
-        font-size: 5rem;
-        color: #28a745;
-        margin-bottom: 1rem;
+    .confirmation-hero {
+        background: var(--gradient-soft);
+        padding: 140px 0 60px;
+        position: relative;
+        overflow: hidden;
     }
-    
-    .booking-id {
-        background-color: #fff9e6;
-        border: 2px dashed var(--primary-color);
-        padding: 10px;
-        border-radius: 5px;
-        font-weight: bold;
-        display: inline-block;
+    .confirmation-hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image:
+          radial-gradient(circle at 25% 75%, rgba(255,215,0,0.12) 0%, transparent 50%),
+          radial-gradient(circle at 75% 30%, rgba(255,182,193,0.12) 0%, transparent 55%);
+        animation: sparkle 8s ease-in-out infinite;
     }
-    
-    .booking-details {
-        background-color: #f8f9fa;
-        border-radius: 10px;
-        padding: 20px;
-        margin: 20px 0;
+    .confirmation-wrapper {
+        background: rgba(255,255,255,0.95);
+        border-radius: 30px;
+        box-shadow: var(--shadow-strong);
+        padding: 50px 45px;
+        border: 2px solid rgba(255,215,0,0.25);
+        backdrop-filter: blur(12px);
+        position: relative;
+        overflow: hidden;
     }
-    
-    .important-info {
-        background-color: #e9f5ff;
-        border-left: 4px solid #0d6efd;
-        padding: 15px;
-        border-radius: 5px;
+    .confirmation-wrapper::after {
+        content: '🎫';
+        position: absolute;
+        top: 18px;
+        right: 25px;
+        font-size: 2.4rem;
+        animation: float 4s ease-in-out infinite;
+        opacity: .5;
     }
-    
-    .important-info h5 {
-        color: #0d6efd;
+    .success-icon {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg,#d4edda,#b6e6c5);
+        border-radius: 50%;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        margin: 0 auto 25px;
+        font-size:3rem;
+        color:#198754;
+        box-shadow: 0 10px 30px rgba(25,135,84,0.25);
+        position:relative;
     }
-    
-    .important-info ul {
-        margin-bottom: 0;
+    .success-icon::before,
+    .success-icon::after {
+        content:'';
+        position:absolute;
+        inset:-10px;
+        border: 2px dashed rgba(25,135,84,.35);
+        border-radius:50%;
+        animation: rotate 10s linear infinite;
+    }
+    .success-icon::after {
+        inset:-18px;
+        animation-duration: 18s;
+        border-style: dotted;
+    }
+    .booking-id-chip {
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        background: #fff9e6;
+        border:2px dashed var(--primary-yellow);
+        padding:10px 18px;
+        border-radius: 40px;
+        font-weight:600;
+        font-size: .95rem;
+        letter-spacing:.5px;
+        box-shadow: var(--shadow-soft);
+        margin-top:10px;
+    }
+    .details-grid {
+        display:grid;
+        grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+        gap:25px;
+        margin: 35px 0 15px;
+    }
+    .detail-card {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 22px 24px;
+        border:2px solid rgba(255,215,0,0.18);
+        position:relative;
+        overflow:hidden;
+        box-shadow: var(--shadow-soft);
+        transition: var(--transition-smooth);
+    }
+    .detail-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-medium);
+    }
+    .detail-card::before {
+        content:'';
+        position:absolute;
+        top:0;left:0;right:0;
+        height:4px;
+        background: var(--gradient-sunrise);
+        opacity:.85;
+    }
+    .detail-label {
+        font-size:.75rem;
+        letter-spacing:1px;
+        font-weight:600;
+        text-transform:uppercase;
+        color: var(--medium-gray);
+        margin-bottom:6px;
+    }
+    .detail-value {
+        font-size:1.05rem;
+        font-weight:600;
+        color: var(--charcoal);
+        line-height:1.3;
+    }
+    .info-banner {
+        background: linear-gradient(135deg,#fff9e6,#ffeec2);
+        border:2px solid rgba(255,215,0,0.4);
+        border-radius: 20px;
+        padding: 25px 28px;
+        margin:35px 0 15px;
+        position:relative;
+        overflow:hidden;
+    }
+    .info-banner::after {
+        content:'🕒';
+        position:absolute;
+        font-size:3.2rem;
+        bottom:-5px;
+        right:15px;
+        opacity:.15;
+        animation: float 5s ease-in-out infinite;
+    }
+    .advice-list {
+        margin:0;
+        padding-left:18px;
+        font-size:.92rem;
+        line-height:1.6;
+    }
+    .advice-list li + li { margin-top:4px; }
+    .action-bar {
+        display:flex;
+        flex-wrap:wrap;
+        gap:18px;
+        margin-top:40px;
+        justify-content:center;
+    }
+    .action-bar .btn {
+        min-width: 200px;
+        border-radius: 30px;
+        padding:13px 26px;
+        font-weight:600;
+        letter-spacing:.5px;
+    }
+    .poetic-note {
+        margin-top:45px;
+        text-align:center;
+        font-style:italic;
+        font-size:.95rem;
+        background: rgba(255,215,0,0.12);
+        padding:18px 20px;
+        border-radius:16px;
+        border-left:4px solid var(--primary-yellow);
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card shadow">
-                <div class="card-header bg-success text-white">
-                    <h3 class="mb-0"><i class="fas fa-check-circle me-2"></i> Booking Confirmed!</h3>
-                </div>
-                <div class="card-body">
-                    <div class="text-center mb-4">
-                        <div class="confirmation-icon">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <h4>Thank you for booking with Happy Trails!</h4>
-                        <p class="text-muted">Your booking has been confirmed and your tickets are ready.</p>
-                        <div class="booking-id">
-                            <strong>Booking ID:</strong> #{{ booking.id }}
-                        </div>
-                    </div>
-                    
-                    <div class="booking-details">
-                        <div class="row mb-4">
-                            <div class="col-md-6">
-                                <h5>Bus Details</h5>
-                                <p class="mb-1"><strong>Bus Number:</strong> {{ booking.bus.bus_number }}</p>
-                                <p class="mb-1"><strong>Bus Type:</strong> {{ booking.bus.bus_type }}</p>
-                                <p class="mb-1"><strong>From:</strong> {{ booking.bus.from_location }}</p>
-                                <p class="mb-1"><strong>To:</strong> {{ booking.bus.to_location }}</p>
-                                <p class="mb-1"><strong>Departure:</strong> {{ booking.bus.departure_time }}</p>
-                                <p class="mb-1"><strong>Arrival:</strong> {{ booking.bus.arrival_time }}</p>
-                            </div>
-                            <div class="col-md-6">
-                                <h5>Booking Information</h5>
-                                <p class="mb-1"><strong>Travel Date:</strong> {{ booking.travel_date.strftime('%d %b, %Y') }}</p>
-                                <p class="mb-1"><strong>Pickup Point:</strong> {{ booking.pickup_point }}</p>
-                                <p class="mb-1"><strong>Drop-off Point:</strong> {{ booking.dropoff_point }}</p>
-                                <p class="mb-1"><strong>Seats:</strong> {{ booking.seats }}</p>
-                                <p class="mb-1"><strong>Seat Numbers:</strong> {{ booking.seat_numbers }}</p>
-                                <p class="mb-1"><strong>Total Amount:</strong> ₹{{ booking.total_price }}</p>
-                                <p class="mb-1"><strong>Payment Method:</strong> {{ booking.payment_method }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="important-info">
-                        <h5><i class="fas fa-info-circle me-2"></i> Important Information</h5>
-                        <ul class="mb-0">
-                            <li>Please arrive at the pickup point at least 15 minutes before departure.</li>
-                            <li>Carry a valid ID proof for verification.</li>
-                            <li>Cancellation is allowed up to 24 hours before departure with a 10% fee.</li>
-                            <li>For any assistance, contact our helpline at +91 98765 43210.</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="d-flex justify-content-between mt-4">
-                        <a href="{{ url_for('track_bus', bus_id=booking.bus.id) }}" class="btn btn-outline-primary">
-                            <i class="fas fa-map-marker-alt me-2"></i> Track Bus
-                        </a>
-                        <a href="{{ url_for('my_bookings') }}" class="btn btn-warning">
-                            <i class="fas fa-ticket-alt me-2"></i> View All Bookings
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<section class="confirmation-hero">
+  <div class="container">
+      <div class="confirmation-wrapper">
+          <div class="success-icon">
+              <i class="fas fa-check"></i>
+          </div>
+          <h2 class="script-font text-center mb-2">Booking Confirmed!</h2>
+          <p class="text-center text-muted mb-3">Thank you for choosing Happy Trails — your journey is now beautifully scheduled.</p>
+          <div class="text-center">
+              <div class="booking-id-chip">
+                  <i class="fas fa-ticket-alt text-warning"></i>
+                  Booking ID: #{{ booking.id }}
+              </div>
+          </div>
+
+          <div class="details-grid">
+              <div class="detail-card">
+                  <div class="detail-label">Bus</div>
+                  <div class="detail-value">{{ booking.bus.bus_number }} <small class="badge {% if booking.bus.bus_type == 'Premium' %}bg-danger{% elif booking.bus.bus_type == 'Deluxe' %}bg-primary{% else %}bg-success{% endif %} ms-1">{{ booking.bus.bus_type }}</small></div>
+                  <div class="detail-label mt-3">Status</div>
+                  <div>
+                      {% if booking.status == 'Confirmed' %}
+                      <span class="badge bg-success"><i class="fas fa-check me-1"></i>Confirmed</span>
+                      {% elif booking.status == 'Cancelled' %}
+                      <span class="badge bg-danger">Cancelled</span>
+                      {% else %}
+                      <span class="badge bg-secondary">{{ booking.status }}</span>
+                      {% endif %}
+                  </div>
+              </div>
+              <div class="detail-card">
+                  <div class="detail-label">Route</div>
+                  <div class="detail-value">{{ booking.bus.from_location }} → {{ booking.bus.to_location }}</div>
+                  <div class="detail-label mt-3">Travel Date</div>
+                  <div class="detail-value">{{ booking.travel_date.strftime('%d %b, %Y') }}</div>
+              </div>
+              <div class="detail-card">
+                  <div class="detail-label">Timing</div>
+                  <div class="detail-value">{{ booking.bus.departure_time }} — {{ booking.bus.arrival_time }}</div>
+                  <div class="detail-label mt-3">Pickup / Drop</div>
+                  <div class="detail-value">
+                      {{ booking.pickup_point or '—' }}<br>
+                      <small class="text-muted">to</small><br>
+                      {{ booking.dropoff_point or '—' }}
+                  </div>
+              </div>
+              <div class="detail-card">
+                  <div class="detail-label">Seats</div>
+                  <div class="detail-value">{{ booking.seat_numbers or booking.seats }}</div>
+                  <div class="detail-label mt-3">Total Paid</div>
+                  <div class="detail-value text-success">₹{{ booking.total_price }}</div>
+                  <div class="detail-label mt-3">Payment Method</div>
+                  <div class="detail-value">{{ booking.payment_method|replace('_',' ')|title }}</div>
+              </div>
+          </div>
+
+          <div class="info-banner">
+              <h5 class="mb-3 script-font text-warning"><i class="fas fa-info-circle me-2"></i>Important Information</h5>
+              <ul class="advice-list">
+                  <li>Please arrive at the pickup point at least <strong>15 minutes early</strong>.</li>
+                  <li>Carry a <strong>valid ID proof</strong> for verification.</li>
+                  <li>Cancellation (if allowed) before 24 hours may incur a 10% fee.</li>
+                  <li>Need help? Call our support: <strong>+91 98765 43210</strong>.</li>
+              </ul>
+          </div>
+
+          <div class="action-bar">
+              <a href="{{ url_for('track_bus', bus_id=booking.bus.id) }}" class="btn btn-outline-primary">
+                  <i class="fas fa-map-marker-alt me-2"></i>Track Bus
+              </a>
+              <a href="{{ url_for('my_bookings') }}" class="btn btn-warning">
+                  <i class="fas fa-ticket-alt me-2"></i>My Bookings
+              </a>
+              <a href="{{ url_for('index') }}#booking" class="btn btn-outline-secondary">
+                  <i class="fas fa-search me-2"></i>Book Another
+              </a>
+          </div>
+
+          <div class="poetic-note script-font">
+              "Every confirmed ticket is a promise that tomorrow holds a sunrise worth chasing." – Kavlin ✨
+          </div>
+      </div>
+  </div>
+</section>
 {% endblock %}
