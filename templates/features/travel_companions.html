@@ -1,0 +1,492 @@
+{% extends 'base.html' %}
+
+{% block title %}Travel Companions - Happy Trails{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/travel_companions.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<!-- ============================================
+     🤝 TRAVEL COMPANIONS - PHASE 1
+     User Profiles & Travel Preferences
+     ============================================ -->
+<div class="companions-wrapper">
+    
+    <!-- === HERO SECTION === -->
+    <section class="companions-hero">
+        <div class="container">
+            <h1 class="companions-hero-title">🤝 Find Your Travel Buddy</h1>
+            <p class="companions-hero-subtitle">
+                Connect with fellow travelers, share stories, and make memories together.
+                Because the best journeys are the ones we share!
+            </p>
+            <div class="companions-hero-quote">
+                "Solo travel teaches you independence. Travel with companions teaches you life." - Kavlin 💖
+            </div>
+            <div class="companions-hero-stats">
+                <div class="hero-stat-item">
+                    <div class="hero-stat-number">1,234</div>
+                    <div class="hero-stat-label">Active Travelers</div>
+                </div>
+                <div class="hero-stat-item">
+                    <div class="hero-stat-number">567</div>
+                    <div class="hero-stat-label">Connections Made</div>
+                </div>
+                <div class="hero-stat-item">
+                    <div class="hero-stat-number">890</div>
+                    <div class="hero-stat-label">Stories Shared</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         📑 TAB NAVIGATION SYSTEM
+         ============================================ -->
+    <section class="companions-tabs-wrapper">
+        <div class="container">
+            <div class="companions-tabs">
+                <!-- Tab 1: My Profile (Phase 1) -->
+                <button class="companions-tab active" data-tab="my-profile">
+                    <i class="fas fa-user-circle"></i>
+                    <span>My Profile</span>
+                </button>
+                
+                <!-- Tab 2: Find Buddies (Phase 2) -->
+                <button class="companions-tab" data-tab="find-buddies">
+                    <i class="fas fa-search"></i>
+                    <span>Find Buddies</span>
+                </button>
+                
+                <!-- Tab 3: Traveler's Tales (Phase 3) -->
+                <button class="companions-tab" data-tab="travelers-tales">
+                    <i class="fas fa-book-open"></i>
+                    <span>Traveler's Tales</span>
+                </button>
+                
+                <!-- Tab 4: Community Forum (Phase 4) -->
+                <button class="companions-tab" data-tab="community-forum">
+                    <i class="fas fa-comments"></i>
+                    <span>Forum</span>
+                </button>
+                
+                <!-- Tab 5: Events & Groups (Phase 5) -->
+                <button class="companions-tab" data-tab="events-groups">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Events & Groups</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         👤 TAB 1: MY PROFILE (PHASE 1)
+         ============================================ -->
+    <div id="my-profile" class="companions-tab-content active">
+        <section class="profile-section">
+            <div class="container">
+                
+                <!-- Profile Header Card -->
+                <div class="profile-header-card">
+                    <div class="profile-cover-photo" id="profileCover">
+                        <button class="edit-cover-btn" onclick="editCoverPhoto()">
+                            <i class="fas fa-camera"></i>
+                            Change Cover
+                        </button>
+                    </div>
+                    
+                    <div class="profile-main-info">
+                        <div class="profile-avatar-section">
+                            <div class="profile-avatar" id="profileAvatar">
+                                <img src="{{ url_for('static', filename='images/default-avatar.png') }}" 
+                                     alt="Profile Photo" 
+                                     id="avatarImage">
+                                <button class="edit-avatar-btn" onclick="editAvatar()">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            </div>
+                            <div class="profile-verification">
+                                <i class="fas fa-check-circle"></i>
+                                Verified Traveler
+                            </div>
+                        </div>
+                        
+                        <div class="profile-info">
+                            <h2 class="profile-name" id="profileName">
+                                {% if current_user.is_authenticated %}
+                                    {{ current_user.first_name }} {{ current_user.last_name }}
+                                {% else %}
+                                    Guest Traveler
+                                {% endif %}
+                            </h2>
+                            <div class="profile-location" id="profileLocation">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Himachal Pradesh, India
+                            </div>
+                            <div class="profile-bio" id="profileBio">
+                                "Adventure seeker and mountain lover. Always ready for the next journey! 🏔️"
+                            </div>
+                            <div class="profile-tags" id="profileTags">
+                                <span class="interest-tag">📸 Photography</span>
+                                <span class="interest-tag">🏔️ Mountains</span>
+                                <span class="interest-tag">🎒 Adventure</span>
+                                <span class="interest-tag">🍜 Food</span>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-actions">
+                            <button class="profile-action-btn primary" onclick="editProfile()">
+                                <i class="fas fa-edit"></i>
+                                Edit Profile
+                            </button>
+                            <button class="profile-action-btn secondary" onclick="shareProfile()">
+                                <i class="fas fa-share-alt"></i>
+                                Share
+                            </button>
+                            <button class="profile-action-btn secondary" onclick="viewSettings()">
+                                <i class="fas fa-cog"></i>
+                                Settings
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Completion Card -->
+                <div class="profile-completion-card">
+                    <div class="completion-header">
+                        <div>
+                            <h3 class="completion-title">
+                                <i class="fas fa-chart-line"></i>
+                                Profile Completion
+                            </h3>
+                            <p class="completion-subtitle">Complete your profile to connect better!</p>
+                        </div>
+                        <div class="completion-percentage" id="completionPercentage">75%</div>
+                    </div>
+                    <div class="completion-progress">
+                        <div class="completion-progress-bar" id="completionProgressBar" style="width: 75%"></div>
+                    </div>
+                    <div class="completion-checklist">
+                        <div class="completion-item completed">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Add profile photo</span>
+                        </div>
+                        <div class="completion-item completed">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Write bio</span>
+                        </div>
+                        <div class="completion-item completed">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Select interests</span>
+                        </div>
+                        <div class="completion-item">
+                            <i class="fas fa-circle"></i>
+                            <span>Set travel preferences</span>
+                        </div>
+                        <div class="completion-item">
+                            <i class="fas fa-circle"></i>
+                            <span>Take personality quiz</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Two Column Layout: Left = Stats/Badges, Right = Details -->
+                <div class="profile-content-grid">
+                    
+                    <!-- Left Column -->
+                    <div class="profile-left-column">
+                        
+                        <!-- Travel Statistics -->
+                        <div class="profile-card">
+                            <h3 class="profile-card-title">
+                                <i class="fas fa-chart-bar"></i>
+                                Travel Statistics
+                            </h3>
+                            <div class="stats-grid">
+                                <div class="stat-box">
+                                    <div class="stat-icon">🚌</div>
+                                    <div class="stat-value" id="totalTrips">23</div>
+                                    <div class="stat-label">Total Trips</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-icon">🗺️</div>
+                                    <div class="stat-value" id="routesTraveled">6</div>
+                                    <div class="stat-label">Routes Traveled</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-icon">🤝</div>
+                                    <div class="stat-value" id="companionsMet">12</div>
+                                    <div class="stat-label">Companions Met</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-icon">✍️</div>
+                                    <div class="stat-value" id="storiesShared">5</div>
+                                    <div class="stat-label">Stories Shared</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-icon">💬</div>
+                                    <div class="stat-value" id="forumPosts">18</div>
+                                    <div class="stat-label">Forum Posts</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-icon">❤️</div>
+                                    <div class="stat-value" id="likesReceived">145</div>
+                                    <div class="stat-label">Likes Received</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Traveler Badges -->
+                        <div class="profile-card">
+                            <h3 class="profile-card-title">
+                                <i class="fas fa-trophy"></i>
+                                Traveler Badges
+                            </h3>
+                            <div class="badges-grid" id="badgesGrid">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </div>
+
+                        <!-- Travel Goals -->
+                        <div class="profile-card">
+                            <h3 class="profile-card-title">
+                                <i class="fas fa-bullseye"></i>
+                                Travel Goals
+                            </h3>
+                            <div class="goals-list" id="goalsList">
+                                <!-- Dynamically populated -->
+                            </div>
+                            <button class="add-goal-btn" onclick="addTravelGoal()">
+                                <i class="fas fa-plus"></i>
+                                Add Goal
+                            </button>
+                        </div>
+
+                    </div>
+                    
+                    <!-- Right Column -->
+                    <div class="profile-right-column">
+                        
+                        <!-- About Section -->
+                        <div class="profile-card">
+                            <h3 class="profile-card-title">
+                                <i class="fas fa-info-circle"></i>
+                                About Me
+                            </h3>
+                            <div class="profile-details">
+                                <div class="detail-row">
+                                    <div class="detail-label">
+                                        <i class="fas fa-birthday-cake"></i>
+                                        Age Group
+                                    </div>
+                                    <div class="detail-value" id="ageGroup">25-34</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">
+                                        <i class="fas fa-user"></i>
+                                        Gender
+                                    </div>
+                                    <div class="detail-value" id="gender">Prefer not to say</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">
+                                        <i class="fas fa-language"></i>
+                                        Languages
+                                    </div>
+                                    <div class="detail-value" id="languages">English, Hindi</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">
+                                        <i class="fas fa-calendar"></i>
+                                        Member Since
+                                    </div>
+                                    <div class="detail-value" id="memberSince">January 2024</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Travel Preferences -->
+                        <div class="profile-card">
+                            <h3 class="profile-card-title">
+                                <i class="fas fa-sliders-h"></i>
+                                Travel Preferences
+                            </h3>
+                            <div class="preferences-list" id="preferencesList">
+                                <div class="preference-item">
+                                    <div class="preference-label">
+                                        <i class="fas fa-route"></i>
+                                        Favorite Routes
+                                    </div>
+                                    <div class="preference-value">
+                                        <span class="route-tag">HT-101</span>
+                                        <span class="route-tag">HT-103</span>
+                                        <span class="route-tag">HT-105</span>
+                                    </div>
+                                </div>
+                                <div class="preference-item">
+                                    <div class="preference-label">
+                                        <i class="fas fa-clock"></i>
+                                        Preferred Times
+                                    </div>
+                                    <div class="preference-value">Morning (6-10 AM)</div>
+                                </div>
+                                <div class="preference-item">
+                                    <div class="preference-label">
+                                        <i class="fas fa-users"></i>
+                                        Travel Style
+                                    </div>
+                                    <div class="preference-value">Solo Adventurer</div>
+                                </div>
+                                <div class="preference-item">
+                                    <div class="preference-label">
+                                        <i class="fas fa-user-friends"></i>
+                                        Companionship
+                                    </div>
+                                    <div class="preference-value">Open to meeting new people</div>
+                                </div>
+                            </div>
+                            <button class="edit-preferences-btn" onclick="editPreferences()">
+                                <i class="fas fa-edit"></i>
+                                Edit Preferences
+                            </button>
+                        </div>
+
+                        <!-- Travel Style Quiz -->
+                        <div class="profile-card quiz-card">
+                            <h3 class="profile-card-title">
+                                <i class="fas fa-question-circle"></i>
+                                Discover Your Travel Style
+                            </h3>
+                            <p class="quiz-description">
+                                Take our quick 5-question quiz to find your perfect travel companion match!
+                            </p>
+                            <div class="quiz-result" id="quizResult" style="display: none;">
+                                <div class="quiz-result-icon">🎒</div>
+                                <div class="quiz-result-title">You're a Solo Adventurer!</div>
+                                <div class="quiz-result-description">
+                                    You love independence but enjoy meaningful conversations with fellow travelers.
+                                </div>
+                            </div>
+                            <button class="take-quiz-btn" onclick="startTravelQuiz()">
+                                <i class="fas fa-play"></i>
+                                Take Quiz
+                            </button>
+                        </div>
+
+                    </div>
+                    
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         🔍 TAB 2: FIND BUDDIES (PHASE 2)
+         ============================================ -->
+    <div id="find-buddies" class="companions-tab-content">
+        <section class="buddies-section">
+            <div class="container">
+                <div class="coming-soon-message">
+                    <div class="coming-soon-icon">🔍</div>
+                    <h3>Find Your Perfect Travel Buddy</h3>
+                    <p>Coming in Phase 2! Match with travelers based on routes, dates, and preferences.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         📖 TAB 3: TRAVELER'S TALES (PHASE 3)
+         ============================================ -->
+    <div id="travelers-tales" class="companions-tab-content">
+        <section class="tales-section">
+            <div class="container">
+                <div class="coming-soon-message">
+                    <div class="coming-soon-icon">📖</div>
+                    <h3>Traveler's Tales</h3>
+                    <p>Coming in Phase 3! Share your travel stories and read adventures from fellow travelers.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         💬 TAB 4: COMMUNITY FORUM (PHASE 4)
+         ============================================ -->
+    <div id="community-forum" class="companions-tab-content">
+        <section class="forum-section">
+            <div class="container">
+                <div class="coming-soon-message">
+                    <div class="coming-soon-icon">💬</div>
+                    <h3>Community Forum</h3>
+                    <p>Coming in Phase 4! Join discussions, ask questions, and share tips with the community.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         📅 TAB 5: EVENTS & GROUPS (PHASE 5)
+         ============================================ -->
+    <div id="events-groups" class="companions-tab-content">
+        <section class="events-section">
+            <div class="container">
+                <div class="coming-soon-message">
+                    <div class="coming-soon-icon">📅</div>
+                    <h3>Events & Group Bookings</h3>
+                    <p>Coming in Phase 5! Organize group trips, join events, and book together!</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="profile-modal" id="editProfileModal" style="display: none;">
+    <div class="profile-modal-overlay" onclick="closeEditProfile()"></div>
+    <div class="profile-modal-content">
+        <button class="profile-modal-close" onclick="closeEditProfile()">
+            <i class="fas fa-times"></i>
+        </button>
+        <h3 class="profile-modal-title">
+            <i class="fas fa-edit"></i>
+            Edit Profile
+        </h3>
+        <div class="profile-edit-form" id="profileEditForm">
+            <!-- Dynamically populated -->
+        </div>
+    </div>
+</div>
+
+<!-- Travel Quiz Modal -->
+<div class="profile-modal" id="travelQuizModal" style="display: none;">
+    <div class="profile-modal-overlay" onclick="closeTravelQuiz()"></div>
+    <div class="profile-modal-content quiz-modal">
+        <button class="profile-modal-close" onclick="closeTravelQuiz()">
+            <i class="fas fa-times"></i>
+        </button>
+        <div id="quizContent">
+            <!-- Dynamically populated -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Pass user data from Flask to JavaScript
+    const CURRENT_USER = {
+        isAuthenticated: {{ 'true' if current_user.is_authenticated else 'false' }},
+        {% if current_user.is_authenticated %}
+        name: "{{ current_user.first_name }} {{ current_user.last_name }}",
+        email: "{{ current_user.email }}"
+        {% endif %}
+    };
+</script>
+<script src="{{ url_for('static', filename='js/travel_companions.js') }}"></script>
+{% endblock %}

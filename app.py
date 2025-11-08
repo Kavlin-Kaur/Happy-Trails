@@ -1414,6 +1414,18 @@ def route_explorer():
                           destinations=destinations,
                           weather_api_key=weather_api_key)
 
+@app.route('/travel-companions')
+def travel_companions():
+    """🤝 Travel Companions - Phase 1
+    
+    Phase 1: User Profiles & Travel Preferences
+    
+    Comprehensive user profile system with travel preferences, interests,
+    badges, goals, and personality quiz for matching travelers.
+    """
+    
+    return render_template('features/travel_companions.html')
+
 # Run the application
 if __name__ == '__main__':
     # Use SQLite for local development
