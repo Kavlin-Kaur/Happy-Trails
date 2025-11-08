@@ -389,13 +389,264 @@
     <div id="find-buddies" class="companions-tab-content">
         <section class="buddies-section">
             <div class="container">
-                <div class="coming-soon-message">
-                    <div class="coming-soon-icon">🔍</div>
-                    <h3>Find Your Perfect Travel Buddy</h3>
-                    <p>Coming in Phase 2! Match with travelers based on routes, dates, and preferences.</p>
+                
+                <!-- Buddy Finder Header -->
+                <div class="buddies-header">
+                    <div class="buddies-header-content">
+                        <h2 class="buddies-title">
+                            <i class="fas fa-users"></i>
+                            Find Your Perfect Travel Buddy
+                        </h2>
+                        <p class="buddies-subtitle">
+                            Our smart matching system connects you with compatible travelers based on routes, 
+                            interests, and travel styles. Let's find your next adventure companion!
+                        </p>
+                    </div>
+                    <button class="find-match-btn" onclick="findMyMatch()">
+                        <i class="fas fa-magic"></i>
+                        Find My Match
+                    </button>
                 </div>
+
+                <!-- Quick Stats -->
+                <div class="quick-match-stats">
+                    <div class="match-stat-card">
+                        <div class="match-stat-icon">🚌</div>
+                        <div class="match-stat-value" id="travelersOnline">45</div>
+                        <div class="match-stat-label">Travelers Online</div>
+                    </div>
+                    <div class="match-stat-card">
+                        <div class="match-stat-icon">📅</div>
+                        <div class="match-stat-value" id="travelingToday">12</div>
+                        <div class="match-stat-label">Traveling Today</div>
+                    </div>
+                    <div class="match-stat-card">
+                        <div class="match-stat-icon">🎯</div>
+                        <div class="match-stat-value" id="yourMatches">8</div>
+                        <div class="match-stat-label">Your Matches</div>
+                    </div>
+                    <div class="match-stat-card">
+                        <div class="match-stat-icon">⭐</div>
+                        <div class="match-stat-value" id="topMatch">92%</div>
+                        <div class="match-stat-label">Top Match</div>
+                    </div>
+                </div>
+
+                <!-- Search & Filter Panel -->
+                <div class="buddy-search-panel">
+                    <div class="search-panel-header">
+                        <h3 class="search-panel-title">
+                            <i class="fas fa-filter"></i>
+                            Search Filters
+                        </h3>
+                        <button class="toggle-filters-btn" onclick="toggleFilters()">
+                            <i class="fas fa-chevron-down"></i>
+                            <span>Show Filters</span>
+                        </button>
+                    </div>
+                    
+                    <div class="search-filters-container" id="searchFiltersContainer">
+                        <div class="search-filters-grid">
+                            
+                            <!-- Route Filter -->
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-route"></i>
+                                    Route
+                                </label>
+                                <select class="filter-select" id="filterRoute">
+                                    <option value="all">All Routes</option>
+                                    <option value="HT-101">HT-101: Dharampur → Solan</option>
+                                    <option value="HT-102">HT-102: Solan → Barog</option>
+                                    <option value="HT-103">HT-103: Barog → Dagshai</option>
+                                    <option value="HT-104">HT-104: Dagshai → Dharampur</option>
+                                    <option value="HT-105">HT-105: Dharampur → Solan (Deluxe)</option>
+                                    <option value="HT-106">HT-106: Dharampur → Solan (Premium)</option>
+                                    <option value="HT-107">HT-107: Solan → Barog (Standard)</option>
+                                    <option value="HT-108">HT-108: Barog → Dagshai (Deluxe)</option>
+                                </select>
+                            </div>
+
+                            <!-- Date Filter -->
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    Travel Date
+                                </label>
+                                <input type="date" class="filter-select" id="filterDate" 
+                                       min="2025-11-02">
+                            </div>
+
+                            <!-- Travel Style Filter -->
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-user-tag"></i>
+                                    Travel Style
+                                </label>
+                                <select class="filter-select" id="filterTravelStyle">
+                                    <option value="all">All Styles</option>
+                                    <option value="solo-adventurer">Solo Adventurer</option>
+                                    <option value="social-butterfly">Social Butterfly</option>
+                                    <option value="peaceful-observer">Peaceful Observer</option>
+                                    <option value="enthusiastic-explorer">Enthusiastic Explorer</option>
+                                    <option value="thoughtful-traveler">Thoughtful Traveler</option>
+                                    <option value="family-oriented">Family Oriented</option>
+                                </select>
+                            </div>
+
+                            <!-- Age Group Filter -->
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-birthday-cake"></i>
+                                    Age Group
+                                </label>
+                                <select class="filter-select" id="filterAgeGroup">
+                                    <option value="all">All Ages</option>
+                                    <option value="18-24">18-24</option>
+                                    <option value="25-34">25-34</option>
+                                    <option value="35-44">35-44</option>
+                                    <option value="45-54">45-54</option>
+                                    <option value="55+">55+</option>
+                                </select>
+                            </div>
+
+                            <!-- Gender Filter -->
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-user"></i>
+                                    Gender Preference
+                                </label>
+                                <select class="filter-select" id="filterGender">
+                                    <option value="all">All</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="non-binary">Non-binary</option>
+                                    <option value="prefer-not-to-say">Prefer not to say</option>
+                                </select>
+                            </div>
+
+                            <!-- Interests Filter -->
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-heart"></i>
+                                    Shared Interests
+                                </label>
+                                <select class="filter-select" id="filterInterests" multiple>
+                                    <option value="Photography">Photography</option>
+                                    <option value="Mountains">Mountains</option>
+                                    <option value="Adventure">Adventure</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Nature">Nature</option>
+                                    <option value="Culture">Culture</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <!-- Additional Filters -->
+                        <div class="additional-filters">
+                            <label class="checkbox-filter">
+                                <input type="checkbox" id="filterVerified">
+                                <span>Verified travelers only</span>
+                            </label>
+                            <label class="checkbox-filter">
+                                <input type="checkbox" id="filterTravelingToday">
+                                <span>Traveling today</span>
+                            </label>
+                            <label class="checkbox-filter">
+                                <input type="checkbox" id="filterHighMatch">
+                                <span>High compatibility (70%+)</span>
+                            </label>
+                        </div>
+
+                        <!-- Filter Actions -->
+                        <div class="filter-actions">
+                            <button class="apply-filters-btn" onclick="applyBuddyFilters()">
+                                <i class="fas fa-search"></i>
+                                Search Buddies
+                            </button>
+                            <button class="reset-filters-btn" onclick="resetBuddyFilters()">
+                                <i class="fas fa-redo"></i>
+                                Reset
+                            </button>
+                            <button class="save-search-btn" onclick="saveSearch()">
+                                <i class="fas fa-bookmark"></i>
+                                Save Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Recommendations -->
+                <div class="top-recommendations">
+                    <h3 class="recommendations-title">
+                        <i class="fas fa-star"></i>
+                        Your Top Matches
+                    </h3>
+                    <p class="recommendations-subtitle">
+                        Based on your profile, interests, and travel preferences
+                    </p>
+                    <div class="recommendations-grid" id="topRecommendations">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- All Travelers Grid -->
+                <div class="all-travelers-section">
+                    <div class="travelers-section-header">
+                        <h3 class="travelers-section-title">
+                            <i class="fas fa-users"></i>
+                            All Travelers
+                        </h3>
+                        <div class="sort-options">
+                            <label>Sort by:</label>
+                            <select class="sort-select" id="sortBy" onchange="sortTravelers()">
+                                <option value="compatibility">Compatibility</option>
+                                <option value="newest">Newest First</option>
+                                <option value="trips">Most Trips</option>
+                                <option value="online">Online Now</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="travelers-grid" id="travelersGrid">
+                        <!-- Dynamically populated -->
+                    </div>
+                    <div class="load-more-container" id="loadMoreContainer">
+                        <button class="load-more-btn" onclick="loadMoreTravelers()">
+                            <i class="fas fa-chevron-down"></i>
+                            Load More Travelers
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </section>
+    </div>
+
+    <!-- Connection Request Modal -->
+    <div class="connection-modal" id="connectionModal" style="display: none;">
+        <div class="connection-modal-overlay" onclick="closeConnectionModal()"></div>
+        <div class="connection-modal-content">
+            <button class="connection-modal-close" onclick="closeConnectionModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="connectionModalBody">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Traveler Detail Modal -->
+    <div class="traveler-detail-modal" id="travelerDetailModal" style="display: none;">
+        <div class="traveler-detail-overlay" onclick="closeTravelerDetail()"></div>
+        <div class="traveler-detail-content">
+            <button class="traveler-detail-close" onclick="closeTravelerDetail()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="travelerDetailBody">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
     </div>
 
     <!-- ============================================
