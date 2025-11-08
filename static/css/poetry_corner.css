@@ -19,7 +19,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: 
+    background-image:
         radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.08) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(255, 182, 193, 0.08) 0%, transparent 50%),
         radial-gradient(circle at 50% 50%, rgba(230, 230, 250, 0.08) 0%, transparent 50%);
@@ -28,8 +28,15 @@
 }
 
 @keyframes poetrySparkle {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
 }
 
 /* === HERO SECTION === */
@@ -52,8 +59,15 @@
 }
 
 @keyframes titleGlow {
-    0%, 100% { filter: brightness(1); }
-    50% { filter: brightness(1.2); }
+
+    0%,
+    100% {
+        filter: brightness(1);
+    }
+
+    50% {
+        filter: brightness(1.2);
+    }
 }
 
 .poetry-hero-subtitle {
@@ -82,15 +96,44 @@
 }
 
 @keyframes floatPoetry {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    25% { transform: translateY(-20px) rotate(5deg); }
-    75% { transform: translateY(-10px) rotate(-5deg); }
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    25% {
+        transform: translateY(-20px) rotate(5deg);
+    }
+
+    75% {
+        transform: translateY(-10px) rotate(-5deg);
+    }
 }
 
-.icon-1 { top: 15%; left: 10%; animation-delay: 0s; }
-.icon-2 { top: 25%; right: 15%; animation-delay: 2s; }
-.icon-3 { bottom: 20%; left: 20%; animation-delay: 4s; }
-.icon-4 { bottom: 30%; right: 10%; animation-delay: 1s; }
+.icon-1 {
+    top: 15%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.icon-2 {
+    top: 25%;
+    right: 15%;
+    animation-delay: 2s;
+}
+
+.icon-3 {
+    bottom: 20%;
+    left: 20%;
+    animation-delay: 4s;
+}
+
+.icon-4 {
+    bottom: 30%;
+    right: 10%;
+    animation-delay: 1s;
+}
 
 /* ============================================
    📑 TAB NAVIGATION SYSTEM
@@ -194,6 +237,7 @@
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -205,13 +249,13 @@
     .tabs-nav {
         flex-direction: column;
     }
-    
+
     .tab-btn {
         min-width: 100%;
         flex-direction: row;
         justify-content: center;
     }
-    
+
     .tab-btn i {
         font-size: 1.5rem;
     }
@@ -232,6 +276,7 @@
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -317,10 +362,23 @@
 }
 
 @keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    25% { transform: scale(1.1); }
-    50% { transform: scale(1); }
-    75% { transform: scale(1.05); }
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(1.1);
+    }
+
+    50% {
+        transform: scale(1);
+    }
+
+    75% {
+        transform: scale(1.05);
+    }
 }
 
 .poem-image-wrapper {
@@ -386,8 +444,13 @@
     font-style: italic;
 }
 
-.poem-author.kavlin-author::before { content: '✨ '; }
-.poem-author.kavlin-author::after { content: ' ✨'; }
+.poem-author.kavlin-author::before {
+    content: '✨ ';
+}
+
+.poem-author.kavlin-author::after {
+    content: ' ✨';
+}
 
 .poem-content {
     padding: 30px;
@@ -460,6 +523,7 @@
         opacity: 0;
         transform: scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
@@ -886,50 +950,50 @@
     .quote-main-card {
         padding: 60px 30px;
     }
-    
+
     .quote-text-main {
         font-size: 1.6rem;
         padding: 0 20px;
     }
-    
+
     .quote-icon-left,
     .quote-icon-right {
         font-size: 3rem;
     }
-    
+
     .quote-actions-main {
         flex-direction: column;
     }
-    
+
     .quote-action-btn {
         width: 100%;
     }
-    
+
     .quote-stats-bar {
         gap: 30px;
     }
-    
+
     .stat-number {
         font-size: 1.4rem;
     }
-    
+
     .quotes-carousel-wrapper {
         padding: 0 50px;
     }
-    
+
     .quote-mini-card {
         flex: 0 0 280px;
     }
-    
+
     .subscribe-input-group {
         flex-direction: column;
         border-radius: 25px;
     }
-    
+
     .subscribe-input {
         padding: 15px 20px 15px 50px;
     }
-    
+
     .subscribe-btn {
         width: 100%;
         border-radius: 20px;
@@ -1602,36 +1666,36 @@
     .submission-card {
         padding: 25px;
     }
-    
+
     .submission-title {
         font-size: 2rem;
     }
-    
+
     .form-steps {
         flex-wrap: wrap;
     }
-    
+
     .step-connector {
         display: none;
     }
-    
+
     .form-row {
         grid-template-columns: 1fr;
     }
-    
+
     .form-navigation {
         flex-direction: column;
     }
-    
+
     .featured-poems-grid,
     .community-poems-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .guest-actions {
         flex-direction: column;
     }
-    
+
     .btn-guest-action {
         width: 100%;
     }
@@ -1712,8 +1776,17 @@
 }
 
 @keyframes starTwinkle {
-    0%, 100% { opacity: 1; transform: rotate(0deg) scale(1); }
-    50% { opacity: 0.7; transform: rotate(180deg) scale(1.1); }
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: rotate(180deg) scale(1.1);
+    }
 }
 
 .route-image-wrapper {
@@ -1924,22 +1997,22 @@
     .poetry-hero-title {
         font-size: 3rem;
     }
-    
+
     .section-title {
         font-size: 2.5rem;
     }
-    
+
     .poetry-grid,
     .route-poems-grid {
         grid-template-columns: 1fr;
         gap: 30px;
     }
-    
+
     .quote-text-main {
         font-size: 1.6rem;
         padding: 0 20px;
     }
-    
+
     .map-container {
         height: 400px;
     }
@@ -2001,6 +2074,7 @@
     transform: translateY(-5px) scale(1.1);
     box-shadow: 0 12px 35px rgba(255, 215, 0, 0.5);
 }
+
 /* ============================================
    📝 PHASE 5: POETRY BLOG STYLES
    Final Phase - Blog Integration
@@ -2504,41 +2578,41 @@
     .featured-post-card {
         grid-template-columns: 1fr;
     }
-    
+
     .featured-post-content {
         padding: 30px;
     }
-    
+
     .featured-post-title {
         font-size: 2rem;
     }
-    
+
     .blog-posts-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .author-spotlight-content {
         grid-template-columns: 1fr;
         text-align: center;
     }
-    
+
     .author-avatar-large {
         margin: 0 auto;
     }
-    
+
     .author-stats {
         justify-content: center;
     }
-    
+
     .blog-newsletter-form {
         flex-direction: column;
     }
-    
+
     .blog-search-form {
         flex-direction: column;
         border-radius: 20px;
     }
-    
+
     .blog-search-input,
     .blog-search-btn {
         border-radius: 20px;
@@ -2549,3 +2623,96 @@
    🎨 END OF PHASE 5 STYLES
    Poetry Corner Complete! 🎉
    ============================================ */
+
+/* ============================================
+   🌙 DARK MODE STYLES FOR POETRY CORNER
+   ============================================ */
+
+html.dark-mode .poetry-corner-wrapper {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+html.dark-mode .poetry-hero-title,
+html.dark-mode .poetry-nav-title {
+    color: #ffd700;
+}
+
+html.dark-mode .poetry-hero-subtitle,
+html.dark-mode .poetry-hero-description {
+    color: #e0e0e0;
+}
+
+html.dark-mode .poetry-phase-title {
+    color: #ffd700;
+}
+
+html.dark-mode .poetry-phase-subtitle {
+    color: #b0b0b0;
+}
+
+html.dark-mode .poetry-card {
+    background: #16213e;
+    color: #e0e0e0;
+    border-color: #ffd700;
+}
+
+html.dark-mode .poetry-card:hover {
+    background: #0f3460;
+    box-shadow: 0 8px 30px rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .poetry-card-title,
+html.dark-mode .poetry-card-poet {
+    color: #ffd700;
+}
+
+html.dark-mode .poetry-card-excerpt {
+    color: #b0b0b0;
+}
+
+html.dark-mode .poetry-tab {
+    color: #e0e0e0;
+    border-color: transparent;
+}
+
+html.dark-mode .poetry-tab.active {
+    color: #ffd700;
+    border-color: #ffd700;
+    background: rgba(255, 215, 0, 0.1);
+}
+
+html.dark-mode .poetry-tab:hover {
+    color: #ffd700;
+}
+
+html.dark-mode .poetry-button,
+html.dark-mode .btn-poetry {
+    background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+    color: #1a1a2e;
+    border: none;
+}
+
+html.dark-mode .poetry-button:hover,
+html.dark-mode .btn-poetry:hover {
+    background: linear-gradient(135deg, #ffed4e 0%, #ffb347 100%);
+}
+
+html.dark-mode .poetry-input,
+html.dark-mode .blog-search-input {
+    background: #1a1a2e;
+    color: #e0e0e0;
+    border-color: #ffd700;
+}
+
+html.dark-mode .poetry-input::placeholder,
+html.dark-mode .blog-search-input::placeholder {
+    color: #b0b0b0;
+}
+
+html.dark-mode .poetry-section-title {
+    color: #ffd700;
+}
+
+html.dark-mode .poetry-description {
+    color: #e0e0e0;
+}

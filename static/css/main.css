@@ -29,23 +29,47 @@
   --glow-yellow: 0 0 20px rgba(255, 215, 0, 0.5);
 
   /* Gradients */
-  --gradient-sunrise: linear-gradient(
-    135deg,
-    #ffd700 0%,
-    #ff8c00 50%,
-    #ff6347 100%
-  );
-  --gradient-sunset: linear-gradient(
-    135deg,
-    #ffe4b5 0%,
-    #ffd700 50%,
-    #dda0dd 100%
-  );
+  --gradient-sunrise: linear-gradient(135deg,
+      #ffd700 0%,
+      #ff8c00 50%,
+      #ff6347 100%);
+  --gradient-sunset: linear-gradient(135deg,
+      #ffe4b5 0%,
+      #ffd700 50%,
+      #dda0dd 100%);
   --gradient-soft: linear-gradient(135deg, #fff8dc 0%, #ffe4e1 100%);
 
   /* Transitions */
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* Light Mode - Background Colors */
+  --bg-primary: #fffef7;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f8f9fa;
+
+  /* Light Mode - Text Colors */
+  --text-primary: #2c3e50;
+  --text-secondary: #6c757d;
+  --text-inverse: #ffffff;
+}
+
+/* Dark Mode */
+html.dark-mode {
+  /* Dark Mode - Background Colors */
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
+  --bg-tertiary: #0f3460;
+
+  /* Dark Mode - Text Colors */
+  --text-primary: #e0e0e0;
+  --text-secondary: #b0b0b0;
+  --text-inverse: #1a1a2e;
+
+  /* Dark Mode - Adjust shadows for dark theme */
+  --shadow-soft: 0 4px 20px rgba(255, 215, 0, 0.1);
+  --shadow-medium: 0 8px 30px rgba(255, 215, 0, 0.15);
+  --shadow-strong: 0 12px 40px rgba(255, 215, 0, 0.2);
 }
 
 /* Global Styles */
@@ -62,9 +86,10 @@ html {
 body {
   font-family: "Poppins", sans-serif;
   line-height: 1.7;
-  color: var(--charcoal);
-  background: var(--cream);
+  color: var(--text-primary);
+  background: var(--bg-primary);
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Beautiful Typography */
@@ -86,6 +111,7 @@ h1 {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-shadow: 2px 2px 4px rgba(255, 215, 0, 0.3);
+  color: var(--deep-yellow);
 }
 
 h2 {
@@ -100,24 +126,29 @@ h2 {
 
 /* Magical Animations */
 @keyframes float {
+
   0%,
   100% {
     transform: translateY(0px) rotate(0deg);
   }
+
   33% {
     transform: translateY(-10px) rotate(1deg);
   }
+
   66% {
     transform: translateY(5px) rotate(-1deg);
   }
 }
 
 @keyframes sparkle {
+
   0%,
   100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.7;
     transform: scale(1.1);
@@ -125,10 +156,12 @@ h2 {
 }
 
 @keyframes heartbeat {
+
   0%,
   100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.05);
   }
@@ -139,6 +172,7 @@ h2 {
     opacity: 0;
     transform: translateX(-50px);
   }
+
   100% {
     opacity: 1;
     transform: translateX(0);
@@ -150,6 +184,7 @@ h2 {
     opacity: 0;
     transform: translateX(50px);
   }
+
   100% {
     opacity: 1;
     transform: translateX(0);
@@ -244,12 +279,10 @@ h2 {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent);
   transition: left 0.5s;
 }
 
@@ -279,21 +312,15 @@ h2 {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: radial-gradient(
-      circle at 20% 80%,
+  background-image: radial-gradient(circle at 20% 80%,
       rgba(255, 215, 0, 0.1) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 80% 20%,
+      transparent 50%),
+    radial-gradient(circle at 80% 20%,
       rgba(255, 182, 193, 0.1) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 40% 40%,
+      transparent 50%),
+    radial-gradient(circle at 40% 40%,
       rgba(230, 230, 250, 0.1) 0%,
-      transparent 50%
-    );
+      transparent 50%);
   animation: sparkle 4s ease-in-out infinite;
 }
 
@@ -364,12 +391,10 @@ h2 {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: conic-gradient(
-    from 0deg,
-    transparent,
-    var(--primary-yellow),
-    transparent
-  );
+  background: conic-gradient(from 0deg,
+      transparent,
+      var(--primary-yellow),
+      transparent);
   animation: rotate 4s linear infinite;
   opacity: 0.1;
 }
@@ -378,6 +403,7 @@ h2 {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -583,6 +609,7 @@ h2 {
   h1 {
     font-size: 2.5rem;
   }
+
   h2 {
     font-size: 2rem;
   }
@@ -590,6 +617,7 @@ h2 {
   .hero-title {
     font-size: 2.8rem;
   }
+
   .hero-subtitle {
     font-size: 1.1rem;
   }
@@ -601,6 +629,7 @@ h2 {
   .feature-card {
     padding: 30px 20px;
   }
+
   .quick-search {
     padding: 30px 20px;
     margin-top: -60px;
@@ -615,9 +644,11 @@ h2 {
   h1 {
     font-size: 2rem;
   }
+
   .hero-title {
     font-size: 2.2rem;
   }
+
   .kavlin-name {
     font-size: 2rem;
   }
@@ -752,6 +783,7 @@ h2 {
     height: 0;
     opacity: 1;
   }
+
   100% {
     height: 80px;
     opacity: 0;
@@ -767,4 +799,1463 @@ h2 {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
+}
+
+/* ========================================
+   Theme Toggle Button Styles
+   ======================================== */
+
+.theme-toggle-btn {
+  background: transparent;
+  border: 2px solid var(--primary-yellow);
+  color: var(--text-primary);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  margin-left: 10px;
+}
+
+.theme-toggle-btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: var(--primary-yellow);
+  border-radius: 50%;
+  transition: var(--transition-smooth);
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.theme-toggle-btn:hover::before {
+  width: 100%;
+  height: 100%;
+}
+
+.theme-toggle-btn:hover {
+  color: var(--text-inverse);
+  transform: scale(1.1) rotate(20deg);
+  box-shadow: var(--shadow-soft);
+}
+
+.theme-toggle-btn:active {
+  transform: scale(0.95);
+}
+
+/* Icon animation for theme toggle */
+.theme-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle-btn:hover .theme-icon {
+  animation: spin-smooth 0.6s ease-in-out;
+}
+
+@keyframes spin-smooth {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Dark Mode Specific Styles */
+html.dark-mode .navbar {
+  background: rgba(22, 33, 62, 0.95) !important;
+  border-bottom-color: var(--primary-yellow);
+}
+
+html.dark-mode .navbar-brand {
+  color: var(--primary-yellow) !important;
+}
+
+html.dark-mode .nav-link {
+  color: var(--text-primary) !important;
+}
+
+html.dark-mode .nav-link:hover {
+  color: var(--primary-yellow) !important;
+}
+
+html.dark-mode .feature-card {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+html.dark-mode .feature-card h5,
+html.dark-mode .feature-card h4 {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .feature-card p {
+  color: var(--text-primary);
+}
+
+html.dark-mode .feature-card:hover {
+  border-color: var(--primary-yellow);
+  box-shadow: 0 12px 40px rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .quick-search {
+  background: rgba(22, 33, 62, 0.95);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .search-input {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--primary-yellow);
+}
+
+html.dark-mode .search-input::placeholder {
+  color: var(--text-secondary);
+}
+
+html.dark-mode .search-input:focus {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  box-shadow: var(--glow-yellow);
+}
+
+html.dark-mode .tribute-card {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+html.dark-mode .tribute-card h5,
+html.dark-mode .tribute-card p {
+  color: var(--text-primary);
+}
+
+html.dark-mode .poetry-quote {
+  background: rgba(255, 215, 0, 0.1);
+  color: var(--primary-yellow);
+  border-left-color: var(--primary-yellow);
+}
+
+html.dark-mode .footer {
+  background: #0f1620;
+  border-top: 4px solid var(--primary-yellow);
+  color: var(--text-primary);
+}
+
+html.dark-mode .footer h6 {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .footer a {
+  color: var(--text-secondary);
+}
+
+html.dark-mode .footer a:hover {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .kavlin-tribute {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: var(--text-primary);
+}
+
+html.dark-mode h1 {
+  color: var(--primary-yellow);
+  text-shadow: 2px 2px 4px rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode h2 {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode h3 {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode h4,
+html.dark-mode h5,
+html.dark-mode h6 {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .tribute-text {
+  color: var(--text-primary);
+}
+
+html.dark-mode .hero-subtitle {
+  color: var(--text-secondary);
+}
+
+html.dark-mode .hero-section {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+html.dark-mode .alert-success {
+  background: linear-gradient(135deg, #1e5a3d, #2a7d4a);
+  color: #a8d5ba;
+  border-color: #2a7d4a;
+}
+
+html.dark-mode .alert-error {
+  background: linear-gradient(135deg, #5a1a1a, #7d2a2a);
+  color: #d5a8a8;
+  border-color: #7d2a2a;
+}
+
+html.dark-mode #back-to-top {
+  background: var(--primary-yellow);
+  color: var(--text-inverse);
+  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+}
+
+html.dark-mode #back-to-top:hover {
+  box-shadow: 0 12px 28px rgba(255, 215, 0, 0.4);
+}
+
+html.dark-mode .kavlin-signature {
+  background: rgba(255, 215, 0, 0.9);
+  color: var(--text-inverse);
+}
+
+/* Additional Dark Mode Text Color Fixes */
+html.dark-mode input,
+html.dark-mode textarea,
+html.dark-mode select {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--primary-yellow);
+}
+
+html.dark-mode input::placeholder,
+html.dark-mode textarea::placeholder {
+  color: var(--text-secondary);
+}
+
+html.dark-mode button,
+html.dark-mode .btn {
+  transition: var(--transition-smooth);
+}
+
+html.dark-mode .btn-primary {
+  background: var(--gradient-sunrise);
+  border-color: var(--primary-yellow);
+}
+
+html.dark-mode .btn-primary:hover {
+  filter: brightness(1.1);
+}
+
+html.dark-mode label {
+  color: var(--text-primary);
+}
+
+html.dark-mode .form-label {
+  color: var(--text-primary);
+}
+
+html.dark-mode small,
+html.dark-mode .small {
+  color: var(--text-secondary);
+}
+
+html.dark-mode .text-muted {
+  color: var(--text-secondary) !important;
+}
+
+html.dark-mode .text-warning {
+  color: var(--primary-yellow) !important;
+}
+
+html.dark-mode table {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+}
+
+html.dark-mode tbody tr {
+  background: var(--bg-secondary);
+}
+
+html.dark-mode tbody tr:hover {
+  background: rgba(255, 215, 0, 0.05);
+}
+
+/* ========================================
+   Additional Dark Mode Styles for Pages
+   ======================================== */
+
+/* Weather Widget and Map Styles */
+html.dark-mode .weather-widget {
+  background: rgba(22, 33, 62, 0.9);
+  color: var(--text-primary);
+}
+
+html.dark-mode .weather-widget h5,
+html.dark-mode .weather-widget p {
+  color: var(--text-primary);
+}
+
+html.dark-mode #map-home {
+  background: var(--bg-secondary);
+  border-color: var(--primary-yellow);
+}
+
+html.dark-mode .custom-popup .leaflet-popup-content-wrapper {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+html.dark-mode .custom-popup .leaflet-popup-tip {
+  background: var(--bg-secondary);
+}
+
+html.dark-mode .custom-popup a.btn-warning {
+  color: var(--text-inverse);
+  background-color: var(--primary-yellow);
+  border-color: var(--primary-yellow);
+}
+
+html.dark-mode .custom-popup a.btn-warning:hover {
+  background-color: #ffed4e;
+  border-color: #ffed4e;
+}
+
+/* Carousel Styling Dark Mode */
+html.dark-mode .destinations-carousel {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+html.dark-mode .carousel-caption {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+html.dark-mode .carousel-caption h3 {
+  color: var(--primary-yellow);
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+html.dark-mode .carousel-caption p {
+  color: var(--text-primary);
+}
+
+/* Schedule Table Dark Mode */
+html.dark-mode .schedule-table {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+html.dark-mode .schedule-table thead th {
+  background: var(--gradient-sunrise);
+  color: white;
+}
+
+html.dark-mode .schedule-table tbody td {
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.1);
+}
+
+html.dark-mode .schedule-table tbody tr {
+  background: var(--bg-secondary);
+}
+
+html.dark-mode .schedule-table tbody tr:hover {
+  background: rgba(255, 215, 0, 0.05);
+}
+
+/* Bus Results Table Specific Styling */
+html.dark-mode .results-table {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+html.dark-mode .results-table thead th {
+  background: var(--gradient-sunrise);
+  color: white;
+  padding: 15px;
+  font-weight: 600;
+}
+
+html.dark-mode .results-table tbody tr {
+  background: var(--bg-secondary);
+  border-bottom-color: rgba(255, 215, 0, 0.1);
+}
+
+html.dark-mode .results-table tbody tr:hover {
+  background: rgba(255, 215, 0, 0.05);
+}
+
+html.dark-mode .results-table tbody td {
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.1);
+  padding: 15px;
+}
+
+html.dark-mode .results-table .bus-number {
+  color: var(--primary-yellow);
+  font-weight: 600;
+}
+
+html.dark-mode .results-table .bus-route {
+  color: var(--text-primary);
+}
+
+html.dark-mode .results-table .bus-time {
+  color: var(--text-primary);
+}
+
+html.dark-mode .results-table .bus-status {
+  color: var(--text-primary);
+}
+
+html.dark-mode .results-table .status-badge {
+  background: rgba(106, 213, 141, 0.2);
+  color: #6dd58d;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+html.dark-mode .results-table .status-badge.delayed {
+  background: rgba(255, 215, 0, 0.2);
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .results-table .action-btn {
+  background: var(--primary-yellow);
+  color: #1a1a2e;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+html.dark-mode .results-table .action-btn:hover {
+  background: #ffed4e;
+  filter: brightness(0.95);
+}
+
+/* Booking Forms */
+html.dark-mode .booking-form {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+html.dark-mode .booking-form .form-label {
+  color: var(--text-primary);
+}
+
+html.dark-mode .booking-form .form-control {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--primary-yellow);
+}
+
+html.dark-mode .booking-form .form-control:focus {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--primary-yellow);
+  box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
+}
+
+html.dark-mode .booking-form .form-control::placeholder {
+  color: var(--text-secondary);
+}
+
+/* Modal Styles */
+html.dark-mode .modal-header {
+  background: var(--bg-secondary);
+  border-color: var(--primary-yellow);
+  color: var(--text-primary);
+}
+
+html.dark-mode .modal-body {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+html.dark-mode .modal-footer {
+  background: var(--bg-secondary);
+  border-color: var(--primary-yellow);
+}
+
+html.dark-mode .close,
+html.dark-mode .btn-close {
+  color: var(--text-primary);
+  filter: brightness(1.5);
+}
+
+/* Login/Signup Forms */
+html.dark-mode .login-container,
+html.dark-mode .signup-container {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+html.dark-mode .login-card,
+html.dark-mode .signup-card {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+html.dark-mode .login-card h2,
+html.dark-mode .signup-card h2 {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .form-group label {
+  color: var(--text-primary);
+}
+
+html.dark-mode .form-control {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--primary-yellow);
+}
+
+html.dark-mode .form-control:focus {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--primary-yellow);
+  box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
+}
+
+/* Placeholder and floating label improvements for dark mode */
+html.dark-mode .form-control::placeholder,
+html.dark-mode .form-control::-webkit-input-placeholder,
+html.dark-mode .form-control::-moz-placeholder,
+html.dark-mode .form-control:-ms-input-placeholder,
+html.dark-mode .form-control::-ms-input-placeholder {
+  /* Brighter placeholder for readability */
+  color: #dcdcdc !important;
+  opacity: 1 !important;
+}
+
+/* More specific: signup/login floating labels */
+html.dark-mode .form-floating>label {
+  color: var(--text-secondary);
+  z-index: 2;
+  pointer-events: none;
+}
+
+html.dark-mode .form-floating>.form-control {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--primary-yellow);
+  padding-top: 1.25rem;
+  /* ensure label doesn't overlap */
+}
+
+/* When input is focused keep label readable */
+html.dark-mode .form-floating>.form-control:focus+label,
+html.dark-mode .form-floating>.form-control:not(:placeholder-shown)+label {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .form-check-label {
+  color: var(--text-primary);
+}
+
+html.dark-mode .form-text {
+  color: var(--text-secondary);
+}
+
+/* Links and Anchors */
+html.dark-mode a {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode a:hover {
+  color: #ffed4e;
+  text-decoration: underline;
+}
+
+/* Bus Results and Selection Pages */
+html.dark-mode .bus-card {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .bus-card:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--primary-yellow);
+  box-shadow: 0 8px 30px rgba(255, 215, 0, 0.15);
+}
+
+html.dark-mode .bus-card h5,
+html.dark-mode .bus-card h6 {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .bus-card p {
+  color: var(--text-primary);
+}
+
+/* Seat Selection */
+html.dark-mode .seat-container {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+html.dark-mode .seat {
+  background: var(--bg-tertiary);
+  border-color: var(--primary-yellow);
+  color: var(--text-primary);
+}
+
+html.dark-mode .seat:hover:not(.booked):not(.selected) {
+  background: rgba(255, 215, 0, 0.2);
+  border-color: var(--primary-yellow);
+}
+
+html.dark-mode .seat.selected {
+  background: var(--primary-yellow);
+  color: var(--text-inverse);
+  border-color: var(--primary-yellow);
+}
+
+html.dark-mode .seat.booked {
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  border-color: var(--text-secondary);
+  opacity: 0.5;
+}
+
+/* Payment Page */
+html.dark-mode .payment-section {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .payment-section h4 {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .payment-summary {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+/* My Bookings Page */
+html.dark-mode .booking-card {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .booking-card:hover {
+  border-color: var(--primary-yellow);
+  box-shadow: 0 8px 30px rgba(255, 215, 0, 0.15);
+}
+
+html.dark-mode .booking-status {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .booking-details {
+  color: var(--text-primary);
+}
+
+/* Track Bus Page */
+html.dark-mode .track-container {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+html.dark-mode .track-status {
+  background: var(--bg-tertiary);
+  color: var(--primary-yellow);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .location-info {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .location-info h6 {
+  color: var(--primary-yellow);
+}
+
+/* Cards and Containers */
+html.dark-mode .card {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .card-header {
+  background: var(--bg-tertiary);
+  color: var(--primary-yellow);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .card-footer {
+  background: var(--bg-tertiary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+/* Badges */
+html.dark-mode .badge {
+  background: var(--primary-yellow);
+  color: var(--text-inverse);
+}
+
+html.dark-mode .badge-secondary {
+  background: var(--text-secondary);
+  color: var(--text-inverse);
+}
+
+html.dark-mode .badge-success {
+  background: #2a7d4a;
+  color: #a8d5ba;
+}
+
+html.dark-mode .badge-danger {
+  background: #7d2a2a;
+  color: #d5a8a8;
+}
+
+/* List Items */
+html.dark-mode .list-group-item {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .list-group-item:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--primary-yellow);
+}
+
+html.dark-mode .list-group-item.active {
+  background: var(--primary-yellow);
+  color: var(--text-inverse);
+  border-color: var(--primary-yellow);
+}
+
+/* Dropdowns */
+html.dark-mode .dropdown-menu {
+  background: var(--bg-secondary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .dropdown-item {
+  color: var(--text-primary);
+}
+
+html.dark-mode .dropdown-item:hover,
+html.dark-mode .dropdown-item:focus {
+  background: var(--bg-tertiary);
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .dropdown-divider {
+  border-color: rgba(255, 215, 0, 0.1);
+}
+
+/* Pagination */
+html.dark-mode .pagination .page-link {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .pagination .page-link:hover {
+  background: var(--bg-tertiary);
+  color: var(--primary-yellow);
+  border-color: var(--primary-yellow);
+}
+
+html.dark-mode .pagination .page-item.active .page-link {
+  background: var(--primary-yellow);
+  color: var(--text-inverse);
+  border-color: var(--primary-yellow);
+}
+
+/* Breadcrumbs */
+html.dark-mode .breadcrumb {
+  background: transparent;
+  color: var(--text-primary);
+}
+
+html.dark-mode .breadcrumb a {
+  color: var(--primary-yellow);
+}
+
+/* Tabs */
+html.dark-mode .nav-tabs .nav-link {
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .nav-tabs .nav-link:hover {
+  color: var(--primary-yellow);
+  border-color: var(--primary-yellow);
+}
+
+html.dark-mode .nav-tabs .nav-link.active {
+  color: var(--primary-yellow);
+  background: transparent;
+  border-color: var(--primary-yellow);
+}
+
+/* Pills */
+html.dark-mode .nav-pills .nav-link {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+}
+
+html.dark-mode .nav-pills .nav-link:hover {
+  background: var(--bg-tertiary);
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .nav-pills .nav-link.active {
+  background: var(--primary-yellow);
+  color: var(--text-inverse);
+}
+
+/* Toast/Alert Notifications */
+html.dark-mode .toast {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .toast-header {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+/* Spinners */
+html.dark-mode .spinner-border {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .spinner-grow {
+  background-color: var(--primary-yellow);
+}
+
+/* Progress Bars */
+html.dark-mode .progress {
+  background: var(--bg-tertiary);
+}
+
+html.dark-mode .progress-bar {
+  background: var(--gradient-sunrise);
+}
+
+/* Placeholders */
+html.dark-mode .placeholder {
+  background: var(--bg-tertiary);
+}
+
+/* Borders */
+html.dark-mode .border {
+  border-color: rgba(255, 215, 0, 0.2) !important;
+}
+
+html.dark-mode .border-top {
+  border-top-color: rgba(255, 215, 0, 0.2) !important;
+}
+
+html.dark-mode .border-bottom {
+  border-bottom-color: rgba(255, 215, 0, 0.2) !important;
+}
+
+html.dark-mode .border-start {
+  border-left-color: rgba(255, 215, 0, 0.2) !important;
+}
+
+html.dark-mode .border-end {
+  border-right-color: rgba(255, 215, 0, 0.2) !important;
+}
+
+/* Custom Utilities */
+html.dark-mode .bg-light {
+  background: var(--bg-secondary) !important;
+}
+
+html.dark-mode .bg-white {
+  background: var(--bg-secondary) !important;
+}
+
+html.dark-mode .text-dark {
+  color: var(--text-primary) !important;
+}
+
+html.dark-mode .text-body {
+  color: var(--text-primary) !important;
+}
+
+html.dark-mode hr {
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+/* Auth Pages (Login/Signup) Dark Mode */
+html.dark-mode .auth-section {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+html.dark-mode .auth-card {
+  background: rgba(22, 33, 62, 0.95);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.3);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+html.dark-mode .auth-card h2,
+html.dark-mode .auth-card h3 {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .auth-card h1 {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .auth-card p {
+  color: var(--text-primary);
+}
+
+html.dark-mode .auth-card .form-group label {
+  color: var(--text-primary);
+}
+
+html.dark-mode .auth-card input,
+html.dark-mode .auth-card .form-control {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--primary-yellow);
+}
+
+html.dark-mode .auth-card input:focus,
+html.dark-mode .auth-card .form-control:focus {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--primary-yellow);
+  box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
+}
+
+html.dark-mode .auth-card input::placeholder,
+html.dark-mode .auth-card .form-control::placeholder {
+  color: var(--text-secondary);
+}
+
+html.dark-mode .auth-card a {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .auth-card a:hover {
+  color: #ffed4e;
+  text-decoration: underline;
+}
+
+html.dark-mode .auth-card .btn {
+  background: var(--gradient-sunrise);
+  border: none;
+  color: white;
+}
+
+html.dark-mode .auth-card .btn:hover {
+  filter: brightness(1.1);
+}
+
+html.dark-mode .auth-btn {
+  background: var(--gradient-sunrise);
+  border: none;
+}
+
+html.dark-mode .auth-btn:hover {
+  filter: brightness(1.1);
+}
+
+html.dark-mode .quote-box {
+  background: rgba(255, 215, 0, 0.05);
+  color: var(--text-primary);
+  border-left-color: var(--primary-yellow);
+}
+
+html.dark-mode .quote-text {
+  color: var(--primary-yellow);
+}
+
+/* Legacy Template Pages */
+html.dark-mode .legacy-wrapper {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+html.dark-mode .legacy-card {
+  background: rgba(22, 33, 62, 0.95);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.3);
+}
+
+html.dark-mode .legacy-badge {
+  background: rgba(255, 215, 0, 0.15);
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .calc-box {
+  background: rgba(255, 215, 0, 0.08);
+  border-color: var(--primary-yellow);
+  color: var(--text-primary);
+}
+
+/* All Page Wrappers */
+html.dark-mode .page-wrapper {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+html.dark-mode .section-wrapper {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+html.dark-mode .container {
+  color: var(--text-primary);
+}
+
+/* Row and Column Utilities */
+html.dark-mode .row {
+  color: var(--text-primary);
+}
+
+html.dark-mode .col,
+html.dark-mode .col-1,
+html.dark-mode .col-2,
+html.dark-mode .col-3,
+html.dark-mode .col-4,
+html.dark-mode .col-5,
+html.dark-mode .col-6,
+html.dark-mode .col-7,
+html.dark-mode .col-8,
+html.dark-mode .col-9,
+html.dark-mode .col-10,
+html.dark-mode .col-11,
+html.dark-mode .col-12 {
+  color: var(--text-primary);
+}
+
+/* Icons - FontAwesome */
+html.dark-mode .fa,
+html.dark-mode [class^="fa-"],
+html.dark-mode [class*=" fa-"] {
+  color: inherit;
+}
+
+/* Text Colors */
+html.dark-mode .text-secondary {
+  color: var(--text-secondary) !important;
+}
+
+html.dark-mode .text-muted {
+  color: var(--text-secondary) !important;
+}
+
+html.dark-mode .text-info {
+  color: #54b8e6 !important;
+}
+
+html.dark-mode .text-success {
+  color: #6dd58d !important;
+}
+
+html.dark-mode .text-danger {
+  color: #ef8b7f !important;
+}
+
+/* Background Colors for Bootstrap Classes */
+html.dark-mode .bg-info {
+  background: rgba(84, 184, 230, 0.2) !important;
+  color: var(--text-primary);
+}
+
+html.dark-mode .bg-success {
+  background: rgba(109, 213, 141, 0.2) !important;
+  color: var(--text-primary);
+}
+
+html.dark-mode .bg-danger {
+  background: rgba(239, 139, 127, 0.2) !important;
+  color: var(--text-primary);
+}
+
+html.dark-mode .bg-warning {
+  background: rgba(255, 215, 0, 0.15) !important;
+  color: var(--text-primary);
+}
+
+html.dark-mode .bg-dark {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary);
+}
+
+/* Shadows in Dark Mode */
+html.dark-mode .shadow,
+html.dark-mode .shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark-mode .shadow-lg {
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Jumbotron */
+html.dark-mode .jumbotron {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* Alerts Override */
+html.dark-mode .alert {
+  background-color: var(--bg-secondary);
+  border-color: rgba(255, 215, 0, 0.2);
+  color: var(--text-primary);
+}
+
+html.dark-mode .alert-primary {
+  background: rgba(84, 184, 230, 0.15);
+  border-color: #54b8e6;
+  color: #54b8e6;
+}
+
+html.dark-mode .alert-secondary {
+  background: rgba(176, 176, 176, 0.15);
+  border-color: var(--text-secondary);
+  color: var(--text-secondary);
+}
+
+html.dark-mode .alert-success {
+  background: rgba(109, 213, 141, 0.15);
+  border-color: #6dd58d;
+  color: #6dd58d;
+}
+
+html.dark-mode .alert-danger {
+  background: rgba(239, 139, 127, 0.15);
+  border-color: #ef8b7f;
+  color: #ef8b7f;
+}
+
+html.dark-mode .alert-warning {
+  background: rgba(255, 215, 0, 0.15);
+  border-color: var(--primary-yellow);
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .alert-info {
+  background: rgba(84, 184, 230, 0.15);
+  border-color: #54b8e6;
+  color: #54b8e6;
+}
+
+/* Well/Panels */
+html.dark-mode .well {
+  background: var(--bg-secondary);
+  border-color: rgba(255, 215, 0, 0.2);
+  color: var(--text-primary);
+}
+
+/* Code Blocks */
+html.dark-mode code {
+  background: var(--bg-tertiary);
+  color: var(--primary-yellow);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode pre {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+/* Blockquote */
+html.dark-mode blockquote {
+  color: var(--text-primary);
+  border-left-color: var(--primary-yellow);
+}
+
+html.dark-mode blockquote footer {
+  color: var(--text-secondary);
+}
+
+/* Horizontal Lines */
+html.dark-mode .divider {
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+/* Custom Scrollbars for Dark Mode */
+html.dark-mode ::-webkit-scrollbar {
+  width: 12px;
+}
+
+html.dark-mode ::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+html.dark-mode ::-webkit-scrollbar-thumb {
+  background: var(--primary-yellow);
+  border-radius: 6px;
+}
+
+html.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background: #ffed4e;
+}
+
+/* ========================================
+   Bus Results Page Dark Mode
+   ======================================== */
+
+html.dark-mode .results-hero {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+html.dark-mode .search-summary {
+  background: rgba(22, 33, 62, 0.95);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.3);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .search-summary h5,
+html.dark-mode .search-summary h6 {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .search-summary p {
+  color: var(--text-primary);
+}
+
+html.dark-mode .bus-card {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+html.dark-mode .bus-card:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--primary-yellow);
+  box-shadow: 0 12px 40px rgba(255, 215, 0, 0.15);
+}
+
+html.dark-mode .bus-header {
+  background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+  border-bottom-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .bus-number {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .bus-type-badge {
+  background: var(--primary-yellow);
+  color: #1a1a2e;
+}
+
+html.dark-mode .bus-info-grid {
+  color: var(--text-primary);
+}
+
+html.dark-mode .info-label {
+  color: var(--text-secondary);
+}
+
+html.dark-mode .info-value {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .bus-amenities {
+  color: var(--text-primary);
+}
+
+html.dark-mode .amenity-item {
+  background: rgba(255, 215, 0, 0.1);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .amenity-icon {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .price-section {
+  background: rgba(255, 215, 0, 0.1);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .price-value {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .action-buttons {
+  color: var(--text-primary);
+}
+
+html.dark-mode .action-buttons button,
+html.dark-mode .action-buttons .btn {
+  background: var(--gradient-sunrise);
+  color: white;
+  border: none;
+}
+
+html.dark-mode .action-buttons button:hover,
+html.dark-mode .action-buttons .btn:hover {
+  filter: brightness(1.1);
+}
+
+/* ========================================
+   Track Bus Page Dark Mode
+   ======================================== */
+
+html.dark-mode .track-hero {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+html.dark-mode #map {
+  background: var(--bg-secondary);
+  border-color: rgba(255, 215, 0, 0.3);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+html.dark-mode .tracking-shell {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.3);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+html.dark-mode .section-label {
+  color: var(--text-secondary);
+}
+
+html.dark-mode .section-title {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .info-block {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .info-block h6 {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .info-block p {
+  color: var(--text-primary);
+}
+
+html.dark-mode .weather-block {
+  background: rgba(0, 123, 255, 0.1);
+  border-color: rgba(0, 123, 255, 0.3);
+  color: var(--text-primary);
+}
+
+html.dark-mode .weather-block h6,
+html.dark-mode .weather-temp {
+  color: #54b8e6;
+}
+
+html.dark-mode .weather-desc {
+  color: var(--text-secondary);
+}
+
+html.dark-mode .traffic-block {
+  background: rgba(255, 215, 0, 0.1);
+  border-color: rgba(255, 215, 0, 0.3);
+  color: var(--text-primary);
+}
+
+html.dark-mode .traffic-block h6 {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .traffic-status {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .live-dot {
+  background: #4ade80;
+  box-shadow: 0 0 12px rgba(74, 222, 128, 0.6);
+}
+
+html.dark-mode .bus-current-loc {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .bus-current-loc h6 {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .bus-current-loc p {
+  color: var(--text-primary);
+}
+
+html.dark-mode .next-stop {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .next-stop h6 {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .eta-time {
+  color: var(--primary-yellow);
+  font-weight: 600;
+}
+
+html.dark-mode .stop-distance {
+  color: var(--text-secondary);
+}
+
+html.dark-mode .bus-details-section {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: rgba(255, 215, 0, 0.2);
+}
+
+html.dark-mode .bus-details-section h6 {
+  color: var(--primary-yellow);
+}
+
+html.dark-mode .detail-row {
+  border-color: rgba(255, 215, 0, 0.1);
+}
+
+html.dark-mode .detail-label {
+  color: var(--text-secondary);
+}
+
+html.dark-mode .detail-value {
+  color: var(--text-primary);
 }
