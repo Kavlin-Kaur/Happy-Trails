@@ -655,13 +655,278 @@
     <div id="travelers-tales" class="companions-tab-content">
         <section class="tales-section">
             <div class="container">
-                <div class="coming-soon-message">
-                    <div class="coming-soon-icon">📖</div>
-                    <h3>Traveler's Tales</h3>
-                    <p>Coming in Phase 3! Share your travel stories and read adventures from fellow travelers.</p>
+                
+                <!-- Tales Header -->
+                <div class="tales-header">
+                    <div class="tales-header-content">
+                        <h2 class="tales-title">
+                            <i class="fas fa-book-open"></i>
+                            Traveler's Tales
+                        </h2>
+                        <p class="tales-subtitle">
+                            Share your journey, inspire others, and discover amazing travel stories from 
+                            our Happy Trails community. Every adventure deserves to be told!
+                        </p>
+                    </div>
+                    <button class="share-story-btn" onclick="openStoryEditor()">
+                        <i class="fas fa-pen"></i>
+                        Share Your Story
+                    </button>
                 </div>
+
+                <!-- Tales Stats -->
+                <div class="tales-stats">
+                    <div class="tale-stat-card">
+                        <div class="tale-stat-icon">📖</div>
+                        <div class="tale-stat-value" id="totalStories">42</div>
+                        <div class="tale-stat-label">Stories Shared</div>
+                    </div>
+                    <div class="tale-stat-card">
+                        <div class="tale-stat-icon">✍️</div>
+                        <div class="tale-stat-value" id="activeWriters">28</div>
+                        <div class="tale-stat-label">Active Writers</div>
+                    </div>
+                    <div class="tale-stat-card">
+                        <div class="tale-stat-icon">❤️</div>
+                        <div class="tale-stat-value" id="totalLikes">1,234</div>
+                        <div class="tale-stat-label">Total Likes</div>
+                    </div>
+                    <div class="tale-stat-card">
+                        <div class="tale-stat-icon">💬</div>
+                        <div class="tale-stat-value" id="totalComments">567</div>
+                        <div class="tale-stat-label">Comments</div>
+                    </div>
+                </div>
+
+                <!-- Featured Stories -->
+                <div class="featured-stories-section">
+                    <h3 class="featured-stories-title">
+                        <i class="fas fa-star"></i>
+                        Featured Stories
+                    </h3>
+                    <p class="featured-stories-subtitle">
+                        Hand-picked by Kavlin - stories that touched our hearts
+                    </p>
+                    <div class="featured-stories-carousel" id="featuredStoriesCarousel">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Writing Prompts -->
+                <div class="writing-prompts-section">
+                    <h3 class="prompts-title">
+                        <i class="fas fa-lightbulb"></i>
+                        Need Inspiration? Try These Prompts
+                    </h3>
+                    <div class="prompts-grid">
+                        <div class="prompt-card" onclick="usePrompt('My first Happy Trails journey...')">
+                            <div class="prompt-icon">🚌</div>
+                            <div class="prompt-text">"My first Happy Trails journey..."</div>
+                        </div>
+                        <div class="prompt-card" onclick="usePrompt('An unexpected friendship on route...')">
+                            <div class="prompt-icon">🤝</div>
+                            <div class="prompt-text">"An unexpected friendship on route..."</div>
+                        </div>
+                        <div class="prompt-card" onclick="usePrompt('The view that changed everything...')">
+                            <div class="prompt-icon">🏔️</div>
+                            <div class="prompt-text">"The view that changed everything..."</div>
+                        </div>
+                        <div class="prompt-card" onclick="usePrompt('When the journey became the destination...')">
+                            <div class="prompt-icon">🛤️</div>
+                            <div class="prompt-text">"When the journey became the destination..."</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search & Filter -->
+                <div class="tales-search-panel">
+                    <div class="tales-search-header">
+                        <div class="search-box-tales">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="talesSearchInput" placeholder="Search stories..." 
+                                   onkeyup="searchStories()">
+                        </div>
+                        <div class="filter-dropdowns">
+                            <select class="tales-filter-select" id="categoryFilter" onchange="filterStories()">
+                                <option value="all">All Categories</option>
+                                <option value="mountain-adventures">🏔️ Mountain Adventures</option>
+                                <option value="romance">💑 Romance & Connection</option>
+                                <option value="funny">😂 Funny Moments</option>
+                                <option value="spiritual">🙏 Spiritual Journeys</option>
+                                <option value="food-culture">🍜 Food & Culture</option>
+                                <option value="solo-travel">🎒 Solo Travel</option>
+                                <option value="family">👨‍👩‍👧‍👦 Family Tales</option>
+                                <option value="life-changing">🌟 Life Changing</option>
+                            </select>
+                            <select class="tales-filter-select" id="routeFilterTales" onchange="filterStories()">
+                                <option value="all">All Routes</option>
+                                <option value="HT-101">HT-101</option>
+                                <option value="HT-102">HT-102</option>
+                                <option value="HT-103">HT-103</option>
+                                <option value="HT-104">HT-104</option>
+                                <option value="HT-105">HT-105</option>
+                                <option value="HT-106">HT-106</option>
+                                <option value="HT-107">HT-107</option>
+                                <option value="HT-108">HT-108</option>
+                            </select>
+                            <select class="tales-filter-select" id="sortTales" onchange="sortStories()">
+                                <option value="latest">Latest First</option>
+                                <option value="popular">Most Popular</option>
+                                <option value="trending">Trending</option>
+                                <option value="oldest">Oldest First</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Pills -->
+                <div class="category-pills-container">
+                    <button class="category-pill active" data-category="all" onclick="filterByCategory('all')">
+                        All Stories
+                    </button>
+                    <button class="category-pill" data-category="mountain-adventures" onclick="filterByCategory('mountain-adventures')">
+                        🏔️ Mountains
+                    </button>
+                    <button class="category-pill" data-category="romance" onclick="filterByCategory('romance')">
+                        💑 Romance
+                    </button>
+                    <button class="category-pill" data-category="funny" onclick="filterByCategory('funny')">
+                        😂 Funny
+                    </button>
+                    <button class="category-pill" data-category="spiritual" onclick="filterByCategory('spiritual')">
+                        🙏 Spiritual
+                    </button>
+                    <button class="category-pill" data-category="food-culture" onclick="filterByCategory('food-culture')">
+                        🍜 Food
+                    </button>
+                    <button class="category-pill" data-category="solo-travel" onclick="filterByCategory('solo-travel')">
+                        🎒 Solo
+                    </button>
+                    <button class="category-pill" data-category="family" onclick="filterByCategory('family')">
+                        👨‍👩‍👧‍👦 Family
+                    </button>
+                </div>
+
+                <!-- Stories Grid -->
+                <div class="stories-grid" id="storiesGrid">
+                    <!-- Dynamically populated -->
+                </div>
+
+                <!-- Load More -->
+                <div class="load-more-tales" id="loadMoreTales">
+                    <button class="load-more-btn" onclick="loadMoreStories()">
+                        <i class="fas fa-chevron-down"></i>
+                        Load More Stories
+                    </button>
+                </div>
+
             </div>
         </section>
+    </div>
+
+    <!-- Story Editor Modal -->
+    <div class="story-editor-modal" id="storyEditorModal" style="display: none;">
+        <div class="story-editor-overlay" onclick="closeStoryEditor()"></div>
+        <div class="story-editor-content">
+            <button class="story-editor-close" onclick="closeStoryEditor()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="story-editor-title">
+                <i class="fas fa-pen"></i>
+                Share Your Travel Story
+            </h3>
+            <form class="story-editor-form" id="storyEditorForm">
+                <div class="form-group">
+                    <label>Story Title *</label>
+                    <input type="text" id="storyTitle" class="form-control" 
+                           placeholder="Give your story a captivating title..." maxlength="100">
+                    <div class="char-count"><span id="titleCount">0</span>/100</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Subtitle</label>
+                    <input type="text" id="storySubtitle" class="form-control" 
+                           placeholder="A brief description of your tale..." maxlength="150">
+                    <div class="char-count"><span id="subtitleCount">0</span>/150</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Your Story *</label>
+                    <textarea id="storyContent" class="form-control story-textarea" rows="12"
+                              placeholder="Write your story here... Share your experience, emotions, and the moments that made this journey special."></textarea>
+                    <div class="story-meta-info">
+                        <span class="char-count"><span id="contentCount">0</span> characters</span>
+                        <span class="read-time">Reading time: <span id="readingTime">0</span> min</span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Route *</label>
+                        <select id="storyRoute" class="form-control">
+                            <option value="">Select a route</option>
+                            <option value="HT-101">HT-101: Dharampur → Solan</option>
+                            <option value="HT-102">HT-102: Solan → Barog</option>
+                            <option value="HT-103">HT-103: Barog → Dagshai</option>
+                            <option value="HT-104">HT-104: Dagshai → Dharampur</option>
+                            <option value="HT-105">HT-105: Dharampur → Solan (Deluxe)</option>
+                            <option value="HT-106">HT-106: Dharampur → Solan (Premium)</option>
+                            <option value="HT-107">HT-107: Solan → Barog</option>
+                            <option value="HT-108">HT-108: Barog → Dagshai (Deluxe)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select id="storyCategory" class="form-control">
+                            <option value="">Select a category</option>
+                            <option value="mountain-adventures">🏔️ Mountain Adventures</option>
+                            <option value="romance">💑 Romance & Connection</option>
+                            <option value="funny">😂 Funny Moments</option>
+                            <option value="spiritual">🙏 Spiritual Journeys</option>
+                            <option value="food-culture">🍜 Food & Culture</option>
+                            <option value="solo-travel">🎒 Solo Travel</option>
+                            <option value="family">👨‍👩‍👧‍👦 Family Tales</option>
+                            <option value="life-changing">🌟 Life Changing</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Featured Image (Optional)</label>
+                    <div class="image-upload-area" onclick="document.getElementById('storyImage').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Click to upload image</p>
+                        <small>JPG, PNG up to 5MB</small>
+                    </div>
+                    <input type="file" id="storyImage" accept="image/*" style="display: none;">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-save-draft" onclick="saveStoryDraft()">
+                        <i class="fas fa-save"></i>
+                        Save Draft
+                    </button>
+                    <button type="button" class="btn-publish-story" onclick="publishStory()">
+                        <i class="fas fa-paper-plane"></i>
+                        Publish Story
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Story Detail Modal -->
+    <div class="story-detail-modal" id="storyDetailModal" style="display: none;">
+        <div class="story-detail-overlay" onclick="closeStoryDetail()"></div>
+        <div class="story-detail-content">
+            <button class="story-detail-close" onclick="closeStoryDetail()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="storyDetailBody">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
     </div>
 
     <!-- ============================================
