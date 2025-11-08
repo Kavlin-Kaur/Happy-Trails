@@ -1426,6 +1426,11 @@ def travel_companions():
     
     return render_template('features/travel_companions.html')
 
+@app.route('/copyright')
+def copyright_notice():
+    """Copyright notice page"""
+    return render_template('footer/copyright.html')
+
 # Run the application
 if __name__ == '__main__':
     # Use SQLite for local development
