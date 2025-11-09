@@ -63,6 +63,7 @@
             color: var(--charcoal);
             background: var(--cream);
             overflow-x: hidden;
+            padding-bottom: 100px;
         }
 
         /* ============================================
@@ -93,6 +94,218 @@
                 transform: translateY(0);
             }
         }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ============================================
+           TABLE OF CONTENTS (TOC)
+           ============================================ */
+        .toc-sidebar {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            border-radius: 20px;
+            padding: 20px 15px;
+            box-shadow: var(--shadow-medium);
+            z-index: 999;
+            max-width: 250px;
+            max-height: 80vh;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .toc-sidebar.show {
+            display: block;
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        .toc-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--deep-yellow);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .toc-item {
+            display: block;
+            padding: 8px 12px;
+            color: var(--medium-gray);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: var(--transition-smooth);
+            border-radius: 10px;
+            margin-bottom: 5px;
+            border-left: 3px solid transparent;
+        }
+
+        .toc-item:hover {
+            background: rgba(255, 215, 0, 0.2);
+            color: var(--deep-yellow);
+            border-left-color: var(--primary-yellow);
+            padding-left: 15px;
+        }
+
+        .toc-item.active {
+            background: var(--gradient-sunrise);
+            color: white;
+            border-left-color: var(--deep-yellow);
+        }
+
+        /* Progress Bar */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: var(--gradient-sunrise);
+            z-index: 10001;
+            transition: width 0.2s ease-out;
+        }
+
+        /* ============================================
+           ACCEPTANCE MODAL
+           ============================================ */
+        .acceptance-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .acceptance-modal.show {
+            display: flex;
+        }
+
+        .acceptance-content {
+            background: white;
+            border-radius: 30px;
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            box-shadow: var(--shadow-strong);
+            border: 3px solid var(--primary-yellow);
+            text-align: center;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .acceptance-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .acceptance-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: var(--deep-yellow);
+            margin-bottom: 15px;
+        }
+
+        .acceptance-text {
+            color: var(--medium-gray);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .acceptance-checkbox-container {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .acceptance-checkbox-container:hover {
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        .acceptance-checkbox-container input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        .acceptance-checkbox-container label {
+            font-weight: 600;
+            color: var(--charcoal);
+            cursor: pointer;
+            flex: 1;
+            text-align: left;
+        }
+
+        .acceptance-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .accept-btn, .decline-btn {
+            padding: 15px 35px;
+            border-radius: 30px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            font-size: 1rem;
+        }
+
+        .accept-btn {
+            background: var(--gradient-sunrise);
+            color: white;
+            box-shadow: var(--shadow-medium);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .accept-btn.enabled {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .accept-btn.enabled:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .decline-btn {
+            background: white;
+            color: var(--medium-gray);
+            border: 2px solid var(--medium-gray);
+        }
+
+        .decline-btn:hover {
+            background: var(--medium-gray);
+            color: white;
+        }
+
+        /* [Previous CSS from Phase 1 continues...] */
 
         /* ============================================
            HEADER
@@ -534,7 +747,7 @@
 
         /* Print Styles */
         @media print {
-            .header, .print-btn {
+            .header, .print-btn, .toc-sidebar, .reading-progress, .acceptance-modal {
                 display: none !important;
             }
 
@@ -549,6 +762,12 @@
         }
 
         /* Responsive Design */
+        @media (max-width: 1200px) {
+            .toc-sidebar {
+                display: none !important;
+            }
+        }
+
         @media (max-width: 992px) {
             .hero-title {
                 font-size: 3rem;
@@ -597,6 +816,14 @@
                 width: 100%;
                 justify-content: center;
             }
+
+            .acceptance-content {
+                padding: 30px 20px;
+            }
+
+            .acceptance-title {
+                font-size: 2rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -623,6 +850,55 @@
     </style>
 </head>
 <body>
+
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <!-- Table of Contents Sidebar -->
+    <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">Table of Contents</div>
+        <a href="#acceptance" class="toc-item">1. Acceptance</a>
+        <a href="#definitions" class="toc-item">2. Definitions</a>
+        <a href="#eligibility" class="toc-item">3. Eligibility</a>
+        <a href="#account" class="toc-item">4. Account</a>
+        <a href="#booking" class="toc-item">5. Booking</a>
+        <a href="#payment" class="toc-item">6. Payment</a>
+        <a href="#cancellation" class="toc-item">7. Cancellation</a>
+        <a href="#obligations" class="toc-item">8. Obligations</a>
+        <a href="#prohibited" class="toc-item">9. Prohibited</a>
+        <a href="#ip" class="toc-item">10. IP Rights</a>
+        <a href="#liability" class="toc-item">11. Liability</a>
+        <a href="#disputes" class="toc-item">12. Disputes</a>
+        <a href="#termination" class="toc-item">13. Termination</a>
+        <a href="#changes" class="toc-item">14. Changes</a>
+        <a href="#contact" class="toc-item">15. Contact</a>
+    </nav>
+
+    <!-- Acceptance Modal -->
+    <div class="acceptance-modal" id="acceptanceModal">
+        <div class="acceptance-content">
+            <div class="acceptance-icon">📜</div>
+            <h2 class="acceptance-title">Terms of Service Agreement</h2>
+            <p class="acceptance-text">
+                Before using Happy Trails, please review and accept our Terms of Service. 
+                These terms govern your use of our platform and services.
+            </p>
+            <div class="acceptance-checkbox-container">
+                <input type="checkbox" id="acceptTermsCheck">
+                <label for="acceptTermsCheck">
+                    I have read and agree to the Happy Trails Terms of Service
+                </label>
+            </div>
+            <div class="acceptance-buttons">
+                <button class="accept-btn" id="acceptBtn">
+                    <i class="fas fa-check"></i> Accept & Continue
+                </button>
+                <button class="decline-btn" onclick="window.location.href='/'">
+                    <i class="fas fa-times"></i> Decline
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Header -->
     <header class="header">
@@ -661,12 +937,14 @@
                 </div>
                 <div class="version-info">
                     <i class="fas fa-clock"></i>
-                    Effective: November 3, 2025
+                    Effective: January 1, 2025
                 </div>
             </div>
         </section>
 
-        <!-- Acceptance of Terms -->
+        <!-- [All Phase 1 sections: Acceptance, Definitions, Eligibility - keeping them exactly as before] -->
+
+        <!-- 1. Acceptance of Terms -->
         <section class="content-section" id="acceptance">
             <div class="section-header">
                 <i class="fas fa-handshake section-icon"></i>
@@ -711,7 +989,7 @@
             </div>
         </section>
 
-        <!-- Definitions -->
+        <!-- 2. Definitions -->
         <section class="content-section" id="definitions">
             <div class="section-header">
                 <i class="fas fa-book section-icon"></i>
@@ -825,7 +1103,7 @@
             </div>
         </section>
 
-        <!-- User Eligibility -->
+        <!-- 3. User Eligibility -->
         <section class="content-section" id="eligibility">
             <div class="section-header">
                 <i class="fas fa-user-check section-icon"></i>
@@ -896,13 +1174,870 @@
             </div>
         </section>
 
-        <!-- [Continue with more sections in next message due to length...] -->
+        <!-- [NEW PHASE 2 SECTIONS START HERE] -->
 
-        <!-- Contact Information -->
-        <section class="content-section">
+        <!-- 4. Account Registration -->
+        <section class="content-section" id="account">
+            <div class="section-header">
+                <i class="fas fa-user-plus section-icon"></i>
+                <h2 class="section-title">4. Account Registration & Security</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    Creating an account with Happy Trails provides access to enhanced features and personalized services:
+                </p>
+
+                <div class="terms-list">
+                    <div class="term-item">
+                        <div class="term-title">Account Creation</div>
+                        <div class="term-desc">
+                            You may create an account by providing a valid email address, phone number, and password. 
+                            You are responsible for maintaining the confidentiality of your login credentials and 
+                            for all activities that occur under your account.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Account Security</div>
+                        <div class="term-desc">
+                            You must immediately notify us of any unauthorized use of your account or any security 
+                            breach. We are not liable for losses caused by unauthorized use of your account, 
+                            whether with or without your knowledge.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Account Information</div>
+                        <div class="term-desc">
+                            You agree to provide accurate and complete information and to keep your account information 
+                            updated. We reserve the right to suspend or terminate accounts with false, inaccurate, 
+                            or incomplete information.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">One Account Per User</div>
+                        <div class="term-desc">
+                            You may only create one account per person. Creating multiple accounts to circumvent 
+                            restrictions, abuse promotions, or engage in fraudulent activity is prohibited and may 
+                            result in permanent ban.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Account Deletion</div>
+                        <div class="term-desc">
+                            You may delete your account at any time through account settings. Upon deletion, your 
+                            personal data will be removed as per our Privacy Policy, but booking history and 
+                            transaction records will be retained for legal and accounting purposes.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Account Transfer</div>
+                        <div class="term-desc">
+                            Accounts are non-transferable. You may not sell, transfer, or assign your account to 
+                            any third party without our prior written consent.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Booking Terms & Conditions -->
+        <section class="content-section" id="booking">
+            <div class="section-header">
+                <i class="fas fa-calendar-check section-icon"></i>
+                <h2 class="section-title">5. Booking Terms & Conditions</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    All bookings made through Happy Trails are subject to the following terms:
+                </p>
+
+                <div class="terms-list">
+                    <div class="term-item">
+                        <div class="term-title">Booking Confirmation</div>
+                        <div class="term-desc">
+                            A booking is confirmed only upon successful payment and receipt of a confirmation email/SMS. 
+                            Seat availability is subject to real-time inventory and is not guaranteed until confirmed.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Pricing & Fares</div>
+                        <div class="term-desc">
+                            Fares are displayed in Indian Rupees (INR) and may vary based on route, season, demand, 
+                            seat type, and time of booking. Prices are final at the time of booking confirmation and 
+                            are not subject to retroactive changes.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Seat Selection</div>
+                        <div class="term-desc">
+                            While we attempt to honor seat preferences, specific seat assignments are not guaranteed. 
+                            Seats may be reassigned due to operational requirements, vehicle changes, or safety considerations.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Booking Modifications</div>
+                        <div class="term-desc">
+                            Modifications to bookings (date, time, route changes) are subject to availability and may 
+                            incur additional charges. Modifications must be made at least 24 hours before departure, 
+                            subject to our modification policy.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Travel Documents</div>
+                        <div class="term-desc">
+                            You must carry a valid government-issued photo ID and your booking confirmation (digital 
+                            or printed) for boarding. Failure to present required documents may result in denied boarding 
+                            without refund.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Baggage Allowance</div>
+                        <div class="term-desc">
+                            Each passenger is entitled to one checked bag (up to 20kg) and one carry-on item (up to 5kg). 
+                            Excess or oversized baggage is subject to additional fees and acceptance based on available 
+                            space.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Schedule Changes</div>
+                        <div class="term-desc">
+                            We reserve the right to modify schedules, routes, or substitute vehicles due to operational 
+                            requirements, weather, road conditions, or force majeure events. We will attempt to notify 
+                            you of significant changes in advance.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">No-Show Policy</div>
+                        <div class="term-desc">
+                            If you fail to board at the scheduled departure time without prior cancellation, your booking 
+                            will be treated as a "no-show" and no refund will be provided. We recommend arriving at least 
+                            15 minutes before departure.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box important">
+                    <div class="info-box-title">
+                        <i class="fas fa-clock"></i>
+                        Punctuality is Important
+                    </div>
+                    <p>
+                        Buses depart on schedule. Late arrivals may result in missed departure without refund. 
+                        We recommend arriving 15-20 minutes early, especially during peak seasons or for new routes.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Payment Terms -->
+        <section class="content-section" id="payment">
+            <div class="section-header">
+                <i class="fas fa-credit-card section-icon"></i>
+                <h2 class="section-title">6. Payment Terms</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    All payments for Happy Trails services are subject to the following terms:
+                </p>
+
+                <div class="terms-list">
+                    <div class="term-item">
+                        <div class="term-title">Payment Methods</div>
+                        <div class="term-desc">
+                            We accept credit/debit cards (Visa, Mastercard, RuPay), UPI, net banking, digital wallets, 
+                            and other payment methods as displayed at checkout. All payments must be made in Indian Rupees (INR).
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Payment Processing</div>
+                        <div class="term-desc">
+                            Payments are processed through secure third-party payment gateways. We do not store complete 
+                            credit card information on our servers. Transaction security is subject to the policies of 
+                            the payment processor.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Payment Confirmation</div>
+                        <div class="term-desc">
+                            You will receive a payment confirmation and booking receipt via email and SMS upon successful 
+                            transaction. If payment fails, your booking will not be confirmed. Please retry or contact 
+                            customer support.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Pricing Errors</div>
+                        <div class="term-desc">
+                            In the event of a pricing error or system glitch, we reserve the right to cancel bookings 
+                            and issue full refunds. We are not obligated to honor obviously incorrect prices caused by 
+                            technical errors.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Taxes & Fees</div>
+                        <div class="term-desc">
+                            All prices include applicable taxes (GST) and service fees. The total amount displayed at 
+                            checkout is the final amount payable. No hidden fees will be charged.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Currency</div>
+                        <div class="term-desc">
+                            All transactions are processed in Indian Rupees (INR). If your payment method is in a different 
+                            currency, conversion rates and foreign transaction fees are determined by your bank or payment 
+                            provider.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Invoices & Receipts</div>
+                        <div class="term-desc">
+                            GST-compliant invoices are available for download from your account dashboard after payment. 
+                            Keep receipts for your records and for claiming any applicable tax deductions or reimbursements.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box success">
+                    <div class="info-box-title">
+                        <i class="fas fa-lock"></i>
+                        Secure Payments
+                    </div>
+                    <p>
+                        All payment transactions are encrypted using industry-standard SSL/TLS protocols. We are 
+                        PCI-DSS compliant and work with trusted payment gateways to ensure your financial information 
+                        is protected.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Cancellation & Refund Policy -->
+        <section class="content-section" id="cancellation">
+            <div class="section-header">
+                <i class="fas fa-undo section-icon"></i>
+                <h2 class="section-title">7. Cancellation & Refund Policy</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    Our cancellation and refund policy is designed to be fair to both passengers and operations:
+                </p>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: var(--deep-yellow);">
+                    <i class="fas fa-calendar-times"></i> Cancellation by Passenger
+                </h3>
+
+                <div class="terms-list">
+                    <div class="term-item">
+                        <div class="term-title">More than 48 hours before departure</div>
+                        <div class="term-desc">
+                            Full refund minus 10% processing fee
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">24-48 hours before departure</div>
+                        <div class="term-desc">
+                            50% refund of fare amount
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Less than 24 hours before departure</div>
+                        <div class="term-desc">
+                            No refund (full fare forfeited)
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">No-show</div>
+                        <div class="term-desc">
+                            No refund (full fare forfeited)
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: var(--deep-yellow);">
+                    <i class="fas fa-bus-alt"></i> Cancellation by Happy Trails
+                </h3>
+
+                <p>
+                    If we cancel a trip due to operational reasons, mechanical failure, or insufficient bookings:
+                </p>
+
+                <ul>
+                    <li><strong>Full refund</strong> of the fare amount within 7-10 business days</li>
+                    <li><strong>Alternative arrangements</strong> on the next available departure (if desired)</li>
+                    <li><strong>Notification</strong> via email and SMS as soon as possible</li>
+                </ul>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: var(--deep-yellow);">
+                    <i class="fas fa-cloud-rain"></i> Weather & Force Majeure
+                </h3>
+
+                <p>
+                    For cancellations due to weather, natural disasters, government orders, or force majeure events:
+                </p>
+
+                <ul>
+                    <li>Credit voucher valid for 12 months, <strong>OR</strong></li>
+                    <li>Rescheduling to next available date at no extra charge, <strong>OR</strong></li>
+                    <li>Refund of 80% of fare amount (20% retention for processing)</li>
+                </ul>
+
+                <div class="info-box important">
+                    <div class="info-box-title">
+                        <i class="fas fa-clock"></i>
+                        Refund Processing Time
+                    </div>
+                    <p>
+                        Approved refunds are processed within 7-14 business days. Actual credit to your account 
+                        depends on your bank or payment provider and may take an additional 3-5 business days. 
+                        We are not responsible for delays caused by banks or financial institutions.
+                    </p>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: var(--deep-yellow);">
+                    <i class="fas fa-ban"></i> Non-Refundable Bookings
+                </h3>
+
+                <p>
+                    Certain promotional, discounted, or special offer tickets may be non-refundable. These will be 
+                    clearly marked at the time of booking. Non-refundable tickets cannot be cancelled for any refund 
+                    but may be eligible for rescheduling (subject to availability and fees).
+                </p>
+            </div>
+        </section>
+
+        <!-- 8. User Obligations -->
+        <section class="content-section" id="obligations">
+            <div class="section-header">
+                <i class="fas fa-tasks section-icon"></i>
+                <h2 class="section-title">8. User Obligations & Conduct</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    As a passenger using Happy Trails, you agree to the following obligations:
+                </p>
+
+                <div class="terms-list">
+                    <div class="term-item">
+                        <div class="term-title">Timely Arrival</div>
+                        <div class="term-desc">
+                            Arrive at the departure point at least 15 minutes before scheduled departure time. 
+                            Late arrivals will not delay departure and no refund will be provided.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Valid Documentation</div>
+                        <div class="term-desc">
+                            Carry valid government-issued photo identification and booking confirmation. Present 
+                            these documents when requested by staff or authorities.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Respectful Behavior</div>
+                        <div class="term-desc">
+                            Treat fellow passengers, staff, and drivers with respect and courtesy. Abusive, 
+                            threatening, or harassing behavior will result in immediate removal without refund.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Safety Compliance</div>
+                        <div class="term-desc">
+                            Follow all safety instructions, wear seatbelts when provided, and comply with driver 
+                            directions. Do not distract the driver or interfere with vehicle operations.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Baggage Responsibility</div>
+                        <div class="term-desc">
+                            You are responsible for your personal belongings at all times. Do not leave valuables 
+                            unattended. We are not liable for lost, stolen, or damaged personal items.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Cleanliness</div>
+                        <div class="term-desc">
+                            Help maintain vehicle cleanliness. Use provided waste bins and do not litter. Avoid 
+                            consuming foods with strong odors or messy preparations.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Noise Levels</div>
+                        <div class="term-desc">
+                            Keep conversations and media at reasonable volumes. Use headphones for audio devices. 
+                            Respect other passengers' comfort and right to a peaceful journey.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Health & Hygiene</div>
+                        <div class="term-desc">
+                            If you are ill or exhibit symptoms of contagious illness, please reschedule your trip. 
+                            We reserve the right to deny boarding to passengers who pose health risks to others.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Accurate Information</div>
+                        <div class="term-desc">
+                            Provide accurate contact information for emergency purposes. Notify us immediately of 
+                            any changes to your booking details or special requirements.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Compliance with Laws</div>
+                        <div class="term-desc">                            Comply with all applicable laws, regulations, and local ordinances during travel. 
+                            You are responsible for obtaining necessary permits for restricted areas.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box important">
+                    <div class="info-box-title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Violation Consequences
+                    </div>
+                    <p>
+                        Failure to comply with these obligations may result in denied boarding, removal from service, 
+                        account suspension, and forfeiture of fares without refund. Serious violations may be reported 
+                        to law enforcement authorities.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. Prohibited Activities -->
+        <section class="content-section" id="prohibited">
+            <div class="section-header">
+                <i class="fas fa-ban section-icon"></i>
+                <h2 class="section-title">9. Prohibited Activities</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    The following activities are strictly prohibited and may result in immediate termination of service:
+                </p>
+
+                <div class="terms-list">
+                    <div class="term-item">
+                        <div class="term-title">Smoking & Vaping</div>
+                        <div class="term-desc">
+                            Smoking cigarettes, e-cigarettes, vaping, or use of any tobacco products inside vehicles 
+                            is strictly prohibited. Designated stops may allow smoking outside the vehicle.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Alcohol & Drugs</div>
+                        <div class="term-desc">
+                            Consumption of alcohol or use of illegal drugs on board is prohibited. Boarding while 
+                            intoxicated or under the influence of substances will result in denied boarding.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Weapons & Dangerous Items</div>
+                        <div class="term-desc">
+                            Carrying firearms, explosives, weapons, flammable materials, or any dangerous items is 
+                            strictly prohibited. This includes items that could reasonably be used as weapons.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Harassment & Discrimination</div>
+                        <div class="term-desc">
+                            Any form of harassment, discrimination, bullying, or offensive behavior based on race, 
+                            gender, religion, sexuality, age, or disability is strictly prohibited and will result 
+                            in immediate removal.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Tampering with Equipment</div>
+                        <div class="term-desc">
+                            Tampering with safety equipment, emergency exits, vehicle controls, or any operational 
+                            systems is prohibited and may result in legal action and liability for damages.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Fraudulent Bookings</div>
+                        <div class="term-desc">
+                            Using stolen payment methods, fake identities, or engaging in booking fraud will result 
+                            in account termination, legal action, and reporting to authorities.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Reselling Tickets</div>
+                        <div class="term-desc">
+                            Unauthorized resale of tickets at inflated prices (scalping) is prohibited. Tickets 
+                            are for personal use only and may not be commercially resold without authorization.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Recording Without Consent</div>
+                        <div class="term-desc">
+                            Recording video or audio of other passengers, staff, or drivers without their explicit 
+                            consent violates privacy rights and is prohibited.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Commercial Use</div>
+                        <div class="term-desc">
+                            Using our services for unauthorized commercial purposes, advertising, or solicitation 
+                            is prohibited without prior written agreement.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">System Abuse</div>
+                        <div class="term-desc">
+                            Attempting to hack, exploit, or abuse our website, booking system, or payment processes 
+                            will result in account termination and potential legal action.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">False Claims</div>
+                        <div class="term-desc">
+                            Making false damage claims, fraudulent refund requests, or dishonest complaints constitutes 
+                            fraud and will be prosecuted to the fullest extent of the law.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Disruptive Behavior</div>
+                        <div class="term-desc">
+                            Creating disturbances, excessive noise, fighting, or any behavior that disrupts the journey 
+                            for other passengers will result in removal without refund.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box important">
+                    <div class="info-box-title">
+                        <i class="fas fa-gavel"></i>
+                        Legal Consequences
+                    </div>
+                    <p>
+                        Violations of these prohibitions may result in legal action, criminal prosecution, civil 
+                        liability, and permanent ban from Happy Trails services. We cooperate fully with law 
+                        enforcement agencies in investigating illegal activities.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. Intellectual Property Rights -->
+        <section class="content-section" id="ip">
+            <div class="section-header">
+                <i class="fas fa-copyright section-icon"></i>
+                <h2 class="section-title">10. Intellectual Property Rights</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    All content and materials on the Happy Trails platform are protected by intellectual property laws:
+                </p>
+
+                <div class="terms-list">
+                    <div class="term-item">
+                        <div class="term-title">Ownership</div>
+                        <div class="term-desc">
+                            All trademarks, logos, service marks, trade names, website content, software, designs, 
+                            graphics, text, and other materials are owned by or licensed to Happy Trails and are 
+                            protected by copyright, trademark, and other intellectual property laws.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Limited License</div>
+                        <div class="term-desc">
+                            You are granted a limited, non-exclusive, non-transferable license to access and use 
+                            the Service for personal, non-commercial purposes only. This license does not include 
+                            any right to reproduce, distribute, or create derivative works.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Restrictions</div>
+                        <div class="term-desc">
+                            You may not copy, modify, distribute, sell, lease, sublicense, or reverse engineer any 
+                            part of our Service without prior written permission. Unauthorized use may violate 
+                            copyright, trademark, and other laws.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">User Content</div>
+                        <div class="term-desc">
+                            By submitting reviews, photos, comments, or other content to Happy Trails, you grant 
+                            us a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, and 
+                            display such content for promotional and operational purposes.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box info">
+                    <div class="info-box-title">
+                        <i class="fas fa-trademark"></i>
+                        Trademark Notice
+                    </div>
+                    <p>
+                        "Happy Trails", the Happy Trails logo, and related marks are trademarks of Happy Trails 
+                        Bus Service. All other trademarks, product names, and company names mentioned are the 
+                        property of their respective owners.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 11. Limitation of Liability -->
+        <section class="content-section" id="liability">
+            <div class="section-header">
+                <i class="fas fa-shield-alt section-icon"></i>
+                <h2 class="section-title">11. Limitation of Liability</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    To the maximum extent permitted by law, Happy Trails' liability is limited as follows:
+                </p>
+
+                <div class="terms-list">
+                    <div class="term-item">
+                        <div class="term-title">Service "As Is"</div>
+                        <div class="term-desc">
+                            The Service is provided "as is" and "as available" without warranties of any kind, either 
+                            express or implied, including but not limited to warranties of merchantability, fitness 
+                            for a particular purpose, or non-infringement.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Indirect Damages</div>
+                        <div class="term-desc">
+                            Happy Trails shall not be liable for indirect, incidental, special, consequential, or 
+                            punitive damages, including loss of profits, data, or goodwill, even if advised of the 
+                            possibility of such damages.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Maximum Liability</div>
+                        <div class="term-desc">
+                            Our total liability for any claims arising from or related to your use of the Service 
+                            shall not exceed the amount you paid for the specific booking giving rise to the claim, 
+                            or ₹5,000, whichever is less.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Third-Party Services</div>
+                        <div class="term-desc">
+                            We are not responsible for the actions, content, or services of third-party providers, 
+                            payment processors, or external websites linked from our platform.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Force Majeure</div>
+                        <div class="term-desc">
+                            Happy Trails shall not be liable for failure or delay in performance due to circumstances 
+                            beyond our reasonable control, including acts of God, natural disasters, government actions, 
+                            strikes, pandemics, or other force majeure events.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box important">
+                    <div class="info-box-title">
+                        <i class="fas fa-balance-scale"></i>
+                        Jurisdiction Variations
+                    </div>
+                    <p>
+                        Some jurisdictions do not allow the exclusion of certain warranties or limitation of liability 
+                        for incidental or consequential damages. In such jurisdictions, our liability is limited to 
+                        the greatest extent permitted by law.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 12. Dispute Resolution -->
+        <section class="content-section" id="disputes">
+            <div class="section-header">
+                <i class="fas fa-gavel section-icon"></i>
+                <h2 class="section-title">12. Dispute Resolution</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    Any disputes arising from these Terms or your use of the Service shall be resolved as follows:
+                </p>
+
+                <div class="terms-list">
+                    <div class="term-item">
+                        <div class="term-title">Informal Resolution</div>
+                        <div class="term-desc">
+                            Before initiating formal proceedings, you agree to contact our customer service team to 
+                            attempt informal resolution. We are committed to resolving disputes fairly and amicably.
+                            Email us at legal@happytrails.com with details of your concern.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Arbitration</div>
+                        <div class="term-desc">
+                            If informal resolution fails, disputes shall be resolved through binding arbitration under 
+                            the Arbitration and Conciliation Act, 1996. The arbitration shall be conducted in Shimla, 
+                            Himachal Pradesh, in English, by a single arbitrator mutually agreed upon.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Governing Law & Jurisdiction</div>
+                        <div class="term-desc">
+                            These Terms shall be governed by the laws of India. Any legal action or proceeding arising 
+                            out of these Terms shall be brought exclusively in the courts of Shimla, Himachal Pradesh, 
+                            India, and you consent to the jurisdiction of such courts.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box info">
+                    <div class="info-box-title">
+                        <i class="fas fa-handshake"></i>
+                        Consumer Rights
+                    </div>
+                    <p>
+                        Nothing in these Terms limits your statutory consumer rights under the Consumer Protection 
+                        Act, 2019, or other applicable consumer protection laws. You may approach consumer forums 
+                        as provided by law.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 13. Termination -->
+        <section class="content-section" id="termination">
+            <div class="section-header">
+                <i class="fas fa-door-open section-icon"></i>
+                <h2 class="section-title">13. Termination</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    Happy Trails reserves the right to suspend or terminate your access to the Service:
+                </p>
+
+                <div class="terms-list">
+                    <div class="term-item">
+                        <div class="term-title">Termination by You</div>
+                        <div class="term-desc">
+                            You may terminate your account at any time by contacting customer service or through 
+                            account settings. Upon termination, your access to the Service will cease, but these 
+                            Terms will continue to apply to any prior use.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Termination by Happy Trails</div>
+                        <div class="term-desc">
+                            We may suspend or terminate your account immediately, without prior notice, for violations 
+                            of these Terms, fraudulent activity, abusive behavior, or any conduct that we deem harmful 
+                            to our business or other users.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Effect of Termination</div>
+                        <div class="term-desc">
+                            Upon termination, your right to use the Service ceases immediately. Any outstanding bookings 
+                            will be subject to our cancellation policy. We may retain certain information as required 
+                            by law or for legitimate business purposes.
+                        </div>
+                    </div>
+
+                    <div class="term-item">
+                        <div class="term-title">Survival</div>
+                        <div class="term-desc">
+                            Provisions regarding intellectual property, limitation of liability, indemnification, and 
+                            dispute resolution shall survive termination of these Terms.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 14. Changes to Terms -->
+        <section class="content-section" id="changes">
+            <div class="section-header">
+                <i class="fas fa-edit section-icon"></i>
+                <h2 class="section-title">14. Changes to Terms</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    We reserve the right to modify these Terms at any time:
+                </p>
+
+                <div class="info-box important">
+                    <div class="info-box-title">
+                        <i class="fas fa-bell"></i>
+                        Notification of Changes
+                    </div>
+                    <p>
+                        When we make changes to these Terms, we will:
+                    </p>
+                    <ul style="margin-top: 10px;">
+                        <li>Update the "Effective Date" at the top of this page</li>
+                        <li>Notify registered users via email for material changes</li>
+                        <li>Display a prominent notice on our homepage for 30 days</li>
+                        <li>Archive previous versions for your reference</li>
+                    </ul>
+                </div>
+
+                <p>
+                    <strong>Your continued use of the Service after changes become effective constitutes acceptance 
+                    of the modified Terms.</strong> If you do not agree to the changes, you must stop using the 
+                    Service and may request account deletion.
+                </p>
+
+                <p style="margin-top: 20px;">
+                    For significant changes that materially affect your rights or obligations, we will provide at 
+                    least 30 days' notice before the changes take effect. You will have the opportunity to review 
+                    and accept the new Terms or discontinue using the Service.
+                </p>
+            </div>
+        </section>
+
+        <!-- 15. Contact Information -->
+        <section class="content-section" id="contact">
             <div class="section-header">
                 <i class="fas fa-headset section-icon"></i>
-                <h2 class="section-title">Questions About These Terms?</h2>
+                <h2 class="section-title">15. Questions About These Terms?</h2>
             </div>
             <div class="section-content">
                 <p>
@@ -937,11 +2072,20 @@
                     </div>
 
                     <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <strong>Support Hours:</strong><br>
+                            Monday - Sunday: 8:00 AM - 8:00 PM IST
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
-                            <strong>Office Address:</strong><br>
+                            <strong>Registered Office:</strong><br>
                             Happy Trails Bus Service<br>
-                            Dharampur, Himachal Pradesh, India
+                            Dharampur, Himachal Pradesh 171202<br>
+                            India
                         </div>
                     </div>
                 </div>
@@ -979,7 +2123,142 @@
     </footer>
 
     <script>
-        // Smooth Scroll for Internal Links
+        // ============================================
+        // ACCEPTANCE MODAL SYSTEM
+        // ============================================
+
+        window.addEventListener('DOMContentLoaded', function() {
+            const accepted = localStorage.getItem('ht_terms_accepted');
+            
+            if (!accepted) {
+                setTimeout(() => {
+                    document.getElementById('acceptanceModal').classList.add('show');
+                }, 1500);
+            }
+
+            // Show TOC and progress after scroll
+            window.addEventListener('scroll', () => {
+                updateReadingProgress();
+                
+                if (window.scrollY > 500) {
+                    document.getElementById('tocSidebar').classList.add('show');
+                } else {
+                    document.getElementById('tocSidebar').classList.remove('show');
+                }
+            });
+
+            // Initialize TOC active item tracking
+            updateActiveTOCItem();
+            window.addEventListener('scroll', updateActiveTOCItem);
+
+            // Setup checkbox listener
+            const checkbox = document.getElementById('acceptTermsCheck');
+            const acceptBtn = document.getElementById('acceptBtn');
+            
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    acceptBtn.classList.add('enabled');
+                } else {
+                    acceptBtn.classList.remove('enabled');
+                }
+            });
+
+            // Accept button click
+            acceptBtn.addEventListener('click', function() {
+                if (!checkbox.checked) return;
+                
+                localStorage.setItem('ht_terms_accepted', 'true');
+                localStorage.setItem('ht_terms_accepted_date', new Date().toISOString());
+                localStorage.setItem('ht_terms_version', '2.1');
+                
+                document.getElementById('acceptanceModal').classList.remove('show');
+                showToast('Thank you for accepting our Terms of Service! ✓', 3000);
+            });
+        });
+
+        // ============================================
+        // READING PROGRESS
+        // ============================================
+
+        function updateReadingProgress() {
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight - windowHeight;
+            const scrolled = window.scrollY;
+            const progress = (scrolled / documentHeight) * 100;
+            
+            document.getElementById('readingProgress').style.width = progress + '%';
+        }
+
+        // ============================================
+        // TABLE OF CONTENTS NAVIGATION
+        // ============================================
+
+        function updateActiveTOCItem() {
+            const sections = document.querySelectorAll('.content-section[id]');
+            const tocItems = document.querySelectorAll('.toc-item');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                
+                if (window.scrollY >= (sectionTop - 200)) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            tocItems.forEach(item => {
+                item.classList.remove('active');
+                const href = item.getAttribute('href').substring(1);
+                if (href === currentSection) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        // ============================================
+        // TOAST NOTIFICATIONS
+        // ============================================
+
+        function showToast(message, duration = 3000) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%) translateY(100px);
+                background: var(--gradient-sunrise);
+                color: white;
+                padding: 15px 30px;
+                border-radius: 50px;
+                box-shadow: var(--shadow-strong);
+                font-weight: 600;
+                z-index: 10002;
+                transition: transform 0.3s ease-out;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            `;
+            toast.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(100px)';
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, duration);
+        }
+
+        // ============================================
+        // SMOOTH SCROLL
+        // ============================================
+
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -993,7 +2272,10 @@
             });
         });
 
-        // Add animation on scroll
+        // ============================================
+        // SCROLL ANIMATIONS
+        // ============================================
+
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
