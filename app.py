@@ -1451,6 +1451,11 @@ def privacy_policy():
     """Privacy policy page"""
     return render_template('footer/privacy.html')
 
+@app.route('/newsletter')
+def newsletter():
+    """Newsletter signup page"""
+    return render_template('footer/newsletter.html')
+
 # Run the application
 if __name__ == '__main__':
     # Use SQLite for local development

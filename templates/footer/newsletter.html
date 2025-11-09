@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsletter Signup | Happy Trails - Kavlin's Mountain Bus Service</title>
+    <meta name="description" content="Subscribe to Happy Trails newsletter for travel tips, exclusive offers, route updates, and mountain adventure inspiration.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Caveat:wght@400;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        /* ============================================
+           GLOBAL STYLES - HAPPY TRAILS THEME
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Primary Colors - Sunny Yellow Theme */
+            --primary-yellow: #FFD700;
+            --secondary-yellow: #FFF8DC;
+            --accent-yellow: #FFEB3B;
+            --deep-yellow: #F57F17;
+            
+            /* Complementary Colors */
+            --soft-pink: #FFE4E1;
+            --coral: #FF7F7F;
+            --lavender: #E6E6FA;
+            --mint: #F0FFF0;
+            --sky-blue: #87CEEB;
+            
+            /* Neutral Colors */
+            --white: #FFFFFF;
+            --cream: #FFFEF7;
+            --light-gray: #F8F9FA;
+            --medium-gray: #6C757D;
+            --dark-gray: #343A40;
+            --charcoal: #2C3E50;
+            
+            /* Shadows & Effects */
+            --shadow-soft: 0 4px 20px rgba(255, 215, 0, 0.15);
+            --shadow-medium: 0 8px 30px rgba(255, 215, 0, 0.25);
+            --shadow-strong: 0 12px 40px rgba(255, 215, 0, 0.35);
+            
+            /* Gradients */
+            --gradient-sunrise: linear-gradient(135deg, #FFD700 0%, #FF8C00 50%, #FF6347 100%);
+            --gradient-sunset: linear-gradient(135deg, #FFE4B5 0%, #FFD700 50%, #DDA0DD 100%);
+            
+            /* Transitions */
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: var(--charcoal);
+            background: var(--cream);
+            overflow-x: hidden;
+        }
+
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* ============================================
+           HEADER
+           ============================================ */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--primary-yellow);
+            color: var(--charcoal);
+            padding: 25px 20px;
+            box-shadow: var(--shadow-soft);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--deep-yellow);
+        }
+
+        .header-icon {
+            font-size: 2.5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .back-btn {
+            background: var(--gradient-sunrise);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition-bounce);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-strong);
+        }
+
+        /* ============================================
+           MAIN CONTENT
+           ============================================ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px 80px;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: var(--gradient-sunset);
+            border-radius: 30px;
+            padding: 80px 50px;
+            text-align: center;
+            box-shadow: var(--shadow-strong);
+            margin-bottom: 50px;
+            border: 3px solid var(--primary-yellow);
+            position: relative;
+            overflow: hidden;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 182, 193, 0.1) 0%, transparent 50%);
+            animation: sparkle 4s ease-in-out infinite;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-icon {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hero-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            background: var(--gradient-sunrise);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--medium-gray);
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .subscriber-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--primary-yellow);
+            color: var(--deep-yellow);
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .subscriber-count i {
+            font-size: 1.3rem;
+        }
+
+        /* Newsletter Form Section */
+        .form-section {
+            background: white;
+            border-radius: 30px;
+            padding: 50px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-strong);
+            border: 3px solid var(--primary-yellow);
+            animation: slideIn 0.6s ease-out 0.2s;
+            animation-fill-mode: both;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form-header h2 {
+            font-family: 'Caveat', cursive;
+            font-size: 2.8rem;
+            color: var(--deep-yellow);
+            margin-bottom: 15px;
+        }
+
+        .form-header p {
+            color: var(--medium-gray);
+            font-size: 1.1rem;
+        }
+
+        .newsletter-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--charcoal);
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition-smooth);
+            background: var(--cream);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-yellow);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+            background: white;
+        }
+
+        .form-input.error {
+            border-color: #F44336;
+            animation: shake 0.5s;
+        }
+
+        .form-input.success {
+            border-color: #4CAF50;
+        }
+
+        .error-message {
+            color: #F44336;
+            font-size: 0.9rem;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Preference Checkboxes */
+        .preferences-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .preference-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .preference-item:hover {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: var(--primary-yellow);
+        }
+
+        .preference-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .preference-item label {
+            cursor: pointer;
+            user-select: none;
+            font-weight: 500;
+            flex: 1;
+        }
+
+        /* Frequency Selection */
+        .frequency-options {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .frequency-option {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .frequency-option input[type="radio"] {
+            display: none;
+        }
+
+        .frequency-label {
+            display: block;
+            padding: 15px 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-weight: 600;
+        }
+
+        .frequency-option input[type="radio"]:checked + .frequency-label {
+            background: var(--gradient-sunrise);
+            color: white;
+            border-color: var(--deep-yellow);
+            transform: scale(1.05);
+        }
+
+        .frequency-label:hover {
+            border-color: var(--primary-yellow);
+            transform: translateY(-2px);
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--gradient-sunrise);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            box-shadow: var(--shadow-medium);
+            margin-top: 30px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Benefits Section */
+        .benefits-section {
+            background: white;
+            border-radius: 25px;
+            padding: 50px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-soft);
+            animation: slideIn 0.6s ease-out 0.4s;
+            animation-fill-mode: both;
+        }
+
+        .section-title {
+            font-family: 'Caveat', cursive;
+            font-size: 2.5rem;
+            color: var(--deep-yellow);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .benefit-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 235, 59, 0.05));
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            transition: var(--transition-bounce);
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+            border-color: var(--primary-yellow);
+        }
+
+        .benefit-icon {
+            font-size: 2.5rem;
+            color: var(--deep-yellow);
+            margin-bottom: 15px;
+        }
+
+        .benefit-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--charcoal);
+            margin-bottom: 10px;
+        }
+
+        .benefit-desc {
+            color: var(--medium-gray);
+            line-height: 1.6;
+        }
+
+        /* Sample Newsletter */
+        .sample-section {
+            background: white;
+            border-radius: 25px;
+            padding: 50px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-soft);
+            animation: slideIn 0.6s ease-out 0.6s;
+            animation-fill-mode: both;
+        }
+
+        .sample-preview {
+            background: var(--cream);
+            border: 3px solid var(--primary-yellow);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .sample-header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            margin-bottom: 30px;
+        }
+
+        .sample-logo {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .sample-date {
+            color: var(--medium-gray);
+            font-size: 0.9rem;
+        }
+
+        .sample-content h3 {
+            color: var(--deep-yellow);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .sample-content p {
+            color: var(--medium-gray);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .sample-cta {
+            display: inline-block;
+            background: var(--gradient-sunrise);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+        }
+
+        .sample-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Newsletter Archive */
+        .archive-section {
+            background: white;
+            border-radius: 25px;
+            padding: 50px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-soft);
+            animation: slideIn 0.6s ease-out 0.8s;
+            animation-fill-mode: both;
+        }
+
+        .archive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .archive-item {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .archive-item:hover {
+            border-color: var(--primary-yellow);
+            box-shadow: var(--shadow-soft);
+            transform: translateY(-3px);
+        }
+
+        .archive-date {
+            font-weight: 600;
+            color: var(--deep-yellow);
+            margin-bottom: 10px;
+        }
+
+        .archive-title {
+            font-weight: 600;
+            color: var(--charcoal);
+            margin-bottom: 8px;
+        }
+
+        .archive-excerpt {
+            color: var(--medium-gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Privacy Notice */
+        .privacy-notice {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(76, 175, 80, 0.05));
+            border: 2px solid #4CAF50;
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .privacy-notice h4 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .privacy-notice p {
+            color: var(--medium-gray);
+            margin-bottom: 15px;
+        }
+
+        .privacy-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .privacy-links a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+        }
+
+        .privacy-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Success Modal */
+        .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .success-modal.show {
+            display: flex;
+        }
+
+        .success-content {
+            background: white;
+            border-radius: 30px;
+            max-width: 600px;
+            width: 100%;
+            padding: 50px;
+            text-align: center;
+            box-shadow: var(--shadow-strong);
+            border: 3px solid var(--primary-yellow);
+            animation: bounceIn 0.6s ease-out;
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            color: #4CAF50;
+            margin-bottom: 20px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .success-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: var(--deep-yellow);
+            margin-bottom: 15px;
+        }
+
+        .success-message {
+            color: var(--medium-gray);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .success-close {
+            background: var(--gradient-sunrise);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-bounce);
+        }
+
+        .success-close:hover {
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        .page-footer {
+            background: white;
+            border-radius: 25px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+            margin-top: 50px;
+            border-top: 3px solid var(--primary-yellow);
+        }
+
+        .page-footer p {
+            color: var(--medium-gray);
+            margin-bottom: 10px;
+        }
+
+        .footer-heart {
+            color: var(--coral);
+            animation: float 1.5s ease-in-out infinite;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .hero-section {
+                padding: 60px 35px;
+            }
+
+            .form-section, .benefits-section, .sample-section, .archive-section {
+                padding: 35px 25px;
+            }
+
+            .benefits-grid, .archive-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-icon {
+                font-size: 4rem;
+            }
+
+            .hero-section {
+                padding: 50px 25px;
+            }
+
+            .form-section, .benefits-section, .sample-section, .archive-section {
+                padding: 30px 20px;
+            }
+
+            .preferences-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .frequency-options {
+                flex-direction: column;
+            }
+
+            .success-content {
+                padding: 40px 25px;
+            }
+
+            .success-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-icon {
+                font-size: 3.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="success-content">
+            <div class="success-icon">🎉</div>
+            <h2 class="success-title">Welcome Aboard!</h2>
+            <p class="success-message">
+                Thank you for subscribing to Happy Trails Newsletter! We've sent a confirmation email to 
+                <strong id="subscribedEmail"></strong>. Please check your inbox and click the confirmation link 
+                to complete your subscription.
+            </p>
+            <p class="success-message" style="font-size: 0.95rem;">
+                Can't find the email? Check your spam folder or <a href="#" style="color: var(--deep-yellow); font-weight: 600;">resend confirmation</a>.
+            </p>
+            <button class="success-close" onclick="closeSuccessModal()">Got It!</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-title">
+                <i class="fas fa-envelope-open-text header-icon"></i>
+                <span>Newsletter Signup</span>
+            </div>
+            <a href="/" class="back-btn">
+                <i class="fas fa-home"></i>
+                <span>Back to Home</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <div class="hero-icon">📧</div>
+                <h1 class="hero-title">Join Our Newsletter</h1>
+                <p class="hero-subtitle">
+                    Get travel tips, exclusive offers, route updates, and mountain adventure inspiration delivered to your inbox!
+                </p>
+                <div class="subscriber-count">
+                    <i class="fas fa-users"></i>
+                    <span>Join 12,547 Happy Travelers</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Form -->
+        <section class="form-section">
+            <div class="form-header">
+                <h2>Subscribe Now</h2>
+                <p>Stay updated with the latest routes, offers, and travel stories</p>
+            </div>
+
+            <form class="newsletter-form" id="newsletterForm" onsubmit="return handleSubmit(event)">
+                <!-- Email Input -->
+                <div class="form-group">
+                    <label class="form-label" for="email">
+                        <i class="fas fa-envelope"></i> Email Address *
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email"
+                        class="form-input" 
+                        placeholder="your.email@example.com" 
+                        required
+                        onblur="validateEmail()"
+                    >
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
+                </div>
+
+                <!-- Name Input -->
+                <div class="form-group">
+                    <label class="form-label" for="name">
+                        <i class="fas fa-user"></i> Your Name (Optional)
+                    </label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name"
+                        class="form-input" 
+                        placeholder="John Doe"
+                    >
+                </div>
+
+                <!-- Content Preferences -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-list-check"></i> What Would You Like to Receive?
+                    </label>
+                    <div class="preferences-grid">
+                        <div class="preference-item">
+                            <input type="checkbox" id="pref-offers" name="preferences" value="offers" checked>
+                            <label for="pref-offers">🎁 Exclusive Offers</label>
+                        </div>
+                        <div class="preference-item">
+                            <input type="checkbox" id="pref-routes" name="preferences" value="routes" checked>
+                            <label for="pref-routes">🗺️ Route Updates</label>
+                        </div>
+                        <div class="preference-item">
+                            <input type="checkbox" id="pref-tips" name="preferences" value="tips" checked>
+                            <label for="pref-tips">💡 Travel Tips</label>
+                        </div>
+                        <div class="preference-item">
+                            <input type="checkbox" id="pref-stories" name="preferences" value="stories" checked>
+                            <label for="pref-stories">📖 Travel Stories</label>
+                        </div>
+                        <div class="preference-item">
+                            <input type="checkbox" id="pref-events" name="preferences" value="events">
+                            <label for="pref-events">🎉 Events & News</label>
+                        </div>
+                        <div class="preference-item">
+                            <input type="checkbox" id="pref-seasonal" name="preferences" value="seasonal">
+                            <label for="pref-seasonal">🍂 Seasonal Guides</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Frequency Selection -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-calendar-alt"></i> How Often Should We Send?
+                    </label>
+                    <div class="frequency-options">
+                        <div class="frequency-option">
+                            <input type="radio" id="freq-weekly" name="frequency" value="weekly" checked>
+                            <label for="freq-weekly" class="frequency-label">
+                                📅 Weekly<br>
+                                <small style="font-weight: normal;">Every Monday</small>
+                            </label>
+                        </div>
+                        <div class="frequency-option">
+                            <input type="radio" id="freq-biweekly" name="frequency" value="biweekly">
+                            <label for="freq-biweekly" class="frequency-label">
+                                📆 Bi-Weekly<br>
+                                <small style="font-weight: normal;">Twice a month</small>
+                            </label>
+                        </div>
+                        <div class="frequency-option">
+                            <input type="radio" id="freq-monthly" name="frequency" value="monthly">
+                            <label for="freq-monthly" class="frequency-label">
+                                📅 Monthly<br>
+                                <small style="font-weight: normal;">Once a month</small>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Subscribe Now
+                </button>
+
+                <!-- Privacy Notice -->
+                <div class="privacy-notice">
+                    <h4><i class="fas fa-shield-alt"></i> Your Privacy is Protected</h4>
+                    <p>
+                        We respect your inbox. No spam, ever. Unsubscribe anytime with one click. 
+                        Your email is safe with us and will never be shared.
+                    </p>
+                    <div class="privacy-links">
+                        <a href="/privacy"><i class="fas fa-lock"></i> Privacy Policy</a>
+                        <a href="/terms"><i class="fas fa-file-contract"></i> Terms of Service</a>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <!-- Why Subscribe Section -->
+        <section class="benefits-section">
+            <h2 class="section-title">Why Subscribe to Happy Trails?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-gift"></i></div>
+                    <div class="benefit-title">Exclusive Offers & Discounts</div>
+                    <div class="benefit-desc">
+                        Get early access to special promotions, subscriber-only discounts, and seasonal deals up to 30% off.
+                    </div>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-map-marked-alt"></i></div>
+                    <div class="benefit-title">New Route Announcements</div>
+                    <div class="benefit-desc">
+                        Be the first to know about new routes, scenic destinations, and expanded services in the Himalayas.
+                    </div>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-lightbulb"></i></div>
+                    <div class="benefit-title">Expert Travel Tips</div>
+                    <div class="benefit-desc">
+                        Learn insider tips about mountain travel, packing essentials, best seasons to visit, and hidden gems.
+                    </div>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-book-open"></i></div>
+                    <div class="benefit-title">Inspiring Travel Stories</div>
+                    <div class="benefit-desc">
+                        Read real traveler experiences, adventure tales, and photo features from fellow Happy Trails passengers.
+                    </div>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-calendar-check"></i></div>
+                    <div class="benefit-title">Event & Festival Updates</div>
+                    <div class="benefit-desc">
+                        Never miss local festivals, cultural events, or seasonal activities happening along our routes.
+                    </div>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-crown"></i></div>
+                    <div class="benefit-title">VIP Treatment</div>
+                    <div class="benefit-desc">
+                        Priority booking access, special seat reservations, and exclusive perks reserved for newsletter subscribers.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sample Newsletter -->
+        <section class="sample-section">
+            <h2 class="section-title">Preview Our Newsletter</h2>
+            <p style="text-align: center; color: var(--medium-gray); margin-bottom: 30px;">
+                Here's what you can expect in your inbox:
+            </p>
+            
+            <div class="sample-preview">
+                <div class="sample-header">
+                    <div class="sample-logo">🚌 Happy Trails Newsletter</div>
+                    <div class="sample-date">Monday, November 3, 2025 | Issue #47</div>
+                </div>
+
+                <div class="sample-content">
+                    <h3>🎉 This Week's Highlights</h3>
+                    <p>
+                        <strong>New Route Alert:</strong> We're excited to announce our brand new Dharampur to Spiti Valley route! 
+                        Starting December 1st, explore one of the most breathtaking destinations in Himachal Pradesh. 
+                        Early bird discount: 25% off for the first 100 bookings.
+                    </p>
+
+                    <a href="#" class="sample-cta">
+                        <i class="fas fa-ticket-alt"></i> Book Your Adventure →
+                    </a>
+
+                    <h3 style="margin-top: 30px;">💡 Travel Tip of the Week</h3>
+                    <p>
+                        Winter is approaching! Don't forget to pack thermal wear, especially for early morning departures. 
+                        Temperatures in the mountains can drop to -5°C. Check out our complete winter packing guide...
+                    </p>
+
+                    <h3 style="margin-top: 30px;">📸 Photo Feature</h3>
+                    <p>
+                        This week's stunning shot comes from @eccentriccoder01 on the Manali route. The sunrise over 
+                        Rohtang Pass was absolutely magical! Share your Happy Trails photos for a chance to be featured.
+                    </p>
+
+                    <h3 style="margin-top: 30px;">🎁 Exclusive Subscriber Offer</h3>
+                    <p>
+                        Use code <strong>NEWSLETTER15</strong> for 15% off your next booking. Valid until November 10, 2025. 
+                        This code is exclusively for our newsletter subscribers!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Archive -->
+        <section class="archive-section">
+            <h2 class="section-title">Past Newsletters</h2>
+            <p style="text-align: center; color: var(--medium-gray); margin-bottom: 30px;">
+                Browse our previous editions:
+            </p>
+            
+            <div class="archive-grid">
+                <div class="archive-item" onclick="alert('Opening newsletter archive. Feature coming soon!')">
+                    <div class="archive-date">📅 October 27, 2025 | Issue #46</div>
+                    <div class="archive-title">Diwali Travel Guide & Festival Routes</div>
+                    <div class="archive-excerpt">
+                        Special Diwali routes, festival safety tips, and celebrating in the mountains...
+                    </div>
+                </div>
+
+                <div class="archive-item" onclick="alert('Opening newsletter archive. Feature coming soon!')">
+                    <div class="archive-date">📅 October 20, 2025 | Issue #45</div>
+                    <div class="archive-title">Autumn Colors: Best Scenic Routes</div>
+                    <div class="archive-excerpt">
+                        The most beautiful autumn destinations, photography spots, and seasonal travel tips...
+                    </div>
+                </div>
+
+                <div class="archive-item" onclick="alert('Opening newsletter archive. Feature coming soon!')">
+                    <div class="archive-date">📅 October 13, 2025 | Issue #44</div>
+                    <div class="archive-title">Meet Our Drivers: Behind the Wheel Stories</div>
+                    <div class="archive-excerpt">
+                        Exclusive interviews with our experienced drivers, their favorite routes and memories...
+                    </div>
+                </div>
+
+                <div class="archive-item" onclick="alert('Opening newsletter archive. Feature coming soon!')">
+                    <div class="archive-date">📅 October 6, 2025 | Issue #43</div>
+                    <div class="archive-title">Winter is Coming: Route Changes & Tips</div>
+                    <div class="archive-excerpt">
+                        Preparing for winter travel, route adjustments, and cold weather essentials...
+                    </div>
+                </div>
+
+                <div class="archive-item" onclick="alert('Opening newsletter archive. Feature coming soon!')">
+                    <div class="archive-date">📅 September 29, 2025 | Issue #42</div>
+                    <div class="archive-title">Customer Spotlight: Amazing Travel Stories</div>
+                    <div class="archive-excerpt">
+                        Real stories from Happy Trails passengers, their adventures and recommendations...
+                    </div>
+                </div>
+
+                <div class="archive-item" onclick="alert('Opening newsletter archive. Feature coming soon!')">
+                    <div class="archive-date">📅 September 22, 2025 | Issue #41</div>
+                    <div class="archive-title">Introducing Our New Fleet & Amenities</div>
+                    <div class="archive-excerpt">
+                        New buses, upgraded features, enhanced comfort, and what's next for Happy Trails...
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <p style="font-size: 1.1rem;">
+            Made with <i class="fas fa-heart footer-heart"></i> by <strong>Kavlin</strong>
+        </p>
+        <p style="font-size: 0.9rem;">
+            Happy Trails Bus Service - Making Every Journey a Happy Trail 🚌💖
+        </p>
+        <p style="font-size: 0.85rem; margin-top: 15px;">
+            Questions about our newsletter? Email us at 
+            <a href="mailto:newsletter@happytrails.com" style="color: var(--deep-yellow); text-decoration: none; font-weight: 600;">
+                newsletter@happytrails.com
+            </a>
+        </p>
+    </footer>
+
+    <script>
+        // ============================================
+        // EMAIL VALIDATION
+        // ============================================
+
+        function validateEmail() {
+            const emailInput = document.getElementById('email');
+            const errorMessage = document.getElementById('emailError');
+            const email = emailInput.value.trim();
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (email === '') {
+                emailInput.classList.remove('error', 'success');
+                errorMessage.classList.remove('show');
+                return false;
+            }
+            
+            if (!emailRegex.test(email)) {
+                emailInput.classList.add('error');
+                emailInput.classList.remove('success');
+                errorMessage.classList.add('show');
+                return false;
+            } else {
+                emailInput.classList.remove('error');
+                emailInput.classList.add('success');
+                errorMessage.classList.remove('show');
+                return true;
+            }
+        }
+
+        // ============================================
+        // FORM SUBMISSION
+        // ============================================
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            // Validate email
+            if (!validateEmail()) {
+                return false;
+            }
+            
+            // Get form data
+            const email = document.getElementById('email').value;
+            const name = document.getElementById('name').value || 'Traveler';
+            
+            // Get selected preferences
+            const preferences = [];
+            document.querySelectorAll('input[name="preferences"]:checked').forEach(checkbox => {
+                preferences.push(checkbox.value);
+            });
+            
+            // Get frequency
+            const frequency = document.querySelector('input[name="frequency"]:checked').value;
+            
+            // Store subscription data
+            const subscriptionData = {
+                email: email,
+                name: name,
+                preferences: preferences,
+                frequency: frequency,
+                subscribedAt: new Date().toISOString(),
+                confirmed: false
+            };
+            
+            // Save to localStorage (in production, send to backend)
+            localStorage.setItem('newsletter_subscription', JSON.stringify(subscriptionData));
+            
+            // Show success modal with confetti
+            showSuccessModal(email);
+            triggerConfetti();
+            
+            // Reset form
+            document.getElementById('newsletterForm').reset();
+            document.getElementById('email').classList.remove('success');
+            
+            return false;
+        }
+
+        // ============================================
+        // SUCCESS MODAL
+        // ============================================
+
+        function showSuccessModal(email) {
+            document.getElementById('subscribedEmail').textContent = email;
+            document.getElementById('successModal').classList.add('show');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.remove('show');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('successModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSuccessModal();
+            }
+        });
+
+        // ============================================
+        // CONFETTI CELEBRATION
+        // ============================================
+
+        function triggerConfetti() {
+            const duration = 3000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 10001 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                const particleCount = 50 * (timeLeft / duration);
+                
+                confetti(Object.assign({}, defaults, {
+                    particleCount,
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+                }));
+                confetti(Object.assign({}, defaults, {
+                    particleCount,
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+                }));
+            }, 250);
+        }
+
+        // ============================================
+        // SCROLL ANIMATIONS
+        // ============================================
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.form-section, .benefits-section, .sample-section, .archive-section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            observer.observe(section);
+        });
+
+        // Track newsletter page view
+        localStorage.setItem('newsletter_page_visited', new Date().toISOString());
+        localStorage.setItem('newsletter_visitor', 'eccentriccoder01');
+    </script>
+
+</body>
+</html>
