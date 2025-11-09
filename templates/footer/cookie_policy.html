@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Policy | Happy Trails - Kavlin's Mountain Bus Service</title>
+    <meta name="description" content="Learn about how Happy Trails uses cookies to improve your browsing experience. Understand cookie types, purposes, and how to control your preferences.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Caveat:wght@400;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ============================================
+           GLOBAL STYLES - HAPPY TRAILS THEME
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Primary Colors - Sunny Yellow Theme */
+            --primary-yellow: #FFD700;
+            --secondary-yellow: #FFF8DC;
+            --accent-yellow: #FFEB3B;
+            --deep-yellow: #F57F17;
+            
+            /* Complementary Colors */
+            --soft-pink: #FFE4E1;
+            --coral: #FF7F7F;
+            --lavender: #E6E6FA;
+            --mint: #F0FFF0;
+            
+            /* Cookie Type Colors */
+            --essential-color: #4CAF50;
+            --functional-color: #2196F3;
+            --analytics-color: #FF9800;
+            --marketing-color: #9C27B0;
+            
+            /* Neutral Colors */
+            --white: #FFFFFF;
+            --cream: #FFFEF7;
+            --light-gray: #F8F9FA;
+            --medium-gray: #6C757D;
+            --dark-gray: #343A40;
+            --charcoal: #2C3E50;
+            
+            /* Shadows & Effects */
+            --shadow-soft: 0 4px 20px rgba(255, 215, 0, 0.15);
+            --shadow-medium: 0 8px 30px rgba(255, 215, 0, 0.25);
+            --shadow-strong: 0 12px 40px rgba(255, 215, 0, 0.35);
+            
+            /* Gradients */
+            --gradient-sunrise: linear-gradient(135deg, #FFD700 0%, #FF8C00 50%, #FF6347 100%);
+            --gradient-sunset: linear-gradient(135deg, #FFE4B5 0%, #FFD700 50%, #DDA0DD 100%);
+            
+            /* Transitions */
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: var(--charcoal);
+            background: var(--cream);
+            overflow-x: hidden;
+        }
+
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        @keyframes cookieBounce {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================
+           HEADER
+           ============================================ */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--primary-yellow);
+            color: var(--charcoal);
+            padding: 25px 20px;
+            box-shadow: var(--shadow-soft);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--deep-yellow);
+        }
+
+        .header-icon {
+            font-size: 2.5rem;
+            animation: cookieBounce 2s ease-in-out infinite;
+        }
+
+        .back-btn {
+            background: var(--gradient-sunrise);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition-bounce);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-strong);
+        }
+
+        /* ============================================
+           MAIN CONTENT
+           ============================================ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px 80px;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: var(--gradient-sunset);
+            border-radius: 30px;
+            padding: 80px 50px;
+            text-align: center;
+            box-shadow: var(--shadow-strong);
+            margin-bottom: 50px;
+            border: 3px solid var(--primary-yellow);
+            position: relative;
+            overflow: hidden;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 182, 193, 0.1) 0%, transparent 50%);
+            animation: sparkle 4s ease-in-out infinite;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-icon {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hero-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            background: var(--gradient-sunrise);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--medium-gray);
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .last-updated {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--primary-yellow);
+            color: var(--deep-yellow);
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: var(--shadow-soft);
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-soft);
+            border-top: 4px solid var(--primary-yellow);
+            transition: var(--transition-smooth);
+            animation: slideIn 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .content-section:nth-child(1) { animation-delay: 0.1s; }
+        .content-section:nth-child(2) { animation-delay: 0.2s; }
+        .content-section:nth-child(3) { animation-delay: 0.3s; }
+        .content-section:nth-child(4) { animation-delay: 0.4s; }
+        .content-section:nth-child(5) { animation-delay: 0.5s; }
+
+        .content-section:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .section-icon {
+            font-size: 2.5rem;
+            background: var(--gradient-sunrise);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-title {
+            font-family: 'Caveat', cursive;
+            font-size: 2.5rem;
+            color: var(--charcoal);
+            font-weight: 700;
+        }
+
+        .section-content {
+            color: var(--medium-gray);
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 15px;
+        }
+
+        .section-content ul,
+        .section-content ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        .section-content li {
+            margin-bottom: 12px;
+        }
+
+        .section-content strong {
+            color: var(--charcoal);
+            font-weight: 600;
+        }
+
+        /* Cookie Types Grid */
+        .cookie-types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .cookie-type-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 235, 59, 0.05));
+            border: 2px solid var(--primary-yellow);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            transition: var(--transition-bounce);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cookie-type-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+            transition: var(--transition-smooth);
+            opacity: 0;
+        }
+
+        .cookie-type-card:hover::before {
+            opacity: 1;
+        }
+
+        .cookie-type-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .cookie-type-card.essential {
+            border-color: var(--essential-color);
+        }
+
+        .cookie-type-card.functional {
+            border-color: var(--functional-color);
+        }
+
+        .cookie-type-card.analytics {
+            border-color: var(--analytics-color);
+        }
+
+        .cookie-type-card.marketing {
+            border-color: var(--marketing-color);
+        }
+
+        .cookie-type-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cookie-type-card.essential .cookie-type-icon {
+            color: var(--essential-color);
+        }
+
+        .cookie-type-card.functional .cookie-type-icon {
+            color: var(--functional-color);
+        }
+
+        .cookie-type-card.analytics .cookie-type-icon {
+            color: var(--analytics-color);
+        }
+
+        .cookie-type-card.marketing .cookie-type-icon {
+            color: var(--marketing-color);
+        }
+
+        .cookie-type-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--charcoal);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cookie-type-desc {
+            color: var(--medium-gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Info Boxes */
+        .info-box {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+            border-left: 4px solid var(--primary-yellow);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .info-box.success {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(76, 175, 80, 0.05));
+            border-left-color: var(--essential-color);
+        }
+
+        .info-box.info {
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.1), rgba(33, 150, 243, 0.05));
+            border-left-color: var(--functional-color);
+        }
+
+        .info-box.warning {
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(255, 152, 0, 0.05));
+            border-left-color: var(--analytics-color);
+        }
+
+        .info-box-title {
+            font-weight: 700;
+            color: var(--charcoal);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Cookie Table */
+        .cookie-table-wrapper {
+            overflow-x: auto;
+            margin: 25px 0;
+            border-radius: 15px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .cookie-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .cookie-table thead {
+            background: var(--gradient-sunrise);
+            color: white;
+        }
+
+        .cookie-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cookie-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+            color: var(--medium-gray);
+            font-size: 0.95rem;
+        }
+
+        .cookie-table tbody tr:hover {
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        .cookie-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .cookie-name {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: var(--deep-yellow);
+        }
+
+        .cookie-type-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cookie-type-badge.essential {
+            background: rgba(76, 175, 80, 0.2);
+            color: var(--essential-color);
+        }
+
+        .cookie-type-badge.functional {
+            background: rgba(33, 150, 243, 0.2);
+            color: var(--functional-color);
+        }
+
+        .cookie-type-badge.analytics {
+            background: rgba(255, 152, 0, 0.2);
+            color: var(--analytics-color);
+        }
+
+        .cookie-type-badge.marketing {
+            background: rgba(156, 39, 176, 0.2);
+            color: var(--marketing-color);
+        }
+
+        /* Browser Instructions */
+        .browser-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .browser-card {
+            background: rgba(255, 215, 0, 0.05);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: var(--transition-smooth);
+        }
+
+        .browser-card:hover {
+            border-color: var(--primary-yellow);
+            box-shadow: var(--shadow-soft);
+            transform: translateY(-3px);
+        }
+
+        .browser-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: var(--gradient-sunrise);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .browser-name {
+            font-weight: 700;
+            color: var(--charcoal);
+            margin-bottom: 5px;
+        }
+
+        .browser-link {
+            color: var(--deep-yellow);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+        }
+
+        .browser-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .page-footer {
+            background: white;
+            border-radius: 25px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+            margin-top: 50px;
+            border-top: 3px solid var(--primary-yellow);
+        }
+
+        .page-footer p {
+            color: var(--medium-gray);
+            margin-bottom: 10px;
+        }
+
+        .footer-heart {
+            color: var(--coral);
+            animation: float 1.5s ease-in-out infinite;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .hero-section {
+                padding: 60px 35px;
+            }
+
+            .content-section {
+                padding: 35px 25px;
+            }
+
+            .cookie-types-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-icon {
+                font-size: 4rem;
+            }
+
+            .hero-section {
+                padding: 50px 25px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .header-title {
+                font-size: 1.4rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .cookie-types-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-icon {
+                font-size: 3.5rem;
+            }
+
+            .section-icon {
+                font-size: 2rem;
+            }
+
+            .content-section {
+                padding: 25px 20px;
+            }
+
+            .cookie-table th,
+            .cookie-table td {
+                padding: 10px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-title">
+                <i class="fas fa-cookie-bite header-icon"></i>
+                <span>Cookie Policy</span>
+            </div>
+            <a href="/" class="back-btn">
+                <i class="fas fa-home"></i>
+                <span>Back to Home</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <i class="fas fa-cookie hero-icon">🍪</i>
+                <h1 class="hero-title">Cookie Policy</h1>
+                <p class="hero-subtitle">
+                    Understanding how we use cookies to enhance your Happy Trails experience
+                </p>
+                <div class="last-updated">
+                    <i class="fas fa-clock"></i>
+                    Last Updated: November 3, 2025
+                </div>
+            </div>
+        </section>
+
+        <!-- What Are Cookies -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-question-circle section-icon"></i>
+                <h2 class="section-title">What Are Cookies?</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    <strong>Cookies</strong> are small text files that are placed on your computer or mobile device 
+                    when you visit a website. They are widely used to make websites work more efficiently and 
+                    provide information to website owners.
+                </p>
+                <p>
+                    At <strong>Happy Trails</strong>, we use cookies to enhance your browsing experience, remember 
+                    your preferences, and understand how you interact with our website. This helps us improve our 
+                    services and provide you with a personalized experience.
+                </p>
+                
+                <div class="info-box info">
+                    <div class="info-box-title">
+                        <i class="fas fa-info-circle"></i>
+                        Key Points About Cookies
+                    </div>
+                    <ul>
+                        <li><strong>Small & Harmless:</strong> Cookies are tiny text files that cannot harm your device</li>
+                        <li><strong>No Personal Data:</strong> Cookies don't contain personally identifiable information by default</li>
+                        <li><strong>You're in Control:</strong> You can manage or delete cookies at any time through your browser settings</li>
+                        <li><strong>Industry Standard:</strong> Almost all websites use cookies to improve user experience</li>
+                    </ul>
+                </div>
+
+                <p>
+                    Cookies help us remember your login status, language preferences, items in your booking cart, 
+                    and other settings. Without cookies, you would have to set your preferences every time you 
+                    visit our website.
+                </p>
+            </div>
+        </section>
+
+        <!-- Types of Cookies -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-layer-group section-icon"></i>
+                <h2 class="section-title">Types of Cookies We Use</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    We use different types of cookies to serve different purposes. Here's a breakdown of each type:
+                </p>
+
+                <div class="cookie-types-grid">
+                    <!-- Essential Cookies -->
+                    <div class="cookie-type-card essential">
+                        <i class="fas fa-shield-alt cookie-type-icon"></i>
+                        <div class="cookie-type-name">Essential Cookies</div>
+                        <div class="cookie-type-desc">
+                            Required for basic website functionality. Cannot be disabled as the site won't work without them.
+                        </div>
+                    </div>
+
+                    <!-- Functional Cookies -->
+                    <div class="cookie-type-card functional">
+                        <i class="fas fa-cog cookie-type-icon"></i>
+                        <div class="cookie-type-name">Functional Cookies</div>
+                        <div class="cookie-type-desc">
+                            Remember your preferences and settings to provide enhanced features and personalization.
+                        </div>
+                    </div>
+
+                    <!-- Analytics Cookies -->
+                    <div class="cookie-type-card analytics">
+                        <i class="fas fa-chart-line cookie-type-icon"></i>
+                        <div class="cookie-type-name">Analytics Cookies</div>
+                        <div class="cookie-type-desc">
+                            Help us understand how visitors use our site to improve performance and user experience.
+                        </div>
+                    </div>
+
+                    <!-- Marketing Cookies -->
+                    <div class="cookie-type-card marketing">
+                        <i class="fas fa-bullhorn cookie-type-icon"></i>
+                        <div class="cookie-type-name">Marketing Cookies</div>
+                        <div class="cookie-type-desc">
+                            Track your visits across websites to show relevant advertisements and measure campaign effectiveness.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box success">
+                    <div class="info-box-title">
+                        <i class="fas fa-check-circle"></i>
+                        Your Choice Matters
+                    </div>
+                    <p>
+                        While <strong>Essential Cookies</strong> are required for the website to function, you can 
+                        choose to opt-out of Functional, Analytics, and Marketing cookies through our cookie 
+                        preferences center or your browser settings.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How We Use Cookies -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-tasks section-icon"></i>
+                <h2 class="section-title">How We Use Cookies</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    Happy Trails uses cookies for the following purposes:
+                </p>
+
+                <ol>
+                    <li>
+                        <strong>Authentication & Security:</strong> To keep you logged in securely and protect 
+                        your account from unauthorized access. Essential cookies remember your login session 
+                        and verify your identity.
+                    </li>
+                    <li>
+                        <strong>User Preferences:</strong> To remember your language choice, display settings, 
+                        route favorites, and other personalized preferences so you don't have to set them 
+                        every visit.
+                    </li>
+                    <li>
+                        <strong>Booking Process:</strong> To maintain items in your booking cart, remember your 
+                        selected routes, and facilitate the ticket purchase process across multiple pages.
+                    </li>
+                    <li>
+                        <strong>Website Performance:</strong> To analyze how visitors use our website, identify 
+                        popular features, detect errors, and optimize loading times for a better user experience.
+                    </li>
+                    <li>
+                        <strong>Personalization:</strong> To provide personalized content recommendations, 
+                        suggest relevant routes based on your travel history, and customize your homepage experience.
+                    </li>
+                    <li>
+                        <strong>Marketing & Analytics:</strong> To understand the effectiveness of our marketing 
+                        campaigns, track conversions, and show you relevant advertisements on third-party websites.
+                    </li>
+                </ol>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Important Note
+                    </div>
+                    <p>
+                        Disabling certain types of cookies may impact your ability to use some features of our 
+                        website. For example, disabling functional cookies may prevent the site from remembering 
+                        your language preference or login status.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cookie Duration -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-hourglass-half section-icon"></i>
+                <h2 class="section-title">Cookie Duration</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    Cookies can be classified based on how long they stay on your device:
+                </p>
+
+                <div class="cookie-types-grid">
+                    <div class="cookie-type-card functional">
+                        <i class="fas fa-clock cookie-type-icon"></i>
+                        <div class="cookie-type-name">Session Cookies</div>
+                        <div class="cookie-type-desc">
+                            Temporary cookies that are deleted when you close your browser. Used for essential 
+                            functions like maintaining your login session.
+                        </div>
+                    </div>
+
+                    <div class="cookie-type-card analytics">
+                        <i class="fas fa-history cookie-type-icon"></i>
+                        <div class="cookie-type-name">Persistent Cookies</div>
+                        <div class="cookie-type-desc">
+                            Remain on your device for a set period or until manually deleted. Used to remember 
+                            your preferences across multiple visits.
+                        </div>
+                    </div>
+                </div>
+
+                <p style="margin-top: 25px;">
+                    <strong>Session Cookies</strong> are essential for website functionality and expire as soon as 
+                    you close your browser. They help us manage your journey through the website, such as 
+                    remembering items in your cart during a single visit.
+                </p>
+
+                <p>
+                    <strong>Persistent Cookies</strong> stay on your device even after you close your browser. 
+                    They help us recognize you as a returning visitor, remember your login credentials (if you 
+                    choose "Remember Me"), and maintain your preferences across sessions.
+                </p>
+            </div>
+        </section>
+
+        <!-- Detailed Cookie List -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-list-alt section-icon"></i>
+                <h2 class="section-title">Detailed Cookie List</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    Below is a detailed list of cookies used by Happy Trails:
+                </p>
+
+                <div class="cookie-table-wrapper">
+                    <table class="cookie-table">
+                        <thead>
+                            <tr>
+                                <th>Cookie Name</th>
+                                <th>Type</th>
+                                <th>Purpose</th>
+                                <th>Duration</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="cookie-name">ht_session</span></td>
+                                <td><span class="cookie-type-badge essential">Essential</span></td>
+                                <td>Maintains your session state and keeps you logged in</td>
+                                <td>Session</td>
+                            </tr>
+                            <tr>
+                                <td><span class="cookie-name">ht_csrf_token</span></td>
+                                <td><span class="cookie-type-badge essential">Essential</span></td>
+                                <td>Security token to prevent cross-site request forgery attacks</td>
+                                <td>Session</td>
+                            </tr>
+                            <tr>
+                                <td><span class="cookie-name">ht_lang</span></td>
+                                <td><span class="cookie-type-badge functional">Functional</span></td>
+                                <td>Remembers your language preference</td>
+                                <td>1 year</td>
+                            </tr>
+                            <tr>
+                                <td><span class="cookie-name">ht_theme</span></td>
+                                <td><span class="cookie-type-badge functional">Functional</span></td>
+                                <td>Stores your theme preference (light/dark mode)</td>
+                                <td>1 year</td>
+                            </tr>
+                            <tr>
+                                <td><span class="cookie-name">ht_favorites</span></td>
+                                <td><span class="cookie-type-badge functional">Functional</span></td>
+                                <td>Stores your favorite routes for quick access</td>
+                                <td>6 months</td>
+                            </tr>
+                            <tr>
+                                <td><span class="cookie-name">ht_cart</span></td>
+                                <td><span class="cookie-type-badge essential">Essential</span></td>
+                                <td>Maintains items in your booking cart</td>
+                                <td>7 days</td>
+                            </tr>
+                            <tr>
+                                <td><span class="cookie-name">_ga</span></td>
+                                <td><span class="cookie-type-badge analytics">Analytics</span></td>
+                                <td>Google Analytics - distinguishes unique users</td>
+                                <td>2 years</td>
+                            </tr>
+                            <tr>
+                                <td><span class="cookie-name">_gid</span></td>
+                                <td><span class="cookie-type-badge analytics">Analytics</span></td>
+                                <td>Google Analytics - distinguishes unique users</td>
+                                <td>24 hours</td>
+                            </tr>
+                            <tr>
+                                <td><span class="cookie-name">_gat</span></td>
+                                <td><span class="cookie-type-badge analytics">Analytics</span></td>
+                                <td>Google Analytics - throttles request rate</td>
+                                <td>1 minute</td>
+                            </tr>
+                            <tr>
+                                <td><span class="cookie-name">ht_marketing</span></td>
+                                <td><span class="cookie-type-badge marketing">Marketing</span></td>
+                                <td>Tracks marketing campaign effectiveness and conversions</td>
+                                <td>30 days</td>
+                            </tr>
+                            <tr>
+                                <td><span class="cookie-name">ht_ads</span></td>
+                                <td><span class="cookie-type-badge marketing">Marketing</span></td>
+                                <td>Used for targeted advertising and retargeting campaigns</td>
+                                <td>90 days</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="info-box info">
+                    <div class="info-box-title">
+                        <i class="fas fa-database"></i>
+                        Third-Party Cookies
+                    </div>
+                    <p>
+                        Some cookies (like Google Analytics cookies) are set by third-party services we use. 
+                        These cookies are governed by the privacy policies of those third parties. We carefully 
+                        select partners who respect user privacy and comply with data protection regulations.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Managing Cookies -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-sliders-h section-icon"></i>
+                <h2 class="section-title">Managing Your Cookie Preferences</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    You have the right to decide whether to accept or reject cookies. You can exercise your 
+                    cookie rights by:
+                </p>
+
+                <div class="info-box success">
+                    <div class="info-box-title">
+                        <i class="fas fa-toggle-on"></i>
+                        Cookie Preference Center (Coming Soon)
+                    </div>
+                    <p>
+                        We're developing a Cookie Preference Center that will allow you to easily manage your 
+                        cookie settings directly on our website. You'll be able to toggle different cookie 
+                        categories on or off with a single click.
+                    </p>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: var(--deep-yellow);">
+                    <i class="fas fa-browser"></i> Browser Cookie Settings
+                </h3>
+
+                <p>
+                    Most web browsers allow you to control cookies through their settings. Here's how to 
+                    manage cookies in popular browsers:
+                </p>
+
+                <div class="browser-grid">
+                    <div class="browser-card">
+                        <i class="fab fa-chrome browser-icon"></i>
+                        <div class="browser-name">Google Chrome</div>
+                        <a href="https://support.google.com/chrome/answer/95647" target="_blank" class="browser-link">
+                            Manage Cookies <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+
+                    <div class="browser-card">
+                        <i class="fab fa-firefox-browser browser-icon"></i>
+                        <div class="browser-name">Mozilla Firefox</div>
+                        <a href="https://support.mozilla.org/en-US/kb/cookies-information-websites-store-on-your-computer" target="_blank" class="browser-link">
+                            Manage Cookies <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+
+                    <div class="browser-card">
+                        <i class="fab fa-safari browser-icon"></i>
+                        <div class="browser-name">Safari</div>
+                        <a href="https://support.apple.com/guide/safari/manage-cookies-and-website-data-sfri11471/mac" target="_blank" class="browser-link">
+                            Manage Cookies <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+
+                    <div class="browser-card">
+                        <i class="fab fa-edge browser-icon"></i>
+                        <div class="browser-name">Microsoft Edge</div>
+                        <a href="https://support.microsoft.com/en-us/microsoft-edge/delete-cookies-in-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09" target="_blank" class="browser-link">
+                            Manage Cookies <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">
+                        <i class="fas fa-exclamation-circle"></i>
+                        Impact of Disabling Cookies
+                    </div>
+                    <p>
+                        If you disable cookies, please note that some features of our website may not function 
+                        properly. You may not be able to:
+                    </p>
+                    <ul>
+                        <li>Stay logged in to your account</li>
+                        <li>Add items to your booking cart</li>
+                        <li>Save your preferences and settings</li>
+                        <li>Access personalized content and recommendations</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: var(--deep-yellow);">
+                    <i class="fas fa-ban"></i> Opt-Out of Third-Party Cookies
+                </h3>
+
+                <p>
+                    To opt-out of third-party advertising cookies, visit:
+                </p>
+                <ul>
+                    <li>
+                        <strong>Your Online Choices:</strong> 
+                        <a href="https://www.youronlinechoices.com" target="_blank" style="color: var(--deep-yellow); font-weight: 600;">
+                            www.youronlinechoices.com
+                        </a>
+                    </li>
+                    <li>
+                        <strong>Network Advertising Initiative:</strong> 
+                        <a href="https://www.networkadvertising.org/choices/" target="_blank" style="color: var(--deep-yellow); font-weight: 600;">
+                            www.networkadvertising.org/choices
+                        </a>
+                    </li>
+                    <li>
+                        <strong>Digital Advertising Alliance:</strong> 
+                        <a href="https://www.aboutads.info/choices/" target="_blank" style="color: var(--deep-yellow); font-weight: 600;">
+                            www.aboutads.info/choices
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <p style="font-size: 1.1rem;">
+            Made with <i class="fas fa-heart footer-heart"></i> by <strong>Kavlin</strong>
+        </p>
+        <p style="font-size: 0.9rem;">
+            Happy Trails Bus Service - Making Every Journey a Happy Trail 🚌💖
+        </p>
+        <p style="font-size: 0.85rem; margin-top: 15px;">
+            Questions about cookies? Email us at 
+            <a href="mailto:privacy@happytrails.com" style="color: var(--deep-yellow); text-decoration: none; font-weight: 600;">
+                privacy@happytrails.com
+            </a>
+        </p>
+    </footer>
+
+    <script>
+        // Smooth Scroll for Internal Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.content-section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            observer.observe(section);
+        });
+    </script>
+
+</body>
+</html>
