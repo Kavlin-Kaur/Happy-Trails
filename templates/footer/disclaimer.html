@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disclaimer | Happy Trails - Kavlin's Mountain Bus Service</title>
+    <meta name="description" content="Legal disclaimer for Happy Trails bus service. Information about service limitations, liability, accuracy of information, and user responsibilities.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Caveat:wght@400;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ============================================
+           GLOBAL STYLES - HAPPY TRAILS THEME
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Primary Colors - Sunny Yellow Theme */
+            --primary-yellow: #FFD700;
+            --secondary-yellow: #FFF8DC;
+            --accent-yellow: #FFEB3B;
+            --deep-yellow: #F57F17;
+            
+            /* Complementary Colors */
+            --soft-pink: #FFE4E1;
+            --coral: #FF7F7F;
+            --lavender: #E6E6FA;
+            --mint: #F0FFF0;
+            
+            /* Warning Colors */
+            --warning-orange: #FF9800;
+            --warning-red: #F44336;
+            --warning-amber: #FFC107;
+            
+            /* Neutral Colors */
+            --white: #FFFFFF;
+            --cream: #FFFEF7;
+            --light-gray: #F8F9FA;
+            --medium-gray: #6C757D;
+            --dark-gray: #343A40;
+            --charcoal: #2C3E50;
+            
+            /* Shadows & Effects */
+            --shadow-soft: 0 4px 20px rgba(255, 215, 0, 0.15);
+            --shadow-medium: 0 8px 30px rgba(255, 215, 0, 0.25);
+            --shadow-strong: 0 12px 40px rgba(255, 215, 0, 0.35);
+            
+            /* Gradients */
+            --gradient-sunrise: linear-gradient(135deg, #FFD700 0%, #FF8C00 50%, #FF6347 100%);
+            --gradient-sunset: linear-gradient(135deg, #FFE4B5 0%, #FFD700 50%, #DDA0DD 100%);
+            --gradient-warning: linear-gradient(135deg, #FFC107 0%, #FF9800 50%, #F44336 100%);
+            
+            /* Transitions */
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: var(--charcoal);
+            background: var(--cream);
+            overflow-x: hidden;
+        }
+
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes warningBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* ============================================
+           HEADER
+           ============================================ */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--warning-orange);
+            color: var(--charcoal);
+            padding: 25px 20px;
+            box-shadow: var(--shadow-soft);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--warning-orange);
+        }
+
+        .header-icon {
+            font-size: 2.5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .back-btn {
+            background: var(--gradient-sunrise);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition-bounce);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-strong);
+        }
+
+        /* ============================================
+           MAIN CONTENT
+           ============================================ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px 80px;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.2) 0%, rgba(255, 152, 0, 0.1) 100%);
+            border-radius: 30px;
+            padding: 80px 50px;
+            text-align: center;
+            box-shadow: var(--shadow-strong);
+            margin-bottom: 50px;
+            border: 3px solid var(--warning-orange);
+            position: relative;
+            overflow: hidden;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(255, 152, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 193, 7, 0.1) 0%, transparent 50%);
+            animation: sparkle 4s ease-in-out infinite;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-icon {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hero-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            background: var(--gradient-warning);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--medium-gray);
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .last-updated {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--warning-orange);
+            color: var(--warning-orange);
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: var(--shadow-soft);
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-soft);
+            border-top: 4px solid var(--primary-yellow);
+            transition: var(--transition-smooth);
+            animation: slideIn 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .content-section:nth-child(1) { animation-delay: 0.1s; }
+        .content-section:nth-child(2) { animation-delay: 0.2s; }
+        .content-section:nth-child(3) { animation-delay: 0.3s; }
+        .content-section:nth-child(4) { animation-delay: 0.4s; }
+        .content-section:nth-child(5) { animation-delay: 0.5s; }
+
+        .content-section:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 152, 0, 0.3);
+        }
+
+        .section-icon {
+            font-size: 2.5rem;
+            background: var(--gradient-warning);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-title {
+            font-family: 'Caveat', cursive;
+            font-size: 2.5rem;
+            color: var(--charcoal);
+            font-weight: 700;
+        }
+
+        .section-content {
+            color: var(--medium-gray);
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .section-content p {
+            margin-bottom: 15px;
+        }
+
+        .section-content ul,
+        .section-content ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        .section-content li {
+            margin-bottom: 12px;
+        }
+
+        .section-content strong {
+            color: var(--charcoal);
+            font-weight: 600;
+        }
+
+        /* Warning Boxes */
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.15), rgba(255, 193, 7, 0.05));
+            border-left: 4px solid var(--warning-amber);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .warning-box.danger {
+            background: linear-gradient(135deg, rgba(244, 67, 54, 0.15), rgba(244, 67, 54, 0.05));
+            border-left-color: var(--warning-red);
+        }
+
+        .warning-box.alert {
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.15), rgba(255, 152, 0, 0.05));
+            border-left-color: var(--warning-orange);
+        }
+
+        .warning-box.info {
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.15), rgba(33, 150, 243, 0.05));
+            border-left-color: #2196F3;
+        }
+
+        .warning-box-title {
+            font-weight: 700;
+            color: var(--charcoal);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+
+        .warning-box-title i {
+            animation: warningBlink 2s ease-in-out infinite;
+        }
+
+        /* Disclaimer Statement */
+        .disclaimer-statement {
+            background: var(--gradient-warning);
+            color: white;
+            padding: 35px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 1.15rem;
+            font-weight: 600;
+            line-height: 1.9;
+            margin: 30px 0;
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Limitation Cards */
+        .limitation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .limitation-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 235, 59, 0.05));
+            border: 2px solid rgba(255, 152, 0, 0.3);
+            border-radius: 20px;
+            padding: 25px;
+            transition: var(--transition-bounce);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .limitation-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 152, 0, 0.1) 0%, transparent 70%);
+            transition: var(--transition-smooth);
+            opacity: 0;
+        }
+
+        .limitation-card:hover::before {
+            opacity: 1;
+        }
+
+        .limitation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+            border-color: var(--warning-orange);
+        }
+
+        .limitation-icon {
+            font-size: 2.5rem;
+            color: var(--warning-orange);
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .limitation-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--charcoal);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .limitation-desc {
+            color: var(--medium-gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Contact Card */
+        .contact-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 235, 59, 0.05));
+            border: 2px solid var(--primary-yellow);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .contact-card h4 {
+            color: var(--deep-yellow);
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            color: var(--medium-gray);
+        }
+
+        .contact-item i {
+            color: var(--deep-yellow);
+            font-size: 1.3rem;
+            width: 30px;
+        }
+
+        .contact-item a {
+            color: var(--deep-yellow);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+        }
+
+        .contact-item a:hover {
+            color: var(--warning-orange);
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .page-footer {
+            background: white;
+            border-radius: 25px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+            margin-top: 50px;
+            border-top: 3px solid var(--primary-yellow);
+        }
+
+        .page-footer p {
+            color: var(--medium-gray);
+            margin-bottom: 10px;
+        }
+
+        .footer-heart {
+            color: var(--coral);
+            animation: float 1.5s ease-in-out infinite;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .hero-section {
+                padding: 60px 35px;
+            }
+
+            .content-section {
+                padding: 35px 25px;
+            }
+
+            .limitation-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-icon {
+                font-size: 4rem;
+            }
+
+            .hero-section {
+                padding: 50px 25px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .header-title {
+                font-size: 1.4rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-icon {
+                font-size: 3.5rem;
+            }
+
+            .section-icon {
+                font-size: 2rem;
+            }
+
+            .content-section {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-title">
+                <i class="fas fa-exclamation-triangle header-icon"></i>
+                <span>Disclaimer</span>
+            </div>
+            <a href="/" class="back-btn">
+                <i class="fas fa-home"></i>
+                <span>Back to Home</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <i class="fas fa-file-contract hero-icon">⚠️</i>
+                <h1 class="hero-title">Legal Disclaimer</h1>
+                <p class="hero-subtitle">
+                    Important information about service limitations, liability, and user responsibilities
+                </p>
+                <div class="last-updated">
+                    <i class="fas fa-clock"></i>
+                    Last Updated: November 3, 2025
+                </div>
+            </div>
+        </section>
+
+        <!-- General Disclaimer -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-info-circle section-icon"></i>
+                <h2 class="section-title">General Disclaimer</h2>
+            </div>
+            <div class="section-content">
+                <div class="disclaimer-statement">
+                    <i class="fas fa-gavel" style="font-size: 2rem; margin-bottom: 15px; display: block;"></i>
+                    The information provided by Happy Trails Bus Service on this website is for general informational 
+                    purposes only. While we strive to keep information accurate and up-to-date, we make no 
+                    representations or warranties of any kind, express or implied, about the completeness, accuracy, 
+                    reliability, suitability, or availability of the website or services.
+                </div>
+
+                <p>
+                    <strong>Happy Trails Bus Service</strong> operates as a transportation service provider in the 
+                    Himachal Pradesh region. This disclaimer applies to all users of our website, mobile applications, 
+                    and services. By using our services, you acknowledge that you have read, understood, and agreed 
+                    to be bound by this disclaimer.
+                </p>
+
+                <div class="warning-box danger">
+                    <div class="warning-box-title">
+                        <i class="fas fa-exclamation-circle"></i>
+                        Important Notice
+                    </div>
+                    <p>
+                        Any reliance you place on information provided by Happy Trails is strictly at your own risk. 
+                        We disclaim all liability and responsibility arising from any reliance placed on such materials 
+                        by you or any other visitor to our website, or by anyone who may be informed of its contents.
+                    </p>
+                </div>
+
+                <p>
+                    We reserve the right to modify this disclaimer at any time without prior notice. Changes become 
+                    effective immediately upon posting to this website. Your continued use of our services after any 
+                    modifications indicates your acceptance of the updated disclaimer.
+                </p>
+            </div>
+        </section>
+
+        <!-- Service Limitations -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-ban section-icon"></i>
+                <h2 class="section-title">Service Limitations</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    While we strive to provide excellent service, there are certain limitations and conditions that 
+                    may affect our ability to deliver services as expected:
+                </p>
+
+                <div class="limitation-grid">
+                    <!-- Weather Conditions -->
+                    <div class="limitation-card">
+                        <i class="fas fa-cloud-rain limitation-icon"></i>
+                        <div class="limitation-title">Weather Conditions</div>
+                        <div class="limitation-desc">
+                            Services may be delayed, altered, or cancelled due to adverse weather conditions including 
+                            heavy rain, snow, fog, landslides, or other natural phenomena beyond our control.
+                        </div>
+                    </div>
+
+                    <!-- Road Conditions -->
+                    <div class="limitation-card">
+                        <i class="fas fa-road limitation-icon"></i>
+                        <div class="limitation-title">Road Conditions</div>
+                        <div class="limitation-desc">
+                            Mountain roads may be affected by construction, maintenance, landslides, or closures. 
+                            Routes and schedules may change without prior notice for safety reasons.
+                        </div>
+                    </div>
+
+                    <!-- Vehicle Issues -->
+                    <div class="limitation-card">
+                        <i class="fas fa-bus limitation-icon"></i>
+                        <div class="limitation-title">Vehicle Availability</div>
+                        <div class="limitation-desc">
+                            Specific vehicles or amenities may not always be available due to maintenance requirements, 
+                            mechanical issues, or fleet management decisions.
+                        </div>
+                    </div>
+
+                    <!-- Schedule Changes -->
+                    <div class="limitation-card">
+                        <i class="fas fa-clock limitation-icon"></i>
+                        <div class="limitation-title">Schedule Adherence</div>
+                        <div class="limitation-desc">
+                            While we aim for punctuality, actual arrival and departure times may vary due to traffic, 
+                            road conditions, passenger boarding, or other operational factors.
+                        </div>
+                    </div>
+
+                    <!-- Seat Availability -->
+                    <div class="limitation-card">
+                        <i class="fas fa-chair limitation-icon"></i>
+                        <div class="limitation-title">Seat Guarantees</div>
+                        <div class="limitation-desc">
+                            Specific seat assignments may change due to vehicle substitutions or operational needs. 
+                            We cannot guarantee specific seats, even if pre-booked.
+                        </div>
+                    </div>
+
+                    <!-- Baggage Limits -->
+                    <div class="limitation-card">
+                        <i class="fas fa-suitcase limitation-icon"></i>
+                        <div class="limitation-title">Baggage Capacity</div>
+                        <div class="limitation-desc">
+                            Baggage acceptance is subject to available space. We reserve the right to refuse 
+                            oversized or excessive luggage for safety and capacity reasons.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-box alert">
+                    <div class="warning-box-title">
+                        <i class="fas fa-shield-alt"></i>
+                        Force Majeure
+                    </div>
+                    <p>
+                        Happy Trails shall not be liable for any failure or delay in performance due to circumstances 
+                        beyond our reasonable control, including but not limited to: acts of God, natural disasters, 
+                        government actions, civil unrest, strikes, pandemics, or other force majeure events.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Information Accuracy -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-check-double section-icon"></i>
+                <h2 class="section-title">Information Accuracy Notice</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    We make every effort to ensure that information displayed on our website is accurate, current, 
+                    and complete. However, errors may occasionally occur.
+                </p>
+
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: var(--warning-orange);">
+                    <i class="fas fa-database"></i> Types of Information
+                </h3>
+
+                <ul>
+                    <li>
+                        <strong>Schedule Information:</strong> Bus schedules, timings, and routes are subject to 
+                        change without notice. Always verify current schedules before travel, especially during 
+                        peak seasons or adverse weather conditions.
+                    </li>
+                    <li>
+                        <strong>Pricing Information:</strong> Fares and prices displayed are accurate at the time 
+                        of posting but may change due to fuel costs, seasonal demand, government regulations, or 
+                        promotional offers.
+                    </li>
+                    <li>
+                        <strong>Route Information:</strong> Route descriptions, stops, and scenic information are 
+                        provided for reference only. Actual routes may vary due to road conditions or operational 
+                        requirements.
+                    </li>
+                    <li>
+                        <strong>Availability Information:</strong> Seat availability shown on our booking system 
+                        is updated in real-time but may not reflect the absolute current status due to simultaneous 
+                        bookings or system latency.
+                    </li>
+                    <li>
+                        <strong>Promotional Content:</strong> Photos, videos, and descriptions are for illustrative 
+                        purposes. Actual services, vehicles, and experiences may vary.
+                    </li>
+                </ul>
+
+                <div class="warning-box">
+                    <div class="warning-box-title">
+                        <i class="fas fa-sync-alt"></i>
+                        Real-Time Verification
+                    </div>
+                    <p>
+                        We strongly recommend verifying all critical information (schedules, availability, pricing) 
+                        directly with our customer service team before making travel plans, especially for time-sensitive 
+                        or important journeys.
+                    </p>
+                    <p style="margin-top: 10px;">
+                        <strong>Customer Service:</strong> 
+                        <a href="tel:+911234567890" style="color: var(--warning-orange); font-weight: 600;">
+                            +91 (123) 456-7890
+                        </a> | 
+                        <a href="mailto:info@happytrails.com" style="color: var(--warning-orange); font-weight: 600;">
+                            info@happytrails.com
+                        </a>
+                    </p>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: var(--warning-orange);">
+                    <i class="fas fa-exclamation-triangle"></i> No Warranty
+                </h3>
+
+                <p>
+                    Information is provided "as is" without any warranty of any kind, either express or implied, 
+                    including but not limited to:
+                </p>
+
+                <ul>
+                    <li>Warranties of merchantability</li>
+                    <li>Fitness for a particular purpose</li>
+                    <li>Non-infringement of intellectual property</li>
+                    <li>Accuracy or completeness of information</li>
+                    <li>Uninterrupted or error-free operation</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- External Links Disclaimer -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-external-link-alt section-icon"></i>
+                <h2 class="section-title">External Links Disclaimer</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    Our website may contain links to external websites operated by third parties. These links are 
+                    provided for your convenience and informational purposes only.
+                </p>
+
+                <div class="warning-box alert">
+                    <div class="warning-box-title">
+                        <i class="fas fa-unlink"></i>
+                        No Endorsement or Control
+                    </div>
+                    <p>
+                        Happy Trails does not endorse, control, or assume responsibility for the content, privacy 
+                        policies, terms of service, or practices of any third-party websites. We have no control 
+                        over the nature, content, or availability of these external sites.
+                    </p>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: var(--warning-orange);">
+                    <i class="fas fa-shield-alt"></i> Third-Party Website Risks
+                </h3>
+
+                <p>
+                    When you access third-party websites through links on our site, you do so at your own risk. 
+                    We cannot guarantee:
+                </p>
+
+                <ul>
+                    <li>The accuracy or reliability of information on external sites</li>
+                    <li>The safety or security of third-party websites</li>
+                    <li>The privacy practices of external site operators</li>
+                    <li>The quality or legitimacy of products or services offered</li>
+                    <li>The availability or continuity of linked websites</li>
+                </ul>
+
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: var(--warning-orange);">
+                    <i class="fas fa-user-shield"></i> Your Responsibility
+                </h3>
+
+                <p>
+                    We strongly advise you to:
+                </p>
+
+                <ul>
+                    <li>Read the privacy policy and terms of service of any website you visit</li>
+                    <li>Exercise caution when providing personal or financial information</li>
+                    <li>Verify the legitimacy of external websites before engaging in transactions</li>
+                    <li>Use appropriate security measures when browsing external sites</li>
+                    <li>Report suspicious or fraudulent external links to our team</li>
+                </ul>
+
+                <div class="warning-box info">
+                    <div class="warning-box-title">
+                        <i class="fas fa-handshake"></i>
+                        Partner Relationships
+                    </div>
+                    <p>
+                        Some external links may lead to websites of our business partners, affiliates, or service 
+                        providers. While we work with reputable organizations, the inclusion of a link does not 
+                        imply endorsement, and we are not responsible for their independent operations or content.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Medical & Health Disclaimers -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-heartbeat section-icon"></i>
+                <h2 class="section-title">Medical & Health Disclaimers</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    Travel in mountainous regions involves physical activity and exposure to varying altitudes. 
+                    Please read this section carefully before booking or traveling with Happy Trails.
+                </p>
+
+                <div class="warning-box danger">
+                    <div class="warning-box-title">
+                        <i class="fas fa-user-md"></i>
+                        Not Medical Advice
+                    </div>
+                    <p>
+                        <strong>Important:</strong> Nothing on this website constitutes medical advice, diagnosis, 
+                        or treatment. We are a transportation service, not healthcare professionals. All health and 
+                        safety information provided is for general awareness only.
+                    </p>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: var(--warning-orange);">
+                    <i class="fas fa-mountain"></i> Altitude & Health Considerations
+                </h3>
+
+                <ul>
+                    <li>
+                        <strong>Altitude Sickness:</strong> Some of our routes reach elevations where altitude 
+                        sickness may occur. Consult your doctor before travel if you have health concerns related 
+                        to altitude.
+                    </li>
+                    <li>
+                        <strong>Physical Fitness:</strong> Mountain travel may involve walking, climbing stairs, or 
+                        standing for extended periods. Assess your physical fitness level before booking.
+                    </li>
+                    <li>
+                        <strong>Pre-existing Conditions:</strong> If you have heart conditions, respiratory issues, 
+                        high blood pressure, or any medical conditions, consult your healthcare provider before 
+                        mountain travel.
+                    </li>
+                    <li>
+                        <strong>Pregnancy:</strong> Pregnant travelers should consult their doctor, especially for 
+                        travel to high-altitude destinations.
+                    </li>
+                    <li>
+                        <strong>Motion Sickness:</strong> Mountain roads have curves and altitude changes. If you're 
+                        prone to motion sickness, take appropriate precautions.
+                    </li>
+                </ul>
+
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: var(--warning-orange);">
+                    <i class="fas fa-first-aid"></i> Medical Emergencies
+                </h3>
+
+                <p>
+                    While our staff is trained in basic first aid, we are not medical professionals:
+                </p>
+
+                <ul>
+                    <li>We cannot provide medical diagnosis or treatment</li>
+                    <li>We are not responsible for the availability or quality of medical facilities en route</li>
+                    <li>In case of medical emergencies, we will assist in contacting local emergency services</li>
+                    <li>Passengers are responsible for carrying necessary medications and medical supplies</li>
+                    <li>We recommend travel insurance that covers medical emergencies</li>
+                </ul>
+
+                <div class="warning-box">
+                    <div class="warning-box-title">
+                        <i class="fas fa-clipboard-list"></i>
+                        Pre-Travel Checklist
+                    </div>
+                    <p>Before traveling with us, we recommend you:</p>
+                    <ul style="margin-top: 10px;">
+                        <li>Consult your doctor if you have health concerns</li>
+                        <li>Carry a sufficient supply of prescribed medications</li>
+                        <li>Bring copies of prescriptions and medical documentation</li>
+                        <li>Consider purchasing travel insurance with medical coverage</li>
+                        <li>Inform our staff of any serious medical conditions</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Professional Advice Disclaimer -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-user-tie section-icon"></i>
+                <h2 class="section-title">Professional Advice Notice</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    Information provided on this website is for general informational purposes and should not be 
+                    construed as professional advice of any kind.
+                </p>
+
+                <div class="limitation-grid">
+                    <!-- Legal Advice -->
+                    <div class="limitation-card">
+                        <i class="fas fa-balance-scale limitation-icon"></i>
+                        <div class="limitation-title">Not Legal Advice</div>
+                        <div class="limitation-desc">
+                            Information about contracts, terms, or legal matters is not legal advice. Consult a 
+                            qualified attorney for legal guidance specific to your situation.
+                        </div>
+                    </div>
+
+                    <!-- Financial Advice -->
+                    <div class="limitation-card">
+                        <i class="fas fa-coins limitation-icon"></i>
+                        <div class="limitation-title">Not Financial Advice</div>
+                        <div class="limitation-desc">
+                            Pricing information and payment options are not financial advice. Consult a financial 
+                            advisor for decisions related to your finances.
+                        </div>
+                    </div>
+
+                    <!-- Travel Advice -->
+                    <div class="limitation-card">
+                        <i class="fas fa-plane-departure limitation-icon"></i>
+                        <div class="limitation-title">Not Travel Consultancy</div>
+                        <div class="limitation-desc">
+                            Route suggestions and travel tips are general information only. We are not professional 
+                            travel consultants. Plan your trip based on your needs and research.
+                        </div>
+                    </div>
+
+                    <!-- Insurance Advice -->
+                    <div class="limitation-card">
+                        <i class="fas fa-shield-alt limitation-icon"></i>
+                        <div class="limitation-title">Not Insurance Advice</div>
+                        <div class="limitation-desc">
+                            Recommendations about travel insurance are informational. Consult an insurance professional 
+                            for coverage advice suited to your circumstances.
+                        </div>
+                    </div>
+
+                    <!-- Weather Advice -->
+                    <div class="limitation-card">
+                        <i class="fas fa-cloud-sun limitation-icon"></i>
+                        <div class="limitation-title">Not Meteorological Advice</div>
+                        <div class="limitation-desc">
+                            Weather information is sourced from third parties. We are not meteorologists. Check 
+                            official weather services for accurate forecasts.
+                        </div>
+                    </div>
+
+                    <!-- Technical Advice -->
+                    <div class="limitation-card">
+                        <i class="fas fa-laptop-code limitation-icon"></i>
+                        <div class="limitation-title">Not IT Support</div>
+                        <div class="limitation-desc">
+                            Technical information about using our website is basic guidance only. We cannot provide 
+                            comprehensive IT support or troubleshooting for all devices.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-box alert">
+                    <div class="warning-box-title">
+                        <i class="fas fa-user-graduate"></i>
+                        Seek Professional Guidance
+                    </div>
+                    <p>
+                        For matters requiring professional expertise (legal, financial, medical, technical, etc.), 
+                        always consult qualified professionals in those respective fields. Our team consists of 
+                        transportation professionals, not licensed experts in other domains.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- User Responsibilities -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-user-check section-icon"></i>
+                <h2 class="section-title">User Responsibilities</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    As a passenger using Happy Trails services, you have certain responsibilities to ensure a safe 
+                    and pleasant journey for yourself and fellow travelers.
+                </p>
+
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: var(--warning-orange);">
+                    <i class="fas fa-clipboard-check"></i> Before Travel
+                </h3>
+
+                <ul>
+                    <li>Verify your booking details, departure times, and pickup locations</li>
+                    <li>Arrive at the departure point at least 15 minutes before scheduled time</li>
+                    <li>Carry valid identification documents as required by law</li>
+                    <li>Ensure you have necessary permits or permissions for restricted areas</li>
+                    <li>Review our terms and conditions, baggage policy, and cancellation policy</li>
+                    <li>Disclose any medical conditions that may require assistance</li>
+                    <li>Arrange appropriate travel insurance for your journey</li>
+                </ul>
+
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: var(--warning-orange);">
+                    <i class="fas fa-bus-alt"></i> During Travel
+                </h3>
+
+                <ul>
+                    <li>Follow all instructions from our drivers and staff</li>
+                    <li>Remain seated while the vehicle is in motion</li>
+                    <li>Respect other passengers and maintain appropriate behavior</li>
+                    <li>Keep aisles clear and baggage properly stored</li>
+                    <li>Do not smoke, consume alcohol, or use prohibited substances</li>
+                    <li>Do not eat foods with strong odors or messy preparations</li>
+                    <li>Keep noise levels reasonable and use headphones for audio devices</li>
+                    <li>Report any safety concerns immediately to our staff</li>
+                </ul>
+
+                <div class="warning-box danger">
+                    <div class="warning-box-title">
+                        <i class="fas fa-ban"></i>
+                        Prohibited Activities
+                    </div>
+                    <p>
+                        The following activities are strictly prohibited and may result in removal from the service 
+                        without refund:
+                    </p>
+                    <ul style="margin-top: 10px;">
+                        <li>Threatening, harassing, or abusive behavior toward staff or passengers</li>
+                        <li>Carrying dangerous goods, weapons, or illegal substances</li>
+                        <li>Tampering with safety equipment or vehicle controls</li>
+                        <li>Smoking or vaping inside vehicles</li>
+                        <li>Excessive alcohol consumption or intoxication</li>
+                        <li>Creating disturbances or disrupting the journey</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: var(--warning-orange);">
+                    <i class="fas fa-exclamation-circle"></i> Your Own Risk
+                </h3>
+
+                <p>
+                    By using our services, you acknowledge that:
+                </p>
+
+                <ul>
+                    <li>You use our services at your own risk and discretion</li>
+                    <li>You are responsible for your personal belongings at all times</li>
+                    <li>You have assessed your physical capability for mountain travel</li>
+                    <li>You have taken appropriate health and safety precautions</li>
+                    <li>You understand the inherent risks of mountain travel</li>
+                    <li>You release Happy Trails from liability for risks you knowingly assume</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Contact Information -->
+        <section class="content-section">
+            <div class="section-header">
+                <i class="fas fa-headset section-icon"></i>
+                <h2 class="section-title">Questions or Concerns?</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    If you have questions about this disclaimer or need clarification on any aspect of our services, 
+                    please don't hesitate to contact us.
+                </p>
+
+                <div class="contact-card">
+                    <h4><i class="fas fa-phone-alt"></i> Contact Happy Trails</h4>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <strong>General Inquiries:</strong><br>
+                            <a href="mailto:info@happytrails.com">info@happytrails.com</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-balance-scale"></i>
+                        <div>
+                            <strong>Legal Department:</strong><br>
+                            <a href="mailto:legal@happytrails.com">legal@happytrails.com</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <strong>Customer Service:</strong><br>
+                            +91 (123) 456-7890
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <strong>Office Address:</strong><br>
+                            Happy Trails Bus Service<br>
+                            Dharampur, Himachal Pradesh, India
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-box info">
+                    <div class="warning-box-title">
+                        <i class="fas fa-lightbulb"></i>
+                        We're Here to Help
+                    </div>
+                    <p>
+                        While this disclaimer outlines our legal limitations, we're committed to providing 
+                        excellent service and addressing your concerns. Don't let legal language discourage you 
+                        from reaching out – we're friendly, approachable, and here to make your journey amazing!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <p style="font-size: 1.1rem;">
+            Made with <i class="fas fa-heart footer-heart"></i> by <strong>Kavlin</strong>
+        </p>
+        <p style="font-size: 0.9rem;">
+            Happy Trails Bus Service - Making Every Journey a Happy Trail 🚌💖
+        </p>
+        <p style="font-size: 0.85rem; margin-top: 15px;">
+            Legal questions? Email us at 
+            <a href="mailto:legal@happytrails.com" style="color: var(--deep-yellow); text-decoration: none; font-weight: 600;">
+                legal@happytrails.com
+            </a>
+        </p>
+    </footer>
+
+    <script>
+        // Smooth Scroll for Internal Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.content-section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            observer.observe(section);
+        });
+    </script>
+
+</body>
+</html>
