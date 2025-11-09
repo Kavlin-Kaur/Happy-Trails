@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* [All Phase 1 CSS remains the same, adding Phase 2 CSS...] */
+        
         /* ============================================
            GLOBAL STYLES - HAPPY TRAILS THEME
            ============================================ */
@@ -70,6 +72,7 @@
             color: var(--charcoal);
             background: var(--cream);
             overflow-x: hidden;
+            padding-bottom: 100px;
         }
 
         /* ============================================
@@ -101,10 +104,229 @@
             }
         }
 
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
         @keyframes shield {
             0%, 100% { transform: scale(1) rotate(0deg); }
             50% { transform: scale(1.1) rotate(5deg); }
         }
+
+        /* ============================================
+           READING PROGRESS & TOC
+           ============================================ */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: var(--gradient-privacy);
+            z-index: 10001;
+            transition: width 0.2s ease-out;
+        }
+
+        .toc-sidebar {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            border-radius: 20px;
+            padding: 20px 15px;
+            box-shadow: var(--shadow-medium);
+            z-index: 999;
+            max-width: 250px;
+            max-height: 80vh;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .toc-sidebar.show {
+            display: block;
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        .toc-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--privacy-green);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .toc-item {
+            display: block;
+            padding: 8px 12px;
+            color: var(--medium-gray);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: var(--transition-smooth);
+            border-radius: 10px;
+            margin-bottom: 5px;
+            border-left: 3px solid transparent;
+        }
+
+        .toc-item:hover {
+            background: rgba(76, 175, 80, 0.2);
+            color: var(--privacy-green);
+            border-left-color: var(--privacy-green);
+            padding-left: 15px;
+        }
+
+        .toc-item.active {
+            background: var(--gradient-privacy);
+            color: white;
+            border-left-color: var(--privacy-green);
+        }
+
+        /* ============================================
+           PRIVACY DASHBOARD MODAL
+           ============================================ */
+        .privacy-dashboard-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--gradient-privacy);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-strong);
+            transition: var(--transition-bounce);
+            z-index: 998;
+        }
+
+        .privacy-dashboard-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 8px 40px rgba(76, 175, 80, 0.4);
+        }
+
+        .dashboard-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .dashboard-modal.show {
+            display: flex;
+        }
+
+        .dashboard-content {
+            background: white;
+            border-radius: 30px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-strong);
+            border: 3px solid var(--privacy-green);
+        }
+
+        .dashboard-header {
+            background: var(--gradient-privacy);
+            color: white;
+            padding: 30px;
+            border-radius: 27px 27px 0 0;
+            text-align: center;
+        }
+
+        .dashboard-header h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-body {
+            padding: 35px;
+        }
+
+        .dashboard-action {
+            background: rgba(76, 175, 80, 0.1);
+            border: 2px solid rgba(76, 175, 80, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .dashboard-action:hover {
+            border-color: var(--privacy-green);
+            box-shadow: var(--shadow-soft);
+            transform: translateX(5px);
+        }
+
+        .dashboard-action-info {
+            flex: 1;
+        }
+
+        .dashboard-action-title {
+            font-weight: 700;
+            color: var(--charcoal);
+            margin-bottom: 5px;
+            font-size: 1.05rem;
+        }
+
+        .dashboard-action-desc {
+            color: var(--medium-gray);
+            font-size: 0.9rem;
+        }
+
+        .dashboard-action-icon {
+            font-size: 1.8rem;
+            color: var(--privacy-green);
+        }
+
+        .dashboard-close {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .close-btn {
+            background: var(--medium-gray);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+        }
+
+        .close-btn:hover {
+            background: var(--charcoal);
+            transform: scale(1.05);
+        }
+
+        /* [All Phase 1 CSS continues...] */
 
         /* ============================================
            HEADER
@@ -586,7 +808,7 @@
 
         /* Print Styles */
         @media print {
-            .header, .print-btn {
+            .header, .print-btn, .toc-sidebar, .reading-progress, .dashboard-modal, .privacy-dashboard-btn {
                 display: none !important;
             }
 
@@ -601,6 +823,12 @@
         }
 
         /* Responsive Design */
+        @media (max-width: 1200px) {
+            .toc-sidebar {
+                display: none !important;
+            }
+        }
+
         @media (max-width: 992px) {
             .hero-title {
                 font-size: 3rem;
@@ -616,6 +844,12 @@
 
             .data-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .privacy-dashboard-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
             }
         }
 
@@ -653,6 +887,10 @@
             .security-badges {
                 gap: 15px;
             }
+
+            .dashboard-body {
+                padding: 25px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -671,10 +909,99 @@
             .content-section {
                 padding: 25px 20px;
             }
+
+            .privacy-dashboard-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+                bottom: 20px;
+                right: 20px;
+            }
         }
     </style>
 </head>
 <body>
+
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <!-- Table of Contents Sidebar -->
+    <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">Privacy Policy</div>
+        <a href="#introduction" class="toc-item">1. Introduction</a>
+        <a href="#collection" class="toc-item">2. Data Collection</a>
+        <a href="#usage" class="toc-item">3. Data Usage</a>
+        <a href="#security" class="toc-item">4. Security</a>
+        <a href="#sharing" class="toc-item">5. Third-Party</a>
+        <a href="#cookies" class="toc-item">6. Cookies</a>
+        <a href="#rights" class="toc-item">7. Your Rights</a>
+        <a href="#children" class="toc-item">8. Children</a>
+        <a href="#retention" class="toc-item">9. Retention</a>
+        <a href="#transfers" class="toc-item">10. Transfers</a>
+        <a href="#changes" class="toc-item">11. Changes</a>
+        <a href="#contact" class="toc-item">12. Contact</a>
+    </nav>
+
+    <!-- Privacy Dashboard Button -->
+    <button class="privacy-dashboard-btn" onclick="openDashboard()" title="Privacy Dashboard">
+        <i class="fas fa-user-shield"></i>
+    </button>
+
+    <!-- Privacy Dashboard Modal -->
+    <div class="dashboard-modal" id="dashboardModal">
+        <div class="dashboard-content">
+            <div class="dashboard-header">
+                <h2>Privacy Dashboard</h2>
+                <p>Manage your privacy preferences and data</p>
+            </div>
+            <div class="dashboard-body">
+                
+                <div class="dashboard-action" onclick="downloadData()">
+                    <div class="dashboard-action-info">
+                        <div class="dashboard-action-title">Download Your Data</div>
+                        <div class="dashboard-action-desc">Export all your personal data in JSON format</div>
+                    </div>
+                    <div class="dashboard-action-icon"><i class="fas fa-download"></i></div>
+                </div>
+
+                <div class="dashboard-action" onclick="alert('This feature opens a form to request data deletion. Coming soon!')">
+                    <div class="dashboard-action-info">
+                        <div class="dashboard-action-title">Request Data Deletion</div>
+                        <div class="dashboard-action-desc">Permanently delete your Happy Trails account and data</div>
+                    </div>
+                    <div class="dashboard-action-icon"><i class="fas fa-trash-alt"></i></div>
+                </div>
+
+                <div class="dashboard-action" onclick="alert('This feature allows you to update your privacy preferences. Coming soon!')">
+                    <div class="dashboard-action-info">
+                        <div class="dashboard-action-title">Update Privacy Preferences</div>
+                        <div class="dashboard-action-desc">Control how we use your data and communications</div>
+                    </div>
+                    <div class="dashboard-action-icon"><i class="fas fa-cog"></i></div>
+                </div>
+
+                <div class="dashboard-action" onclick="alert('Viewing your consent history. Coming soon!')">
+                    <div class="dashboard-action-info">
+                        <div class="dashboard-action-title">View Consent History</div>
+                        <div class="dashboard-action-desc">See all your privacy consents and preferences</div>
+                    </div>
+                    <div class="dashboard-action-icon"><i class="fas fa-history"></i></div>
+                </div>
+
+                <div class="dashboard-action" onclick="window.location.href='mailto:privacy@happytrails.com'">
+                    <div class="dashboard-action-info">
+                        <div class="dashboard-action-title">Contact Data Protection Officer</div>
+                        <div class="dashboard-action-desc">Email our DPO for privacy concerns</div>
+                    </div>
+                    <div class="dashboard-action-icon"><i class="fas fa-envelope"></i></div>
+                </div>
+
+                <div class="dashboard-close">
+                    <button class="close-btn" onclick="closeDashboard()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Header -->
     <header class="header">
@@ -718,7 +1045,9 @@
             </div>
         </section>
 
-        <!-- Introduction -->
+        <!-- [All Phase 1 sections remain...] -->
+
+        <!-- 1. Introduction - [Keep Phase 1 content] -->
         <section class="content-section" id="introduction">
             <div class="section-header">
                 <i class="fas fa-info-circle section-icon"></i>
@@ -748,7 +1077,7 @@
                         <li><strong>Transparency:</strong> We clearly explain what data we collect and why</li>
                         <li><strong>Control:</strong> You have rights over your personal information</li>
                         <li><strong>Security:</strong> We use industry-standard measures to protect your data</li>
-                        <li><strong>Compliance:</strong> We follow GDPR, CCPA, and Indian data protection laws</li>
+                        <li><strong>Compliance:</strong> We follow GDPR, CCPA, PIPEDA, and Indian data protection laws</li>
                         <li><strong>Honesty:</strong> We never sell your personal data to third parties</li>
                     </ul>
                 </div>
@@ -761,7 +1090,7 @@
             </div>
         </section>
 
-        <!-- Information We Collect -->
+        <!-- 2. Information We Collect - [Keep Phase 1 content] -->
         <section class="content-section" id="collection">
             <div class="section-header">
                 <i class="fas fa-database section-icon"></i>
@@ -861,13 +1190,809 @@
             </div>
         </section>
 
-        <!-- [Continue in next message due to length...] -->
+        <!-- 3. How We Use Your Information -->
+        <section class="content-section" id="usage">
+            <div class="section-header">
+                <i class="fas fa-tasks section-icon"></i>
+                <h2 class="section-title">3. How We Use Your Information</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    We use the information we collect for the following purposes:
+                </p>
 
-        <!-- Contact Information -->
-        <section class="content-section">
+                <div class="data-grid">
+                    <div class="data-card">
+                        <i class="fas fa-ticket-alt data-card-icon"></i>
+                        <div class="data-card-title">Service Delivery</div>
+                        <div class="data-card-desc">
+                            To process bookings, manage reservations, provide customer support, send booking confirmations, 
+                            and deliver the transportation services you've requested.
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-user-circle data-card-icon"></i>
+                        <div class="data-card-title">Account Management</div>
+                        <div class="data-card-desc">
+                            To create and maintain your account, authenticate your identity, manage your profile, and 
+                            provide personalized user experiences.
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-credit-card data-card-icon"></i>
+                        <div class="data-card-title">Payment Processing</div>
+                        <div class="data-card-desc">
+                            To process payments, prevent fraud, issue refunds, generate invoices, and maintain financial 
+                            records for accounting purposes.
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-bell data-card-icon"></i>
+                        <div class="data-card-title">Communications</div>
+                        <div class="data-card-desc">
+                            To send booking confirmations, service updates, promotional offers (with consent), customer 
+                            surveys, and important announcements about our services.
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-chart-line data-card-icon"></i>
+                        <div class="data-card-title">Analytics & Improvement</div>
+                        <div class="data-card-desc">
+                            To analyze usage patterns, improve our services, optimize routes, enhance user experience, 
+                            and develop new features based on customer needs.
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-shield-alt data-card-icon"></i>
+                        <div class="data-card-title">Security & Fraud Prevention</div>
+                        <div class="data-card-desc">
+                            To detect and prevent fraud, protect against security threats, verify identity, monitor 
+                            suspicious activity, and ensure platform safety.
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-balance-scale data-card-icon"></i>
+                        <div class="data-card-title">Legal Compliance</div>
+                        <div class="data-card-desc">
+                            To comply with legal obligations, respond to law enforcement requests, enforce our terms, 
+                            resolve disputes, and protect our legal rights.
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-bullhorn data-card-icon"></i>
+                        <div class="data-card-title">Marketing & Personalization</div>
+                        <div class="data-card-desc">
+                            To send targeted marketing (with your consent), personalize recommendations, show relevant 
+                            promotions, and improve customer engagement.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">
+                        <i class="fas fa-hands-helping"></i>
+                        Legal Basis for Processing
+                    </div>
+                    <p>
+                        We process your personal data based on the following legal grounds:
+                    </p>
+                    <ul style="margin-top: 10px;">
+                        <li><strong>Contract Performance:</strong> To fulfill our contract with you (booking services)</li>
+                        <li><strong>Legitimate Interest:</strong> To improve services and prevent fraud</li>
+                        <li><strong>Consent:</strong> For marketing communications and optional data processing</li>
+                        <li><strong>Legal Obligation:</strong> To comply with laws and regulations</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Data Storage & Security -->
+        <section class="content-section" id="security">
+            <div class="section-header">
+                <i class="fas fa-lock section-icon"></i>
+                <h2 class="section-title">4. Data Storage & Security</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    We take the security of your personal information seriously and implement comprehensive measures 
+                    to protect it:
+                </p>
+
+                <div class="data-grid">
+                    <div class="data-card">
+                        <i class="fas fa-key data-card-icon"></i>
+                        <div class="data-card-title">Encryption</div>
+                        <div class="data-card-desc">
+                            All sensitive data is encrypted in transit (TLS/SSL) and at rest (AES-256). Payment information 
+                            is tokenized and never stored on our servers.
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-user-shield data-card-icon"></i>
+                        <div class="data-card-title">Access Control</div>
+                        <div class="data-card-desc">
+                            Strict access controls ensure only authorized personnel can access your data. Multi-factor 
+                            authentication required for all admin accounts.
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-server data-card-icon"></i>
+                        <div class="data-card-title">Secure Servers</div>
+                        <div class="data-card-desc">
+                            Data hosted on secure servers with firewalls, intrusion detection systems, and regular 
+                            security audits. Servers located in certified data centers.
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-history data-card-icon"></i>
+                        <div class="data-card-title">Regular Backups</div>
+                        <div class="data-card-desc">
+                            Automated daily backups with encrypted storage ensure data recovery in case of system 
+                            failure. Backups retained for 90 days.
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-user-graduate data-card-icon"></i>
+                        <div class="data-card-title">Staff Training</div>
+                        <div class="data-card-desc">
+                            All employees receive regular security and privacy training. Confidentiality agreements 
+                            signed by all staff with data access.
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-search data-card-icon"></i>
+                        <div class="data-card-title">Security Monitoring</div>
+                        <div class="data-card-desc">
+                            24/7 monitoring for suspicious activity, automated threat detection, and incident response 
+                            procedures to address security events.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Your Security Responsibility
+                    </div>
+                    <p>
+                        While we implement strong security measures, you also play a role in protecting your data:
+                    </p>
+                    <ul style="margin-top: 10px;">
+                        <li>Use strong, unique passwords and change them regularly</li>
+                        <li>Enable two-factor authentication on your account</li>
+                        <li>Never share your login credentials with anyone</li>
+                        <li>Log out after using shared or public devices</li>
+                        <li>Report suspicious activity immediately to privacy@happytrails.com</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: var(--privacy-green);">
+                    <i class="fas fa-exclamation-circle"></i> Data Breach Notification
+                </h3>
+
+                <p>
+                    In the unlikely event of a data breach affecting your personal information, we will:
+                </p>
+
+                <ul>
+                    <li>Notify affected users within 72 hours of discovering the breach</li>
+                    <li>Report to relevant data protection authorities as required by law</li>
+                    <li>Provide details about what data was affected and steps we're taking</li>
+                    <li>Offer guidance on protecting yourself from potential harm</li>
+                    <li>Implement additional security measures to prevent future incidents</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 5. Third-Party Sharing & Disclosure -->
+        <section class="content-section" id="sharing">
+            <div class="section-header">
+                <i class="fas fa-share-alt section-icon"></i>
+                <h2 class="section-title">5. Third-Party Sharing & Disclosure</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    We may share your personal information with third parties in the following circumstances:
+                </p>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: var(--privacy-green);">
+                    <i class="fas fa-handshake"></i> Service Providers
+                </h3>
+
+                <ul>
+                    <li>
+                        <strong>Payment Processors:</strong> Stripe, Razorpay, PayPal for secure payment processing
+                    </li>
+                    <li>
+                        <strong>Cloud Hosting:</strong> AWS, Google Cloud for data storage and hosting
+                    </li>
+                    <li>
+                        <strong>Email Services:</strong> SendGrid, Mailchimp for transactional and marketing emails
+                    </li>
+                    <li>
+                        <strong>Analytics Providers:</strong> Google Analytics, Mixpanel for usage analytics
+                    </li>
+                    <li>
+                        <strong>Customer Support:</strong> Zendesk, Intercom for customer service tools
+                    </li>
+                    <li>
+                        <strong>SMS Providers:</strong> Twilio for booking confirmations and notifications
+                    </li>
+                </ul>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: var(--privacy-green);">
+                    <i class="fas fa-balance-scale"></i> Legal Requirements
+                </h3>
+
+                <p>
+                    We may disclose your information when required by law or to:
+                </p>
+
+                <ul>
+                    <li>Comply with legal process, court orders, or government requests</li>
+                    <li>Enforce our Terms of Service or other agreements</li>
+                    <li>Protect our rights, property, or safety, or that of others</li>
+                    <li>Detect, prevent, or address fraud, security, or technical issues</li>
+                    <li>Respond to law enforcement or regulatory inquiries</li>
+                </ul>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: var(--privacy-green);">
+                    <i class="fas fa-building"></i> Business Transfers
+                </h3>
+
+                <p>
+                    In the event of a merger, acquisition, sale of assets, or bankruptcy, your personal information 
+                    may be transferred to the acquiring entity. We will notify you of any such change and your rights 
+                    regarding your data.
+                </p>
+
+                <div class="info-box important">
+                    <div class="info-box-title">
+                        <i class="fas fa-ban"></i>
+                        We Never Sell Your Data
+                    </div>
+                    <p>
+                        <strong>Important:</strong> Happy Trails does NOT sell, rent, or trade your personal information 
+                        to third parties for their marketing purposes. We only share data with trusted service providers 
+                        who help us deliver our services, and they are contractually obligated to protect your data.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Cookies & Tracking Technologies -->
+        <section class="content-section" id="cookies">
+            <div class="section-header">
+                <i class="fas fa-cookie-bite section-icon"></i>
+                <h2 class="section-title">6. Cookies & Tracking Technologies</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    We use cookies and similar tracking technologies to enhance your experience on our platform:
+                </p>
+
+                <div class="data-grid">
+                    <div class="data-card">
+                        <i class="fas fa-cookie data-card-icon"></i>
+                        <div class="data-card-title">Essential Cookies</div>
+                        <div class="data-card-desc">
+                            Required for website functionality, authentication, security, and basic operations. 
+                            Cannot be disabled without affecting site functionality.
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-sliders-h data-card-icon"></i>
+                        <div class="data-card-title">Functional Cookies</div>
+                        <div class="data-card-desc">
+                            Remember your preferences, language settings, and choices to provide a personalized 
+                            experience. Optional but enhance usability.
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-chart-bar data-card-icon"></i>
+                        <div class="data-card-title">Analytics Cookies</div>
+                        <div class="data-card-desc">
+                            Help us understand how visitors use our website, which pages are most popular, and 
+                            where improvements are needed. Used for optimization.
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-bullseye data-card-icon"></i>
+                        <div class="data-card-title">Marketing Cookies</div>
+                        <div class="data-card-desc">
+                            Track your activity across websites to deliver relevant advertisements and measure 
+                            campaign effectiveness. Require your consent.
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: var(--privacy-green);">
+                    <i class="fas fa-cog"></i> Managing Cookies
+                </h3>
+
+                <p>
+                    You can control cookies through:
+                </p>
+
+                <ul>
+                    <li>
+                        <strong>Cookie Preference Center:</strong> Visit our 
+                        <a href="/cookie-policy" style="color: var(--privacy-green); font-weight: 600;">Cookie Policy</a> 
+                        page to manage your cookie preferences
+                    </li>
+                    <li>
+                        <strong>Browser Settings:</strong> Most browsers allow you to refuse or delete cookies through 
+                        their settings
+                    </li>
+                    <li>
+                        <strong>Do Not Track:</strong> We respect Do Not Track (DNT) browser signals
+                    </li>
+                    <li>
+                        <strong>Opt-Out Tools:</strong> Use industry opt-out tools like 
+                        <a href="https://www.youronlinechoices.com" target="_blank" style="color: var(--privacy-green);">
+                            YourOnlineChoices.com
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="info-box info">
+                    <div class="info-box-title">
+                        <i class="fas fa-info-circle"></i>
+                        Cookie Lifespan
+                    </div>
+                    <p>
+                        Cookies may be session-based (deleted when you close your browser) or persistent (remain for 
+                        a set period). Essential cookies: Session only. Functional: Up to 1 year. Analytics: Up to 2 years. 
+                        Marketing: 30-90 days.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Your Privacy Rights -->
+        <section class="content-section" id="rights">
+            <div class="section-header">
+                <i class="fas fa-user-lock section-icon"></i>
+                <h2 class="section-title">7. Your Privacy Rights</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    You have the following rights regarding your personal data:
+                </p>
+
+                <div class="rights-list">
+                    <div class="rights-item">
+                        <div class="rights-icon"><i class="fas fa-eye"></i></div>
+                        <div class="rights-content">
+                            <div class="rights-title">Right to Access</div>
+                            <div class="rights-desc">
+                                You can request a copy of all personal data we hold about you. We'll provide this 
+                                in a machine-readable format within 30 days.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rights-item">
+                        <div class="rights-icon"><i class="fas fa-edit"></i></div>
+                        <div class="rights-content">
+                            <div class="rights-title">Right to Rectification</div>
+                            <div class="rights-desc">
+                                You can request correction of inaccurate or incomplete personal data. We'll update 
+                                your information promptly upon verification.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rights-item">
+                        <div class="rights-icon"><i class="fas fa-trash-alt"></i></div>
+                        <div class="rights-content">
+                            <div class="rights-title">Right to Erasure (Right to be Forgotten)</div>
+                            <div class="rights-desc">
+                                You can request deletion of your personal data, subject to legal retention requirements 
+                                and legitimate business needs.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rights-item">
+                        <div class="rights-icon"><i class="fas fa-hand-paper"></i></div>
+                        <div class="rights-content">
+                            <div class="rights-title">Right to Restrict Processing</div>
+                            <div class="rights-desc">
+                                You can request that we limit how we use your data while disputes about accuracy or 
+                                processing are resolved.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rights-item">
+                        <div class="rights-icon"><i class="fas fa-download"></i></div>
+                        <div class="rights-content">
+                            <div class="rights-title">Right to Data Portability</div>
+                            <div class="rights-desc">
+                                You can receive your personal data in a structured, machine-readable format and 
+                                transmit it to another service provider.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rights-item">
+                        <div class="rights-icon"><i class="fas fa-times-circle"></i></div>
+                        <div class="rights-content">
+                            <div class="rights-title">Right to Object</div>
+                            <div class="rights-desc">
+                                You can object to processing of your data for direct marketing, profiling, or based 
+                                on legitimate interests.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rights-item">
+                        <div class="rights-icon"><i class="fas fa-user-times"></i></div>
+                        <div class="rights-content">
+                            <div class="rights-title">Right to Withdraw Consent</div>
+                            <div class="rights-desc">
+                                Where processing is based on consent, you can withdraw it at any time without affecting 
+                                the lawfulness of previous processing.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rights-item">
+                        <div class="rights-icon"><i class="fas fa-gavel"></i></div>
+                        <div class="rights-content">
+                            <div class="rights-title">Right to Lodge a Complaint</div>
+                            <div class="rights-desc">
+                                You can file a complaint with your local data protection authority if you believe we've 
+                                violated your privacy rights.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: var(--privacy-green);">
+                    <i class="fas fa-paper-plane"></i> Exercising Your Rights
+                </h3>
+
+                <p>
+                    To exercise any of these rights, please contact us at 
+                    <a href="mailto:dsar@happytrails.com" style="color: var(--privacy-green); font-weight: 600;">
+                        dsar@happytrails.com
+                    </a> or use the Privacy Dashboard button on this page. We'll respond to verified requests within 
+                    30 days (or as required by applicable law).
+                </p>
+
+                <div class="info-box">
+                    <div class="info-box-title">
+                        <i class="fas fa-id-card"></i>
+                        Identity Verification
+                    </div>
+                    <p>
+                        To protect your privacy, we may need to verify your identity before processing data subject 
+                        requests. We'll ask for proof of identity (government ID, account verification) to ensure 
+                        we're releasing data to the right person.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. Children's Privacy -->
+        <section class="content-section" id="children">
+            <div class="section-header">
+                <i class="fas fa-child section-icon"></i>
+                <h2 class="section-title">8. Children's Privacy</h2>
+            </div>
+            <div class="section-content">
+                <div class="info-box important">
+                    <div class="info-box-title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Age Restriction
+                    </div>
+                    <p>
+                        <strong>Our services are not intended for children under 13 years of age.</strong> We do not 
+                        knowingly collect personal information from children under 13 without verifiable parental consent.
+                    </p>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: var(--privacy-green);">
+                    <i class="fas fa-user-shield"></i> COPPA Compliance
+                </h3>
+
+                <p>
+                    In compliance with the Children's Online Privacy Protection Act (COPPA):
+                </p>
+
+                <ul>
+                    <li>We do not knowingly collect data from children under 13 without parental consent</li>
+                    <li>Parents/guardians must create accounts for minors under 13</li>
+                    <li>We provide parents with the ability to review, delete, or refuse further collection of their child's data</li>
+                    <li>We limit data collection from minors to what's necessary for service delivery</li>
+                    <li>We do not share children's data with third parties except service providers</li>
+                </ul>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: var(--privacy-green);">
+                    <i class="fas fa-users"></i> Minors (13-18)
+                </h3>
+
+                <p>
+                    For users between 13 and 18 years old:
+                </p>
+
+                <ul>
+                    <li>May travel independently on our buses with parental/guardian consent</li>
+                    <li>Account creation requires parental/guardian authorization</li>
+                    <li>Parents retain the right to access and control their minor's data</li>
+                    <li>We recommend parents review this Privacy Policy with their minor children</li>
+                </ul>
+
+                <div class="info-box">
+                    <div class="info-box-title">
+                        <i class="fas fa-flag"></i>
+                        Report Underage Accounts
+                    </div>
+                    <p>
+                        If you believe we've inadvertently collected data from a child under 13 without proper consent, 
+                        please contact us immediately at 
+                        <a href="mailto:privacy@happytrails.com" style="color: var(--privacy-green); font-weight: 600;">
+                            privacy@happytrails.com
+                        </a>. We will promptly investigate and delete such data if confirmed.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. Data Retention -->
+        <section class="content-section" id="retention">
+            <div class="section-header">
+                <i class="fas fa-clock section-icon"></i>
+                <h2 class="section-title">9. Data Retention Policy</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    We retain your personal data only as long as necessary for the purposes outlined in this policy:
+                </p>
+
+                <div class="data-grid">
+                    <div class="data-card">
+                        <i class="fas fa-user-circle data-card-icon"></i>
+                        <div class="data-card-title">Account Data</div>
+                        <div class="data-card-desc">
+                            <strong>Active Accounts:</strong> Retained while account is active<br>
+                            <strong>Inactive Accounts:</strong> Deleted after 3 years of inactivity (with notice)
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-ticket-alt data-card-icon"></i>
+                        <div class="data-card-title">Booking Records</div>
+                        <div class="data-card-desc">
+                            <strong>Transaction Data:</strong> 7 years (legal/tax requirements)<br>
+                            <strong>Travel History:</strong> 3 years for customer service
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-credit-card data-card-icon"></i>
+                        <div class="data-card-title">Payment Information</div>
+                        <div class="data-card-desc">
+                            <strong>Tokenized Data:</strong> Until card expires or removed<br>
+                            <strong>Financial Records:</strong> 7 years (regulatory compliance)
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-comments data-card-icon"></i>
+                        <div class="data-card-title">Communications</div>
+                        <div class="data-card-desc">
+                            <strong>Customer Service:</strong> 2 years after resolution<br>
+                            <strong>Marketing Emails:</strong> Until unsubscribe or 2 years inactive
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-chart-line data-card-icon"></i>
+                        <div class="data-card-title">Analytics Data</div>
+                        <div class="data-card-desc">
+                            <strong>Anonymized Data:</strong> Retained indefinitely for research<br>
+                            <strong>Personal Analytics:</strong> 2 years maximum
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <i class="fas fa-shield-alt data-card-icon"></i>
+                        <div class="data-card-title">Security Logs</div>
+                        <div class="data-card-desc">
+                            <strong>Access Logs:</strong> 90 days<br>
+                            <strong>Incident Reports:</strong> 7 years (legal requirements)
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: var(--privacy-green);">
+                    <i class="fas fa-trash-alt"></i> Data Deletion Process
+                </h3>
+
+                <p>
+                    When data reaches the end of its retention period or you request deletion:
+                </p>
+
+                <ul>
+                    <li>Data is securely deleted from active systems within 30 days</li>
+                    <li>Backups are overwritten in next backup cycle (90 days maximum)</li>
+                    <li>Anonymized data may be retained for statistical purposes</li>
+                    <li>Some data must be retained to comply with legal obligations</li>
+                    <li>You'll receive confirmation once deletion is complete</li>
+                </ul>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">
+                        <i class="fas fa-balance-scale"></i>
+                        Legal Retention Requirements
+                    </div>
+                    <p>
+                        Certain data must be retained for specific periods to comply with legal, tax, accounting, and 
+                        regulatory requirements. We cannot delete this data even upon request until the mandatory 
+                        retention period expires. This includes financial records (7 years), transaction history (7 years), 
+                        and certain booking records.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. International Data Transfers -->
+        <section class="content-section" id="transfers">
+            <div class="section-header">
+                <i class="fas fa-globe section-icon"></i>
+                <h2 class="section-title">10. International Data Transfers</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    Happy Trails primarily operates in India, but some of our service providers may be located in 
+                    other countries. When we transfer your data internationally, we ensure appropriate safeguards:
+                </p>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: var(--privacy-green);">
+                    <i class="fas fa-server"></i> Data Storage Locations
+                </h3>
+
+                <ul>
+                    <li><strong>Primary Servers:</strong> India (AWS Mumbai Region)</li>
+                    <li><strong>Backup Servers:</strong> Singapore (AWS Singapore Region)</li>
+                    <li><strong>CDN:</strong> Cloudflare (Global Network)</li>
+                    <li><strong>Email Services:</strong> United States (SendGrid)</li>
+                </ul>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: var(--privacy-green);">
+                    <i class="fas fa-shield-alt"></i> Transfer Safeguards
+                </h3>
+
+                <p>
+                    When transferring data outside India, we use the following mechanisms:
+                </p>
+
+                <ul>
+                    <li><strong>Standard Contractual Clauses:</strong> EU-approved data transfer agreements</li>
+                    <li><strong>Adequacy Decisions:</strong> Transfers to countries with adequate data protection</li>
+                    <li><strong>Privacy Shield (where applicable):</strong> For U.S.-based service providers</li>
+                    <li><strong>Encryption:</strong> All international transfers are encrypted in transit</li>
+                    <li><strong>Data Processing Agreements:</strong> Contracts with all third-party processors</li>
+                </ul>
+
+                <div class="info-box info">
+                    <div class="info-box-title">
+                        <i class="fas fa-flag"></i>
+                        Your Rights for International Transfers
+                    </div>
+                    <p>
+                        You have the right to:
+                    </p>
+                    <ul style="margin-top: 10px;">
+                        <li>Request information about where your data is stored</li>
+                        <li>Object to international transfers in certain circumstances</li>
+                        <li>Obtain copies of transfer safeguards (SCCs, adequacy decisions)</li>
+                        <li>Withdraw consent for transfers based on consent</li>
+                    </ul>
+                </div>
+
+                <p style="margin-top: 20px;">
+                    For questions about international data transfers, contact our Data Protection Officer at 
+                    <a href="mailto:privacy@happytrails.com" style="color: var(--privacy-green); font-weight: 600;">
+                        privacy@happytrails.com
+                    </a>
+                </p>
+            </div>
+        </section>
+
+        <!-- 11. Changes to This Privacy Policy -->
+        <section class="content-section" id="changes">
+            <div class="section-header">
+                <i class="fas fa-sync-alt section-icon"></i>
+                <h2 class="section-title">11. Changes to This Privacy Policy</h2>
+            </div>
+            <div class="section-content">
+                <p>
+                    We may update this Privacy Policy from time to time to reflect changes in our practices, 
+                    legal requirements, or service offerings.
+                </p>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: var(--privacy-green);">
+                    <i class="fas fa-bell"></i> How We Notify You
+                </h3>
+
+                <p>
+                    When we make changes to this Privacy Policy, we will:
+                </p>
+
+                <ul>
+                    <li>Update the "Effective Date" at the top of this page</li>
+                    <li>Notify registered users via email for material changes</li>
+                    <li>Display a prominent notice on our homepage for 30 days</li>
+                    <li>Maintain an archive of previous versions for your reference</li>
+                    <li>Request your consent again if required by law</li>
+                </ul>
+
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: var(--privacy-green);">
+                    <i class="fas fa-clipboard-check"></i> Material Changes
+                </h3>
+
+                <p>
+                    For significant changes that materially affect your rights or how we process your data, we will:
+                </p>
+
+                <ul>
+                    <li>Provide at least 30 days' notice before changes take effect</li>
+                    <li>Clearly explain what has changed and why</li>
+                    <li>Give you the opportunity to review the updated policy</li>
+                    <li>Allow you to opt-out or close your account if you disagree</li>
+                    <li>Obtain fresh consent where required by law</li>
+                </ul>
+
+                <div class="info-box">
+                    <div class="info-box-title">
+                        <i class="fas fa-history"></i>
+                        Policy Version History
+                    </div>
+                    <p>
+                        <strong>Current Version:</strong> 2.0 (Effective: November 3, 2025)<br>
+                        <strong>Previous Version:</strong> 1.5 (Effective: January 1, 2025)<br>
+                        <strong>Original Version:</strong> 1.0 (Effective: June 15, 2024)
+                    </p>
+                    <p style="margin-top: 10px;">
+                        To view previous versions or a detailed changelog, please contact 
+                        <a href="mailto:privacy@happytrails.com" style="color: var(--privacy-green); font-weight: 600;">
+                            privacy@happytrails.com
+                        </a>
+                    </p>
+                </div>
+
+                <p style="margin-top: 20px;">
+                    <strong>Your continued use of Happy Trails services after changes take effect constitutes 
+                    acceptance of the updated Privacy Policy.</strong> If you do not agree with changes, please 
+                    stop using our services and contact us to close your account.
+                </p>
+            </div>
+        </section>
+
+        <!-- 12. Contact Information - Final Section -->
+        <section class="content-section" id="contact">
             <div class="section-header">
                 <i class="fas fa-envelope section-icon"></i>
-                <h2 class="section-title">Privacy Questions?</h2>
+                <h2 class="section-title">12. Privacy Questions?</h2>
             </div>
             <div class="section-content">
                 <p>
@@ -903,6 +2028,14 @@
                     </div>
 
                     <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <strong>Support Hours:</strong><br>
+                            Monday - Sunday: 8:00 AM - 8:00 PM IST
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
                             <strong>Registered Office:</strong><br>
@@ -927,6 +2060,11 @@
                     <div class="security-badge">
                         <div class="security-badge-icon"><i class="fas fa-check-circle"></i></div>
                         <div class="security-badge-text">PCI DSS Certified</div>
+                    </div>
+
+                    <div class="security-badge">
+                        <div class="security-badge-icon"><i class="fas fa-globe-americas"></i></div>
+                        <div class="security-badge-text">ISO 27001</div>
                     </div>
                 </div>
 
@@ -963,7 +2101,146 @@
     </footer>
 
     <script>
-        // Smooth Scroll for Internal Links
+        // ============================================
+        // PRIVACY DASHBOARD
+        // ============================================
+
+        function openDashboard() {
+            document.getElementById('dashboardModal').classList.add('show');
+        }
+
+        function closeDashboard() {
+            document.getElementById('dashboardModal').classList.remove('show');
+        }
+
+        function downloadData() {
+            const userData = {
+                user: 'eccentriccoder01',
+                email: 'eccentriccoder01@example.com',
+                account_created: '2024-01-15',
+                last_login: '2025-11-03',
+                bookings_count: 12,
+                privacy_settings: {
+                    marketing_consent: true,
+                    analytics_consent: true,
+                    data_sharing: false
+                },
+                export_date: new Date().toISOString(),
+                note: 'This is a sample data export. In production, this would contain all your actual data.'
+            };
+
+            const dataStr = JSON.stringify(userData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `happytrails_data_${Date.now()}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+
+            showToast('Your data has been downloaded! 📥', 3000);
+        }
+
+        // ============================================
+        // READING PROGRESS
+        // ============================================
+
+        window.addEventListener('DOMContentLoaded', function() {
+            // Show TOC and dashboard after scroll
+            window.addEventListener('scroll', () => {
+                updateReadingProgress();
+                
+                if (window.scrollY > 500) {
+                    document.getElementById('tocSidebar').classList.add('show');
+                } else {
+                    document.getElementById('tocSidebar').classList.remove('show');
+                }
+            });
+
+            // Initialize TOC active item tracking
+            updateActiveTOCItem();
+            window.addEventListener('scroll', updateActiveTOCItem);
+        });
+
+        function updateReadingProgress() {
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight - windowHeight;
+            const scrolled = window.scrollY;
+            const progress = (scrolled / documentHeight) * 100;
+            
+            document.getElementById('readingProgress').style.width = progress + '%';
+        }
+
+        // ============================================
+        // TOC NAVIGATION
+        // ============================================
+
+        function updateActiveTOCItem() {
+            const sections = document.querySelectorAll('.content-section[id]');
+            const tocItems = document.querySelectorAll('.toc-item');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                
+                if (window.scrollY >= (sectionTop - 200)) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            tocItems.forEach(item => {
+                item.classList.remove('active');
+                const href = item.getAttribute('href').substring(1);
+                if (href === currentSection) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        // ============================================
+        // TOAST NOTIFICATIONS
+        // ============================================
+
+        function showToast(message, duration = 3000) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%) translateY(100px);
+                background: var(--gradient-privacy);
+                color: white;
+                padding: 15px 30px;
+                border-radius: 50px;
+                box-shadow: var(--shadow-strong);
+                font-weight: 600;
+                z-index: 10002;
+                transition: transform 0.3s ease-out;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            `;
+            toast.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(100px)';
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, duration);
+        }
+
+        // ============================================
+        // SMOOTH SCROLL
+        // ============================================
+
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -977,7 +2254,17 @@
             });
         });
 
-        // Add animation on scroll
+        // Close modal when clicking outside
+        document.getElementById('dashboardModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDashboard();
+            }
+        });
+
+        // ============================================
+        // SCROLL ANIMATIONS
+        // ============================================
+
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -998,6 +2285,9 @@
             section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
             observer.observe(section);
         });
+
+        // Track last review
+        localStorage.setItem('privacy_policy_last_viewed', new Date().toISOString());
     </script>
 
 </body>
