@@ -10,6 +10,32 @@
     <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="600">
   </div>
 
+
+# 📑 **Table of Contents**
+
+* 🚀 [Overview](#-a-cosmic-bus-booking-experience)
+* 🌌 [Vision: Human-Centered Travel Technology](#-vision-human-centered-travel-technology)
+* ✨ [Features](#-features)
+* 🌟 [Stand-Out Experience Features](#-stand-out-experience-features)
+
+  * 🎭 [Narrative & Poetic Interface](#1-narrative--poetic-interface)
+  * 📡 [Live Tracking & Weather Integration](#2-live-tracking--weather-integration)
+  * 🪄 [Interactive Frontend Magic](#3-interactive-frontend-magic)
+  * 🐣 [Hidden Easter Eggs](#4-hidden-easter-eggs)
+* 📺 [Video Explanation](#-video-explanation)
+* 🛠️ [Technologies Used](#-technologies-used)
+* ⚙️ [Installation and Setup](#️-installation-and-setup)
+* 🪪 [.env Requirements](#required-env-file)
+* 🐞 [Issue Creation](#issue-creation-)
+* 📑 [Contribution Guidelines](#contribution-guidelines-)
+* 👥 [Contributors](#-contributors)
+* 📄 [License](#-license)
+* 📞 [Contact](#-contact)
+
+---
+
+
+
 ## 🚌 A Cosmic Bus Booking Experience
 
 **Happy Trails** is a poetic, modern bus booking platform where every journey is treated as a magical, cosmic adventure. It transforms the transactional process of booking a ticket into an immersive experience. It blends robust functionality (user accounts, real-time search, interactive seat selection, and live tracking) with an emotional UX—infusing micro‑poetry, glowing gradients, glass morphism, and a narrative-led design.
