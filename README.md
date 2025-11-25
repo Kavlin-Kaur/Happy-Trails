@@ -154,79 +154,94 @@ For a detailed walkthrough of Happy-Trails's features and how to use them, check
 ![Gunicorn](https://img.shields.io/badge/Gunicorn-499848?style=for-the-badge&logo=gunicorn&logoColor=white)
 
 ---
-## 📁PROJECT STRUCTURE-
-Happy-Trails/
-├── .github/                   # GitHub workflows (PR automation, issue comments, etc.)
-│    |-ISSUE_TEMPLATE
-|    |-workflows
-|    |-pull/-request_template.md
-├── __pycache__/               # Python bytecode cache
-│    |-app.cypthon-312.pyc
-├── instance/                  # Flask instance folder (runtime configs)
-│    |-happytrails.db
-├── static/                    # Static files (CSS, JS, images)
-│    |--css/
-|    |  |-main.css
-|    |  |-poetry_cornor.css
-|    |  |-route_explorer.css
-|    |  |-travel_companions.css
-|    |  |-travel_gallery.css
-|    |
-|    |--images/
-|    |  |-barog.avif
-|    |  |-bus-market.png
-|    |  |-(...more images)
-|    |  
-|    |--js/
-|    |  |main.js
-|    |  |poetry_cornor.js
-|    |  |route_explorer.js
-|    |  |travel_companions.js
-|    |__|travel_gallery.js
-|    
-├── templates/                 # HTML templates
-|    |--features/
-|    |  |-poetry_cornor.html
-|    |  |-route_explorer.html
-|    |  |-travel_companions.html
-|    |  |-travel_gallery.html
-|    |  
-|    |--footer/
-|    |  |-cookie_policy.html
-|    |  |-copyright.html
-|    |  |-disclaimer.html
-|    |  |-newsletter.html
-|    |  |-privacy.html
-|    |  |-terms.html
-|    |-base.html
-|    |-book_bus.html
-|    |-booking_confirmation.html
-|    |-bus_results.html
-|    |-index.html
-|    |-login.html
-|    |-my_bookings.html
-|    |-payments.html
-|    |-select_bus.html
-|    |-select_seats.html
-|    |-signup.html
-|    |_track_bus.html
-│
-├── .gitignore                 # Git ignore rules
-├── App.png                    # Project screenshot
-├── CODE_OF_CONDUCT.md         # Community guidelines
-├── CONTRIBUTING.md            # Contribution guide
-├── LICENSE                    # Open-source license
-├── Logo.jpg                   # Project logo
-├── README.md                  # Project documentation
-│
-├── app.py                     # Main Flask application
-│
-├── package.json               # Node package file (JS tooling)
-├── package-lock.json          # Dependency lock file
-│
-├── requirements.txt           # Python dependencies
-└── vercel.json                # Deployment configuration
+## 📁 PROJECT STRUCTURE
 
+```txt
+Happy-Trails/
+├── .gitignore
+├── App.png
+├── app.py
+├── CODE_OF_CONDUCT.md
+├── CONTRIBUTING.md
+├── LICENSE
+├── Logo.jpg
+├── package-lock.json
+├── package.json
+├── README.md
+├── requirements.txt
+├── vercel.json
+│
+├── .github/
+│   ├── pull_request_template.md
+│   ├── ISSUE_TEMPLATE/
+│   │   ├── bug_report.yml
+│   │   ├── config.yml
+│   │   ├── documentation.md
+│   │   ├── feature_request.yml
+│   │   └── performance.md
+│   └── workflows/
+│       ├── issue-create-automate-message.yml
+│       └── pr-create-automate-message.yml
+│
+├── instance/
+│   └── happytrails.db
+│
+├── static/
+│   ├── css/
+│   │   ├── main.css
+│   │   ├── poetry_corner.css
+│   │   ├── route_explorer.css
+│   │   ├── travel_companions.css
+│   │   └── travel_gallery.css
+│   │
+│   ├── images/
+│   │   ├── Barog.avif
+│   │   ├── bus-marker.png
+│   │   ├── bus-stop.png
+│   │   ├── Dagshai.jpg
+│   │   ├── Dharampur.webp
+│   │   ├── Kavlin Bitmoji.png
+│   │   ├── logo.png
+│   │   └── Solan.jpg
+│   │
+│   └── js/
+│       ├── main.js
+│       ├── poetry_corner.js
+│       ├── route_explorer.js
+│       ├── travel_companions.js
+│       └── travel_gallery.js
+│
+├── templates/
+│   ├── base.html
+│   ├── booking_confirmation.html
+│   ├── book_bus.html
+│   ├── bus_results.html
+│   ├── index.html
+│   ├── login.html
+│   ├── my_bookings.html
+│   ├── payment.html
+│   ├── select_bus.html
+│   ├── select_seats.html
+│   ├── signup.html
+│   ├── track_bus.html
+│   │
+│   ├── features/
+│   │   ├── poetry_corner.html
+│   │   ├── route_explorer.html
+│   │   ├── travel_companions.html
+│   │   └── travel_gallery.html
+│   │
+│   └── footer/
+│       ├── cookie_policy.html
+│       ├── copyright.html
+│       ├── disclaimer.html
+│       ├── newsletter.html
+│       ├── privacy.html
+│       └── terms.html
+│
+└── __pycache__/
+    └── app.cpython-312.pyc
+```
 
 ---
 
