@@ -417,6 +417,11 @@ h2 {
 }
 
 /* Feature Cards */
+
+#features .col-md-6.col-lg-3 {
+  display: flex;
+}
+
 .feature-card {
   background: white;
   border-radius: 25px;
@@ -427,7 +432,12 @@ h2 {
   border: 2px solid transparent;
   position: relative;
   overflow: hidden;
+
+  display: flex;
+  flex-direction: column;   /* keeps content vertical */
+  height: 100%;             /* makes card fill the full column height */
 }
+
 
 .feature-card::before {
   content: "";
