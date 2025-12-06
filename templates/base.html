@@ -37,6 +37,10 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/main.css') }}"
     />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/cookie-consent.css') }}"
+    />
 
     <!-- Favicon -->
     <link
@@ -285,6 +289,7 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/cookie-consent.js') }}"></script>
     {% block extra_js %}{% endblock %}
   </body>
 </html>
