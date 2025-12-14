@@ -1,7 +1,5 @@
 import os
 import re
-import os
-import re
 import random
 from datetime import datetime, date
 from flask import (
@@ -513,6 +511,11 @@ def traffic_update(bus_id):
         "traffic_status": traffic_status,
         "delay_minutes": delay_minutes
     })
+    
+@app.route('/features')  # ← ADD THIS LINE
+def features():
+    return render_template('features.html')
+
 
 # Initialize the database and add sample data
 # Replace the @app.before_first_request decorator with this code
