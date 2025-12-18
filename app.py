@@ -1456,6 +1456,58 @@ def newsletter():
     """Newsletter signup page"""
     return render_template('footer/newsletter.html')
 
+@app.route("/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+    # Always fetch user's bookings for the summary section
+    user_bookings = Booking.query.filter_by(user_id=current_user.id).order_by(Booking.booking_date.desc()).all()
+    if request.method == "POST":
+        full_name = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip().lower()
+        if not full_name or not email:
+            flash("Name and email cannot be empty, cosmic traveler.", "danger")
+            return redirect(url_for("profile"))
+        # Email uniqueness
+        if email != current_user.email:
+            if User.query.filter_by(email=email).first():
+                flash("That email is already charting another journey.", "danger")
+                return redirect(url_for("profile"))
+        # Split full name into first/last (simple but works for most cases)
+        name_parts = full_name.split()
+        first_name = name_parts[0] if name_parts else ""
+        last_name = " ".join(name_parts[1:]) if len(name_parts) > 1 else ""
+        # Update user fields
+        current_user.first_name = first_name
+        current_user.last_name = last_name
+        current_user.email = email
+        # Add these columns first (see below)
+        # Password change
+        old_password = request.form.get("old_password")
+        new_password = request.form.get("new_password")
+        confirm_password = request.form.get("confirm_password")
+        if any([old_password, new_password, confirm_password]):
+            if not all([old_password, new_password, confirm_password]):
+                flash("All password fields required for change.", "danger")
+            elif not current_user.check_password(old_password):
+                flash("Current password incorrect.", "danger")
+            elif new_password != confirm_password:
+                flash("New passwords do not match.", "danger")
+            elif len(new_password) < 8:
+                flash("New password must be at least 8 characters.", "danger")
+            else:
+                current_user.set_password(new_password)
+                flash("Password realigned across dimensions!", "success")
+        try:
+            db.session.commit()
+            flash("Your stellar profile has been successfully updated!", "success")
+        except Exception as e:
+            db.session.rollback()
+            app.logger.error(f"Profile update error: {e}")
+            flash("A cosmic anomaly occurred. Try again.", "danger")
+        return redirect(url_for("profile"))
+    # GET
+    return render_template("profile.html", bookings=user_bookings)
+
 # Run the application
 if __name__ == '__main__':
     # Use SQLite for local development
