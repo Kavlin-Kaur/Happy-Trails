@@ -4,6 +4,7 @@
 
 {% block extra_css %}
 <style>
+
     .profile-hero {
         background: var(--gradient-sunset);
         padding: 130px 0 60px;
@@ -103,6 +104,28 @@
         letter-spacing: .5px;
         padding: 8px 18px;
     }
+
+    /* ... (paste your full <style> block here unchanged) ... */
+    .edit-form { display: none; }
+    .view-mode .edit-form { display: block; }
+    .edit-btn { margin: 20px 0; }
+
+    .modal-content {
+        border-radius: 30px;
+        border: 2px solid rgba(255,215,0,0.25);
+        box-shadow: var(--shadow-strong);
+    }
+    .modal-header {
+        background: var(--gradient-soft);
+        border-bottom: none;
+        border-radius: 30px 30px 0 0;
+    }
+    .modal-title {
+        color: var(--deep-yellow);
+    }
+    .modal-body {
+        padding: 40px;
+    }
 </style>
 {% endblock %}
 
@@ -112,46 +135,41 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10">
                 <div class="profile-card">
-                    <div class="text-center">
+
+                    <div class="text-center mb-5">
                         <i class="fas fa-user-astronaut profile-icon"></i>
                         <h2 class="script-font mb-2">Your Cosmic Coordinates</h2>
-                        <p class="text-muted mb-5">Update your journey preferences across dimensions</p>
+                        <p class="text-muted">View and manage your journey preferences</p>
                     </div>
 
-                    <form method="POST" action="{{ url_for('profile') }}">
-                        <div class="mb-4">
-                            <label for="name" class="form-label fw-semibold"><i class="fas fa-user text-warning me-1"></i>Full Name</label>
-                            <input type="text" class="form-control" id="name" name="name" value="{{ current_user.name }}" required>
+                    <!-- Read-only Profile Info -->
+                    <div class="info-grid mb-5">
+                        <div class="info-item">
+                            <div class="label">First Name</div>
+                            <div class="value">{{ current_user.first_name }}</div>
                         </div>
+                        <div class="info-item">
+                            <div class="label">Last Name</div>
+                            <div class="value">{{ current_user.last_name }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Email</div>
+                            <div class="value">{{ current_user.email }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Phone</div>
+                            <div class="value">{{ current_user.phone or 'Not provided' }}</div>
+                        </div>
+                    </div>
 
-                        <div class="mb-4">
-                            <label for="email" class="form-label fw-semibold"><i class="fas fa-envelope text-warning me-1"></i>Email</label>
-                            <input type="email" class="form-control" id="email" name="email" value="{{ current_user.email }}" required>
-                        </div>
-
-                        
-
-                        <hr class="my-5">
-
-                        <h4 class="mb-4 script-font text-warning">Change Password</h4>
-                        <div class="mb-4">
-                            <label for="old_password" class="form-label fw-semibold"><i class="fas fa-lock text-warning me-1"></i>Current Password</label>
-                            <input type="password" class="form-control" id="old_password" name="old_password">
-                        </div>
-                        <div class="mb-4">
-                            <label for="new_password" class="form-label fw-semibold"><i class="fas fa-key text-warning me-1"></i>New Password</label>
-                            <input type="password" class="form-control" id="new_password" name="new_password">
-                        </div>
-                        <div class="mb-4">
-                            <label for="confirm_password" class="form-label fw-semibold"><i class="fas fa-key text-warning me-1"></i>Confirm New Password</label>
-                            <input type="password" class="form-control" id="confirm_password" name="confirm_password">
-                        </div>
-
-                        <div class="actions justify-content-center">
-                            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>Save Changes & Launch</button>
-                            <a href="{{ url_for('logout') }}" class="btn btn-outline-danger"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
-                        </div>
-                    </form>
+                    <div class="text-center mb-5">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                            <i class="fas fa-edit me-1"></i> Change Password
+                        </button>
+                        <a href="{{ url_for('logout') }}" class="btn btn-outline-danger ms-3">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </a>
+                    </div>
 
                     <hr class="my-5">
 
@@ -222,4 +240,50 @@
         </div>
     </div>
 </section>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title script-font" id="editProfileModalLabel">Edit Your Cosmic Coordinates</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ url_for('profile') }}">
+                    
+                    <div class="mb-4">
+                        <label for="email" class="form-label fw-semibold"><i class="fas fa-envelope text-warning me-1"></i>Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ current_user.email }}" required>
+                    </div>
+
+                    <hr class="my-3">
+
+                    <h5 class="script-font text-warning mb-4">Change Password (Optional)</h5>
+                    <div class="mb-4">
+                        <label for="old_password" class="form-label fw-semibold"><i class="fas fa-lock text-warning me-1"></i>Current Password</label>
+                        <input type="password" class="form-control" id="old_password" name="old_password" placeholder="Required only if changing password">
+                    </div>
+                    <div class="mb-4">
+                        <label for="new_password" class="form-label fw-semibold"><i class="fas fa-key text-warning me-1"></i>New Password</label>
+                        <input type="password" class="form-control" id="new_password" name="new_password">
+                    </div>
+                    <div class="mb-4">
+                        <label for="confirm_password" class="form-label fw-semibold"><i class="fas fa-key text-warning me-1"></i>Confirm New Password</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg px-5">
+                            <i class="fas fa-save me-1"></i> Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
+
+
+

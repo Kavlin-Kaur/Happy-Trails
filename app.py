@@ -1462,10 +1462,9 @@ def profile():
     # Always fetch user's bookings for the summary section
     user_bookings = Booking.query.filter_by(user_id=current_user.id).order_by(Booking.booking_date.desc()).all()
     if request.method == "POST":
-        full_name = request.form.get("name", "").strip()
         email = request.form.get("email", "").strip().lower()
-        if not full_name or not email:
-            flash("Name and email cannot be empty, cosmic traveler.", "danger")
+        if not email:
+            flash("email cannot be empty, cosmic traveler.", "danger")
             return redirect(url_for("profile"))
         # Email uniqueness
         if email != current_user.email:
@@ -1473,12 +1472,7 @@ def profile():
                 flash("That email is already charting another journey.", "danger")
                 return redirect(url_for("profile"))
         # Split full name into first/last (simple but works for most cases)
-        name_parts = full_name.split()
-        first_name = name_parts[0] if name_parts else ""
-        last_name = " ".join(name_parts[1:]) if len(name_parts) > 1 else ""
         # Update user fields
-        current_user.first_name = first_name
-        current_user.last_name = last_name
         current_user.email = email
         # Add these columns first (see below)
         # Password change
