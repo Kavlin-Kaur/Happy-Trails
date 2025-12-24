@@ -1,0 +1,621 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - Happy Trails{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile-section {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 80px 0 40px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .profile-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+            radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+        animation: sparkle 6s ease-in-out infinite;
+    }
+
+    .profile-header {
+        background: var(--primary-yellow);
+        border-radius: 30px;
+        padding: 40px;
+        margin-bottom: 30px;
+        position: relative;
+        box-shadow: var(--shadow-strong);
+        text-align: center;
+    }
+
+    .profile-avatar {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #fff, #f8f9fa);
+        border: 5px solid white;
+        box-shadow: var(--shadow-strong);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 4rem;
+        color: var(--primary-yellow);
+    }
+
+    .profile-name {
+        font-size: 2rem;
+        font-weight: bold;
+        color: white;
+        margin-bottom: 10px;
+    }
+
+    .profile-email {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.1rem;
+    }
+
+    .profile-stats {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin-top: 30px;
+    }
+
+    .stat-item {
+        text-align: center;
+        color: white;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        display: block;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+
+    .profile-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 30px;
+        padding: 40px;
+        box-shadow: var(--shadow-strong);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 215, 0, 0.2);
+        position: relative;
+        z-index: 2;
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 3px solid #FFC107;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .section-title i {
+        color: #FFC107;
+    }
+
+    .info-group {
+        margin-bottom: 20px;
+    }
+
+    .info-label {
+        font-weight: 700;
+        color: #555;
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+        display: block;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .info-value {
+        color: #333;
+        font-size: 1.1rem;
+        padding: 12px 15px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        display: block;
+        font-weight: 500;
+        border: 1px solid rgba(255, 193, 7, 0.3);
+    }
+
+    .form-floating > .form-control {
+        border: 2px solid rgba(255, 193, 7, 0.5);
+        border-radius: 15px;
+        padding: 20px 15px 10px;
+        height: auto;
+        background: rgba(255, 255, 255, 0.95);
+        transition: var(--transition-smooth);
+        color: #333;
+        font-weight: 500;
+    }
+
+    .form-floating > .form-control:focus {
+        border-color: var(--primary-yellow);
+        box-shadow: var(--glow-yellow);
+        background: white;
+    }
+
+    .form-floating > label {
+        color: #555;
+        padding: 20px 15px;
+        font-weight: 600;
+    }
+
+    .btn-update {
+        background: linear-gradient(135deg, #FFC107, #FFB300);
+        color: #333;
+        border: none;
+        padding: 15px 40px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: var(--transition-smooth);
+        box-shadow: var(--shadow-medium);
+    }
+
+    .btn-update:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--glow-yellow);
+    }
+
+    .tab-navigation {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 30px;
+        border-bottom: 2px solid rgba(255, 215, 0, 0.2);
+        padding-bottom: 10px;
+    }
+
+    .tab-btn {
+        background: none;
+        border: none;
+        padding: 10px 20px;
+        color: var(--medium-gray);
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 10px 10px 0 0;
+        transition: var(--transition-smooth);
+    }
+
+    .tab-btn.active {
+        background: linear-gradient(135deg, var(--primary-yellow), var(--secondary-yellow));
+        color: white;
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+        animation: fadeIn 0.3s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .edit-mode-toggle {
+        text-align: right;
+        margin-bottom: 20px;
+    }
+
+    .btn-edit {
+        background: transparent;
+        border: 2px solid var(--primary-yellow);
+        color: var(--primary-yellow);
+        padding: 10px 25px;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: var(--transition-smooth);
+    }
+
+    .btn-edit:hover {
+        background: var(--primary-yellow);
+        color: white;
+    }
+
+    .bio-text {
+        background: rgba(255, 215, 0, 0.1);
+        border-left: 4px solid var(--primary-yellow);
+        padding: 20px;
+        border-radius: 10px;
+        font-style: italic;
+        color: var(--dark-gray);
+        min-height: 100px;
+    }
+
+    @media (max-width: 768px) {
+        .profile-stats {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .profile-header {
+            padding: 30px 20px;
+        }
+
+        .profile-card {
+            padding: 25px 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="profile-section">
+    <div class="container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <h1 class="profile-name">{{ user.full_name }}</h1>
+            <p class="profile-email">
+                <i class="fas fa-envelope me-2"></i>{{ user.email }}
+            </p>
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <span class="stat-number">{{ user.bookings|length }}</span>
+                    <span class="stat-label">Total Bookings</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">{{ user.bookings|selectattr('status', 'equalto', 'Confirmed')|list|length }}</span>
+                    <span class="stat-label">Active Bookings</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">{% if user.created_at %}{{ ((now - user.created_at).days / 30)|int }}{% else %}0{% endif %}</span>
+                    <span class="stat-label">Months Member</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="profile-card">
+                    <!-- Tab Navigation -->
+                    <div class="tab-navigation">
+                        <button class="tab-btn active" onclick="switchTab('info')">
+                            <i class="fas fa-user-circle me-2"></i>Profile Information
+                        </button>
+                        <button class="tab-btn" onclick="switchTab('edit')">
+                            <i class="fas fa-edit me-2"></i>Edit Profile
+                        </button>
+                        <button class="tab-btn" onclick="switchTab('security')">
+                            <i class="fas fa-lock me-2"></i>Security
+                        </button>
+                    </div>
+
+                    <!-- Profile Information Tab -->
+                    <div id="info-tab" class="tab-content active">
+                        <h3 class="section-title">
+                            <i class="fas fa-id-card"></i>
+                            Personal Details
+                        </h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info-group">
+                                    <span class="info-label">First Name</span>
+                                    <span class="info-value">{{ user.first_name }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-group">
+                                    <span class="info-label">Last Name</span>
+                                    <span class="info-value">{{ user.last_name }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-group">
+                                    <span class="info-label">Email Address</span>
+                                    <span class="info-value">{{ user.email }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-group">
+                                    <span class="info-label">Phone Number</span>
+                                    <span class="info-value">{{ user.phone }}</span>
+                                </div>
+                            </div>
+                            {% if user.date_of_birth %}
+                            <div class="col-md-6">
+                                <div class="info-group">
+                                    <span class="info-label">Date of Birth</span>
+                                    <span class="info-value">{{ user.date_of_birth.strftime('%B %d, %Y') }}</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if user.gender %}
+                            <div class="col-md-6">
+                                <div class="info-group">
+                                    <span class="info-label">Gender</span>
+                                    <span class="info-value">{{ user.gender }}</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        {% if user.bio %}
+                        <h3 class="section-title mt-4">
+                            <i class="fas fa-quote-left"></i>
+                            About Me
+                        </h3>
+                        <div class="bio-text">
+                            {{ user.bio or "No bio added yet. Click 'Edit Profile' to add your story!" }}
+                        </div>
+                        {% endif %}
+
+                        <h3 class="section-title mt-4">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Address Information
+                        </h3>
+                        <div class="row">
+                            {% if user.address %}
+                            <div class="col-md-12">
+                                <div class="info-group">
+                                    <span class="info-label">Street Address</span>
+                                    <span class="info-value">{{ user.address }}</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if user.city %}
+                            <div class="col-md-4">
+                                <div class="info-group">
+                                    <span class="info-label">City</span>
+                                    <span class="info-value">{{ user.city }}</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if user.state %}
+                            <div class="col-md-4">
+                                <div class="info-group">
+                                    <span class="info-label">State</span>
+                                    <span class="info-value">{{ user.state }}</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if user.pincode %}
+                            <div class="col-md-4">
+                                <div class="info-group">
+                                    <span class="info-label">Pincode</span>
+                                    <span class="info-value">{{ user.pincode }}</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if not user.address and not user.city and not user.state and not user.pincode %}
+                            <div class="col-12">
+                                <p class="text-muted text-center">No address information added yet.</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Edit Profile Tab -->
+                    <div id="edit-tab" class="tab-content">
+                        <form method="POST" action="{{ url_for('profile') }}">
+                            <h3 class="section-title">
+                                <i class="fas fa-user-edit"></i>
+                                Edit Personal Information
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="first_name" name="first_name" 
+                                               value="{{ user.first_name }}" required>
+                                        <label for="first_name">
+                                            <i class="fas fa-user text-warning me-2"></i>First Name
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="last_name" name="last_name" 
+                                               value="{{ user.last_name }}" required>
+                                        <label for="last_name">
+                                            <i class="fas fa-user text-warning me-2"></i>Last Name
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="email" class="form-control" value="{{ user.email }}" disabled>
+                                        <label>
+                                            <i class="fas fa-envelope text-warning me-2"></i>Email (Cannot be changed)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="tel" class="form-control" id="phone" name="phone" 
+                                               value="{{ user.phone }}" required>
+                                        <label for="phone">
+                                            <i class="fas fa-phone text-warning me-2"></i>Phone Number
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" 
+                                               value="{{ user.date_of_birth.strftime('%Y-%m-%d') if user.date_of_birth else '' }}">
+                                        <label for="date_of_birth">
+                                            <i class="fas fa-calendar text-warning me-2"></i>Date of Birth
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-control" id="gender" name="gender">
+                                            <option value="">Select Gender</option>
+                                            <option value="Male" {% if user.gender == 'Male' %}selected{% endif %}>Male</option>
+                                            <option value="Female" {% if user.gender == 'Female' %}selected{% endif %}>Female</option>
+                                            <option value="Other" {% if user.gender == 'Other' %}selected{% endif %}>Other</option>
+                                            <option value="Prefer not to say" {% if user.gender == 'Prefer not to say' %}selected{% endif %}>Prefer not to say</option>
+                                        </select>
+                                        <label for="gender">
+                                            <i class="fas fa-venus-mars text-warning me-2"></i>Gender
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <textarea class="form-control" id="bio" name="bio" 
+                                                  style="height: 120px">{{ user.bio or '' }}</textarea>
+                                        <label for="bio">
+                                            <i class="fas fa-pen text-warning me-2"></i>Bio / About You
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 class="section-title mt-4">
+                                <i class="fas fa-map-marked-alt"></i>
+                                Address Information
+                            </h3>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="address" name="address" 
+                                               value="{{ user.address or '' }}">
+                                        <label for="address">
+                                            <i class="fas fa-home text-warning me-2"></i>Street Address
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="city" name="city" 
+                                               value="{{ user.city or '' }}">
+                                        <label for="city">
+                                            <i class="fas fa-city text-warning me-2"></i>City
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="state" name="state" 
+                                               value="{{ user.state or '' }}">
+                                        <label for="state">
+                                            <i class="fas fa-map text-warning me-2"></i>State
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="pincode" name="pincode" 
+                                               value="{{ user.pincode or '' }}">
+                                        <label for="pincode">
+                                            <i class="fas fa-map-pin text-warning me-2"></i>Pincode
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-update">
+                                    <i class="fas fa-save me-2"></i>Update Profile
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Security Tab -->
+                    <div id="security-tab" class="tab-content">
+                        <form method="POST" action="{{ url_for('profile') }}">
+                            <h3 class="section-title">
+                                <i class="fas fa-key"></i>
+                                Change Password
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="password" class="form-control" id="current_password" 
+                                               name="current_password" placeholder="Current Password">
+                                        <label for="current_password">
+                                            <i class="fas fa-lock text-warning me-2"></i>Current Password
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="password" class="form-control" id="new_password" 
+                                               name="new_password" placeholder="New Password">
+                                        <label for="new_password">
+                                            <i class="fas fa-lock text-warning me-2"></i>New Password
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="password" class="form-control" id="confirm_new_password" 
+                                               name="confirm_new_password" placeholder="Confirm New Password">
+                                        <label for="confirm_new_password">
+                                            <i class="fas fa-lock text-warning me-2"></i>Confirm New Password
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Leave password fields empty if you don't want to change your password.
+                            </div>
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-update">
+                                    <i class="fas fa-shield-alt me-2"></i>Update Security Settings
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function switchTab(tabName) {
+        // Hide all tabs
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        
+        // Remove active class from all buttons
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Show selected tab
+        document.getElementById(tabName + '-tab').classList.add('active');
+        
+        // Add active class to clicked button
+        event.target.closest('.tab-btn').classList.add('active');
+    }
+</script>
+{% endblock %}
