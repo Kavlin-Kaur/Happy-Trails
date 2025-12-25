@@ -98,6 +98,11 @@
             </li>
             {% if current_user.is_authenticated %}
             <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('profile') }}">
+                <i class="fas fa-user-circle me-1"></i> My Profile
+              </a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="{{ url_for('my_bookings') }}">
                 <i class="fas fa-ticket-alt me-1"></i> My Bookings
               </a>
