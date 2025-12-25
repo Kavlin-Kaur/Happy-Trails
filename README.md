@@ -10,6 +10,32 @@
     <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="600">
   </div>
 
+
+# 📑 **Table of Contents**
+
+* 🚀 [Overview](#-a-cosmic-bus-booking-experience)
+* 🌌 [Vision: Human-Centered Travel Technology](#-vision-human-centered-travel-technology)
+* ✨ [Features](#-features)
+* 🌟 [Stand-Out Experience Features](#-stand-out-experience-features)
+
+  * 🎭 [Narrative & Poetic Interface](#1-narrative--poetic-interface)
+  * 📡 [Live Tracking & Weather Integration](#2-live-tracking--weather-integration)
+  * 🪄 [Interactive Frontend Magic](#3-interactive-frontend-magic)
+  * 🐣 [Hidden Easter Eggs](#4-hidden-easter-eggs)
+* 📺 [Video Explanation](#-video-explanation)
+* 🛠️ [Technologies Used](#-technologies-used)
+* ⚙️ [Installation and Setup](#️-installation-and-setup)
+* 🪪 [.env Requirements](#required-env-file)
+* 🐞 [Issue Creation](#issue-creation-)
+* 📑 [Contribution Guidelines](#contribution-guidelines-)
+* 👥 [Contributors](#-contributors)
+* 📄 [License](#-license)
+* 📞 [Contact](#-contact)
+
+---
+
+
+
 ## 🚌 A Cosmic Bus Booking Experience
 
 **Happy Trails** is a poetic, modern bus booking platform where every journey is treated as a magical, cosmic adventure. It transforms the transactional process of booking a ticket into an immersive experience. It blends robust functionality (user accounts, real-time search, interactive seat selection, and live tracking) with an emotional UX—infusing micro‑poetry, glowing gradients, glass morphism, and a narrative-led design.
@@ -126,6 +152,97 @@ For a detailed walkthrough of Happy-Trails's features and how to use them, check
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
 ![Gunicorn](https://img.shields.io/badge/Gunicorn-499848?style=for-the-badge&logo=gunicorn&logoColor=white)
+
+---
+## 📁 PROJECT STRUCTURE
+
+```txt
+Happy-Trails/
+├── .gitignore
+├── App.png
+├── app.py
+├── CODE_OF_CONDUCT.md
+├── CONTRIBUTING.md
+├── LICENSE
+├── Logo.jpg
+├── package-lock.json
+├── package.json
+├── README.md
+├── requirements.txt
+├── vercel.json
+│
+├── .github/
+│   ├── pull_request_template.md
+│   ├── ISSUE_TEMPLATE/
+│   │   ├── bug_report.yml
+│   │   ├── config.yml
+│   │   ├── documentation.md
+│   │   ├── feature_request.yml
+│   │   └── performance.md
+│   └── workflows/
+│       ├── issue-create-automate-message.yml
+│       └── pr-create-automate-message.yml
+│
+├── instance/
+│   └── happytrails.db
+│
+├── static/
+│   ├── css/
+│   │   ├── main.css
+│   │   ├── poetry_corner.css
+│   │   ├── route_explorer.css
+│   │   ├── travel_companions.css
+│   │   └── travel_gallery.css
+│   │
+│   ├── images/
+│   │   ├── Barog.avif
+│   │   ├── bus-marker.png
+│   │   ├── bus-stop.png
+│   │   ├── Dagshai.jpg
+│   │   ├── Dharampur.webp
+│   │   ├── Kavlin Bitmoji.png
+│   │   ├── logo.png
+│   │   └── Solan.jpg
+│   │
+│   └── js/
+│       ├── main.js
+│       ├── poetry_corner.js
+│       ├── route_explorer.js
+│       ├── travel_companions.js
+│       └── travel_gallery.js
+│
+├── templates/
+│   ├── base.html
+│   ├── booking_confirmation.html
+│   ├── book_bus.html
+│   ├── bus_results.html
+│   ├── index.html
+│   ├── login.html
+│   ├── my_bookings.html
+│   ├── payment.html
+|   ├── profile.html
+│   ├── select_bus.html
+│   ├── select_seats.html
+│   ├── signup.html
+│   ├── track_bus.html
+│   │
+│   ├── features/
+│   │   ├── poetry_corner.html
+│   │   ├── route_explorer.html
+│   │   ├── travel_companions.html
+│   │   └── travel_gallery.html
+│   │
+│   └── footer/
+│       ├── cookie_policy.html
+│       ├── copyright.html
+│       ├── disclaimer.html
+│       ├── newsletter.html
+│       ├── privacy.html
+│       └── terms.html
+│
+└── __pycache__/
+    └── app.cpython-312.pyc
+```
 
 ---
 

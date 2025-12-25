@@ -1,0 +1,1534 @@
+{% extends 'base.html' %}
+
+{% block title %}Travel Companions - Happy Trails{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/travel_companions.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<!-- ============================================
+     🤝 TRAVEL COMPANIONS - PHASE 1
+     User Profiles & Travel Preferences
+     ============================================ -->
+<div class="companions-wrapper">
+    
+    <!-- === HERO SECTION === -->
+    <section class="companions-hero">
+        <div class="container">
+            <h1 class="companions-hero-title">🤝 Find Your Travel Buddy</h1>
+            <p class="companions-hero-subtitle">
+                Connect with fellow travelers, share stories, and make memories together.
+                Because the best journeys are the ones we share!
+            </p>
+            <div class="companions-hero-quote">
+                "Solo travel teaches you independence. Travel with companions teaches you life." - Kavlin 💖
+            </div>
+            <div class="companions-hero-stats">
+                <div class="hero-stat-item">
+                    <div class="hero-stat-number">1,234</div>
+                    <div class="hero-stat-label">Active Travelers</div>
+                </div>
+                <div class="hero-stat-item">
+                    <div class="hero-stat-number">567</div>
+                    <div class="hero-stat-label">Connections Made</div>
+                </div>
+                <div class="hero-stat-item">
+                    <div class="hero-stat-number">890</div>
+                    <div class="hero-stat-label">Stories Shared</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         📑 TAB NAVIGATION SYSTEM
+         ============================================ -->
+    <section class="companions-tabs-wrapper">
+        <div class="container">
+            <div class="companions-tabs">
+                <!-- Tab 1: My Profile (Phase 1) -->
+                <button class="companions-tab active" data-tab="my-profile">
+                    <i class="fas fa-user-circle"></i>
+                    <span>My Profile</span>
+                </button>
+                
+                <!-- Tab 2: Find Buddies (Phase 2) -->
+                <button class="companions-tab" data-tab="find-buddies">
+                    <i class="fas fa-search"></i>
+                    <span>Find Buddies</span>
+                </button>
+                
+                <!-- Tab 3: Traveler's Tales (Phase 3) -->
+                <button class="companions-tab" data-tab="travelers-tales">
+                    <i class="fas fa-book-open"></i>
+                    <span>Traveler's Tales</span>
+                </button>
+                
+                <!-- Tab 4: Community Forum (Phase 4) -->
+                <button class="companions-tab" data-tab="community-forum">
+                    <i class="fas fa-comments"></i>
+                    <span>Forum</span>
+                </button>
+                
+                <!-- Tab 5: Events & Groups (Phase 5) -->
+                <button class="companions-tab" data-tab="events-groups">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Events & Groups</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         👤 TAB 1: MY PROFILE (PHASE 1)
+         ============================================ -->
+    <div id="my-profile" class="companions-tab-content active">
+        <section class="profile-section">
+            <div class="container">
+                
+                <!-- Profile Header Card -->
+                <div class="profile-header-card">
+                    <div class="profile-cover-photo" id="profileCover">
+                        <button class="edit-cover-btn" onclick="editCoverPhoto()">
+                            <i class="fas fa-camera"></i>
+                            Change Cover
+                        </button>
+                    </div>
+                    
+                    <div class="profile-main-info">
+                        <div class="profile-avatar-section">
+                            <div class="profile-avatar" id="profileAvatar">
+                                <img src="{{ url_for('static', filename='images/default-avatar.png') }}" 
+                                     alt="Profile Photo" 
+                                     id="avatarImage">
+                                <button class="edit-avatar-btn" onclick="editAvatar()">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            </div>
+                            <div class="profile-verification">
+                                <i class="fas fa-check-circle"></i>
+                                Verified Traveler
+                            </div>
+                        </div>
+                        
+                        <div class="profile-info">
+                            <h2 class="profile-name" id="profileName">
+                                {% if current_user.is_authenticated %}
+                                    {{ current_user.first_name }} {{ current_user.last_name }}
+                                {% else %}
+                                    Guest Traveler
+                                {% endif %}
+                            </h2>
+                            <div class="profile-location" id="profileLocation">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Himachal Pradesh, India
+                            </div>
+                            <div class="profile-bio" id="profileBio">
+                                "Adventure seeker and mountain lover. Always ready for the next journey! 🏔️"
+                            </div>
+                            <div class="profile-tags" id="profileTags">
+                                <span class="interest-tag">📸 Photography</span>
+                                <span class="interest-tag">🏔️ Mountains</span>
+                                <span class="interest-tag">🎒 Adventure</span>
+                                <span class="interest-tag">🍜 Food</span>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-actions">
+                            <button class="profile-action-btn primary" onclick="editProfile()">
+                                <i class="fas fa-edit"></i>
+                                Edit Profile
+                            </button>
+                            <button class="profile-action-btn secondary" onclick="shareProfile()">
+                                <i class="fas fa-share-alt"></i>
+                                Share
+                            </button>
+                            <button class="profile-action-btn secondary" onclick="viewSettings()">
+                                <i class="fas fa-cog"></i>
+                                Settings
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Completion Card -->
+                <div class="profile-completion-card">
+                    <div class="completion-header">
+                        <div>
+                            <h3 class="completion-title">
+                                <i class="fas fa-chart-line"></i>
+                                Profile Completion
+                            </h3>
+                            <p class="completion-subtitle">Complete your profile to connect better!</p>
+                        </div>
+                        <div class="completion-percentage" id="completionPercentage">75%</div>
+                    </div>
+                    <div class="completion-progress">
+                        <div class="completion-progress-bar" id="completionProgressBar" style="width: 75%"></div>
+                    </div>
+                    <div class="completion-checklist">
+                        <div class="completion-item completed">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Add profile photo</span>
+                        </div>
+                        <div class="completion-item completed">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Write bio</span>
+                        </div>
+                        <div class="completion-item completed">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Select interests</span>
+                        </div>
+                        <div class="completion-item">
+                            <i class="fas fa-circle"></i>
+                            <span>Set travel preferences</span>
+                        </div>
+                        <div class="completion-item">
+                            <i class="fas fa-circle"></i>
+                            <span>Take personality quiz</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Two Column Layout: Left = Stats/Badges, Right = Details -->
+                <div class="profile-content-grid">
+                    
+                    <!-- Left Column -->
+                    <div class="profile-left-column">
+                        
+                        <!-- Travel Statistics -->
+                        <div class="profile-card">
+                            <h3 class="profile-card-title">
+                                <i class="fas fa-chart-bar"></i>
+                                Travel Statistics
+                            </h3>
+                            <div class="stats-grid">
+                                <div class="stat-box">
+                                    <div class="stat-icon">🚌</div>
+                                    <div class="stat-value" id="totalTrips">23</div>
+                                    <div class="stat-label">Total Trips</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-icon">🗺️</div>
+                                    <div class="stat-value" id="routesTraveled">6</div>
+                                    <div class="stat-label">Routes Traveled</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-icon">🤝</div>
+                                    <div class="stat-value" id="companionsMet">12</div>
+                                    <div class="stat-label">Companions Met</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-icon">✍️</div>
+                                    <div class="stat-value" id="storiesShared">5</div>
+                                    <div class="stat-label">Stories Shared</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-icon">💬</div>
+                                    <div class="stat-value" id="forumPosts">18</div>
+                                    <div class="stat-label">Forum Posts</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-icon">❤️</div>
+                                    <div class="stat-value" id="likesReceived">145</div>
+                                    <div class="stat-label">Likes Received</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Traveler Badges -->
+                        <div class="profile-card">
+                            <h3 class="profile-card-title">
+                                <i class="fas fa-trophy"></i>
+                                Traveler Badges
+                            </h3>
+                            <div class="badges-grid" id="badgesGrid">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </div>
+
+                        <!-- Travel Goals -->
+                        <div class="profile-card">
+                            <h3 class="profile-card-title">
+                                <i class="fas fa-bullseye"></i>
+                                Travel Goals
+                            </h3>
+                            <div class="goals-list" id="goalsList">
+                                <!-- Dynamically populated -->
+                            </div>
+                            <button class="add-goal-btn" onclick="addTravelGoal()">
+                                <i class="fas fa-plus"></i>
+                                Add Goal
+                            </button>
+                        </div>
+
+                    </div>
+                    
+                    <!-- Right Column -->
+                    <div class="profile-right-column">
+                        
+                        <!-- About Section -->
+                        <div class="profile-card">
+                            <h3 class="profile-card-title">
+                                <i class="fas fa-info-circle"></i>
+                                About Me
+                            </h3>
+                            <div class="profile-details">
+                                <div class="detail-row">
+                                    <div class="detail-label">
+                                        <i class="fas fa-birthday-cake"></i>
+                                        Age Group
+                                    </div>
+                                    <div class="detail-value" id="ageGroup">25-34</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">
+                                        <i class="fas fa-user"></i>
+                                        Gender
+                                    </div>
+                                    <div class="detail-value" id="gender">Prefer not to say</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">
+                                        <i class="fas fa-language"></i>
+                                        Languages
+                                    </div>
+                                    <div class="detail-value" id="languages">English, Hindi</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">
+                                        <i class="fas fa-calendar"></i>
+                                        Member Since
+                                    </div>
+                                    <div class="detail-value" id="memberSince">January 2024</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Travel Preferences -->
+                        <div class="profile-card">
+                            <h3 class="profile-card-title">
+                                <i class="fas fa-sliders-h"></i>
+                                Travel Preferences
+                            </h3>
+                            <div class="preferences-list" id="preferencesList">
+                                <div class="preference-item">
+                                    <div class="preference-label">
+                                        <i class="fas fa-route"></i>
+                                        Favorite Routes
+                                    </div>
+                                    <div class="preference-value">
+                                        <span class="route-tag">HT-101</span>
+                                        <span class="route-tag">HT-103</span>
+                                        <span class="route-tag">HT-105</span>
+                                    </div>
+                                </div>
+                                <div class="preference-item">
+                                    <div class="preference-label">
+                                        <i class="fas fa-clock"></i>
+                                        Preferred Times
+                                    </div>
+                                    <div class="preference-value">Morning (6-10 AM)</div>
+                                </div>
+                                <div class="preference-item">
+                                    <div class="preference-label">
+                                        <i class="fas fa-users"></i>
+                                        Travel Style
+                                    </div>
+                                    <div class="preference-value">Solo Adventurer</div>
+                                </div>
+                                <div class="preference-item">
+                                    <div class="preference-label">
+                                        <i class="fas fa-user-friends"></i>
+                                        Companionship
+                                    </div>
+                                    <div class="preference-value">Open to meeting new people</div>
+                                </div>
+                            </div>
+                            <button class="edit-preferences-btn" onclick="editPreferences()">
+                                <i class="fas fa-edit"></i>
+                                Edit Preferences
+                            </button>
+                        </div>
+
+                        <!-- Travel Style Quiz -->
+                        <div class="profile-card quiz-card">
+                            <h3 class="profile-card-title">
+                                <i class="fas fa-question-circle"></i>
+                                Discover Your Travel Style
+                            </h3>
+                            <p class="quiz-description">
+                                Take our quick 5-question quiz to find your perfect travel companion match!
+                            </p>
+                            <div class="quiz-result" id="quizResult" style="display: none;">
+                                <div class="quiz-result-icon">🎒</div>
+                                <div class="quiz-result-title">You're a Solo Adventurer!</div>
+                                <div class="quiz-result-description">
+                                    You love independence but enjoy meaningful conversations with fellow travelers.
+                                </div>
+                            </div>
+                            <button class="take-quiz-btn" onclick="startTravelQuiz()">
+                                <i class="fas fa-play"></i>
+                                Take Quiz
+                            </button>
+                        </div>
+
+                    </div>
+                    
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         🔍 TAB 2: FIND BUDDIES (PHASE 2)
+         ============================================ -->
+    <div id="find-buddies" class="companions-tab-content">
+        <section class="buddies-section">
+            <div class="container">
+                
+                <!-- Buddy Finder Header -->
+                <div class="buddies-header">
+                    <div class="buddies-header-content">
+                        <h2 class="buddies-title">
+                            <i class="fas fa-users"></i>
+                            Find Your Perfect Travel Buddy
+                        </h2>
+                        <p class="buddies-subtitle">
+                            Our smart matching system connects you with compatible travelers based on routes, 
+                            interests, and travel styles. Let's find your next adventure companion!
+                        </p>
+                    </div>
+                    <button class="find-match-btn" onclick="findMyMatch()">
+                        <i class="fas fa-magic"></i>
+                        Find My Match
+                    </button>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="quick-match-stats">
+                    <div class="match-stat-card">
+                        <div class="match-stat-icon">🚌</div>
+                        <div class="match-stat-value" id="travelersOnline">45</div>
+                        <div class="match-stat-label">Travelers Online</div>
+                    </div>
+                    <div class="match-stat-card">
+                        <div class="match-stat-icon">📅</div>
+                        <div class="match-stat-value" id="travelingToday">12</div>
+                        <div class="match-stat-label">Traveling Today</div>
+                    </div>
+                    <div class="match-stat-card">
+                        <div class="match-stat-icon">🎯</div>
+                        <div class="match-stat-value" id="yourMatches">8</div>
+                        <div class="match-stat-label">Your Matches</div>
+                    </div>
+                    <div class="match-stat-card">
+                        <div class="match-stat-icon">⭐</div>
+                        <div class="match-stat-value" id="topMatch">92%</div>
+                        <div class="match-stat-label">Top Match</div>
+                    </div>
+                </div>
+
+                <!-- Search & Filter Panel -->
+                <div class="buddy-search-panel">
+                    <div class="search-panel-header">
+                        <h3 class="search-panel-title">
+                            <i class="fas fa-filter"></i>
+                            Search Filters
+                        </h3>
+                        <button class="toggle-filters-btn" onclick="toggleFilters()">
+                            <i class="fas fa-chevron-down"></i>
+                            <span>Show Filters</span>
+                        </button>
+                    </div>
+                    
+                    <div class="search-filters-container" id="searchFiltersContainer">
+                        <div class="search-filters-grid">
+                            
+                            <!-- Route Filter -->
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-route"></i>
+                                    Route
+                                </label>
+                                <select class="filter-select" id="filterRoute">
+                                    <option value="all">All Routes</option>
+                                    <option value="HT-101">HT-101: Dharampur → Solan</option>
+                                    <option value="HT-102">HT-102: Solan → Barog</option>
+                                    <option value="HT-103">HT-103: Barog → Dagshai</option>
+                                    <option value="HT-104">HT-104: Dagshai → Dharampur</option>
+                                    <option value="HT-105">HT-105: Dharampur → Solan (Deluxe)</option>
+                                    <option value="HT-106">HT-106: Dharampur → Solan (Premium)</option>
+                                    <option value="HT-107">HT-107: Solan → Barog (Standard)</option>
+                                    <option value="HT-108">HT-108: Barog → Dagshai (Deluxe)</option>
+                                </select>
+                            </div>
+
+                            <!-- Date Filter -->
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    Travel Date
+                                </label>
+                                <input type="date" class="filter-select" id="filterDate" 
+                                       min="2025-11-02">
+                            </div>
+
+                            <!-- Travel Style Filter -->
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-user-tag"></i>
+                                    Travel Style
+                                </label>
+                                <select class="filter-select" id="filterTravelStyle">
+                                    <option value="all">All Styles</option>
+                                    <option value="solo-adventurer">Solo Adventurer</option>
+                                    <option value="social-butterfly">Social Butterfly</option>
+                                    <option value="peaceful-observer">Peaceful Observer</option>
+                                    <option value="enthusiastic-explorer">Enthusiastic Explorer</option>
+                                    <option value="thoughtful-traveler">Thoughtful Traveler</option>
+                                    <option value="family-oriented">Family Oriented</option>
+                                </select>
+                            </div>
+
+                            <!-- Age Group Filter -->
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-birthday-cake"></i>
+                                    Age Group
+                                </label>
+                                <select class="filter-select" id="filterAgeGroup">
+                                    <option value="all">All Ages</option>
+                                    <option value="18-24">18-24</option>
+                                    <option value="25-34">25-34</option>
+                                    <option value="35-44">35-44</option>
+                                    <option value="45-54">45-54</option>
+                                    <option value="55+">55+</option>
+                                </select>
+                            </div>
+
+                            <!-- Gender Filter -->
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-user"></i>
+                                    Gender Preference
+                                </label>
+                                <select class="filter-select" id="filterGender">
+                                    <option value="all">All</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="non-binary">Non-binary</option>
+                                    <option value="prefer-not-to-say">Prefer not to say</option>
+                                </select>
+                            </div>
+
+                            <!-- Interests Filter -->
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-heart"></i>
+                                    Shared Interests
+                                </label>
+                                <select class="filter-select" id="filterInterests" multiple>
+                                    <option value="Photography">Photography</option>
+                                    <option value="Mountains">Mountains</option>
+                                    <option value="Adventure">Adventure</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Nature">Nature</option>
+                                    <option value="Culture">Culture</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <!-- Additional Filters -->
+                        <div class="additional-filters">
+                            <label class="checkbox-filter">
+                                <input type="checkbox" id="filterVerified">
+                                <span>Verified travelers only</span>
+                            </label>
+                            <label class="checkbox-filter">
+                                <input type="checkbox" id="filterTravelingToday">
+                                <span>Traveling today</span>
+                            </label>
+                            <label class="checkbox-filter">
+                                <input type="checkbox" id="filterHighMatch">
+                                <span>High compatibility (70%+)</span>
+                            </label>
+                        </div>
+
+                        <!-- Filter Actions -->
+                        <div class="filter-actions">
+                            <button class="apply-filters-btn" onclick="applyBuddyFilters()">
+                                <i class="fas fa-search"></i>
+                                Search Buddies
+                            </button>
+                            <button class="reset-filters-btn" onclick="resetBuddyFilters()">
+                                <i class="fas fa-redo"></i>
+                                Reset
+                            </button>
+                            <button class="save-search-btn" onclick="saveSearch()">
+                                <i class="fas fa-bookmark"></i>
+                                Save Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Recommendations -->
+                <div class="top-recommendations">
+                    <h3 class="recommendations-title">
+                        <i class="fas fa-star"></i>
+                        Your Top Matches
+                    </h3>
+                    <p class="recommendations-subtitle">
+                        Based on your profile, interests, and travel preferences
+                    </p>
+                    <div class="recommendations-grid" id="topRecommendations">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- All Travelers Grid -->
+                <div class="all-travelers-section">
+                    <div class="travelers-section-header">
+                        <h3 class="travelers-section-title">
+                            <i class="fas fa-users"></i>
+                            All Travelers
+                        </h3>
+                        <div class="sort-options">
+                            <label>Sort by:</label>
+                            <select class="sort-select" id="sortBy" onchange="sortTravelers()">
+                                <option value="compatibility">Compatibility</option>
+                                <option value="newest">Newest First</option>
+                                <option value="trips">Most Trips</option>
+                                <option value="online">Online Now</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="travelers-grid" id="travelersGrid">
+                        <!-- Dynamically populated -->
+                    </div>
+                    <div class="load-more-container" id="loadMoreContainer">
+                        <button class="load-more-btn" onclick="loadMoreTravelers()">
+                            <i class="fas fa-chevron-down"></i>
+                            Load More Travelers
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- Connection Request Modal -->
+    <div class="connection-modal" id="connectionModal" style="display: none;">
+        <div class="connection-modal-overlay" onclick="closeConnectionModal()"></div>
+        <div class="connection-modal-content">
+            <button class="connection-modal-close" onclick="closeConnectionModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="connectionModalBody">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Traveler Detail Modal -->
+    <div class="traveler-detail-modal" id="travelerDetailModal" style="display: none;">
+        <div class="traveler-detail-overlay" onclick="closeTravelerDetail()"></div>
+        <div class="traveler-detail-content">
+            <button class="traveler-detail-close" onclick="closeTravelerDetail()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="travelerDetailBody">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         📖 TAB 3: TRAVELER'S TALES (PHASE 3)
+         ============================================ -->
+    <div id="travelers-tales" class="companions-tab-content">
+        <section class="tales-section">
+            <div class="container">
+                
+                <!-- Tales Header -->
+                <div class="tales-header">
+                    <div class="tales-header-content">
+                        <h2 class="tales-title">
+                            <i class="fas fa-book-open"></i>
+                            Traveler's Tales
+                        </h2>
+                        <p class="tales-subtitle">
+                            Share your journey, inspire others, and discover amazing travel stories from 
+                            our Happy Trails community. Every adventure deserves to be told!
+                        </p>
+                    </div>
+                    <button class="share-story-btn" onclick="openStoryEditor()">
+                        <i class="fas fa-pen"></i>
+                        Share Your Story
+                    </button>
+                </div>
+
+                <!-- Tales Stats -->
+                <div class="tales-stats">
+                    <div class="tale-stat-card">
+                        <div class="tale-stat-icon">📖</div>
+                        <div class="tale-stat-value" id="totalStories">42</div>
+                        <div class="tale-stat-label">Stories Shared</div>
+                    </div>
+                    <div class="tale-stat-card">
+                        <div class="tale-stat-icon">✍️</div>
+                        <div class="tale-stat-value" id="activeWriters">28</div>
+                        <div class="tale-stat-label">Active Writers</div>
+                    </div>
+                    <div class="tale-stat-card">
+                        <div class="tale-stat-icon">❤️</div>
+                        <div class="tale-stat-value" id="totalLikes">1,234</div>
+                        <div class="tale-stat-label">Total Likes</div>
+                    </div>
+                    <div class="tale-stat-card">
+                        <div class="tale-stat-icon">💬</div>
+                        <div class="tale-stat-value" id="totalComments">567</div>
+                        <div class="tale-stat-label">Comments</div>
+                    </div>
+                </div>
+
+                <!-- Featured Stories -->
+                <div class="featured-stories-section">
+                    <h3 class="featured-stories-title">
+                        <i class="fas fa-star"></i>
+                        Featured Stories
+                    </h3>
+                    <p class="featured-stories-subtitle">
+                        Hand-picked by Kavlin - stories that touched our hearts
+                    </p>
+                    <div class="featured-stories-carousel" id="featuredStoriesCarousel">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Writing Prompts -->
+                <div class="writing-prompts-section">
+                    <h3 class="prompts-title">
+                        <i class="fas fa-lightbulb"></i>
+                        Need Inspiration? Try These Prompts
+                    </h3>
+                    <div class="prompts-grid">
+                        <div class="prompt-card" onclick="usePrompt('My first Happy Trails journey...')">
+                            <div class="prompt-icon">🚌</div>
+                            <div class="prompt-text">"My first Happy Trails journey..."</div>
+                        </div>
+                        <div class="prompt-card" onclick="usePrompt('An unexpected friendship on route...')">
+                            <div class="prompt-icon">🤝</div>
+                            <div class="prompt-text">"An unexpected friendship on route..."</div>
+                        </div>
+                        <div class="prompt-card" onclick="usePrompt('The view that changed everything...')">
+                            <div class="prompt-icon">🏔️</div>
+                            <div class="prompt-text">"The view that changed everything..."</div>
+                        </div>
+                        <div class="prompt-card" onclick="usePrompt('When the journey became the destination...')">
+                            <div class="prompt-icon">🛤️</div>
+                            <div class="prompt-text">"When the journey became the destination..."</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search & Filter -->
+                <div class="tales-search-panel">
+                    <div class="tales-search-header">
+                        <div class="search-box-tales">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="talesSearchInput" placeholder="Search stories..." 
+                                   onkeyup="searchStories()">
+                        </div>
+                        <div class="filter-dropdowns">
+                            <select class="tales-filter-select" id="categoryFilter" onchange="filterStories()">
+                                <option value="all">All Categories</option>
+                                <option value="mountain-adventures">🏔️ Mountain Adventures</option>
+                                <option value="romance">💑 Romance & Connection</option>
+                                <option value="funny">😂 Funny Moments</option>
+                                <option value="spiritual">🙏 Spiritual Journeys</option>
+                                <option value="food-culture">🍜 Food & Culture</option>
+                                <option value="solo-travel">🎒 Solo Travel</option>
+                                <option value="family">👨‍👩‍👧‍👦 Family Tales</option>
+                                <option value="life-changing">🌟 Life Changing</option>
+                            </select>
+                            <select class="tales-filter-select" id="routeFilterTales" onchange="filterStories()">
+                                <option value="all">All Routes</option>
+                                <option value="HT-101">HT-101</option>
+                                <option value="HT-102">HT-102</option>
+                                <option value="HT-103">HT-103</option>
+                                <option value="HT-104">HT-104</option>
+                                <option value="HT-105">HT-105</option>
+                                <option value="HT-106">HT-106</option>
+                                <option value="HT-107">HT-107</option>
+                                <option value="HT-108">HT-108</option>
+                            </select>
+                            <select class="tales-filter-select" id="sortTales" onchange="sortStories()">
+                                <option value="latest">Latest First</option>
+                                <option value="popular">Most Popular</option>
+                                <option value="trending">Trending</option>
+                                <option value="oldest">Oldest First</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Pills -->
+                <div class="category-pills-container">
+                    <button class="category-pill active" data-category="all" onclick="filterByCategory('all')">
+                        All Stories
+                    </button>
+                    <button class="category-pill" data-category="mountain-adventures" onclick="filterByCategory('mountain-adventures')">
+                        🏔️ Mountains
+                    </button>
+                    <button class="category-pill" data-category="romance" onclick="filterByCategory('romance')">
+                        💑 Romance
+                    </button>
+                    <button class="category-pill" data-category="funny" onclick="filterByCategory('funny')">
+                        😂 Funny
+                    </button>
+                    <button class="category-pill" data-category="spiritual" onclick="filterByCategory('spiritual')">
+                        🙏 Spiritual
+                    </button>
+                    <button class="category-pill" data-category="food-culture" onclick="filterByCategory('food-culture')">
+                        🍜 Food
+                    </button>
+                    <button class="category-pill" data-category="solo-travel" onclick="filterByCategory('solo-travel')">
+                        🎒 Solo
+                    </button>
+                    <button class="category-pill" data-category="family" onclick="filterByCategory('family')">
+                        👨‍👩‍👧‍👦 Family
+                    </button>
+                </div>
+
+                <!-- Stories Grid -->
+                <div class="stories-grid" id="storiesGrid">
+                    <!-- Dynamically populated -->
+                </div>
+
+                <!-- Load More -->
+                <div class="load-more-tales" id="loadMoreTales">
+                    <button class="load-more-btn" onclick="loadMoreStories()">
+                        <i class="fas fa-chevron-down"></i>
+                        Load More Stories
+                    </button>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- Story Editor Modal -->
+    <div class="story-editor-modal" id="storyEditorModal" style="display: none;">
+        <div class="story-editor-overlay" onclick="closeStoryEditor()"></div>
+        <div class="story-editor-content">
+            <button class="story-editor-close" onclick="closeStoryEditor()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="story-editor-title">
+                <i class="fas fa-pen"></i>
+                Share Your Travel Story
+            </h3>
+            <form class="story-editor-form" id="storyEditorForm">
+                <div class="form-group">
+                    <label>Story Title *</label>
+                    <input type="text" id="storyTitle" class="form-control" 
+                           placeholder="Give your story a captivating title..." maxlength="100">
+                    <div class="char-count"><span id="titleCount">0</span>/100</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Subtitle</label>
+                    <input type="text" id="storySubtitle" class="form-control" 
+                           placeholder="A brief description of your tale..." maxlength="150">
+                    <div class="char-count"><span id="subtitleCount">0</span>/150</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Your Story *</label>
+                    <textarea id="storyContent" class="form-control story-textarea" rows="12"
+                              placeholder="Write your story here... Share your experience, emotions, and the moments that made this journey special."></textarea>
+                    <div class="story-meta-info">
+                        <span class="char-count"><span id="contentCount">0</span> characters</span>
+                        <span class="read-time">Reading time: <span id="readingTime">0</span> min</span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Route *</label>
+                        <select id="storyRoute" class="form-control">
+                            <option value="">Select a route</option>
+                            <option value="HT-101">HT-101: Dharampur → Solan</option>
+                            <option value="HT-102">HT-102: Solan → Barog</option>
+                            <option value="HT-103">HT-103: Barog → Dagshai</option>
+                            <option value="HT-104">HT-104: Dagshai → Dharampur</option>
+                            <option value="HT-105">HT-105: Dharampur → Solan (Deluxe)</option>
+                            <option value="HT-106">HT-106: Dharampur → Solan (Premium)</option>
+                            <option value="HT-107">HT-107: Solan → Barog</option>
+                            <option value="HT-108">HT-108: Barog → Dagshai (Deluxe)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select id="storyCategory" class="form-control">
+                            <option value="">Select a category</option>
+                            <option value="mountain-adventures">🏔️ Mountain Adventures</option>
+                            <option value="romance">💑 Romance & Connection</option>
+                            <option value="funny">😂 Funny Moments</option>
+                            <option value="spiritual">🙏 Spiritual Journeys</option>
+                            <option value="food-culture">🍜 Food & Culture</option>
+                            <option value="solo-travel">🎒 Solo Travel</option>
+                            <option value="family">👨‍👩‍👧‍👦 Family Tales</option>
+                            <option value="life-changing">🌟 Life Changing</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Featured Image (Optional)</label>
+                    <div class="image-upload-area" onclick="document.getElementById('storyImage').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Click to upload image</p>
+                        <small>JPG, PNG up to 5MB</small>
+                    </div>
+                    <input type="file" id="storyImage" accept="image/*" style="display: none;">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-save-draft" onclick="saveStoryDraft()">
+                        <i class="fas fa-save"></i>
+                        Save Draft
+                    </button>
+                    <button type="button" class="btn-publish-story" onclick="publishStory()">
+                        <i class="fas fa-paper-plane"></i>
+                        Publish Story
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Story Detail Modal -->
+    <div class="story-detail-modal" id="storyDetailModal" style="display: none;">
+        <div class="story-detail-overlay" onclick="closeStoryDetail()"></div>
+        <div class="story-detail-content">
+            <button class="story-detail-close" onclick="closeStoryDetail()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="storyDetailBody">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         💬 TAB 4: COMMUNITY FORUM (PHASE 4)
+         ============================================ -->
+    <div id="community-forum" class="companions-tab-content">
+        <section class="forum-section">
+            <div class="container">
+                
+                <!-- Forum Header -->
+                <div class="forum-header">
+                    <div class="forum-header-content">
+                        <h2 class="forum-title">
+                            <i class="fas fa-comments"></i>
+                            Community Forum
+                        </h2>
+                        <p class="forum-subtitle">
+                            Join the conversation! Ask questions, share tips, and connect with fellow 
+                            Happy Trails travelers. Our community is here to help!
+                        </p>
+                    </div>
+                    <button class="new-thread-btn" onclick="openThreadEditor()">
+                        <i class="fas fa-plus"></i>
+                        New Thread
+                    </button>
+                </div>
+
+                <!-- Forum Stats -->
+                <div class="forum-stats">
+                    <div class="forum-stat-card">
+                        <div class="forum-stat-icon">💬</div>
+                        <div class="forum-stat-value" id="totalThreads">156</div>
+                        <div class="forum-stat-label">Total Threads</div>
+                    </div>
+                    <div class="forum-stat-card">
+                        <div class="forum-stat-icon">💭</div>
+                        <div class="forum-stat-value" id="totalReplies">842</div>
+                        <div class="forum-stat-label">Total Replies</div>
+                    </div>
+                    <div class="forum-stat-card">
+                        <div class="forum-stat-icon">👥</div>
+                        <div class="forum-stat-value" id="activeMembers">89</div>
+                        <div class="forum-stat-label">Active Members</div>
+                    </div>
+                    <div class="forum-stat-card">
+                        <div class="forum-stat-icon">🔥</div>
+                        <div class="forum-stat-value" id="trendingThreads">12</div>
+                        <div class="forum-stat-label">Trending Now</div>
+                    </div>
+                </div>
+
+                <!-- Forum Layout: Categories + Threads -->
+                <div class="forum-layout">
+                    
+                    <!-- Left Sidebar: Categories -->
+                    <div class="forum-categories-sidebar">
+                        <h3 class="categories-title">
+                            <i class="fas fa-folder"></i>
+                            Categories
+                        </h3>
+                        <div class="category-list">
+                            <button class="category-item active" data-category="all" onclick="filterThreadsByCategory('all')">
+                                <span class="category-icon">🌐</span>
+                                <div class="category-details">
+                                    <div class="category-name">All Discussions</div>
+                                    <div class="category-count" id="allCount">156</div>
+                                </div>
+                            </button>
+                            <button class="category-item" data-category="route-planning" onclick="filterThreadsByCategory('route-planning')">
+                                <span class="category-icon">🗺️</span>
+                                <div class="category-details">
+                                    <div class="category-name">Route Planning</div>
+                                    <div class="category-count">32</div>
+                                </div>
+                            </button>
+                            <button class="category-item" data-category="travel-tips" onclick="filterThreadsByCategory('travel-tips')">
+                                <span class="category-icon">🎒</span>
+                                <div class="category-details">
+                                    <div class="category-name">Travel Tips</div>
+                                    <div class="category-count">45</div>
+                                </div>
+                            </button>
+                            <button class="category-item" data-category="accommodations" onclick="filterThreadsByCategory('accommodations')">
+                                <span class="category-icon">🏨</span>
+                                <div class="category-details">
+                                    <div class="category-name">Accommodations</div>
+                                    <div class="category-count">18</div>
+                                </div>
+                            </button>
+                            <button class="category-item" data-category="food-dining" onclick="filterThreadsByCategory('food-dining')">
+                                <span class="category-icon">🍜</span>
+                                <div class="category-details">
+                                    <div class="category-name">Food & Dining</div>
+                                    <div class="category-count">23</div>
+                                </div>
+                            </button>
+                            <button class="category-item" data-category="bus-experience" onclick="filterThreadsByCategory('bus-experience')">
+                                <span class="category-icon">🚌</span>
+                                <div class="category-details">
+                                    <div class="category-name">Bus Experience</div>
+                                    <div class="category-count">15</div>
+                                </div>
+                            </button>
+                            <button class="category-item" data-category="photo-sharing" onclick="filterThreadsByCategory('photo-sharing')">
+                                <span class="category-icon">📸</span>
+                                <div class="category-details">
+                                    <div class="category-name">Photo Sharing</div>
+                                    <div class="category-count">12</div>
+                                </div>
+                            </button>
+                            <button class="category-item" data-category="help-support" onclick="filterThreadsByCategory('help-support')">
+                                <span class="category-icon">🆘</span>
+                                <div class="category-details">
+                                    <div class="category-name">Help & Support</div>
+                                    <div class="category-count">8</div>
+                                </div>
+                            </button>
+                            <button class="category-item" data-category="general-chat" onclick="filterThreadsByCategory('general-chat')">
+                                <span class="category-icon">💬</span>
+                                <div class="category-details">
+                                    <div class="category-name">General Chat</div>
+                                    <div class="category-count">3</div>
+                                </div>
+                            </button>
+                        </div>
+
+                        <!-- Trending Topics Widget -->
+                        <div class="trending-widget">
+                            <h4 class="trending-title">
+                                <i class="fas fa-fire"></i>
+                                Trending Topics
+                            </h4>
+                            <div class="trending-list" id="trendingList">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Content: Threads -->
+                    <div class="forum-main-content">
+                        
+                        <!-- Search & Sort Bar -->
+                        <div class="forum-controls">
+                            <div class="forum-search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="forumSearchInput" placeholder="Search discussions..." 
+                                       onkeyup="searchThreads()">
+                            </div>
+                            <div class="forum-sort">
+                                <label>Sort:</label>
+                                <select class="forum-sort-select" id="forumSort" onchange="sortThreads()">
+                                    <option value="latest">Latest Activity</option>
+                                    <option value="popular">Most Popular</option>
+                                    <option value="trending">Trending</option>
+                                    <option value="unanswered">Unanswered</option>
+                                    <option value="oldest">Oldest First</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Threads List -->
+                        <div class="threads-list" id="threadsList">
+                            <!-- Dynamically populated -->
+                        </div>
+
+                        <!-- Load More -->
+                        <div class="load-more-forum" id="loadMoreForum">
+                            <button class="load-more-btn" onclick="loadMoreThreads()">
+                                <i class="fas fa-chevron-down"></i>
+                                Load More Threads
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- Thread Editor Modal -->
+    <div class="thread-editor-modal" id="threadEditorModal" style="display: none;">
+        <div class="thread-editor-overlay" onclick="closeThreadEditor()"></div>
+        <div class="thread-editor-content">
+            <button class="thread-editor-close" onclick="closeThreadEditor()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="thread-editor-title">
+                <i class="fas fa-plus"></i>
+                Start New Discussion
+            </h3>
+            <form class="thread-editor-form" id="threadEditorForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select id="threadCategory" class="form-control">
+                            <option value="">Select a category</option>
+                            <option value="route-planning">🗺️ Route Planning</option>
+                            <option value="travel-tips">🎒 Travel Tips</option>
+                            <option value="accommodations">🏨 Accommodations</option>
+                            <option value="food-dining">🍜 Food & Dining</option>
+                            <option value="bus-experience">🚌 Bus Experience</option>
+                            <option value="photo-sharing">📸 Photo Sharing</option>
+                            <option value="help-support">🆘 Help & Support</option>
+                            <option value="general-chat">💬 General Chat</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Thread Type *</label>
+                        <select id="threadType" class="form-control">
+                            <option value="">Select type</option>
+                            <option value="question">❓ Question</option>
+                            <option value="discussion">💭 Discussion</option>
+                            <option value="guide">📚 Guide</option>
+                            <option value="review">⭐ Review</option>
+                            <option value="meetup">👥 Meetup</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Thread Title *</label>
+                    <input type="text" id="threadTitle" class="form-control" 
+                           placeholder="What would you like to discuss?" maxlength="150">
+                    <div class="char-count"><span id="threadTitleCount">0</span>/150</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea id="threadContent" class="form-control" rows="8"
+                              placeholder="Share details, ask questions, or start a conversation..."></textarea>
+                    <div class="char-count"><span id="threadContentCount">0</span> characters</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Tags (optional)</label>
+                    <input type="text" id="threadTags" class="form-control" 
+                           placeholder="Add tags separated by commas (e.g., HT-101, solo-travel, budget)">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-save-draft" onclick="saveThreadDraft()">
+                        <i class="fas fa-save"></i>
+                        Save Draft
+                    </button>
+                    <button type="button" class="btn-publish-story" onclick="publishThread()">
+                        <i class="fas fa-paper-plane"></i>
+                        Publish Thread
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Thread Detail Modal -->
+    <div class="thread-detail-modal" id="threadDetailModal" style="display: none;">
+        <div class="thread-detail-overlay" onclick="closeThreadDetail()"></div>
+        <div class="thread-detail-content">
+            <button class="thread-detail-close" onclick="closeThreadDetail()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="threadDetailBody">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         📅 TAB 5: EVENTS & GROUPS (PHASE 5)
+         ============================================ -->
+    <div id="events-groups" class="companions-tab-content">
+        <section class="events-section">
+            <div class="container">
+                
+                <!-- Events Header -->
+                <div class="events-header">
+                    <div class="events-header-content">
+                        <h2 class="events-title">
+                            <i class="fas fa-calendar-alt"></i>
+                            Group Bookings & Events
+                        </h2>
+                        <p class="events-subtitle">
+                            Plan group trips, join community events, and coordinate travel with fellow 
+                            Happy Trails enthusiasts. Making memories together, one journey at a time!
+                        </p>
+                    </div>
+                    <button class="create-event-btn" onclick="openEventCreator()">
+                        <i class="fas fa-plus"></i>
+                        Create Event
+                    </button>
+                </div>
+
+                <!-- Events Stats -->
+                <div class="events-stats">
+                    <div class="event-stat-card">
+                        <div class="event-stat-icon">📅</div>
+                        <div class="event-stat-value" id="totalEvents">45</div>
+                        <div class="event-stat-label">Total Events</div>
+                    </div>
+                    <div class="event-stat-card">
+                        <div class="event-stat-icon">👥</div>
+                        <div class="event-stat-value" id="totalParticipants">234</div>
+                        <div class="event-stat-label">Participants</div>
+                    </div>
+                    <div class="event-stat-card">
+                        <div class="event-stat-icon">🎯</div>
+                        <div class="event-stat-value" id="activeOrganizers">18</div>
+                        <div class="event-stat-label">Active Organizers</div>
+                    </div>
+                    <div class="event-stat-card">
+                        <div class="event-stat-icon">🔥</div>
+                        <div class="event-stat-value" id="eventsThisMonth">12</div>
+                        <div class="event-stat-label">This Month</div>
+                    </div>
+                </div>
+
+                <!-- Calendar Section -->
+                <div class="calendar-section">
+                    <div class="calendar-header">
+                        <h3 class="calendar-title">
+                            <i class="fas fa-calendar"></i>
+                            Event Calendar
+                        </h3>
+                        <div class="calendar-controls">
+                            <button class="calendar-nav-btn" onclick="previousMonth()">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <span class="calendar-month-year" id="calendarMonthYear">November 2025</span>
+                            <button class="calendar-nav-btn" onclick="nextMonth()">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            <button class="calendar-today-btn" onclick="goToToday()">
+                                <i class="fas fa-crosshairs"></i>
+                                Today
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Events Filter -->
+                <div class="events-filter-section">
+                    <h3 class="filter-title">
+                        <i class="fas fa-filter"></i>
+                        Browse Events
+                    </h3>
+                    <div class="events-filter-pills">
+                        <button class="event-filter-pill active" data-filter="all" onclick="filterEvents('all')">
+                            All Events
+                        </button>
+                        <button class="event-filter-pill" data-filter="group-trip" onclick="filterEvents('group-trip')">
+                            🗺️ Group Trips
+                        </button>
+                        <button class="event-filter-pill" data-filter="social-meetup" onclick="filterEvents('social-meetup')">
+                            🎉 Social Meetups
+                        </button>
+                        <button class="event-filter-pill" data-filter="photo-walk" onclick="filterEvents('photo-walk')">
+                            📸 Photo Walks
+                        </button>
+                        <button class="event-filter-pill" data-filter="food-tour" onclick="filterEvents('food-tour')">
+                            🍜 Food Tours
+                        </button>
+                        <button class="event-filter-pill" data-filter="adventure" onclick="filterEvents('adventure')">
+                            🏔️ Adventures
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Upcoming Events -->
+                <div class="upcoming-events-section">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="fas fa-fire"></i>
+                            Upcoming Events
+                        </h3>
+                        <div class="sort-controls">
+                            <label>Sort:</label>
+                            <select class="sort-select" id="eventSort" onchange="sortEvents()">
+                                <option value="date">By Date</option>
+                                <option value="popular">Most Popular</option>
+                                <option value="capacity">Spots Available</option>
+                                <option value="newest">Newly Added</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="events-grid" id="eventsGrid">
+                        <!-- Dynamically populated -->
+                    </div>
+
+                    <div class="load-more-events" id="loadMoreEvents">
+                        <button class="load-more-btn" onclick="loadMoreEvents()">
+                            <i class="fas fa-chevron-down"></i>
+                            Load More Events
+                        </button>
+                    </div>
+                </div>
+
+                <!-- My Events Sidebar -->
+                <div class="my-events-widget">
+                    <h4 class="widget-title">
+                        <i class="fas fa-user-check"></i>
+                        My Events
+                    </h4>
+                    <div class="my-events-tabs">
+                        <button class="my-event-tab active" data-tab="attending" onclick="switchMyEventsTab('attending')">
+                            Attending (<span id="myAttendingCount">0</span>)
+                        </button>
+                        <button class="my-event-tab" data-tab="hosting" onclick="switchMyEventsTab('hosting')">
+                            Hosting (<span id="myHostingCount">0</span>)
+                        </button>
+                    </div>
+                    <div id="myEventsList" class="my-events-list">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- Event Creator Modal -->
+    <div class="event-creator-modal" id="eventCreatorModal" style="display: none;">
+        <div class="event-creator-overlay" onclick="closeEventCreator()"></div>
+        <div class="event-creator-content">
+            <button class="event-creator-close" onclick="closeEventCreator()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="event-creator-title">
+                <i class="fas fa-calendar-plus"></i>
+                Create Group Event
+            </h3>
+            
+            <form class="event-creator-form" id="eventCreatorForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Event Category *</label>
+                        <select id="eventCategory" class="form-control">
+                            <option value="">Select category</option>
+                            <option value="group-trip">🗺️ Group Trip</option>
+                            <option value="social-meetup">🎉 Social Meetup</option>
+                            <option value="photo-walk">📸 Photo Walk</option>
+                            <option value="food-tour">🍜 Food Tour</option>
+                            <option value="adventure">🏔️ Adventure</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Route *</label>
+                        <select id="eventRoute" class="form-control">
+                            <option value="">Select route</option>
+                            <option value="HT-101">HT-101: Dharampur → Solan</option>
+                            <option value="HT-102">HT-102: Solan → Barog</option>
+                            <option value="HT-103">HT-103: Barog → Dagshai</option>
+                            <option value="HT-104">HT-104: Dagshai → Dharampur</option>
+                            <option value="HT-105">HT-105: Dharampur → Solan (Deluxe)</option>
+                            <option value="HT-106">HT-106: Dharampur → Solan (Premium)</option>
+                            <option value="HT-107">HT-107: Solan → Barog</option>
+                            <option value="HT-108">HT-108: Barog → Dagshai (Deluxe)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Event Title *</label>
+                    <input type="text" id="eventTitle" class="form-control" 
+                           placeholder="e.g., Sunrise Photography at Kasauli" maxlength="100">
+                    <div class="char-count"><span id="eventTitleCount">0</span>/100</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea id="eventDescription" class="form-control" rows="5"
+                              placeholder="Describe your event, what to expect, and any special instructions..."></textarea>
+                    <div class="char-count"><span id="eventDescCount">0</span> characters</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date *</label>
+                        <input type="date" id="eventDate" class="form-control" min="2025-11-03">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Time *</label>
+                        <input type="time" id="eventTime" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Meeting Point *</label>
+                        <input type="text" id="eventMeetingPoint" class="form-control" 
+                               placeholder="e.g., Dharampur Bus Station, Platform 2">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Capacity *</label>
+                        <input type="number" id="eventCapacity" class="form-control" 
+                               min="2" max="50" value="10">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Cost per Person (₹)</label>
+                        <input type="number" id="eventCost" class="form-control" 
+                               min="0" placeholder="0 for free events">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Difficulty Level</label>
+                        <select id="eventDifficulty" class="form-control">
+                            <option value="easy">Easy - All levels</option>
+                            <option value="moderate">Moderate - Some experience</option>
+                            <option value="challenging">Challenging - Experienced</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>What to Bring (comma-separated)</label>
+                    <input type="text" id="eventBring" class="form-control" 
+                           placeholder="e.g., Camera, Water bottle, Snacks, Comfortable shoes">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-save-draft" onclick="saveEventDraft()">
+                        <i class="fas fa-save"></i>
+                        Save Draft
+                    </button>
+                    <button type="button" class="btn-publish-story" onclick="publishEvent()">
+                        <i class="fas fa-calendar-check"></i>
+                        Create Event
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Event Detail Modal -->
+    <div class="event-detail-modal" id="eventDetailModal" style="display: none;">
+        <div class="event-detail-overlay" onclick="closeEventDetail()"></div>
+        <div class="event-detail-content">
+            <button class="event-detail-close" onclick="closeEventDetail()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="eventDetailBody">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="profile-modal" id="editProfileModal" style="display: none;">
+    <div class="profile-modal-overlay" onclick="closeEditProfile()"></div>
+    <div class="profile-modal-content">
+        <button class="profile-modal-close" onclick="closeEditProfile()">
+            <i class="fas fa-times"></i>
+        </button>
+        <h3 class="profile-modal-title">
+            <i class="fas fa-edit"></i>
+            Edit Profile
+        </h3>
+        <div class="profile-edit-form" id="profileEditForm">
+            <!-- Dynamically populated -->
+        </div>
+    </div>
+</div>
+
+<!-- Travel Quiz Modal -->
+<div class="profile-modal" id="travelQuizModal" style="display: none;">
+    <div class="profile-modal-overlay" onclick="closeTravelQuiz()"></div>
+    <div class="profile-modal-content quiz-modal">
+        <button class="profile-modal-close" onclick="closeTravelQuiz()">
+            <i class="fas fa-times"></i>
+        </button>
+        <div id="quizContent">
+            <!-- Dynamically populated -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Pass user data from Flask to JavaScript
+    const CURRENT_USER = {
+        isAuthenticated: {{ 'true' if current_user.is_authenticated else 'false' }},
+        {% if current_user.is_authenticated %}
+        name: "{{ current_user.first_name }} {{ current_user.last_name }}",
+        email: "{{ current_user.email }}"
+        {% endif %}
+    };
+</script>
+<script src="{{ url_for('static', filename='js/travel_companions.js') }}"></script>
+{% endblock %}

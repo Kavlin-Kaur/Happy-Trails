@@ -1,0 +1,956 @@
+{% extends 'base.html' %}
+
+{% block title %}Route Explorer - Happy Trails{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/route_explorer.css') }}">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<!-- ============================================
+     🗺️ ROUTE EXPLORER - PHASES 1, 2 & 3
+     Interactive Map, Comparison & Weather
+     ============================================ -->
+<div class="route-explorer-wrapper">
+    
+    <!-- === HERO SECTION === -->
+    <section class="explorer-hero">
+        <div class="container">
+            <h1 class="explorer-hero-title">🗺️ Discover Your Journey</h1>
+            <p class="explorer-hero-subtitle">
+                Explore scenic routes through the beautiful hills of Himachal Pradesh.
+                Find the perfect path for your next adventure with Happy Trails.
+            </p>
+            <div class="explorer-hero-quote">
+                "The journey matters as much as the destination" - Kavlin 💖
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         📑 TAB NAVIGATION SYSTEM
+         ============================================ -->
+    <section class="explorer-tabs-wrapper">
+        <div class="container">
+            <div class="explorer-tabs">
+                <!-- Tab 1: Map View (Phase 1) -->
+                <button class="explorer-tab active" data-tab="map-view">
+                    <i class="fas fa-map"></i>
+                    <span>Map View</span>
+                </button>
+                
+                <!-- Tab 2: Compare Routes (Phase 2) -->
+                <button class="explorer-tab" data-tab="compare-routes">
+                    <i class="fas fa-balance-scale"></i>
+                    <span>Compare Routes</span>
+                </button>
+                
+                <!-- Tab 3: Route Details (Phase 2) -->
+                <button class="explorer-tab" data-tab="route-details">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Route Details</span>
+                </button>
+                
+                <!-- Tab 4: Weather & Conditions (Phase 3) - NEW! -->
+                <button class="explorer-tab" data-tab="weather-conditions">
+                    <i class="fas fa-cloud-sun"></i>
+                    <span>Weather & Conditions</span>
+                </button>
+
+                <!-- Tab 5: Scenic Highlights (Phase 4) - NEW! -->
+                <button class="explorer-tab" data-tab="scenic-highlights">
+                    <i class="fas fa-mountain"></i>
+                    <span>Scenic Highlights</span>
+                </button>
+
+                <!-- Tab 6: Kavlin's Favorites (Phase 5) - NEW! -->
+                <button class="explorer-tab" data-tab="kavlins-favorites">
+                    <i class="fas fa-heart"></i>
+                    <span>Kavlin's Favorites</span>
+                </button>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         📍 TAB 1: MAP VIEW (PHASE 1)
+         ============================================ -->
+    <div id="map-view" class="explorer-tab-content active">
+        <section class="explorer-main-section">
+            <div class="container-fluid">
+                <div class="explorer-layout">
+                    
+                    <!-- LEFT SIDEBAR: Filters & Route Cards -->
+                    <aside class="explorer-sidebar">
+                        
+                        <!-- Search Bar -->
+                        <div class="explorer-search">
+                            <div class="search-box">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" 
+                                       id="routeSearchInput" 
+                                       class="search-input" 
+                                       placeholder="Search routes...">
+                            </div>
+                        </div>
+
+                        <!-- Filter Section -->
+                        <div class="filter-panel">
+                            <h3 class="filter-title">
+                                <i class="fas fa-filter"></i>
+                                Filter Routes
+                            </h3>
+
+                            <!-- From Location -->
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    From
+                                </label>
+                                <select class="filter-select" id="filterFrom">
+                                    <option value="">All Locations</option>
+                                    <option value="Dharampur">Dharampur</option>
+                                    <option value="Solan">Solan</option>
+                                    <option value="Barog">Barog</option>
+                                    <option value="Dagshai">Dagshai</option>
+                                </select>
+                            </div>
+
+                            <!-- To Location -->
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-location-arrow"></i>
+                                    To
+                                </label>
+                                <select class="filter-select" id="filterTo">
+                                    <option value="">All Locations</option>
+                                    <option value="Dharampur">Dharampur</option>
+                                    <option value="Solan">Solan</option>
+                                    <option value="Barog">Barog</option>
+                                    <option value="Dagshai">Dagshai</option>
+                                </select>
+                            </div>
+
+                            <!-- Bus Type -->
+                            <div class="filter-group">
+                                <label class="filter-label">
+                                    <i class="fas fa-bus"></i>
+                                    Bus Type
+                                </label>
+                                <div class="filter-pills">
+                                    <button class="filter-pill active" data-type="all">
+                                        All Types
+                                    </button>
+                                    <button class="filter-pill" data-type="Standard">
+                                        Standard
+                                    </button>
+                                    <button class="filter-pill" data-type="Deluxe">
+                                        Deluxe
+                                    </button>
+                                    <button class="filter-pill" data-type="Premium">
+                                        Premium
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Reset Filters -->
+                            <button class="reset-filters-btn" id="resetFiltersBtn">
+                                <i class="fas fa-redo"></i>
+                                Reset Filters
+                            </button>
+                        </div>
+
+                        <!-- Route Cards -->
+                        <div class="route-cards-container" id="routeCardsContainer">
+                            <!-- Dynamically populated via JavaScript -->
+                        </div>
+
+                    </aside>
+
+                    <!-- RIGHT MAIN CONTENT: Interactive Map -->
+                    <main class="explorer-map-container">
+                        
+                        <!-- Map Controls Overlay -->
+                        <div class="map-controls-overlay">
+                            <div class="map-stats">
+                                <div class="stat-badge">
+                                    <i class="fas fa-route"></i>
+                                    <span id="totalRoutesCount">{{ routes|length }}</span> Routes
+                                </div>
+                                <div class="stat-badge">
+                                    <i class="fas fa-map-pin"></i>
+                                    <span id="totalStopsCount">0</span> Stops
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Map -->
+                        <div id="routeMap" class="route-map"></div>
+
+                        <!-- Map Legend -->
+                        <div class="map-legend">
+                            <h4 class="legend-title">
+                                <i class="fas fa-info-circle"></i>
+                                Legend
+                            </h4>
+                            <div class="legend-items">
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background: #FFD700;"></span>
+                                    <span class="legend-label">Standard</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background: #32CD32;"></span>
+                                    <span class="legend-label">Deluxe</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background: #FF6347;"></span>
+                                    <span class="legend-label">Premium</span>
+                                </div>
+                                <div class="legend-item">
+                                    <i class="fas fa-map-marker-alt" style="color: #FF8C00;"></i>
+                                    <span class="legend-label">Bus Stops</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </main>
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         📊 TAB 2: COMPARE ROUTES (PHASE 2)
+         ============================================ -->
+    <div id="compare-routes" class="explorer-tab-content">
+        <section class="compare-section">
+            <div class="container">
+                
+                <!-- Compare Header -->
+                <div class="compare-header">
+                    <h2 class="compare-title">
+                        <i class="fas fa-balance-scale"></i>
+                        Route Comparison Tool
+                    </h2>
+                    <p class="compare-subtitle">
+                        Select up to 3 routes to compare side-by-side. Find the best route for your journey!
+                    </p>
+                </div>
+
+                <!-- Route Selection -->
+                <div class="route-selection-panel">
+                    <h3 class="selection-title">
+                        <i class="fas fa-hand-pointer"></i>
+                        Select Routes to Compare
+                    </h3>
+                    <div class="selection-grid" id="selectionGrid">
+                        <!-- Dynamically populated -->
+                    </div>
+                    <button class="compare-btn" id="compareSelectedBtn" disabled>
+                        <i class="fas fa-chart-bar me-2"></i>
+                        Compare Selected Routes
+                    </button>
+                </div>
+
+                <!-- Comparison Result -->
+                <div class="comparison-result" id="comparisonResult" style="display: none;">
+                    
+                    <!-- Optimal Route Suggestion -->
+                    <div class="optimal-suggestion" id="optimalSuggestion">
+                        <!-- Dynamically populated -->
+                    </div>
+
+                    <!-- Comparison Table -->
+                    <div class="comparison-table-wrapper">
+                        <h3 class="comparison-section-title">
+                            <i class="fas fa-table"></i>
+                            Detailed Comparison
+                        </h3>
+                        <div class="comparison-table" id="comparisonTable">
+                            <!-- Dynamically populated -->
+                        </div>
+                    </div>
+
+                    <!-- Visual Charts -->
+                    <div class="comparison-charts">
+                        <h3 class="comparison-section-title">
+                            <i class="fas fa-chart-line"></i>
+                            Visual Analysis
+                        </h3>
+                        <div class="charts-grid">
+                            <div class="chart-card">
+                                <h4 class="chart-title">Distance Comparison</h4>
+                                <canvas id="distanceChart"></canvas>
+                            </div>
+                            <div class="chart-card">
+                                <h4 class="chart-title">Duration Comparison</h4>
+                                <canvas id="durationChart"></canvas>
+                            </div>
+                            <div class="chart-card">
+                                <h4 class="chart-title">Price Comparison</h4>
+                                <canvas id="priceChart"></canvas>
+                            </div>
+                            <div class="chart-card">
+                                <h4 class="chart-title">Overall Rating</h4>
+                                <canvas id="ratingChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="comparison-actions">
+                        <button class="action-btn export-btn" onclick="exportComparison()">
+                            <i class="fas fa-download"></i>
+                            Export Comparison
+                        </button>
+                        <button class="action-btn save-btn" onclick="saveComparison()">
+                            <i class="fas fa-bookmark"></i>
+                            Save Comparison
+                        </button>
+                        <button class="action-btn reset-btn" onclick="resetComparison()">
+                            <i class="fas fa-redo"></i>
+                            New Comparison
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         📋 TAB 3: ROUTE DETAILS (PHASE 2)
+         ============================================ -->
+    <div id="route-details" class="explorer-tab-content">
+        <section class="details-section">
+            <div class="container">
+                
+                <!-- Details Header -->
+                <div class="details-header">
+                    <h2 class="details-title">
+                        <i class="fas fa-info-circle"></i>
+                        Detailed Route Information
+                    </h2>
+                    <p class="details-subtitle">
+                        Comprehensive information about each route including schedules, amenities, and booking options.
+                    </p>
+                </div>
+
+                <!-- Route Selector -->
+                <div class="route-selector-panel">
+                    <label class="selector-label">
+                        <i class="fas fa-route"></i>
+                        Select a Route to View Details
+                    </label>
+                    <select class="route-selector" id="detailsRouteSelector">
+                        <option value="">Choose a route...</option>
+                        <!-- Dynamically populated -->
+                    </select>
+                </div>
+
+                <!-- Route Details Content -->
+                <div class="route-details-content" id="routeDetailsContent" style="display: none;">
+                    <!-- Dynamically populated -->
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         🌤️ TAB 4: WEATHER & CONDITIONS (PHASE 3)
+         ============================================ -->
+    <div id="weather-conditions" class="explorer-tab-content">
+        <section class="weather-section">
+            <div class="container">
+                
+                <!-- Weather Header -->
+                <div class="weather-header">
+                    <h2 class="weather-title">
+                        <i class="fas fa-cloud-sun"></i>
+                        Weather & Travel Conditions
+                    </h2>
+                    <p class="weather-subtitle">
+                        Real-time weather information for all destinations. Plan your journey with live weather updates!
+                    </p>
+                    <div class="weather-last-update">
+                        <i class="fas fa-sync-alt"></i>
+                        Last Updated: <span id="weatherLastUpdate">Loading...</span>
+                    </div>
+                </div>
+
+                <!-- Weather Loading State -->
+                <div class="weather-loading" id="weatherLoading">
+                    <div class="loading-spinner"></div>
+                    <p>Fetching latest weather data...</p>
+                </div>
+
+                <!-- Weather Cards Grid -->
+                <div class="weather-cards-grid" id="weatherCardsGrid" style="display: none;">
+                    <!-- Dynamically populated -->
+                </div>
+
+                <!-- Travel Recommendations -->
+                <div class="travel-recommendations" id="travelRecommendations" style="display: none;">
+                    <h3 class="recommendations-title">
+                        <i class="fas fa-lightbulb"></i>
+                        Travel Recommendations
+                    </h3>
+                    <div class="recommendations-grid" id="recommendationsGrid">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- 7-Day Forecast -->
+                <div class="forecast-section" id="forecastSection" style="display: none;">
+                    <h3 class="forecast-title">
+                        <i class="fas fa-calendar-week"></i>
+                        7-Day Weather Forecast
+                    </h3>
+                    <div class="forecast-carousel" id="forecastCarousel">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Weather Alerts -->
+                <div class="weather-alerts" id="weatherAlerts" style="display: none;">
+                    <!-- Dynamically populated -->
+                </div>
+
+                <!-- Refresh Button -->
+                <div style="text-align: center; margin-top: 40px;">
+                    <button class="refresh-weather-btn" onclick="refreshWeatherData()">
+                        <i class="fas fa-sync-alt me-2"></i>
+                        Refresh Weather Data
+                    </button>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================
+         🏔️ TAB 5: SCENIC HIGHLIGHTS (PHASE 4)
+         ============================================ -->
+    <div id="scenic-highlights" class="explorer-tab-content">
+        <section class="highlights-section">
+            <div class="container">
+                
+                <!-- Highlights Header -->
+                <div class="highlights-header">
+                    <h2 class="highlights-title">
+                        <i class="fas fa-mountain"></i>
+                        Scenic Highlights & Points of Interest
+                    </h2>
+                    <p class="highlights-subtitle">
+                        Discover amazing attractions, viewpoints, and hidden gems along your journey. 
+                        Every route has a story to tell!
+                    </p>
+                </div>
+
+                <!-- POI Statistics -->
+                <div class="poi-stats-grid">
+                    <div class="poi-stat-card">
+                        <div class="poi-stat-icon">🏔️</div>
+                        <div class="poi-stat-number" id="totalPOIsCount">0</div>
+                        <div class="poi-stat-label">Total Attractions</div>
+                    </div>
+                    <div class="poi-stat-card">
+                        <div class="poi-stat-icon">📸</div>
+                        <div class="poi-stat-number" id="photoSpotsCount">0</div>
+                        <div class="poi-stat-label">Photo Spots</div>
+                    </div>
+                    <div class="poi-stat-card">
+                        <div class="poi-stat-icon">🏛️</div>
+                        <div class="poi-stat-number" id="heritageCount">0</div>
+                        <div class="poi-stat-label">Heritage Sites</div>
+                    </div>
+                    <div class="poi-stat-card">
+                        <div class="poi-stat-icon">🍽️</div>
+                        <div class="poi-stat-number" id="foodSpotsCount">0</div>
+                        <div class="poi-stat-label">Food Spots</div>
+                    </div>
+                </div>
+
+                <!-- Category Filter -->
+                <div class="poi-filter-section">
+                    <h3 class="poi-filter-title">
+                        <i class="fas fa-filter"></i>
+                        Filter by Category
+                    </h3>
+                    <div class="poi-category-pills">
+                        <button class="poi-category-pill active" data-category="all">
+                            <i class="fas fa-th"></i>
+                            All Highlights
+                        </button>
+                        <button class="poi-category-pill" data-category="viewpoints">
+                            🏔️ Viewpoints
+                        </button>
+                        <button class="poi-category-pill" data-category="heritage">
+                            🏛️ Heritage
+                        </button>
+                        <button class="poi-category-pill" data-category="food">
+                            🍽️ Food & Dining
+                        </button>
+                        <button class="poi-category-pill" data-category="adventure">
+                            🎿 Adventure
+                        </button>
+                        <button class="poi-category-pill" data-category="nature">
+                            🌲 Nature
+                        </button>
+                        <button class="poi-category-pill" data-category="photography">
+                            📸 Photo Spots
+                        </button>
+                        <button class="poi-category-pill" data-category="religious">
+                            🕉️ Religious
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Route Filter -->
+                <div class="poi-route-filter">
+                    <label class="poi-route-filter-label">
+                        <i class="fas fa-route"></i>
+                        Filter by Route
+                    </label>
+                    <select class="poi-route-select" id="poiRouteFilter">
+                        <option value="all">All Routes</option>
+                        <!-- Dynamically populated -->
+                    </select>
+                </div>
+
+                <!-- POI Cards Grid -->
+                <div class="poi-cards-grid" id="poiCardsGrid">
+                    <!-- Dynamically populated -->
+                </div>
+
+                <!-- Interactive Map with POI Markers -->
+                <div class="poi-map-section">
+                    <h3 class="poi-map-title">
+                        <i class="fas fa-map-marked-alt"></i>
+                        Interactive POI Map
+                    </h3>
+                    <div class="poi-map-container">
+                        <div id="poiMap" class="poi-map"></div>
+                        <div class="poi-map-legend">
+                            <h4>Legend</h4>
+                            <div class="poi-legend-items">
+                                <div class="poi-legend-item">
+                                    <span class="poi-legend-icon">🏔️</span>
+                                    <span>Viewpoints</span>
+                                </div>
+                                <div class="poi-legend-item">
+                                    <span class="poi-legend-icon">🏛️</span>
+                                    <span>Heritage</span>
+                                </div>
+                                <div class="poi-legend-item">
+                                    <span class="poi-legend-icon">🍽️</span>
+                                    <span>Food</span>
+                                </div>
+                                <div class="poi-legend-item">
+                                    <span class="poi-legend-icon">🎿</span>
+                                    <span>Adventure</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Featured Highlights -->
+                <div class="featured-highlights">
+                    <h3 class="featured-title">
+                        <i class="fas fa-star"></i>
+                        Featured Highlights
+                    </h3>
+                    <div class="featured-grid" id="featuredGrid">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- POI Detail Modal -->
+    <div class="poi-modal" id="poiModal" style="display: none;">
+        <div class="poi-modal-overlay" onclick="closePOIModal()"></div>
+        <div class="poi-modal-content">
+            <button class="poi-modal-close" onclick="closePOIModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="poiModalBody">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         ⭐ TAB 6: KAVLIN'S FAVORITES (PHASE 5)
+         ============================================ -->
+    <div id="kavlins-favorites" class="explorer-tab-content">
+        <section class="favorites-section">
+            <div class="container">
+                
+                <!-- Kavlin's Introduction -->
+                <div class="kavlin-intro">
+                    <div class="kavlin-intro-content">
+                        <div class="kavlin-avatar">
+                            <img src="{{ url_for('static', filename='images/Kavlin Bitmoji.png') }}" alt="Kavlin">
+                            <div class="kavlin-badge">Founder</div>
+                        </div>
+                        <div class="kavlin-intro-text">
+                            <h2 class="kavlin-intro-title">
+                                <i class="fas fa-heart"></i>
+                                Routes Close to My Heart
+                            </h2>
+                            <p class="kavlin-intro-description">
+                                As the founder of Happy Trails, I've traveled every single route countless times. 
+                                Each journey has taught me something beautiful about these mountains, the people, 
+                                and life itself. Here, I share my personal favorites - routes that never fail to 
+                                fill my soul with joy. Whether you're seeking adventure, romance, or simply peace, 
+                                these are the paths I'd take you on if I were your guide.
+                            </p>
+                            <div class="kavlin-signature">
+                                With love, <span style="font-family: 'Caveat', cursive; font-size: 1.5rem; color: #F57F17;">Kavlin</span> 💖
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Travel Mood Selector -->
+                <div class="mood-selector-section">
+                    <h3 class="mood-selector-title">
+                        <i class="fas fa-magic"></i>
+                        What's Your Travel Mood Today?
+                    </h3>
+                    <p class="mood-selector-subtitle">
+                        Let me suggest routes based on how you're feeling
+                    </p>
+                    <div class="mood-pills-grid">
+                        <button class="mood-pill" data-mood="romantic" onclick="filterByMood('romantic')">
+                            <span class="mood-icon">💑</span>
+                            <span class="mood-label">Romantic Escape</span>
+                            <span class="mood-description">For couples seeking magic</span>
+                        </button>
+                        <button class="mood-pill" data-mood="adventure" onclick="filterByMood('adventure')">
+                            <span class="mood-icon">🏔️</span>
+                            <span class="mood-label">Adventure Seeker</span>
+                            <span class="mood-description">Thrill and excitement</span>
+                        </button>
+                        <button class="mood-pill" data-mood="family" onclick="filterByMood('family')">
+                            <span class="mood-icon">👨‍👩‍👧‍👦</span>
+                            <span class="mood-label">Family Friendly</span>
+                            <span class="mood-description">Safe for all ages</span>
+                        </button>
+                        <button class="mood-pill" data-mood="solo" onclick="filterByMood('solo')">
+                            <span class="mood-icon">🎒</span>
+                            <span class="mood-label">Solo Explorer</span>
+                            <span class="mood-description">Find yourself</span>
+                        </button>
+                        <button class="mood-pill" data-mood="photographer" onclick="filterByMood('photographer')">
+                            <span class="mood-icon">📸</span>
+                            <span class="mood-label">Photographer's Dream</span>
+                            <span class="mood-description">Capture beauty</span>
+                        </button>
+                        <button class="mood-pill" data-mood="peaceful" onclick="filterByMood('peaceful')">
+                            <span class="mood-icon">🧘</span>
+                            <span class="mood-label">Peaceful Retreat</span>
+                            <span class="mood-description">Relaxation & calm</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Seasonal Recommendations -->
+                <div class="seasonal-recommendations">
+                    <h3 class="seasonal-title">
+                        <i class="fas fa-calendar-alt"></i>
+                        My Seasonal Favorites
+                    </h3>
+                    <div class="seasonal-tabs">
+                        <button class="seasonal-tab active" data-season="spring" onclick="showSeasonRoutes('spring')">
+                            <i class="fas fa-seedling"></i>
+                            Spring
+                        </button>
+                        <button class="seasonal-tab" data-season="summer" onclick="showSeasonRoutes('summer')">
+                            <i class="fas fa-sun"></i>
+                            Summer
+                        </button>
+                        <button class="seasonal-tab" data-season="monsoon" onclick="showSeasonRoutes('monsoon')">
+                            <i class="fas fa-cloud-rain"></i>
+                            Monsoon
+                        </button>
+                        <button class="seasonal-tab" data-season="autumn" onclick="showSeasonRoutes('autumn')">
+                            <i class="fas fa-leaf"></i>
+                            Autumn
+                        </button>
+                        <button class="seasonal-tab" data-season="winter" onclick="showSeasonRoutes('winter')">
+                            <i class="fas fa-snowflake"></i>
+                            Winter
+                        </button>
+                    </div>
+                    <div class="seasonal-content" id="seasonalContent">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Kavlin's Top Picks -->
+                <div class="top-picks-section">
+                    <h3 class="top-picks-title">
+                        <i class="fas fa-star"></i>
+                        Kavlin's All-Time Favorite Routes
+                    </h3>
+                    <div class="top-picks-grid" id="topPicksGrid">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Advanced Search -->
+                <div class="advanced-search-section">
+                    <h3 class="advanced-search-title">
+                        <i class="fas fa-search-plus"></i>
+                        Advanced Route Search
+                    </h3>
+                    <div class="advanced-search-panel">
+                        <div class="search-filters-grid">
+                            <!-- Price Range -->
+                            <div class="filter-advanced-group">
+                                <label class="filter-advanced-label">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    Price Range
+                                </label>
+                                <div class="price-range-container">
+                                    <input type="range" id="priceRangeMin" class="price-slider" min="0" max="200" value="0">
+                                    <input type="range" id="priceRangeMax" class="price-slider" min="0" max="200" value="200">
+                                    <div class="price-range-labels">
+                                        <span id="priceMinLabel">₹0</span>
+                                        <span id="priceMaxLabel">₹200</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Duration -->
+                            <div class="filter-advanced-group">
+                                <label class="filter-advanced-label">
+                                    <i class="fas fa-clock"></i>
+                                    Max Duration
+                                </label>
+                                <select class="filter-advanced-select" id="durationFilter">
+                                    <option value="all">Any Duration</option>
+                                    <option value="30">Up to 30 minutes</option>
+                                    <option value="60">Up to 1 hour</option>
+                                    <option value="90">Up to 1.5 hours</option>
+                                    <option value="120">Up to 2 hours</option>
+                                </select>
+                            </div>
+
+                            <!-- Amenities -->
+                            <div class="filter-advanced-group">
+                                <label class="filter-advanced-label">
+                                    <i class="fas fa-check-circle"></i>
+                                    Required Amenities
+                                </label>
+                                <div class="amenities-checkboxes">
+                                    <label class="amenity-checkbox">
+                                        <input type="checkbox" value="wifi"> WiFi
+                                    </label>
+                                    <label class="amenity-checkbox">
+                                        <input type="checkbox" value="ac"> AC
+                                    </label>
+                                    <label class="amenity-checkbox">
+                                        <input type="checkbox" value="meals"> Meals
+                                    </label>
+                                    <label class="amenity-checkbox">
+                                        <input type="checkbox" value="entertainment"> Entertainment
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Time Preference -->
+                            <div class="filter-advanced-group">
+                                <label class="filter-advanced-label">
+                                    <i class="fas fa-sun"></i>
+                                    Preferred Time
+                                </label>
+                                <select class="filter-advanced-select" id="timeFilter">
+                                    <option value="all">Any Time</option>
+                                    <option value="morning">Morning (6 AM - 12 PM)</option>
+                                    <option value="afternoon">Afternoon (12 PM - 6 PM)</option>
+                                    <option value="evening">Evening (6 PM - 10 PM)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="search-actions">
+                            <button class="search-advanced-btn" onclick="performAdvancedSearch()">
+                                <i class="fas fa-search"></i>
+                                Search Routes
+                            </button>
+                            <button class="search-reset-btn" onclick="resetAdvancedSearch()">
+                                <i class="fas fa-redo"></i>
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                    <div class="search-results" id="advancedSearchResults" style="display: none;">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Route Collections -->
+                <div class="collections-section">
+                    <div class="collections-header">
+                        <h3 class="collections-title">
+                            <i class="fas fa-folder-open"></i>
+                            Your Route Collections
+                        </h3>
+                        <button class="create-collection-btn" onclick="showCreateCollectionModal()">
+                            <i class="fas fa-plus"></i>
+                            Create Collection
+                        </button>
+                    </div>
+                    <div class="collections-grid" id="collectionsGrid">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Route History -->
+                <div class="history-section">
+                    <h3 class="history-title">
+                        <i class="fas fa-history"></i>
+                        Recently Viewed Routes
+                    </h3>
+                    <div class="history-timeline" id="historyTimeline">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Kavlin's Travel Tips -->
+                <div class="kavlin-tips-section">
+                    <h3 class="tips-title">
+                        <i class="fas fa-lightbulb"></i>
+                        Kavlin's Personal Travel Tips
+                    </h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <div class="tip-icon">🌅</div>
+                            <h4 class="tip-title">Golden Hour Magic</h4>
+                            <p class="tip-text">Take the earliest morning bus for sunrise views. The mountains look their best between 6-8 AM, and you'll have the roads mostly to yourself.</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">💬</div>
+                            <h4 class="tip-title">Talk to Locals</h4>
+                            <p class="tip-text">Our drivers know hidden gems along every route. Don't hesitate to ask for recommendations - they love sharing stories!</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">📸</div>
+                            <h4 class="tip-title">Window Seat Strategy</h4>
+                            <p class="tip-text">For best views: Right side for Dharampur→Solan, left side for Solan→Barog. Trust me, I've done the research!</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">🎒</div>
+                            <h4 class="tip-title">Pack Light</h4>
+                            <p class="tip-text">Mountain roads have curves. Less luggage means more comfort. Plus, you'll have room for souvenirs!</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">☕</div>
+                            <h4 class="tip-title">Chai Stops</h4>
+                            <p class="tip-text">The tea at Solan bus terminal is legendary. Give yourself 15 minutes to enjoy it properly.</p>
+                        </div>
+                        <div class="tip-card">
+                            <div class="tip-icon">🌧️</div>
+                            <h4 class="tip-title">Monsoon Romance</h4>
+                            <p class="tip-text">Don't skip travel in rain! The routes through pine forests are absolutely magical when mist rolls in.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- Create Collection Modal -->
+    <div class="collection-modal" id="collectionModal" style="display: none;">
+        <div class="collection-modal-overlay" onclick="closeCollectionModal()"></div>
+        <div class="collection-modal-content">
+            <button class="collection-modal-close" onclick="closeCollectionModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="collection-modal-title">
+                <i class="fas fa-folder-plus"></i>
+                Create New Collection
+            </h3>
+            <div class="collection-form">
+                <div class="form-group">
+                    <label>Collection Name</label>
+                    <input type="text" id="collectionName" class="form-control" placeholder="e.g., Weekend Getaways">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="collectionDescription" class="form-control" rows="3" placeholder="Describe your collection..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Privacy</label>
+                    <select id="collectionPrivacy" class="form-control">
+                        <option value="private">Private (Only you)</option>
+                        <option value="public">Public (Anyone can view)</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button class="btn-create-collection" onclick="createCollection()">
+                        <i class="fas fa-check"></i>
+                        Create Collection
+                    </button>
+                    <button class="btn-cancel" onclick="closeCollectionModal()">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- === QUICK STATS SECTION === -->
+    <section class="quick-stats-section">
+        <div class="container">
+            <div class="quick-stats-grid">
+                <div class="quick-stat-card">
+                    <div class="stat-icon">🚌</div>
+                    <div class="stat-number">{{ routes|length }}</div>
+                    <div class="stat-label">Active Routes</div>
+                </div>
+                <div class="quick-stat-card">
+                    <div class="stat-icon">📍</div>
+                    <div class="stat-number">{{ destinations|length }}</div>
+                    <div class="stat-label">Destinations</div>
+                </div>
+                <div class="quick-stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-number">~45m</div>
+                    <div class="stat-label">Avg Duration</div>
+                </div>
+                <div class="quick-stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">On-Time Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Pass route data and API key from Flask to JavaScript
+    const ROUTES_DATA = {{ routes_json|safe }};
+    const DESTINATIONS = {{ destinations|tojson }};
+    const WEATHER_API_KEY = "{{ weather_api_key }}";
+</script>
+<script src="{{ url_for('static', filename='js/route_explorer.js') }}"></script>
+{% endblock %}

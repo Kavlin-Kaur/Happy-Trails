@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+
+{% block title %}Stellar Profile - Happy Trails{% endblock %}
+
+{% block extra_css %}
+<style>
+
+    .profile-hero {
+        background: var(--gradient-sunset);
+        padding: 130px 0 60px;
+        position: relative;
+        overflow: hidden;
+    }
+    .profile-hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image:
+            radial-gradient(circle at 30% 70%, rgba(255,215,0,0.1) 0%, transparent 55%),
+            radial-gradient(circle at 70% 30%, rgba(255,182,193,0.1) 0%, transparent 55%);
+        animation: sparkle 10s ease-in-out infinite;
+    }
+    .profile-card {
+        background: rgba(255,255,255,0.95);
+        border-radius: 30px;
+        box-shadow: var(--shadow-strong);
+        padding: 50px 45px;
+        border: 2px solid rgba(255,215,0,0.25);
+        backdrop-filter: blur(12px);
+        position: relative;
+        overflow: hidden;
+    }
+    .profile-icon {
+        font-size: 4rem;
+        color: var(--primary-yellow);
+        margin-bottom: 20px;
+        animation: float 4s ease-in-out infinite;
+    }
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px,1fr));
+        gap: 18px 22px;
+        font-size: .9rem;
+        margin: 35px 0 15px;
+    }
+    .info-item .label {
+        text-transform: uppercase;
+        font-size: .65rem;
+        letter-spacing: 1px;
+        font-weight: 600;
+        color: var(--medium-gray);
+        margin-bottom: 4px;
+    }
+    .info-item .value {
+        font-weight: 600;
+        color: var(--charcoal);
+    }
+    .booking-preview {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 22px 24px;
+        border: 2px solid rgba(255,215,0,0.18);
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--shadow-soft);
+        transition: var(--transition-smooth);
+        margin-bottom: 20px;
+    }
+    .booking-preview:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-medium);
+    }
+    .booking-preview::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 4px;
+        background: var(--gradient-sunrise);
+        opacity: .85;
+    }
+    .status-chip {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: .7rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .status-confirmed { background: #d4edda; color: #1d7432; }
+    .status-cancelled { background: #f8d7da; color: #892026; }
+    .status-other { background: #e2e3e5; color: #343a40; }
+    .actions {
+        margin-top: 22px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    .actions .btn {
+        border-radius: 25px;
+        font-weight: 600;
+        letter-spacing: .5px;
+        padding: 8px 18px;
+    }
+
+    /* ... (paste your full <style> block here unchanged) ... */
+    .edit-form { display: none; }
+    .view-mode .edit-form { display: block; }
+    .edit-btn { margin: 20px 0; }
+
+    .modal-content {
+        border-radius: 30px;
+        border: 2px solid rgba(255,215,0,0.25);
+        box-shadow: var(--shadow-strong);
+    }
+    .modal-header {
+        background: var(--gradient-soft);
+        border-bottom: none;
+        border-radius: 30px 30px 0 0;
+    }
+    .modal-title {
+        color: var(--deep-yellow);
+    }
+    .modal-body {
+        padding: 40px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="profile-hero">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="profile-card">
+
+                    <div class="text-center mb-5">
+                        <i class="fas fa-user-astronaut profile-icon"></i>
+                        <h2 class="script-font mb-2">Your Cosmic Coordinates</h2>
+                        <p class="text-muted">View and manage your journey preferences</p>
+                    </div>
+
+                    <!-- Read-only Profile Info -->
+                    <div class="info-grid mb-5">
+                        <div class="info-item">
+                            <div class="label">First Name</div>
+                            <div class="value">{{ current_user.first_name }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Last Name</div>
+                            <div class="value">{{ current_user.last_name }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Email</div>
+                            <div class="value">{{ current_user.email }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Phone</div>
+                            <div class="value">{{ current_user.phone or 'Not provided' }}</div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mb-5">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                            <i class="fas fa-edit me-1"></i> Change Password
+                        </button>
+                        <a href="{{ url_for('logout') }}" class="btn btn-outline-danger ms-3">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </a>
+                    </div>
+
+                    <hr class="my-5">
+
+                    <h4 class="script-font text-warning mb-4"><i class="fas fa-ticket-alt me-2"></i>Journey Summary</h4>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="label">Total Journeys</div>
+                            <div class="value">{{ bookings|length }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Booked</div>
+                            <div class="value">{{ bookings|selectattr('status', 'equalto', 'Confirmed')|list|length }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Cancelled</div>
+                            <div class="value">{{ bookings|selectattr('status', 'equalto', 'Cancelled')|list|length }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Experience Points</div>
+                            <div class="value">{{ (bookings|length) * 100 }} XP</div>
+                        </div>
+                    </div>
+
+                    <h5 class="script-font text-muted mt-5 mb-3">Recent Journeys Preview</h5>
+                    {% if bookings %}
+                        {% for booking in bookings[:3] %}
+                            <div class="booking-preview">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <h6 class="mb-0">Booking #{{ booking.id }}</h6>
+                                    {% if booking.status == 'Confirmed' %}
+                                        <div class="status-chip status-confirmed"><i class="fas fa-check"></i> Confirmed</div>
+                                    {% elif booking.status == 'Cancelled' %}
+                                        <div class="status-chip status-cancelled"><i class="fas fa-times"></i> Cancelled</div>
+                                    {% else %}
+                                        <div class="status-chip status-other">{{ booking.status }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="info-grid">
+                                    <div class="info-item">
+                                        <div class="label">Route</div>
+                                        <div class="value">{{ booking.bus.from_location }} → {{ booking.bus.to_location }}</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="label">Date</div>
+                                        <div class="value">{{ booking.travel_date.strftime('%d %b, %Y') }}</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="label">Seats</div>
+                                        <div class="value">{{ booking.seat_numbers or booking.seats }}</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="label">Status Rate</div>
+                                        <div class="value">{{ '100%' if booking.status == 'Confirmed' else '0%' }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="text-center mt-4">
+                            <a href="{{ url_for('my_bookings') }}" class="btn btn-outline-primary"><i class="fas fa-ticket-alt me-1"></i>View All Journeys</a>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info text-center">
+                            <i class="fas fa-info-circle me-2"></i>No journeys yet. Start your adventure!
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title script-font" id="editProfileModalLabel">Edit Your Cosmic Coordinates</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ url_for('profile') }}">
+                    
+                    <div class="mb-4">
+                        <label for="email" class="form-label fw-semibold"><i class="fas fa-envelope text-warning me-1"></i>Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ current_user.email }}" required>
+                    </div>
+
+                    <hr class="my-3">
+
+                    <h5 class="script-font text-warning mb-4">Change Password (Optional)</h5>
+                    <div class="mb-4">
+                        <label for="old_password" class="form-label fw-semibold"><i class="fas fa-lock text-warning me-1"></i>Current Password</label>
+                        <input type="password" class="form-control" id="old_password" name="old_password" placeholder="Required only if changing password">
+                    </div>
+                    <div class="mb-4">
+                        <label for="new_password" class="form-label fw-semibold"><i class="fas fa-key text-warning me-1"></i>New Password</label>
+                        <input type="password" class="form-control" id="new_password" name="new_password">
+                    </div>
+                    <div class="mb-4">
+                        <label for="confirm_password" class="form-label fw-semibold"><i class="fas fa-key text-warning me-1"></i>Confirm New Password</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg px-5">
+                            <i class="fas fa-save me-1"></i> Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
