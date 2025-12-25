@@ -86,6 +86,13 @@
                 <i class="fas fa-home me-1"></i> Home
               </a>
             </li>
+<li class="nav-item">
+  <a class="nav-link {% if request.endpoint == 'features' %}active{% endif %}"
+     href="{{ url_for('features') }}">
+    <i class="fas fa-star me-1"></i> Features
+  </a>
+</li>
+
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('index') }}#features">
                 <i class="fas fa-star me-1"></i> Features
@@ -108,6 +115,10 @@
               </a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('logout') }}">
+                <i class="fas fa-sign-out-alt me-1"></i> Logout
+              </a>
+            </li>
               <a class="nav-link" href="{{ url_for('profile') }}">
                 <i class="fas fa-user-astronaut me-1"></i> Stellar Profile
               </a>
@@ -187,6 +198,7 @@
             <h6 class="text-warning mb-3">Quick Links</h6>
             <ul class="list-unstyled footer-links">
               <li><a href="{{ url_for('index') }}">Home</a></li>
+              <li><a href="{{ url_for('features') }}">Features</a></li>
               <li><a href="{{ url_for('index') }}#features">Features</a></li>
               <li>
                 <a href="{{ url_for('index') }}#kavlin-tribute">About Kavlin</a>
@@ -236,6 +248,22 @@
               </a>
             </div>
           </div>
+        </div>
+
+        <hr class="my-4" style="border-color: var(--primary-yellow)" />
+
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <p class="mb-0">
+              &copy; 2025 Happy Trails. Crafted with love by Kavlin 💖
+            </p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <small class="script-font text-warning">
+              "Code is poetry, and poetry is life" ✨
+            </small>
+          </div>
+        </div>
         </div>
 
         <hr class="my-4" style="border-color: var(--primary-yellow)" />

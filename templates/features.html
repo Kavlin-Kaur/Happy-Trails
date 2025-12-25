@@ -1,0 +1,347 @@
+{% extends 'base.html' %}
+
+{% block title %}Features - Happy Trails{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+    #features-map {
+        height: 400px;
+        width: 100%;
+        border-radius: 20px;
+        box-shadow: var(--shadow-strong);
+        margin-top: 30px;
+    }
+    
+    .features-hero {
+        background: var(--gradient-sunrise);
+        padding: 100px 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .features-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+            radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(255, 182, 193, 0.1) 0%, transparent 50%);
+        animation: shimmer 6s ease-in-out infinite;
+    }
+    
+    @keyframes shimmer {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+    }
+    
+    .feature-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(15px);
+        border-radius: 20px;
+        padding: 40px 30px;
+        text-align: center;
+        height: 100%;
+        transition: var(--transition-bounce);
+        border: none;
+        box-shadow: var(--shadow-soft);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 4px;
+        background: var(--gradient-sunrise);
+        transition: left 0.5s ease;
+    }
+    
+    .feature-card:hover::before {
+        left: 0;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: var(--shadow-strong);
+        background: rgba(255, 255, 255, 1);
+    }
+    
+    .feature-icon {
+        width: 100px;
+        height: 100px;
+        background: var(--gradient-sunrise);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 25px;
+        box-shadow: 0 10px 30px rgba(255, 193, 7, 0.3);
+        font-size: 2.5rem;
+        color: white;
+        transition: var(--transition-smooth);
+    }
+    
+    .feature-card:hover .feature-icon {
+        transform: rotate(360deg) scale(1.1);
+        box-shadow: 0 15px 40px rgba(255, 193, 7, 0.5);
+    }
+    
+    .feature-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: var(--dark-blue);
+    }
+    
+    .feature-desc {
+        color: #6c757d;
+        line-height: 1.7;
+        font-size: 1.1rem;
+    }
+    
+    .features-grid {
+        padding: 80px 0;
+    }
+    
+    .demo-section {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 25px;
+        padding: 60px;
+        margin: 60px 0;
+        box-shadow: var(--shadow-medium);
+        backdrop-filter: blur(10px);
+    }
+    
+    .script-font { font-family: 'Dancing Script', cursive; }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Features Hero Section -->
+<section class="features-hero">
+    <div class="container">
+        <div class="row text-center text-white">
+            <div class="col-lg-8 mx-auto">
+                <h1 class="display-3 script-font mb-4" style="text-shadow: 3px 3px 6px rgba(0,0,0,0.3);">
+                    Our Magical Features
+                </h1>
+                <p class="lead fs-4 mb-5" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.3);">
+                    Every feature crafted with poetry, built with passion, designed for your perfect journey ✨
+                </p>
+                <a href="#features-grid" class="btn btn-warning btn-lg px-5 py-3 fs-5">
+                    <i class="fas fa-star me-2"></i>Explore Features
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Grid -->
+<section id="features-grid" class="features-grid">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Live Bus Tracking</h3>
+                    <p class="feature-desc">
+                        Follow your bus in real-time with interactive maps. 
+                        Every turn, every mile - know exactly where your journey takes you.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-heart"></i>
+                    </div>
+                    <h3 class="feature-title">Smart Seat Selection</h3>
+                    <p class="feature-desc">
+                        Interactive seat maps showing real-time availability. 
+                        Choose your perfect spot with window views or aisle comfort.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-cloud-sun-rain"></i>
+                    </div>
+                    <h3 class="feature-title">Live Weather Updates</h3>
+                    <p class="feature-desc">
+                        Weather forecasts for your entire route. 
+                        Plan your journey knowing exactly what nature has in store.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Multiple Stops</h3>
+                    <p class="feature-desc">
+                        Flexible pickup and dropoff points across each city. 
+                        Travel exactly how you want, from your nearest location.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bus"></i>
+                    </div>
+                    <h3 class="feature-title">Premium Bus Types</h3>
+                    <p class="feature-desc">
+                        Standard, Deluxe, Premium - choose your comfort level. 
+                        Luxury seats, WiFi, meals, and more for every traveler.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Secure Booking</h3>
+                    <p class="feature-desc">
+                        Complete user authentication and booking management. 
+                        Your tickets safe, your journey secure, your memories eternal.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Live Demo Section -->
+<section class="demo-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="script-font display-5 mb-4">See Tracking <span class="text-warning">In Action</span></h2>
+                <p class="lead mb-4">Experience our real-time bus tracking feature live</p>
+                <ul class="feature-list fs-5 mb-4">
+                    <li><i class="fas fa-check-circle text-warning me-2"></i>Live GPS positioning</li>
+                    <li><i class="fas fa-check-circle text-warning me-2"></i>Real-time updates</li>
+                    <li><i class="fas fa-check-circle text-warning me-2"></i>Traffic conditions</li>
+                    <li><i class="fas fa-check-circle text-warning me-2"></i>ETA predictions</li>
+                </ul>
+                <a href="{{ url_for('track_bus', bus_id=1) }}" class="btn btn-primary btn-lg px-5">
+                    <i class="fas fa-map-marker-alt me-2"></i>Track Live Bus
+                </a>
+            </div>
+            <div class="col-lg-6">
+                <div id="features-map"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Kavlin's Touch -->
+<section class="py-5 bg-light">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="script-font display-4 mb-4">Crafted by Kavlin ✨</h2>
+                <p class="lead mb-5">
+                    "Every feature flows like poetry, every line sings like a journey through the hills."
+                </p>
+                <div class="feature-icon mb-4 mx-auto" style="width: 120px; height: 120px; font-size: 3.5rem;">
+                    <i class="fas fa-heart"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize features map
+    initFeaturesMap();
+});
+
+let featuresMap;
+let demoMarkers = [];
+
+function initFeaturesMap() {
+    const solanLocation = [30.9045, 77.0967];
+    
+    featuresMap = L.map('features-map').setView(solanLocation, 12);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19
+    }).addTo(featuresMap);
+    
+    // Add demo bus markers
+    addDemoBusMarkers();
+    
+    // Animate markers
+    setInterval(() => {
+        demoMarkers.forEach(marker => {
+            const latLng = marker.getLatLng();
+            marker.setLatLng([
+                latLng.lat + (Math.random() - 0.5) * 0.001,
+                latLng.lng + (Math.random() - 0.5) * 0.001
+            ]);
+        });
+    }, 2000);
+}
+
+function addDemoBusMarkers() {
+    demoMarkers.forEach(marker => marker.remove());
+    demoMarkers = [];
+    
+    const busIcon = L.divIcon({
+        className: 'custom-div-icon',
+        html: '<i class="fas fa-bus text-primary" style="font-size: 24px;"></i>',
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
+    });
+    
+    const buses = [
+        { number: 'HT-101', lat: 30.9045, lng: 77.0967, route: 'Dharampur → Solan' },
+        { number: 'HT-102', lat: 30.9200, lng: 77.1100, route: 'Solan → Barog' },
+        { number: 'HT-103', lat: 30.8900, lng: 77.0800, route: 'Barog → Dagshai' }
+    ];
+    
+    buses.forEach((bus, index) => {
+        const marker = L.marker([bus.lat, bus.lng], { icon: busIcon })
+            .addTo(featuresMap)
+            .bindPopup(`
+                <div class="text-center">
+                    <h6 class="fw-bold text-primary mb-2">Bus ${bus.number}</h6>
+                    <p class="mb-2">${bus.route}</p>
+                    <a href="/track_bus/${index + 1}" class="btn btn-warning btn-sm">Track Live</a>
+                </div>
+            `, { className: 'custom-popup' });
+        
+        demoMarkers.push(marker);
+    });
+}
+</script>
+<style>
+.custom-div-icon {
+    background: transparent;
+    border: none;
+}
+</style>
+{% endblock %}
