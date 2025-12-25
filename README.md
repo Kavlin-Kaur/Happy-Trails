@@ -220,6 +220,7 @@ Happy-Trails/
 │   ├── login.html
 │   ├── my_bookings.html
 │   ├── payment.html
+|   ├── profile.html
 │   ├── select_bus.html
 │   ├── select_seats.html
 │   ├── signup.html
