@@ -10,87 +10,47 @@
     <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="600">
   </div>
 
-
-# 📑 **Table of Contents**
-
-* 🚀 [Overview](#-a-cosmic-bus-booking-experience)
-* 🌌 [Vision: Human-Centered Travel Technology](#-vision-human-centered-travel-technology)
-* ✨ [Features](#-features)
-* 🌟 [Stand-Out Experience Features](#-stand-out-experience-features)
-
-  * 🎭 [Narrative & Poetic Interface](#1-narrative--poetic-interface)
-  * 📡 [Live Tracking & Weather Integration](#2-live-tracking--weather-integration)
-  * 🪄 [Interactive Frontend Magic](#3-interactive-frontend-magic)
-  * 🐣 [Hidden Easter Eggs](#4-hidden-easter-eggs)
-* 📺 [Video Explanation](#-video-explanation)
-* 🛠️ [Technologies Used](#-technologies-used)
-* ⚙️ [Installation and Setup](#️-installation-and-setup)
-* 🪪 [.env Requirements](#required-env-file)
-* 🐞 [Issue Creation](#issue-creation-)
-* 📑 [Contribution Guidelines](#contribution-guidelines-)
-* 👥 [Contributors](#-contributors)
-* 📄 [License](#-license)
-* 📞 [Contact](#-contact)
-
----
-
-
-
-## 🚌 A Cosmic Bus Booking Experience
-
-**Happy Trails** is a poetic, modern bus booking platform where every journey is treated as a magical, cosmic adventure. It transforms the transactional process of booking a ticket into an immersive experience. It blends robust functionality (user accounts, real-time search, interactive seat selection, and live tracking) with an emotional UX—infusing micro‑poetry, glowing gradients, glass morphism, and a narrative-led design.
+# Happy Trails
 
 > “Every confirmed ticket is a cosmic promise that tomorrow holds a sunrise worth chasing across dimensions.” – Kavlin ✨
 
----
+## 📑 Table of Contents
+- 🚀 Overview
+- 🌌 Vision: Human-Centered Travel Technology
+- ✨ Features
+- 🌟 Stand-Out Experience Features
+  - 🎭 Narrative & Poetic Interface
+  - 📡 Live Tracking & Weather Integration
+  - 🪄 Interactive Frontend Magic
+  - 🐣 Hidden Easter Eggs
+- 📺 Video Explanation
+- 🛠️ Technologies Used
+- ⚙️ Installation and Setup
+- 🪪 .env Requirements
+- 🐞 Issue Creation
+- 📑 Contribution Guidelines
+- 👥 Contributors
+- 📄 License
+- 📞 Contact
+
+## 🚌 A Cosmic Bus Booking Experience
+Happy Trails is a poetic, modern bus booking platform where every journey is treated as a magical, cosmic adventure. It transforms the transactional process of booking a ticket into an immersive experience—blending robust functionality (user accounts, real-time search, interactive seat selection, and live tracking) with an emotional UX full of micro‑poetry, glowing gradients, glass morphism, and narrative-led design.
 
 ## 🌌 Vision: Human-Centered Travel Technology
-
-Travel isn’t just about getting from one point to another—it's about the anticipation, the journey, and the memories. Traditional booking portals feel sterile and impersonal. Happy Trails reframes this interaction as an exciting and beautiful first step of an adventure.
+Travel isn’t just about getting from one point to another—it’s about anticipation, the journey, and the memories. Traditional booking portals feel sterile and impersonal. Happy Trails reframes this interaction as the beautiful first step of an adventure.
 
 ### The Happy Trails Difference
-
 | Pillar | What It Means | How Happy Trails Expresses It |
-|--------|---------------|--------------------------|
+|--------|---------------|--------------------------------|
 | **Joyful UX** | Interfaces should inspire delight. | Poetic micro-copy, celebratory animations, and a magical theme. |
 | **Reliability** | Technology must be dependable. | A robust Flask backend, real-time data, and secure user sessions. |
 | **Discovery** | The platform should feel exploratory. | "Cosmic" destination carousels and live maps make planning fun. |
-| **Inspiration**| Travel is a story. | Quotes, thematic gradients, and narrative motifs like "Cosmic Chariot". |
+| **Inspiration** | Travel is a story. | Quotes, thematic gradients, and narrative motifs like "Cosmic Chariot". |
 
 ## 🚀 Live Demo
+Experience Happy Trails live: [Happy-Trails](https://happytrails.vercel.app/)
 
-Experience Happy-Trails live here: 
-👉 [![**Happy-Trails**](https://img.shields.io/badge/View-Live%20Demo-magenta?style=for-the-badge)](https://HappyTrails.vercel.app/)
-
- <div align="center">
- <p>
-
-[![Open Source Love svg1](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
-![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=flat)
-![Visitors](https://api.visitorbadge.io/api/Visitors?path=Kavlin-Kaur%2FHappy-Trails%20&countColor=%23263759&style=flat)
-![GitHub Forks](https://img.shields.io/github/forks/Kavlin-Kaur/Happy-Trails)
-![GitHub Repo Stars](https://img.shields.io/github/stars/Kavlin-Kaur/Happy-Trails)
-![GitHub Contributors](https://img.shields.io/github/contributors/Kavlin-Kaur/Happy-Trails)
-![GitHub Last Commit](https://img.shields.io/github/last-commit/Kavlin-Kaur/Happy-Trails)
-![GitHub Repo Size](https://img.shields.io/github/repo-size/Kavlin-Kaur/Happy-Trails)
-![Github](https://img.shields.io/github/license/Kavlin-Kaur/Happy-Trails)
-![GitHub Issues](https://img.shields.io/github/issues/Kavlin-Kaur/Happy-Trails)
-![GitHub Closed Issues](https://img.shields.io/github/issues-closed-raw/Kavlin-Kaur/Happy-Trails)
-![GitHub Pull Requests](https://img.shields.io/github/issues-pr/Kavlin-Kaur/Happy-Trails)
-![GitHub Closed Pull Requests](https://img.shields.io/github/issues-pr-closed/Kavlin-Kaur/Happy-Trails)
- </p>
- </div>
-
-<div align="center">
-  <img src="App.png" alt="Home" width="600"/>
-  <br>
-</div>
-
-## ✨ Features 
-<div align="center">
-  <img src="https://user-images.githubusercontent.com/74038190/212284158-e840e285-664b-44d7-b79b-e264b5e54825.gif" width="400">
-</div>
-
+## ✨ Features
 | Domain | Features | Status |
 |--------|----------|--------|
 | **Authentication** | Multi-step Signup, Secure Login, Password Strength Meter, Session Persistence. | ✅ |
@@ -98,37 +58,79 @@ Experience Happy-Trails live here:
 | **Seat Selection** | Interactive Graphical Seat Map, Real-time Price Calculation, Hover Effects. | ✅ |
 | **Payment** | Multi-method Payment UI, Secure Confirmation Step, Celebratory Animations. | ✅ |
 | **User Dashboard** | "My Cosmic Journeys" page to view all bookings (past & upcoming). | ✅ |
-| **Booking Mgmt.**| Dynamic Filtering (Status/Month/Search), One-click Cancellation for upcoming trips. | ✅ |
+| **Booking Mgmt.** | Dynamic Filtering (Status/Month/Search), One-click Cancellation for upcoming trips. | ✅ |
 | **Live Tracking** | Real-time (mocked) Bus Tracking on an interactive Leaflet.js Map. | ✅ |
-| **API Integration**| OpenWeatherMap API for destination weather display. | ✅ |
-| **UI/UX System** | Glass morphism, Gradients, Micro-animations, Poetic meta-text, Custom Toasts. | ✅ |
-| **Convenience** | "Recent Searches" functionality using browser `localStorage`. | ✅ |
+| **API Integration** | OpenWeatherMap API for destination weather display. | ✅ |
+| **UI/UX System** | Glass morphism, gradients, micro-animations, poetic meta-text, custom toasts. | ✅ |
+| **Convenience** | "Recent Searches" via browser localStorage. | ✅ |
 | **Easter Eggs** | Hidden Konami Code and other interactive secrets. | ✅ |
 
----
-
 ## 🌟 Stand-Out Experience Features
-
-### 1. Narrative & Poetic Interface  
-Happy Trails frames the booking process as a **journey**. Terms like "Cosmic Chariot," "Quantum Scheduling," and "Interdimensional Journey" are used to create an emotional and memorable user experience.
-
-### 2. Live Tracking & Weather Integration  
-A dedicated tracking page uses **Leaflet.js** to show the bus's position in real-time. It enhances the experience by pulling live weather data for the destination city from the **OpenWeatherMap API**, helping travelers prepare for their arrival.
-
-### 3. Interactive Frontend Magic
-The frontend is filled with JavaScript-driven enhancements:
-- **Celebratory Effects:** Confirming a booking triggers a screen full of confetti and floating emojis.
-- **Dynamic Updates:** The seat selection sidebar updates prices and seat numbers instantly without a page reload.
-- **Custom Animations:** The entire UI is animated with CSS, from floating background orbs to buttons that provide satisfying tactile feedback on hover and click.
-
-### 4. Hidden Easter Eggs
-To add a layer of fun and discovery, the application includes hidden secrets, such as a **Konami code** that reveals a special message from the creator, Kavlin.
+1) **Narrative & Poetic Interface** — Terms like "Cosmic Chariot", "Quantum Scheduling", and "Interdimensional Journey" keep the booking process memorable.
+2) **Live Tracking & Weather Integration** — Leaflet.js map plus OpenWeatherMap destination weather to help travelers prepare.
+3) **Interactive Frontend Magic** — Confetti on confirmation, instant seat/price updates, tactile animated buttons, floating background orbs.
+4) **Hidden Easter Eggs** — Konami code and other secrets surface playful surprises from creator Kavlin.
 
 ## 📺 Video Explanation
+Placeholder: drop your YouTube link here once ready. Suggested chapters: 00:00 Intro & Vision • 02:00 Search & Results • 05:00 Seat Selection • 08:00 Payment & Confirmation • 10:00 Live Tracking & Weather • 12:00 Easter Eggs • 14:00 Deployment/Env Setup.
 
-For a detailed walkthrough of Happy-Trails's features and how to use them, check out this video:
+## 🛠️ Technologies Used
+- Backend: Flask, SQLAlchemy, Flask-Login
+- Frontend: HTML, CSS, JavaScript, Bootstrap, Jinja, Leaflet.js
+- Data: SQLite (local), PostgreSQL-ready; OpenWeatherMap API
+- Deployment: Vercel (WSGI via wsgi.py)
+- Tooling: Git, GitHub
 
-**[Video Coming Soon]**
+## ⚙️ Installation and Setup
+1) Clone and enter project
+```
+git clone https://github.com/Kavlin-Kaur/Happy-Trails.git
+cd Happy-Trails
+```
+2) Create & activate venv (PowerShell)
+```
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+3) Install dependencies
+```
+pip install -r requirements.txt
+```
+4) Configure environment (see .env Requirements)
+5) Run locally
+```
+$env:FLASK_ENV="development"
+python app.py
+```
+App runs at http://127.0.0.1:5000
+
+## 🪪 .env Requirements
+```
+HAPPYTRAILS_SECRET_KEY=replace_me
+DATABASE_URL=sqlite:///instance/happytrails.db
+GOOGLE_MAPS_API_KEY=your_key
+WEATHER_API_KEY=your_key
+FLASK_ENV=development
+```
+
+## 🐞 Issue Creation
+Open an issue here: https://github.com/Kavlin-Kaur/Happy-Trails/issues
+
+## 📑 Contribution Guidelines
+1) Fork the repo and create a feature branch.  
+2) Commit with clear messages; add tests where possible.  
+3) Open a PR describing changes and testing steps.
+
+## 👥 Contributors
+Thanks to everyone who has contributed: https://github.com/Kavlin-Kaur/Happy-Trails/graphs/contributors
+
+## 📄 License
+MIT License. See LICENSE for details.
+
+## 📞 Contact
+For support or collaboration, open an issue or reach out via GitHub: https://github.com/Kavlin-Kaur
+- Suggested chapters:  
+  00:00 Intro & Vision • 02:00 Search & Results • 05:00 Seat Selection • 08:00 Payment & Confirmation • 10:00 Live Tracking & Weather • 12:00 Easter Eggs • 14:00 Deployment/Env setup
 
 ---
 
@@ -248,39 +250,76 @@ Happy-Trails/
 
 ## ⚙️ Installation and Setup
 
+### Quick Start (Local Development)
+
 ```bash
 # 1. Clone the repository
-git clone [https://github.com/your-username/happy-trails.git](https://github.com/your-username/happy-trails.git)
-cd happy-trails
+git clone https://github.com/Kavlin-Kaur/Happy-Trails.git
+cd Happy-Trails
 
 # 2. Create and activate a virtual environment
 # On macOS/Linux:
 python3 -m venv venv
 source venv/bin/activate
-# On Windows:
+
+# On Windows (PowerShell):
 python -m venv venv
-.\venv\Scripts\activate
+.\venv\Scripts\Activate.ps1
 
 # 3. Install dependencies
 pip install -r requirements.txt
 
-# 4. Create a .env file and add your keys (see below)
+# 4. Create a .env file in project root
+cp a.env .env
+# Edit .env and add your API keys
 
 # 5. Run the development server
-flask run
+python app.py
 
 # 6. Visit the application
-[http://127.0.0.1:5000](http://127.0.0.1:5000)
-````
+http://127.0.0.1:5000
+```
+
+### Vercel Deployment
+
+```bash
+# 1. Push code to GitHub
+git add .
+git commit -m "Deploy Happy Trails"
+git push origin master
+
+# 2. Connect GitHub to Vercel
+# - Go to https://vercel.com/dashboard
+# - Import Happy-Trails repository
+# - Add Environment Variables:
+#   HAPPYTRAILS_SECRET_KEY=<your-secret-key>
+#   GOOGLE_MAPS_API_KEY=<your-api-key>
+#   WEATHER_API_KEY=<your-openweather-key>
+#   FLASK_ENV=production
+
+# 3. Vercel automatically deploys on push
+# Visit: https://happy-trails.vercel.app
+```
 
 ### Required `.env` File
 
-```
-HAPPYTRAILS_SECRET_KEY='a_very_secret_and_random_string_for_security'
+```bash
+# Security & Database
+HAPPYTRAILS_SECRET_KEY='your-random-secret-key-min-32-chars'
 DATABASE_URL='sqlite:///instance/happytrails.db'
-GOOGLE_MAPS_API_KEY='YOUR_GOOGLE_MAPS_API_KEY'
-WEATHER_API_KEY='YOUR_OPENWEATHER_API_KEY'
+FLASK_ENV='development'  # or 'production'
+
+# API Keys (Get from respective platforms)
+GOOGLE_MAPS_API_KEY='get-from-google-cloud-console'
+WEATHER_API_KEY='get-from-openweathermap.org'
 ```
+
+### How to get API Keys:
+
+1. **Google Maps API**: https://cloud.google.com/maps-platform
+2. **OpenWeather API**: https://openweathermap.org/api
+
+⚠️ **Security**: Never commit `.env` file to Git. Add to `.gitignore`.
 
 ---
 
@@ -319,10 +358,34 @@ Thanks to these wonderful people for contributing 💖
 
 This project is open-source and available under the [MIT License](LICENSE).
 
-## 📞 Contact
+## �️ Recent Fixes & Improvements (v2.1 - Jan 2026)
 
-Developed by [Kavlin](https://kavlin-kaur.github.io/kavres/)
+- ✅ **Fixed 500 errors on Vercel deployment**
+- ✅ **Added `wsgi.py`** for serverless WSGI compatibility
+- ✅ **Standardized SQLite path** to `instance/happytrails.db`
+- ✅ **Environment variables** properly loaded from `.env`
+- ✅ **Fixed duplicate `/profile` route** causing conflicts
+- ✅ **Enhanced HTML structure** - removed nav/footer duplication
+- ✅ **Added comprehensive CSS animations** - smooth transitions throughout
+- ✅ **Interactive JS effects** - better UX with micro-interactions
+- ✅ **Improved error handling** - graceful failures with user feedback
 
-Feel free to reach out with any questions or feedback\! Thanks for reading, here's a cookiepookie:
+## 📞 Contact & Support
 
-![Cat](https://github.com/XevenTech/xeventech/blob/main/cat.gif?raw=true "Thank You")
+**Developed by:** [Kavlin](https://kavlin-kaur.github.io/kavres/)
+
+**Questions or Feedback?** 
+- 🐛 [Open an Issue](https://github.com/Kavlin-Kaur/Happy-Trails/issues)
+- 📧 Email: hello@happytrails.com
+- 💼 LinkedIn: [Kavlin Kaur](https://linkedin.com/in/kavlin-kaur)
+- 🐙 GitHub: [Kavlin-Kaur](https://github.com/Kavlin-Kaur)
+
+---
+
+<div align="center">
+  <h3>Made with 💖 and Poetry by Kavlin</h3>
+  <p><strong>"Code is poetry, and poetry is life" ✨</strong></p>
+  <p><strong>Let's make the world a more beautiful place, one line of code at a time!</strong></p>
+  
+  ![Thank You](https://github.com/XevenTech/xeventech/blob/main/cat.gif?raw=true)
+</div>
