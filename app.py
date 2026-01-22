@@ -1,5 +1,7 @@
 import os
 import re
+import os
+import re
 import random
 from datetime import datetime, date
 from flask import (
@@ -21,18 +23,11 @@ import requests
 # -------------------------------------------------------------------
 # Configuration
 # -------------------------------------------------------------------
-app = Flask(__name__, instance_relative_config=True)
-
-# Ensure instance folder exists (needed for SQLite path)
-try:
-    os.makedirs(app.instance_path, exist_ok=True)
-except Exception:
-    pass
+app = Flask(__name__)
 
 # Now the os.getenv calls below will find the variables from your .env file
 app.config['SECRET_KEY'] = os.getenv('HAPPYTRAILS_SECRET_KEY', 'happytrailssecretkey')
-default_sqlite_path = os.path.join(app.instance_path, 'happytrails.db')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', f"sqlite:///{default_sqlite_path}")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///happytrails.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize database
@@ -40,10 +35,10 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
-# Google Maps API Key (from environment)
-GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY', '')
-# OpenWeatherMap API Key (from environment)
-WEATHER_API_KEY = os.getenv('WEATHER_API_KEY', '')
+# Google Maps API Key - Replace with your actual API key
+GOOGLE_MAPS_API_KEY = "YOUR_GOOGLE_MAPS_API_KEY"
+# OpenWeatherMap API Key - Replace with your actual API key
+WEATHER_API_KEY = "YOUR_OPENWEATHER_API_KEY"
 
 # Database Models
 class User(UserMixin, db.Model):
@@ -53,18 +48,6 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), unique=True, nullable=False)
     phone = db.Column(db.String(20), nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
-    
-    # Profile fields
-    bio = db.Column(db.Text, nullable=True)
-    address = db.Column(db.String(200), nullable=True)
-    city = db.Column(db.String(100), nullable=True)
-    state = db.Column(db.String(100), nullable=True)
-    pincode = db.Column(db.String(10), nullable=True)
-    profile_picture = db.Column(db.String(200), default='default-avatar.png')
-    date_of_birth = db.Column(db.Date, nullable=True)
-    gender = db.Column(db.String(20), nullable=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    
     bookings = db.relationship('Booking', backref='user', lazy=True)
 
     def set_password(self, password):
@@ -72,10 +55,6 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-    
-    @property
-    def full_name(self):
-        return f"{self.first_name} {self.last_name}"
 
 class Bus(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -221,20 +200,20 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('profile'))
+        return redirect(url_for('index'))
     
     if request.method == 'POST':
-        email = request.form.get('email', '').strip().lower()
-        password = request.form.get('password', '')
+        email = request.form.get('email')
+        password = request.form.get('password')
         remember = 'remember' in request.form
         
         user = User.query.filter_by(email=email).first()
         
         if user and user.check_password(password):
             login_user(user, remember=remember)
-            flash(f'Welcome back, {user.first_name}!', 'success')
+            flash('Login successful!', 'success')
             next_page = request.args.get('next')
-            return redirect(next_page or url_for('profile'))
+            return redirect(next_page or url_for('index'))
         else:
             flash('Invalid email or password', 'danger')
     
@@ -246,53 +225,33 @@ def signup():
         return redirect(url_for('index'))
     
     if request.method == 'POST':
-        try:
-            first_name = request.form.get('firstName', '').strip()
-            last_name = request.form.get('lastName', '').strip()
-            email = request.form.get('email', '').strip().lower()
-            phone = request.form.get('phone', '').strip()
-            password = request.form.get('password', '')
-            confirm_password = request.form.get('confirmPassword', '')
-            
-            # Validation
-            if not all([first_name, last_name, email, phone, password]):
-                flash('All fields are required', 'danger')
-                return render_template('signup.html')
-            
-            if len(password) < 6:
-                flash('Password must be at least 6 characters long', 'danger')
-                return render_template('signup.html')
-            
-            user_exists = User.query.filter_by(email=email).first()
-            
-            if user_exists:
-                flash('Email already registered. Please login instead.', 'danger')
-                return render_template('signup.html')
-            elif password != confirm_password:
-                flash('Passwords do not match', 'danger')
-                return render_template('signup.html')
-            else:
-                new_user = User(
-                    first_name=first_name,
-                    last_name=last_name,
-                    email=email,
-                    phone=phone
-                )
-                new_user.set_password(password)
-                
-                db.session.add(new_user)
-                db.session.commit()
-                
-                # Log the user in automatically
-                login_user(new_user)
-                flash('Welcome to Happy Trails! Your account has been created successfully.', 'success')
-                return redirect(url_for('profile'))
+        first_name = request.form.get('firstName')
+        last_name = request.form.get('lastName')
+        email = request.form.get('email')
+        phone = request.form.get('phone')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirmPassword')
         
-        except Exception as e:
-            db.session.rollback()
-            print(f"Signup error: {str(e)}")  # Log to console
-            flash('An error occurred during signup. Please try again.', 'danger')
-            return render_template('signup.html')
+        user_exists = User.query.filter_by(email=email).first()
+        
+        if user_exists:
+            flash('Email already registered', 'danger')
+        elif password != confirm_password:
+            flash('Passwords do not match', 'danger')
+        else:
+            new_user = User(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                phone=phone
+            )
+            new_user.set_password(password)
+            
+            db.session.add(new_user)
+            db.session.commit()
+            
+            flash('Account created successfully! Please login.', 'success')
+            return redirect(url_for('login'))
     
     return render_template('signup.html')
 
@@ -302,63 +261,6 @@ def logout():
     logout_user()
     flash('You have been logged out', 'info')
     return redirect(url_for('index'))
-
-@app.route('/profile', methods=['GET', 'POST'])
-@login_required
-def profile():
-    if request.method == 'POST':
-        try:
-            # Update user profile information
-            current_user.first_name = request.form.get('first_name', current_user.first_name).strip()
-            current_user.last_name = request.form.get('last_name', current_user.last_name).strip()
-            current_user.phone = request.form.get('phone', current_user.phone).strip()
-            current_user.bio = request.form.get('bio', '').strip()
-            current_user.address = request.form.get('address', '').strip()
-            current_user.city = request.form.get('city', '').strip()
-            current_user.state = request.form.get('state', '').strip()
-            current_user.pincode = request.form.get('pincode', '').strip()
-            current_user.gender = request.form.get('gender', '')
-            
-            # Handle date of birth
-            dob_str = request.form.get('date_of_birth', '')
-            if dob_str:
-                try:
-                    current_user.date_of_birth = datetime.strptime(dob_str, '%Y-%m-%d').date()
-                except ValueError:
-                    pass
-            
-            # Handle password change
-            current_password = request.form.get('current_password', '')
-            new_password = request.form.get('new_password', '')
-            confirm_new_password = request.form.get('confirm_new_password', '')
-            
-            if current_password and new_password:
-                if current_user.check_password(current_password):
-                    if new_password == confirm_new_password:
-                        if len(new_password) >= 6:
-                            current_user.set_password(new_password)
-                            flash('Password updated successfully!', 'success')
-                        else:
-                            flash('New password must be at least 6 characters long', 'danger')
-                            return render_template('profile.html', user=current_user)
-                    else:
-                        flash('New passwords do not match', 'danger')
-                        return render_template('profile.html', user=current_user)
-                else:
-                    flash('Current password is incorrect', 'danger')
-                    return render_template('profile.html', user=current_user)
-            
-            db.session.commit()
-            flash('Profile updated successfully!', 'success')
-            return redirect(url_for('profile'))
-            
-        except Exception as e:
-            db.session.rollback()
-            print(f"Profile update error: {str(e)}")
-            flash('An error occurred while updating your profile', 'danger')
-            return render_template('profile.html', user=current_user, now=datetime.utcnow())
-    
-    return render_template('profile.html', user=current_user, now=datetime.utcnow())
 
 @app.route('/search_buses', methods=['POST'])
 def search_buses():
@@ -611,11 +513,6 @@ def traffic_update(bus_id):
         "traffic_status": traffic_status,
         "delay_minutes": delay_minutes
     })
-    
-@app.route('/features')  # ← ADD THIS LINE
-def features():
-    return render_template('features.html')
-
 
 @app.route('/poetry-corner')
 def poetry_corner():
@@ -1562,7 +1459,7 @@ def newsletter():
 # Run the application
 if __name__ == '__main__':
     # Use SQLite for local development
-    app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{default_sqlite_path}"
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///happytrails.db'
     app.run(debug=True)
 
 # Make sure it points to the correct location
